@@ -10,14 +10,17 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="TypeScript.fs" />
-        <Compile Include="Fsharp.fs" />
-        <Compile Include="Program.fs" />
+        <Compile Include="Result.fs" />
+        <Compile Include="Error.fs" />
+        <Compile Include="Field.fs" />
+        <Compile Include="Base.fs" />
+        <Compile Include="Base/TextField.fs" />
+        <Compile Include="Base/RadioField.fs" />
+        <Compile Include="View.fs" />
+        <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Fable.Core" Version="3.2.5" />
-      <PackageReference Include="Fable.Node" Version="1.2.0" />
-      <PackageReference Include="Glutinum.Chalk" Version="0.1.0-alpha-001" />
     </ItemGroup>
     <!-- This package doesn't contain actual code
         so we don't need to add the sources -->
