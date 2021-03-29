@@ -1,0 +1,22 @@
+{
+  "name": "examples",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "watch": "npx concurrently -n fable,webpack \"npm run watch-fable\" \"npm run watch-webpack\"",
+    "watch-webpack": "npx webpack serve",
+    "watch-fable": "dotnet fable watch Examples.fsproj --outDir fableBuild"
+  },
+  "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
