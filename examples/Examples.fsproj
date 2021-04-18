@@ -4,11 +4,19 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="src/App.fs" />
+        <Compile Include="src\ConsoleTracer.fs" />
+        <Compile Include="src\Tuple.fs" />
+        <Compile Include="src\Page\SignUp.fs" />
+        <Compile Include="src\Page\Login.fs" />
+        <Compile Include="src\Router.fs" />
+        <Compile Include="src\App.fs" />
+        <Content Include="style\style.scss" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="Fable.Browser.Dom" Version="2.3.0" />
       <PackageReference Include="Fable.Core" Version="3.2.5" />
       <PackageReference Include="Fable.Elmish" Version="3.1.0" />
+      <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
       <PackageReference Include="Fable.Elmish.HMR" Version="4.1.0" />
       <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
       <PackageReference Include="Fable.Promise" Version="2.2.0" />
@@ -16,6 +24,7 @@
       <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\packages\Form.Experimentation.fsproj" />
+      <ProjectReference Include="..\packages\Warded.Simple\Warded.Simple.fsproj" />
+      <ProjectReference Include="..\packages\Warded\Warded.fsproj" />
     </ItemGroup>
 </Project>

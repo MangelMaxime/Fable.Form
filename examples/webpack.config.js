@@ -1,40 +1,67 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require("path")
+const webpack = require("webpack")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-// If we're running the webpack-dev-server, assume we're in development mode
-const isDevelopment = process.env.NODE_ENV !== 'production';
-console.log("Bundling for " + (isDevelopment ? "development" : "production") + "...");
+function resolve(filePath) {
+    return path.join(__dirname, filePath)
+}
 
-/** @type {import("webpack").Configuration } */
-module.exports = {
-    entry: './fableBuild/src/App.js',
-    output: {
-        path: path.join(__dirname, "dist"),
-    },
-    mode: isDevelopment ? 'development' : 'production',
-    devServer: {
-        hot: true,
-        contentBase: path.join(__dirname, 'public'),
-        publicPath: "/",
-        proxy: {
-            '/api/*': {
-                target: 'https://localhost:3000',
-                changeOrigin: true,
-                secure: false
-            }
+module.exports = (_env, options) => {
+
+    var isDevelopment = options.mode === "development";
+
+    return {
+        entry: './fableBuild/src/App.js',
+        mode: isDevelopment ? "development" : "production",
+        output: {
+            path: resolve('./output'),
+            filename: isDevelopment ? '[name].js' : '[name].[fullhash].js',
+        },
+        devtool: undefined,
+        optimization: {
+            // Split the code coming from npm packages into a different file.
+            // 3rd party dependencies change less often, let the browser cache them.
+            splitChunks: {
+                cacheGroups: {
+                    commons: {
+                        test: /node_modules/,
+                        name: "vendors",
+                        chunks: "all"
+                    }
+                }
+            },
+        },
+        plugins:
+            [
+                new HtmlWebpackPlugin({
+                    filename: "./index.html",
+                    template: "./src/index.html"
+                }),
+                new MiniCssExtractPlugin()
+            ].filter(Boolean),
+        devServer: {
+            contentBase: resolve("public"),
+            publicPath: "/",
+            port: 8080,
+            hot: true,
+            inline: true
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(sass|scss|css)$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                    use: ["file-loader"]
+                }
+            ]
         }
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*)?$/,
-                use: ["file-loader"]
-            }
-        ],
-    },
-    plugins: [
-        // ... other plugins
-        // isDevelopment && new ReactRefreshWebpackPlugin(),
-    ].filter(Boolean),
-    // ... other configuration options
-};
+    }
+}

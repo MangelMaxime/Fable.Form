@@ -4,17 +4,25 @@
   "private": true,
   "scripts": {
     "watch": "npx concurrently -n fable,webpack \"npm run watch-fable\" \"npm run watch-webpack\"",
-    "watch-webpack": "npx webpack serve",
+    "watch-webpack": "npx webpack serve --mode development",
     "watch-fable": "dotnet fable watch Examples.fsproj --outDir fableBuild"
   },
   "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "bulma": "^0.9.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "css-loader": "^5.2.2",
     "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.5.0",
+    "sass": "^1.32.10",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
     "webpack": "^5.28.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
