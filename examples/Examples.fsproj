@@ -6,6 +6,7 @@
     <ItemGroup>
         <Compile Include="src\ConsoleTracer.fs" />
         <Compile Include="src\Tuple.fs" />
+        <Compile Include="src\Types\EmailAddress.fs" />
         <Compile Include="src\Page\SignUp.fs" />
         <Compile Include="src\Page\Login.fs" />
         <Compile Include="src\Router.fs" />

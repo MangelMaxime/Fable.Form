@@ -2,7 +2,6 @@ module Examples
 
 open Feliz
 open Feliz.Bulma
-open Feliz.ReactSyntaxHighlighter
 open Elmish
 open Fable.Core
 open Fable.Core.JsInterop

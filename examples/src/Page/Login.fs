@@ -5,8 +5,6 @@ open Elmish
 open Feliz
 open Feliz.Bulma
 
-type EmailAddress = EmailAddress of string
-
 type FormValues =
     {
         Email : string
@@ -19,7 +17,7 @@ type Model =
 
 type Msg =
     | FormChanged of Model
-    | LogIn of EmailAddress * string * bool
+    | LogIn of EmailAddress.T * string * bool
 
 let init () =
     {
@@ -33,8 +31,6 @@ let init () =
 let update (msg : Msg) (model : Model) =
     match msg with
     | FormChanged newModel ->
-        printfn "%A" newModel.Values
-
         newModel
         , Cmd.none
 
@@ -49,12 +45,9 @@ let form : Form.Form<FormValues, Msg> =
         Form.textField
             {
                 Parser =
-                    fun value ->
-                        if value.Contains("@") then
-                            Ok value
-                        else
-                            Error "The e-mail address must contain a '@' symbol"
-                Value = (fun values -> values.Email)
+                    EmailAddress.tryParse >> Result.map EmailAddress.toString
+                Value =
+                    fun values -> values.Email
                 Update =
                     fun newValue values ->
                         { values with Email = newValue }
@@ -71,7 +64,8 @@ let form : Form.Form<FormValues, Msg> =
         Form.passwordField
             {
                 Parser = Ok
-                Value = (fun values -> values.Password)
+                Value =
+                    fun values -> values.Password
                 Update =
                     fun newValue values ->
                         { values with Password = newValue }
@@ -88,7 +82,8 @@ let form : Form.Form<FormValues, Msg> =
         Form.checkboxField
             {
                 Parser = Ok
-                Value = (fun values -> values.RememberMe)
+                Value =
+                    fun values -> values.RememberMe
                 Update =
                     fun newValue values ->
                         { values with RememberMe = newValue }
@@ -102,7 +97,7 @@ let form : Form.Form<FormValues, Msg> =
 
     let formOutput =
         fun email password rememberMe ->
-            LogIn (EmailAddress email, password, rememberMe)
+            LogIn (EmailAddress.create email, password, rememberMe)
 
     Form.succeed formOutput
         |> Form.append emailField
