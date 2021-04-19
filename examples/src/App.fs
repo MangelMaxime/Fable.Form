@@ -174,7 +174,7 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
                 renderLink
                     Router.Route.Login
                     "Login"
-                    "A simple login form with 3 field"
+                    "A simple login form with 3 fields"
 
                 renderLink
                     Router.Route.SignUp
