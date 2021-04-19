@@ -3,9 +3,6 @@
   "description": "",
   "private": true,
   "scripts": {
-    "watch": "npx concurrently -n fable,webpack \"npm run watch-fable\" \"npm run watch-webpack\"",
-    "watch-webpack": "npx webpack serve --mode development",
-    "watch-fable": "dotnet fable watch Examples.fsproj --outDir fableBuild"
   },
   "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
   "license": "MIT",
