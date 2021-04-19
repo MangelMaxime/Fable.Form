@@ -5,12 +5,31 @@ open Elmish
 open Feliz
 open Feliz.Bulma
 
+type FieldError =
+    {
+        Value : string
+        Error : string
+    }
+
+module FieldError =
+
+    let create value error =
+        {
+            Value = value
+            Error = error
+        }
+
+type FormErrors =
+    {
+        Email : FieldError option
+    }
+
 type FormResult =
     {
-        Email : string
-        Password : string
-        AcceptTerms : bool
-        MakePublic : string
+        Email : EmailAddress.T
+        Password : User.Password.T
+        Name : User.Name.T
+        MakePublic : bool
     }
 
 type FormValues =
@@ -18,64 +37,123 @@ type FormValues =
         Email : string
         Password : string
         RepeatPassword : string
-        AcceptTerms : bool
+        Name : string
         MakePublic : string
+        Errors : FormErrors
     }
 
-
 type Model =
-    Form.View.Model<FormValues>
+    | FillingForm of Form.View.Model<FormValues>
+    | SignedUp of User.T
 
-// type EmailAddress = string //EmailAddress of string
 
 type Msg =
-    | FormChanged of Model
-    // | LogIn of EmailAddress * string * bool
-    | LogIn of FormResult
+    | FormChanged of Form.View.Model<FormValues>
+    | SignUp of FormResult
+    | SignupAttempted of Result<User.T, string>
 
 let init () =
     {
         Email = ""
         Password = ""
         RepeatPassword = ""
-        AcceptTerms = false
+        Name = ""
         MakePublic = ""
+        Errors = { Email = None }
     }
     |> Form.View.idle
+    |> FillingForm
     , Cmd.none
 
 let update (msg : Msg) (model : Model) =
     match msg with
-    | FormChanged newModel ->
-        printfn "%A" newModel.Values
+    | FormChanged formModel ->
+        match model with
+        | FillingForm _ ->
+            FillingForm formModel
+            , Cmd.none
 
-        newModel
+        | _ ->
+            model
+            , Cmd.none
+
+    | SignUp formResult ->
+        match model with
+        | FillingForm formModel ->
+            let signUp () =
+                User.signUp
+                    formResult.Email
+                    formResult.Name
+                    formResult.Password
+                    formResult.MakePublic
+
+            formModel
+            |> Form.View.setLoading
+            |> FillingForm
+            , Cmd.OfPromise.perform signUp () SignupAttempted
+
+        | _ ->
+            model,
+            Cmd.none
+
+    | SignupAttempted (Ok user) ->
+        SignedUp user
         , Cmd.none
 
-    | LogIn values ->
-        printfn "User login"
-        { model with
-            State = Form.View.Success "You have been logged in successfully"
-        }
-        , Cmd.none
+    | SignupAttempted (Error error) ->
+        match model with
+        | FillingForm formModel ->
+            let values =
+                formModel.Values
 
-// : Form.Form<Values, (EmailAddress * string * bool -> Msg), obj> =
+            let errors =
+                values.Errors
+
+            { formModel with
+                State = Form.View.Idle
+                Values =
+                    { values with
+                        Errors =
+                            { errors with
+                                Email = Some (FieldError.create values.Email error)
+                            }
+                    }
+            }
+            |> FillingForm
+            , Cmd.none
+
+        | _ ->
+            model
+            , Cmd.none
+
+let convertMakePublicOptionToBool (makePublic : string) =
+    match makePublic with
+    | "option-yes" -> true
+    | "option-no"
+    | _ -> false
+
 let form : Form.Form<FormValues, Msg> =
     let emailField =
         Form.textField
             {
                 Parser =
-                    fun value ->
-                        if value.Contains("@") then
-                            Ok value
-                        else
-                            Error "The e-mail address must contain a '@' symbol"
-                Value = (fun values -> values.Email)
+                    EmailAddress.tryParse >> Result.map EmailAddress.toString
+                Value =
+                    fun values -> values.Email
                 Update =
                     fun newValue values ->
                         { values with Email = newValue }
                 Error =
-                    fun _ -> None
+                    fun { Email = email; Errors = errors } ->
+                        match errors.Email with
+                        | Some emailError ->
+                            if email = emailError.Value then
+                                Some emailError.Error
+                            else
+                                None
+
+                        | None ->
+                            None
                 Attributes =
                     {
                         Label = "Email"
@@ -83,11 +161,30 @@ let form : Form.Form<FormValues, Msg> =
                     }
             }
 
+    let nameField =
+        Form.textField
+            {
+                Parser = User.Name.tryParse >> Result.map User.Name.toString
+                Value = fun values -> values.Name
+                Update =
+                    fun newValue values ->
+                        { values with Name = newValue }
+                Error =
+                    fun _ -> None
+                Attributes =
+                    {
+                        Label = "Name"
+                        Placeholder = "Your name"
+                    }
+            }
+
     let passwordField =
         Form.passwordField
             {
-                Parser = Ok
-                Value = (fun values -> values.Password)
+                Parser =
+                    User.Password.tryParse >> Result.map User.Password.toString
+                Value =
+                    fun values -> values.Password
                 Update =
                     fun newValue values ->
                         { values with Password = newValue }
@@ -130,7 +227,8 @@ let form : Form.Form<FormValues, Msg> =
         Form.radioField
             {
                 Parser = Ok
-                Value = (fun values -> values.MakePublic)
+                Value =
+                    fun values -> values.MakePublic
                 Update =
                     fun newValue values ->
                         { values with MakePublic = newValue }
@@ -147,35 +245,20 @@ let form : Form.Form<FormValues, Msg> =
                     }
             }
 
-    let termsAndConditionField =
-        Form.checkboxField
-            {
-                Parser = Ok
-                Value = (fun values -> values.AcceptTerms)
-                Update =
-                    fun newValue values ->
-                        { values with AcceptTerms = newValue }
-                Error =
-                    fun _ -> None
-                Attributes =
-                    {
-                        Text = "I agree with the terms and conditions"
-                    }
-            }
-
     let formOutput =
-        (fun email password makePublic acceptTerms ->
-            LogIn
+        (fun email name password makePublic ->
+            SignUp
                 {
-                    Email = email
-                    Password = password
-                    AcceptTerms = acceptTerms
-                    MakePublic = makePublic
+                    Email = EmailAddress.create email
+                    Password = User.Password.create password
+                    Name = User.Name.create name
+                    MakePublic = convertMakePublicOptionToBool makePublic
                 }
         )
 
     Form.succeed formOutput
         |> Form.append emailField
+        |> Form.append nameField
         |> Form.append
             (
                 Form.succeed (fun password _ -> password )
@@ -184,24 +267,30 @@ let form : Form.Form<FormValues, Msg> =
                 |> Form.group
             )
         |> Form.append makePublicField
-        |> Form.append termsAndConditionField
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
-    Form.View.asHtml
-        {
-            Dispatch = dispatch
-            OnChange = FormChanged
-            Action = "Submit"
-            Loading = "Loading"
-            Validation = Form.View.Validation.ValidateOnSubmit
-        }
-        form
-        model
+    match model with
+    | FillingForm formValues ->
+
+        Form.View.asHtml
+            {
+                Dispatch = dispatch
+                OnChange = FormChanged
+                Action = "Submit"
+                Loading = "Loading"
+                Validation = Form.View.Validation.ValidateOnSubmit
+            }
+            form
+            formValues
+
+    | SignedUp user ->
+        Html.text "User signed up"
 
 let code =
     """
 Form.succeed formOutput
     |> Form.append emailField
+    |> Form.append nameField
     |> Form.append
         (
             Form.succeed (fun password _ -> password )
@@ -210,5 +299,7 @@ Form.succeed formOutput
             |> Form.group
         )
     |> Form.append makePublicField
-    |> Form.append termsAndConditionField
     """
+
+let githubLink =
+    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__

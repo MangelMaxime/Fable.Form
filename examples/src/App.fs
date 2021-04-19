@@ -117,7 +117,8 @@ let renderLink (route : Router.Route) (linkText : string) (description : string)
 
     ]
 
-let renderDemoPage (titleText : string) (content : ReactElement) (codeText : string) =
+
+let renderDemoPage (titleText : string) (content : ReactElement) (codeText : string) (sourceCodeUrl : string) =
     Html.div [
         Html.br [ ]
 
@@ -143,6 +144,17 @@ let renderDemoPage (titleText : string) (content : ReactElement) (codeText : str
                 ]
             ]
 
+        ]
+
+        Bulma.text.div [
+            text.hasTextCentered
+
+            prop.children [
+                Html.a [
+                    prop.href sourceCodeUrl
+                    prop.text "Full source code"
+                ]
+            ]
         ]
 
         Html.hr [ ]
@@ -188,12 +200,14 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             "Sign up"
             (Page.SignUp.view subModel (SignUpMsg >> dispatch))
             Page.SignUp.code
+            Page.SignUp.githubLink
 
     | Page.Login subModel ->
         renderDemoPage
             "Login"
             (Page.Login.view subModel (LoginMsg >> dispatch))
             Page.Login.code
+            Page.SignUp.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"

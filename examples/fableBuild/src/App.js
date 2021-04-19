@@ -1,7 +1,7 @@
 import { Record, Union } from "../.fable/fable-library.3.1.11/Types.js";
-import { code, view as view_3, update as update_2, init as init_3, Msg$reflection as Msg$reflection_1, FormValues$reflection } from "./Page/SignUp.js";
+import { githubLink, code, view as view_3, update as update_2, init as init_3, Msg$reflection as Msg$reflection_1, Model$reflection as Model$reflection_1 } from "./Page/SignUp.js";
+import { code as code_1, view as view_4, update as update_3, init as init_2, Msg$reflection as Msg$reflection_2, FormValues$reflection } from "./Page/Login.js";
 import { View_Model$1$reflection } from "../packages/Warded.Simple/Form.js";
-import { code as code_1, view as view_4, update as update_3, init as init_2, Msg$reflection as Msg$reflection_2, FormValues$reflection as FormValues$reflection_1 } from "./Page/Login.js";
 import { record_type, option_type, union_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 import { routeParser, Route, href, Route$reflection } from "./Router.js";
 import { Cmd_batch, Cmd_none, Cmd_map } from "../.fable/Fable.Elmish.3.1.0/cmd.fs.js";
@@ -17,7 +17,7 @@ import { ProgramModule_Internal_toNavigableWith, ProgramModule_Internal_subscrib
 import { parseHash } from "../.fable/Fable.Elmish.Browser.3.0.4/parser.fs.js";
 import { ProgramModule_map, ProgramModule_runWith, ProgramModule_mkProgram, ProgramModule_withTrace } from "../.fable/Fable.Elmish.3.1.0/program.fs.js";
 import { getMsgNameAndFields } from "./ConsoleTracer.js";
-import { value as value_12, some } from "../.fable/fable-library.3.1.11/Option.js";
+import { value as value_19, some } from "../.fable/fable-library.3.1.11/Option.js";
 import { Internal_saveState, Model$1, Msg$1, Internal_tryRestoreState } from "../.fable/Fable.Elmish.HMR.4.1.0/hmr.fs.js";
 import "../../style/style.scss";
 
@@ -34,7 +34,7 @@ export class Page extends Union {
 }
 
 export function Page$reflection() {
-    return union_type("Examples.Page", [], Page, () => [[], [["Item", View_Model$1$reflection(FormValues$reflection())]], [["Item", View_Model$1$reflection(FormValues$reflection_1())]], []]);
+    return union_type("Examples.Page", [], Page, () => [[], [["Item", Model$reflection_1()]], [["Item", View_Model$1$reflection(FormValues$reflection())]], []]);
 }
 
 export class Msg extends Union {
@@ -146,14 +146,17 @@ export function renderLink(route, linkText, description) {
     });
 }
 
-export function renderDemoPage(titleText, content, codeText) {
-    let props_3;
+export function renderDemoPage(titleText, content, codeText, sourceCodeUrl) {
+    let props_3, props_9;
     const children = ofArray([createElement("br", {}), (props_3 = ofArray([["className", "has-text-centered"], ["children", Interop_reactApi.Children.toArray([createElement("h5", createObj(Helpers_combineClasses("title is-5", ofArray([["className", "is-5"], ["children", titleText]]))))])]]), createElement("div", createObj(Helpers_combineClasses("content", props_3)))), createElement("hr", {}), createElement("pre", {
         className: "code-preview",
         children: Interop_reactApi.Children.toArray([createElement("code", {
             children: codeText.trim(),
         })]),
-    }), createElement("hr", {}), content]);
+    }), (props_9 = ofArray([["className", "has-text-centered"], ["children", Interop_reactApi.Children.toArray([createElement("a", {
+        href: sourceCodeUrl,
+        children: "Full source code",
+    })])]]), createElement("div", createObj(Helpers_combineClasses("", props_9)))), createElement("hr", {}), content]);
     return createElement("div", {
         children: Interop_reactApi.Children.toArray(Array.from(children)),
     });
@@ -166,19 +169,19 @@ export function contentFromPage(page, dispatch) {
             const subModel = page.fields[0];
             return renderDemoPage("Sign up", view_3(subModel, (arg) => {
                 dispatch(new Msg(1, arg));
-            }), code);
+            }), code, githubLink);
         }
         case 2: {
             const subModel_1 = page.fields[0];
             return renderDemoPage("Login", view_4(subModel_1, (arg_1) => {
                 dispatch(new Msg(2, arg_1));
-            }), code_1);
+            }), code_1, githubLink);
         }
         case 3: {
             return "Page not found";
         }
         default: {
-            const elms = ofArray([createElement("br", {}), (props_3 = ofArray([["className", "has-text-centered"], ["children", Interop_reactApi.Children.toArray([createElement("h5", createObj(Helpers_combineClasses("title is-5", ofArray([["className", "is-5"], ["children", "List of examples"]]))))])]]), createElement("div", createObj(Helpers_combineClasses("content", props_3)))), createElement("hr", {}), (children = ofArray([renderLink(new Route(2), "Login", "A simple login form with 3 field"), renderLink(new Route(1), "Sign-up", "A form demonstrating how to handle external errors")]), createElement("ul", {
+            const elms = ofArray([createElement("br", {}), (props_3 = ofArray([["className", "has-text-centered"], ["children", Interop_reactApi.Children.toArray([createElement("h5", createObj(Helpers_combineClasses("title is-5", ofArray([["className", "is-5"], ["children", "List of examples"]]))))])]]), createElement("div", createObj(Helpers_combineClasses("content", props_3)))), createElement("hr", {}), (children = ofArray([renderLink(new Route(2), "Login", "A simple login form with 3 fields"), renderLink(new Route(1), "Sign-up", "A form demonstrating how to handle external errors")]), createElement("ul", {
                 children: Interop_reactApi.Children.toArray(Array.from(children)),
             }))]);
             return createElement("div", {
@@ -224,7 +227,7 @@ export function view(model, dispatch) {
         if (matchValue == null) {
         }
         else {
-            const previousState = value_12(matchValue);
+            const previousState = value_19(matchValue);
             hmrState = previousState;
         }
     }

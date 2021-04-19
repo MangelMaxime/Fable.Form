@@ -4,9 +4,12 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="src\Global.fs" />
         <Compile Include="src\ConsoleTracer.fs" />
         <Compile Include="src\Tuple.fs" />
+        <Compile Include="src\Cmd.fs" />
         <Compile Include="src\Types\EmailAddress.fs" />
+        <Compile Include="src\Types\User.fs" />
         <Compile Include="src\Page\SignUp.fs" />
         <Compile Include="src\Page\Login.fs" />
         <Compile Include="src\Router.fs" />
