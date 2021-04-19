@@ -6,10 +6,10 @@ let checkEmailAddress (email : EmailAddress.T) =
         // Add some delay to simulate a Server request
         do! Promise.sleep 1000
 
-        if (EmailAddress.toString email) = "test@mail.com" then
+        if (EmailAddress.toString email) = "warded@mail.com" then
             return Ok (ValidEmail.create email)
         else
-            return Error "The e-mail address is taken. Try this one: test@mail.com"
+            return Error "The e-mail address is taken. Try this one: warded@mail.com"
     }
 
 module ValidEmail =
