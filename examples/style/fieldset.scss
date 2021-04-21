@@ -1,11 +1,16 @@
+$fieldset-shadow: $box-shadow !default;
+$fieldset-border-radius: $radius-large !default;
+$fieldset-border: 1px solid $border !default;
+$fieldset-padding: 1.25em !default;
+
+$fieldset-legend-color: $grey-darker !default;
+$fieldset-legend-weight: $weight-bold !default;
+
 .fieldset {
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.02);
-    color: #4a4a4a;
-    display: block;
-    padding: 1.25rem;
-    border: 1px solid #ccc;
+    border-radius: $fieldset-border-radius;
+    box-shadow: $fieldset-shadow;
+    padding: $fieldset-padding;
+    border: $fieldset-border;
 
     &:not(:last-child) {
         margin-bottom: 0.75rem;
@@ -13,12 +18,7 @@
 }
 
 .fieldset > legend {
-    color: #363636;
-    display: block;
-    font-size: 1rem;
-    font-weight: 700;
-    background-color: #fff;
-    padding: 0 5px;
-    width: max-content;
-    border: 0 none;
+    color: $fieldset-legend-color;
+    font-weight: $fieldset-legend-weight;
+    padding: 0 0.5em;
 }

@@ -13,7 +13,8 @@ module Form =
 
     type TextType =
         | TextRaw
-        | Password
+        | TextPassword
+        | TextArea
 
     [<RequireQualifiedAccess>]
     type Field<'Values> =
@@ -23,6 +24,7 @@ module Form =
         | Select of SelectField<'Values>
         | Group of FilledField<'Values> list
         | Section of title : string * FilledField<'Values> list
+        | List of FormList.FormList<'Values, Field<'Values>>
 
     and FilledField<'Values> =
         Base.FilledField<Field<'Values>>
@@ -47,7 +49,12 @@ module Form =
     let passwordField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
-        TextField.form (fun x -> Field.Text (Password, x)) config
+        TextField.form (fun x -> Field.Text (TextPassword, x)) config
+
+    let textareaField
+        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        : Form<'Values, 'Output> =
+        TextField.form (fun x -> Field.Text (TextArea, x)) config
 
     let checkboxField
         (config : Base.FieldConfig<CheckboxField.Attributes, bool, 'Values, 'Output>)
@@ -106,6 +113,107 @@ module Form =
             Result = x.Result
             IsEmpty = x.IsEmpty
         |}
+
+    let rec mapFieldValues
+        (update : 'A -> 'B -> 'B)
+        (values : 'B)
+        (field : Field<'A>)
+        : Field<'B> =
+
+        let newUpdate oldValues =
+            update oldValues values
+
+        match field with
+        | Field.Text (textType, textField) ->
+            Field.Text (textType, Field.mapValues newUpdate textField)
+
+        | Field.Radio radioField ->
+            Field.Radio (Field.mapValues newUpdate radioField)
+
+        | Field.Checkbox checkboxField ->
+            Field.Checkbox (Field.mapValues newUpdate checkboxField)
+
+        | Field.Select selectField ->
+            Field.Select (Field.mapValues newUpdate selectField)
+
+        | Field.Group fields ->
+            fields
+            |> List.map (fun filledField ->
+                {
+                    State = mapFieldValues update values filledField.State
+                    Error = filledField.Error
+                    IsDisabled = filledField.IsDisabled
+                } : FilledField<'B>
+            )
+            |> Field.Group
+
+        | Field.Section (title, fields) ->
+            let newFields =
+                fields
+                |> List.map (fun filledField ->
+                    {
+                        State = mapFieldValues update values filledField.State
+                        Error = filledField.Error
+                        IsDisabled = filledField.IsDisabled
+                    } : FilledField<'B>
+                )
+
+            Field.Section (title, newFields)
+
+        | Field.List formList ->
+            Field.List
+                {
+                    Forms =
+                        List.map
+                            (fun (form : FormList.Form<'A,Field<'A>>) ->
+                                {
+                                    Fields =
+                                        List.map
+                                            (fun (filledField : Base.FilledField<Field<'A>>) ->
+                                                {
+                                                    State = mapFieldValues update values filledField.State
+                                                    Error = filledField.Error
+                                                    IsDisabled = filledField.IsDisabled
+                                                }
+                                            )
+                                            form.Fields
+                                    Delete =
+                                        fun _ -> update (form.Delete ()) values
+                                }
+                            )
+                            formList.Forms
+                    Add = fun _ -> update (formList.Add ()) values
+                    Attributes = formList.Attributes
+                }
+
+
+    let list
+        (config : FormList.Config<'Values, 'ElementValues>)
+        (elementForIndex : int -> Form<'ElementValues, 'Output>)
+        : Form<'Values, 'Output list> =
+
+        let fillElement (elementState : FormList.ElementState<'Values, 'ElementValues>) : Base.FilledForm<'Output, Field<'Values>> =
+            let filledElement =
+                fill (elementForIndex elementState.Index) elementState.ElementValues
+
+            {
+                Fields =
+                    filledElement.Fields
+                    |> List.map (fun filledField ->
+                        {
+                            State = mapFieldValues elementState.Update elementState.Values filledField.State
+                            Error = filledField.Error
+                            IsDisabled = filledField.IsDisabled
+                        }
+                    )
+                Result = filledElement.Result
+                IsEmpty = filledElement.IsEmpty
+            }
+
+        let tagger formList =
+            Field.List formList
+
+        FormList.form tagger config fillElement
 
     let meta : ('Values -> Form<'Values, 'Output>) -> Form<'Values, 'Output> =
         Base.meta
@@ -204,6 +312,23 @@ module Form =
                 Attributes : SelectField.Attributes
             }
 
+        type FormListConfig<'Msg> =
+            {
+                Dispatch : Dispatch<'Msg>
+                Forms : ReactElement list
+                Label : string
+                Add : {| Action : unit -> 'Msg; Label : string |} option
+                Disabled : bool
+            }
+
+        type FormListItemConfig<'Msg> =
+            {
+                Dispatch : Dispatch<'Msg>
+                Fields : ReactElement list
+                Delete : {| Action : unit -> 'Msg; Label : string |} option
+                Disabled : bool
+            }
+
         let idle (values : 'Values)=
             {
                 Values = values
@@ -226,11 +351,14 @@ module Form =
                 Form : FormConfig<'Msg> -> ReactElement
                 TextField : TextFieldConfig<'Msg> -> ReactElement
                 PasswordField : TextFieldConfig<'Msg> -> ReactElement
+                TextAreaField : TextFieldConfig<'Msg> -> ReactElement
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
                 SelectField : SelectFieldConfig<'Msg> -> ReactElement
                 Group : ReactElement list -> ReactElement
                 Section : string -> ReactElement list -> ReactElement
+                FormList : FormListConfig<'Msg> -> ReactElement
+                FormListItem : FormListItemConfig<'Msg> -> ReactElement
             }
 
         type FieldConfig<'Values, 'Msg> =
@@ -314,6 +442,17 @@ module Form =
                     Bulma.input.password
 
             inputFunc [
+                prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
+                prop.disabled config.Disabled
+                prop.value config.Value
+                prop.placeholder config.Attributes.Placeholder
+                if config.ShowError && config.Error.IsSome then
+                    color.isDanger
+            ]
+            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+
+        let textareaField (config : TextFieldConfig<'Msg>) =
+            Bulma.textarea [
                 prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
                 prop.disabled config.Disabled
                 prop.value config.Value
@@ -430,6 +569,91 @@ module Form =
             | None ->
                 { field with Error = None }
 
+        let formList (formConfig : FormListConfig<'Msg>) : ReactElement =
+            let addButton =
+                match formConfig.Disabled, formConfig.Add with
+                | (false, Some add) ->
+                    Bulma.button.a [
+                        prop.onClick (fun _ ->
+                            add.Action() |> formConfig.Dispatch
+                        )
+
+                        prop.children [
+                            Bulma.icon [
+                                icon.isSmall
+
+                                prop.children [
+                                    Html.i [
+                                        prop.className "fas fa-plus"
+                                    ]
+                                ]
+                            ]
+
+                            Html.span add.Label
+                        ]
+                    ]
+
+                | _ ->
+                    Html.none
+
+            Bulma.field.div [
+                Bulma.control.div [
+                    fieldLabel formConfig.Label
+
+                    yield! formConfig.Forms
+
+                    addButton
+                ]
+            ]
+
+        let formListItem (config : FormListItemConfig<'Msg>) : ReactElement =
+            let removeButton =
+                match config.Disabled, config.Delete with
+                | (false, Some delete) ->
+                    Bulma.button.a [
+                        prop.onClick (fun _ ->
+                            delete.Action() |> config.Dispatch
+                        )
+
+                        prop.children [
+                            Bulma.icon [
+                                icon.isSmall
+
+                                prop.children [
+                                    Html.i [
+                                        prop.className "fas fa-times"
+                                    ]
+                                ]
+                            ]
+
+                            if delete.Label <> "" then
+                                Html.span delete.Label
+                        ]
+                    ]
+
+                | _ ->
+                    Html.none
+
+            Html.div [
+                prop.className "form-list"
+
+                prop.children [
+                    yield! config.Fields
+
+                    Bulma.field.div [
+                        field.isGrouped
+                        field.isGroupedRight
+
+                        prop.children [
+                            Bulma.control.div [
+                                removeButton
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+
+
         //let form<'Element when 'Element :> ReactElement> (config : FormConfig<'Msg, 'Element>) =
         let form (config : FormConfig<'Msg>) =
             Html.form [
@@ -487,11 +711,14 @@ module Form =
                 Form = form
                 TextField = inputField Text
                 PasswordField = inputField Password
+                TextAreaField = textareaField
                 CheckboxField = checkboxField
                 RadioField = radioField
                 SelectField = selectField
                 Group = group
                 Section = section
+                FormList = formList
+                FormListItem = formListItem
             }
 
         let rec renderField
@@ -521,8 +748,11 @@ module Form =
                 | TextRaw ->
                     customConfig.TextField config
 
-                | TextType.Password ->
+                | TextType.TextPassword ->
                     customConfig.PasswordField config
+
+                | TextType.TextArea ->
+                    customConfig.TextAreaField config
 
             | Field.Checkbox info ->
                 let config : CheckboxFieldConfig<'Msg> =
@@ -582,6 +812,41 @@ module Form =
                     (ignoreChildError field.Error >> renderField dispatch customConfig { fieldConfig with Disabled = field.IsDisabled || fieldConfig.Disabled }) field
                 )
                 |> customConfig.Section title
+
+            | Field.List { Forms = forms; Add = add; Attributes = attributes } ->
+                customConfig.FormList
+                    {
+                        Dispatch = dispatch
+                        Forms =
+                            forms
+                            |> List.map (fun { Fields = fields; Delete = delete } ->
+                                customConfig.FormListItem
+                                    {
+                                        Dispatch = dispatch
+                                        Fields = List.map (renderField dispatch customConfig fieldConfig) fields
+                                        Delete =
+                                            attributes.Delete
+                                            |> Option.map (fun deleteLabel ->
+                                                {|
+                                                    Action = delete >> fieldConfig.OnChange
+                                                    Label = deleteLabel
+                                                |}
+                                            )
+                                        Disabled = field.IsDisabled || fieldConfig.Disabled
+                                    }
+                            )
+                        Label = attributes.Label
+                        Add =
+                            attributes.Add
+                            |> Option.map (fun addLabel ->
+                                {|
+                                    Action = add >> fieldConfig.OnChange
+                                    Label = addLabel
+                                |}
+                            )
+                        Disabled = field.IsDisabled || fieldConfig.Disabled
+                    }
+
 
         let custom
             (config : CustomConfig<'Msg>)

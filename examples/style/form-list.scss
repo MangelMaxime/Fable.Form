@@ -1,0 +1,15 @@
+$formlist-shadow: $box-shadow !default;
+$formlist-border-radius: $radius-large !default;
+$formlist-border: 1px solid $border !default;
+$formlist-padding: 1.25em !default;
+
+.form-list {
+    border-radius: $formlist-border-radius;
+    box-shadow: $formlist-shadow;
+    padding: $formlist-padding;
+    border: $formlist-border;
+
+    &:not(:last-child) {
+        margin-bottom: 0.75rem;
+    }
+}

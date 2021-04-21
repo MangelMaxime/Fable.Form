@@ -14,6 +14,7 @@ type Page =
     | SignUp of Page.SignUp.Model
     | Login of Page.Login.Model
     | DynamicForm of Page.DynamicForm.Model
+    | FormList of Page.FormList.Model
     | NotFound
 
 type Msg =
@@ -21,6 +22,7 @@ type Msg =
     | SignUpMsg of Page.SignUp.Msg
     | LoginMsg of Page.Login.Msg
     | DynamicFormMsg of Page.DynamicForm.Msg
+    | FormListMsg of Page.FormList.Msg
 
 
 type Model =
@@ -61,6 +63,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.DynamicForm subModel
             }
             , Cmd.map DynamicFormMsg subCmd
+
+        | Router.Route.FormList ->
+            let (subModel, subCmd) = Page.FormList.init ()
+            { model with
+                ActivePage = Page.FormList subModel
+            }
+            , Cmd.map FormListMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -110,6 +119,18 @@ let private update (msg : Msg) (model : Model) =
             |> Tuple.mapFirst Page.DynamicForm
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map DynamicFormMsg)
+
+        | _ ->
+            model
+            , Cmd.none
+
+    | FormListMsg subMsg ->
+        match model.ActivePage with
+        | Page.FormList subModel ->
+            Page.FormList.update subMsg subModel
+            |> Tuple.mapFirst Page.FormList
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map FormListMsg)
 
         | _ ->
             model
@@ -217,6 +238,11 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
                     Router.Route.DynamicForm
                     "Dynamic form"
                     "A form that changes dynamically based on its own values"
+
+                renderLink
+                    Router.Route.FormList
+                    "Form list"
+                    "A form where you can add and remove a list of forms"
             ]
         ]
 
@@ -240,6 +266,13 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             (Page.DynamicForm.view subModel (DynamicFormMsg >> dispatch))
             Page.DynamicForm.code
             Page.DynamicForm.githubLink
+
+    | Page.FormList subModel ->
+        renderDemoPage
+            "Form list"
+            (Page.FormList.view subModel (FormListMsg >> dispatch))
+            Page.FormList.code
+            Page.FormList.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"

@@ -20,6 +20,7 @@
         <Compile Include="RadioField.fs" />
         <Compile Include="CheckboxField.fs" />
         <Compile Include="SelectField.fs" />
+        <Compile Include="FormList.fs" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
