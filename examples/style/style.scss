@@ -16,6 +16,7 @@ $info: #6672b4;
 $danger: #b3507a;
 
 @import "~bulma";
+@import "./fieldset.scss";
 
 input[type="checkbox"],
 input[type="radio"] {

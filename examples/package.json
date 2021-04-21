@@ -2,8 +2,7 @@
   "name": "examples",
   "description": "",
   "private": true,
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
   "license": "MIT",
   "dependencies": {

@@ -1,0 +1,24 @@
+.fieldset {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.02);
+    color: #4a4a4a;
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid #ccc;
+
+    &:not(:last-child) {
+        margin-bottom: 0.75rem;
+    }
+}
+
+.fieldset > legend {
+    color: #363636;
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    background-color: #fff;
+    padding: 0 5px;
+    width: max-content;
+    border: 0 none;
+}

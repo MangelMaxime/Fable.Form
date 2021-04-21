@@ -11,6 +11,7 @@ type Route =
     | Home
     | SignUp
     | Login
+    | DynamicForm
     | NotFound
 
 
@@ -21,6 +22,7 @@ let private toHash page =
         | Route.SignUp -> "sign-up"
         | Route.Login -> "login"
         | Route.NotFound -> "not-found"
+        | Route.DynamicForm -> "dynamic-form"
 
     "#" + segmentsPart
 
@@ -30,6 +32,7 @@ let routeParser: Parser<Route->Route,Route> =
             map Route.Home (s "home")
             map Route.SignUp (s "sign-up")
             map Route.Login (s "login")
+            map Route.DynamicForm (s "dynamic-form")
             map Route.Home top
         ]
 

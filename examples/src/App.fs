@@ -13,12 +13,14 @@ type Page =
     | Home
     | SignUp of Page.SignUp.Model
     | Login of Page.Login.Model
+    | DynamicForm of Page.DynamicForm.Model
     | NotFound
 
 type Msg =
     | SetRoute of Router.Route option
     | SignUpMsg of Page.SignUp.Msg
     | LoginMsg of Page.Login.Msg
+    | DynamicFormMsg of Page.DynamicForm.Msg
 
 
 type Model =
@@ -52,6 +54,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.Login subModel
             }
             , Cmd.map LoginMsg subCmd
+
+        | Router.Route.DynamicForm ->
+            let (subModel, subCmd) = Page.DynamicForm.init ()
+            { model with
+                ActivePage = Page.DynamicForm subModel
+            }
+            , Cmd.map DynamicFormMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -94,6 +103,17 @@ let private update (msg : Msg) (model : Model) =
             model
             , Cmd.none
 
+    | DynamicFormMsg subMsg ->
+        match model.ActivePage with
+        | Page.DynamicForm subModel ->
+            Page.DynamicForm.update subMsg subModel
+            |> Tuple.mapFirst Page.DynamicForm
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map DynamicFormMsg)
+
+        | _ ->
+            model
+            , Cmd.none
 
 let init (location ) =
     setRoute
@@ -192,6 +212,11 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
                     Router.Route.SignUp
                     "Sign-up"
                     "A form demonstrating how to handle external errors"
+
+                renderLink
+                    Router.Route.DynamicForm
+                    "Dynamic form"
+                    "A form that changes dynamically based on its own values"
             ]
         ]
 
@@ -207,7 +232,14 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             "Login"
             (Page.Login.view subModel (LoginMsg >> dispatch))
             Page.Login.code
-            Page.SignUp.githubLink
+            Page.Login.githubLink
+
+    | Page.DynamicForm subModel ->
+        renderDemoPage
+            "Dynamic form"
+            (Page.DynamicForm.view subModel (DynamicFormMsg >> dispatch))
+            Page.DynamicForm.code
+            Page.DynamicForm.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"

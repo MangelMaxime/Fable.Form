@@ -12,6 +12,7 @@
         <Compile Include="src\Types\User.fs" />
         <Compile Include="src\Page\SignUp.fs" />
         <Compile Include="src\Page\Login.fs" />
+        <Compile Include="src\Page\DynamicForm.fs" />
         <Compile Include="src\Router.fs" />
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />

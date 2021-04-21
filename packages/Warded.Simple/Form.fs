@@ -9,6 +9,7 @@ module Form =
     type TextField<'Values> = TextField.TextField<'Values>
     type RadioField<'Values> = RadioField.RadioField<'Values>
     type CheckboxField<'Values> = CheckboxField.CheckboxField<'Values>
+    type SelectField<'Values> = SelectField.SelectField<'Values>
 
     type TextType =
         | TextRaw
@@ -19,7 +20,9 @@ module Form =
         | Text of TextType * TextField<'Values>
         | Radio of RadioField<'Values>
         | Checkbox of CheckboxField<'Values>
+        | Select of SelectField<'Values>
         | Group of FilledField<'Values> list
+        | Section of title : string * FilledField<'Values> list
 
     and FilledField<'Values> =
         Base.FilledField<Field<'Values>>
@@ -33,6 +36,9 @@ module Form =
     let append : Form<'Values, 'A> -> Form<'Values, 'A -> 'B> -> Form<'Values, 'B> =
         Base.append
 
+    let andThen : ('A -> Form<'Values, 'B>) -> Form<'Values, 'A> -> Form<'Values, 'B> =
+        Base.andThen
+
     let textField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
@@ -45,13 +51,18 @@ module Form =
 
     let checkboxField
         (config : Base.FieldConfig<CheckboxField.Attributes, bool, 'Values, 'Output>)
-        : Form<'Values, 'Output>=
+        : Form<'Values, 'Output> =
         CheckboxField.form Field.Checkbox config
 
     let radioField
         (config : Base.FieldConfig<RadioField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output>=
+        : Form<'Values, 'Output> =
         RadioField.form Field.Radio config
+
+    let selectField
+        (config : Base.FieldConfig<SelectField.Attributes, string, 'Values, 'Output>)
+        : Form<'Values, 'Output> =
+        SelectField.form Field.Select config
 
     let group
         (form : Form<'Values, 'Output>)
@@ -61,6 +72,20 @@ module Form =
 
             {
                 State = Field.Group res.Fields
+                Result = res.Result
+                IsEmpty = res.IsEmpty
+            }
+        )
+
+    let section
+        (title : string)
+        (form : Form<'Values, 'Output>)
+        : Form<'Values, 'Output> =
+        Base.custom (fun values ->
+            let res = Base.fill form values
+
+            {
+                State = Field.Section (title, res.Fields)
                 Result = res.Result
                 IsEmpty = res.IsEmpty
             }
@@ -167,6 +192,18 @@ module Form =
                 Attributes : RadioField.Attributes
             }
 
+        type SelectFieldConfig<'Msg> =
+            {
+                Dispatch : Dispatch<'Msg>
+                OnChange : string -> 'Msg
+                OnBlur : 'Msg option
+                Disabled : bool
+                Value : string
+                Error : Error.Error option
+                ShowError : bool
+                Attributes : SelectField.Attributes
+            }
+
         let idle (values : 'Values)=
             {
                 Values = values
@@ -191,7 +228,9 @@ module Form =
                 PasswordField : TextFieldConfig<'Msg> -> ReactElement
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
+                SelectField : SelectFieldConfig<'Msg> -> ReactElement
                 Group : ReactElement list -> ReactElement
+                Section : string -> ReactElement list -> ReactElement
             }
 
         type FieldConfig<'Values, 'Msg> =
@@ -324,6 +363,38 @@ module Form =
             ]
             |> withLabelAndError config.Attributes.Label config.ShowError config.Error
 
+        let selectField (config : SelectFieldConfig<'Msg>) =
+            let toOption (key : string, label : string) =
+                Html.option [
+                    prop.value key
+                    prop.text label
+                ]
+
+            let placeholderOption =
+                Html.option [
+                    prop.disabled true
+                    prop.value ""
+
+                    prop.text ("-- " + config.Attributes.Placeholder + " --")
+                ]
+
+            Bulma.select [
+                prop.disabled config.Disabled
+                prop.onChange (fun (value : string) ->
+                    config.OnChange value |> config.Dispatch
+                )
+
+                prop.value config.Value
+
+                prop.children [
+                    placeholderOption
+
+                    yield! config.Attributes.Options
+                    |> List.map toOption
+                ]
+            ]
+            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+
         let group (fields : ReactElement list) =
             Bulma.field.div [
                 Bulma.columns [
@@ -332,6 +403,20 @@ module Form =
                     |> prop.children
                 ]
             ]
+
+        let section (title : string) (fields : ReactElement list) =
+            Html.fieldSet [
+                prop.className "fieldset"
+
+                prop.children [
+                    Html.legend [
+                        prop.text title
+                    ]
+
+                    yield! fields
+                ]
+            ]
+
 
         let ignoreChildError
             (parentError : Error.Error option)
@@ -404,7 +489,9 @@ module Form =
                 PasswordField = inputField Password
                 CheckboxField = checkboxField
                 RadioField = radioField
+                SelectField = selectField
                 Group = group
+                Section = section
             }
 
         let rec renderField
@@ -467,12 +554,34 @@ module Form =
 
                 customConfig.RadioField config
 
+            | Field.Select info ->
+                let config : SelectFieldConfig<'Msg> =
+                    {
+                        Dispatch = dispatch
+                        OnChange = info.Update >> fieldConfig.OnChange
+                        OnBlur = blur // TODO:
+                        Disabled = field.IsDisabled || fieldConfig.Disabled
+                        Value = info.Value
+                        Error = field.Error
+                        ShowError = fieldConfig.ShowError info.Attributes.Label
+                        Attributes = info.Attributes
+                    }
+
+                customConfig.SelectField config
+
             | Field.Group fields ->
                 fields
                 |> List.map (fun field ->
                     (ignoreChildError field.Error >> renderField dispatch customConfig { fieldConfig with Disabled = field.IsDisabled || fieldConfig.Disabled }) field
                 )
                 |> customConfig.Group
+
+            | Field.Section (title, fields) ->
+                fields
+                |> List.map (fun field ->
+                    (ignoreChildError field.Error >> renderField dispatch customConfig { fieldConfig with Disabled = field.IsDisabled || fieldConfig.Disabled }) field
+                )
+                |> customConfig.Section title
 
         let custom
             (config : CustomConfig<'Msg>)

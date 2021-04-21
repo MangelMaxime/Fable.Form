@@ -118,6 +118,32 @@ let append (newForm : Form<'Values, 'A, 'Field>) (currentForm : Form<'Values, 'A
                     IsEmpty = isEmpty
                 }
 
+let andThen
+    (child : 'A -> Form<'Values, 'B, 'Field>)
+    (parent : Form<'Values, 'A, 'Field>)
+    : Form<'Values, 'B, 'Field> =
+
+    fun values ->
+        let filled =
+            fill parent values
+
+        match filled.Result with
+        | Ok output ->
+            let childFilled =
+                fill (child output) values
+
+            {
+                Fields = filled.Fields @ childFilled.Fields
+                Result = childFilled.Result
+                IsEmpty = filled.IsEmpty && childFilled.IsEmpty
+            }
+
+        | Error errors ->
+            {
+                Fields = filled.Fields
+                Result = Error errors
+                IsEmpty = filled.IsEmpty
+            }
 
 let field
     (isEmpty : 'Input -> bool)
