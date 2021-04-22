@@ -18,7 +18,7 @@ module.exports = (_env, options) => {
             path: resolve('./output'),
             filename: isDevelopment ? '[name].js' : '[name].[fullhash].js',
         },
-        devtool: undefined,
+        devtool: isDevelopment ? 'eval-source-map' : null,
         optimization: {
             // Split the code coming from npm packages into a different file.
             // 3rd party dependencies change less often, let the browser cache them.

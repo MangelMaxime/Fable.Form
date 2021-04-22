@@ -7,12 +7,25 @@ open Feliz
 open Browser.Dom
 
 [<RequireQualifiedAccess>]
+type ComposabilityRoute =
+    | Simple
+    | WithConfiguration
+
+module ComposabilityRoute =
+
+    let toSegment (route : ComposabilityRoute) =
+        match route with
+        | ComposabilityRoute.Simple -> "simple"
+        | ComposabilityRoute.WithConfiguration -> "with-configuration"
+
+[<RequireQualifiedAccess>]
 type Route =
     | Home
     | SignUp
     | Login
     | DynamicForm
     | FormList
+    | Composability of ComposabilityRoute
     | NotFound
 
 
@@ -24,6 +37,7 @@ let private toHash page =
         | Route.Login -> "login"
         | Route.NotFound -> "not-found"
         | Route.DynamicForm -> "dynamic-form"
+        | Route.Composability subRoute -> "composability/" + ComposabilityRoute.toSegment subRoute
         | Route.FormList -> "form-list"
 
     "#" + segmentsPart
@@ -36,6 +50,8 @@ let routeParser: Parser<Route->Route,Route> =
             map Route.Login (s "login")
             map Route.DynamicForm (s "dynamic-form")
             map Route.FormList (s "form-list")
+            map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
+            map (Route.Composability ComposabilityRoute.WithConfiguration) (s "composability" </> s "with-configuration")
             map Route.Home top
         ]
 

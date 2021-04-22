@@ -10,10 +10,13 @@
         <Compile Include="src\Cmd.fs" />
         <Compile Include="src\Types\EmailAddress.fs" />
         <Compile Include="src\Types\User.fs" />
+        <Compile Include="src\Types\Address.fs" />
         <Compile Include="src\Page\SignUp.fs" />
         <Compile Include="src\Page\Login.fs" />
         <Compile Include="src\Page\DynamicForm.fs" />
         <Compile Include="src\Page\FormList.fs" />
+        <Compile Include="src\Page\Composability\Simple\AddressForm.fs" />
+        <Compile Include="src\Page\Composability\Simple.fs" />
         <Compile Include="src\Router.fs" />
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />

@@ -66,10 +66,8 @@ let form : Form.Form<FormValues, Msg> =
     let emailField =
         Form.textField
             {
-                // Use a custom EmailAddress parser and map the result back into a string
-                // as the email field is represented using a string in the Form
                 Parser =
-                    EmailAddress.tryParse >> Result.map EmailAddress.toString
+                    EmailAddress.tryParse
                 Value =
                     fun values -> values.Email
                 Update =
@@ -128,7 +126,7 @@ let form : Form.Form<FormValues, Msg> =
     /// <returns></returns>
     let formOutput =
         fun email password rememberMe ->
-            LogIn (EmailAddress.create email, password, rememberMe)
+            LogIn (email, password, rememberMe)
 
     Form.succeed formOutput
         |> Form.append emailField

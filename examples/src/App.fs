@@ -15,6 +15,7 @@ type Page =
     | Login of Page.Login.Model
     | DynamicForm of Page.DynamicForm.Model
     | FormList of Page.FormList.Model
+    | Composability of Page.Composability.Simple.Model
     | NotFound
 
 type Msg =
@@ -23,6 +24,7 @@ type Msg =
     | LoginMsg of Page.Login.Msg
     | DynamicFormMsg of Page.DynamicForm.Msg
     | FormListMsg of Page.FormList.Msg
+    | ComposabilitySimpleMsg of Page.Composability.Simple.Msg
 
 
 type Model =
@@ -70,6 +72,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.FormList subModel
             }
             , Cmd.map FormListMsg subCmd
+
+        | Router.Route.Composability Router.ComposabilityRoute.Simple ->
+            let (subModel, subCmd) = Page.Composability.Simple.init ()
+            { model with
+                ActivePage = Page.Composability subModel
+            }
+            , Cmd.map ComposabilitySimpleMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -135,6 +144,19 @@ let private update (msg : Msg) (model : Model) =
         | _ ->
             model
             , Cmd.none
+
+    | ComposabilitySimpleMsg subMsg ->
+        match model.ActivePage with
+        | Page.Composability subModel ->
+            Page.Composability.Simple.update subMsg subModel
+            |> Tuple.mapFirst Page.Composability
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map ComposabilitySimpleMsg)
+
+        | _ ->
+            model
+            , Cmd.none
+
 
 let init (location ) =
     setRoute
@@ -243,6 +265,11 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
                     Router.Route.FormList
                     "Form list"
                     "A form where you can add and remove a list of forms"
+
+                renderLink
+                    (Router.Route.Composability Router.ComposabilityRoute.Simple)
+                    "Composability - Simple"
+                    "Demonstrate how you can re-use a form the 'simple way'"
             ]
         ]
 
@@ -273,6 +300,13 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             (Page.FormList.view subModel (FormListMsg >> dispatch))
             Page.FormList.code
             Page.FormList.githubLink
+
+    | Page.Composability subModel ->
+        renderDemoPage
+            "Composability - Simple"
+            (Page.Composability.Simple.view subModel (ComposabilitySimpleMsg >> dispatch))
+            Page.Composability.Simple.code
+            Page.Composability.Simple.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"
