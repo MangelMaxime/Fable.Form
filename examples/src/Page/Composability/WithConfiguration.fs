@@ -89,7 +89,7 @@ let form : Form.Form<Values, Msg> =
         |> Form.append (
             AddressForm.form
                 {
-                    Get =
+                    Value =
                         fun values -> values.Address
                     Update =
                         fun newValue values ->

@@ -21,16 +21,16 @@ let blank =
 
 type Config<'A> =
     {
-        Get : 'A -> Values
+        Value : 'A -> Values
         Update : Values -> 'A -> 'A
     }
 
 let form
-    ({ Get = get; Update = update} : Config<'A>)
+    ({ Value = getValue; Update = update} : Config<'A>)
     : AddressForm<'A> =
 
-    let updateField fn value values =
-        update (fn value (get values)) values
+    let updateField fn newValue values =
+        update (fn newValue (getValue values)) values
 
     let countryField =
         Form.textField
@@ -40,7 +40,7 @@ let form
                 Parser =
                     Address.Country.tryParse
                 Value =
-                    get >> fun values -> values.Country
+                    getValue >> fun values -> values.Country
                 Update =
                     updateField (fun newValue values -> { values with Country = newValue })
                 Error =
@@ -60,7 +60,7 @@ let form
                 Parser =
                     Address.City.tryParse
                 Value =
-                    get >> fun values -> values.City
+                    getValue >> fun values -> values.City
                 Update =
                     updateField (fun newValue values -> { values with City = newValue })
                 Error =
@@ -78,7 +78,7 @@ let form
                 Parser =
                     Address.PostalCode.tryParse
                 Value =
-                    get >> fun values -> values.PostalCode
+                    getValue >> fun values -> values.PostalCode
                 Update =
                     updateField (fun newValue values -> { values with PostalCode = newValue })
                 Error =
