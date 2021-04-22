@@ -15,7 +15,8 @@ type Page =
     | Login of Page.Login.Model
     | DynamicForm of Page.DynamicForm.Model
     | FormList of Page.FormList.Model
-    | Composability of Page.Composability.Simple.Model
+    | ComposabilitySimple of Page.Composability.Simple.Model
+    | ComposabilityWithConfiguration of Page.Composability.WithConfiguration.Model
     | NotFound
 
 type Msg =
@@ -25,6 +26,7 @@ type Msg =
     | DynamicFormMsg of Page.DynamicForm.Msg
     | FormListMsg of Page.FormList.Msg
     | ComposabilitySimpleMsg of Page.Composability.Simple.Msg
+    | ComposabilityWithConfigurationMsg of Page.Composability.WithConfiguration.Msg
 
 
 type Model =
@@ -76,9 +78,16 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
         | Router.Route.Composability Router.ComposabilityRoute.Simple ->
             let (subModel, subCmd) = Page.Composability.Simple.init ()
             { model with
-                ActivePage = Page.Composability subModel
+                ActivePage = Page.ComposabilitySimple subModel
             }
             , Cmd.map ComposabilitySimpleMsg subCmd
+
+        | Router.Route.Composability Router.ComposabilityRoute.WithConfiguration ->
+            let (subModel, subCmd) = Page.Composability.WithConfiguration.init ()
+            { model with
+                ActivePage = Page.ComposabilityWithConfiguration subModel
+            }
+            , Cmd.map ComposabilityWithConfigurationMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -147,9 +156,9 @@ let private update (msg : Msg) (model : Model) =
 
     | ComposabilitySimpleMsg subMsg ->
         match model.ActivePage with
-        | Page.Composability subModel ->
+        | Page.ComposabilitySimple subModel ->
             Page.Composability.Simple.update subMsg subModel
-            |> Tuple.mapFirst Page.Composability
+            |> Tuple.mapFirst Page.ComposabilitySimple
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map ComposabilitySimpleMsg)
 
@@ -157,6 +166,17 @@ let private update (msg : Msg) (model : Model) =
             model
             , Cmd.none
 
+    | ComposabilityWithConfigurationMsg subMsg ->
+        match model.ActivePage with
+        | Page.ComposabilityWithConfiguration subModel ->
+            Page.Composability.WithConfiguration.update subMsg subModel
+            |> Tuple.mapFirst Page.ComposabilityWithConfiguration
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map ComposabilityWithConfigurationMsg)
+
+        | _ ->
+            model
+            , Cmd.none
 
 let init (location ) =
     setRoute
@@ -268,8 +288,13 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
 
                 renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.Simple)
-                    "Composability - Simple"
+                    "Composability"
                     "Demonstrate how you can re-use a form the 'simple way'"
+
+                renderLink
+                    (Router.Route.Composability Router.ComposabilityRoute.WithConfiguration)
+                    "Composability via configuration"
+                    "Demonstrate how you can re-use a form using a 'configuration object'"
             ]
         ]
 
@@ -301,12 +326,19 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             Page.FormList.code
             Page.FormList.githubLink
 
-    | Page.Composability subModel ->
+    | Page.ComposabilitySimple subModel ->
         renderDemoPage
-            "Composability - Simple"
+            "Composability"
             (Page.Composability.Simple.view subModel (ComposabilitySimpleMsg >> dispatch))
             Page.Composability.Simple.code
             Page.Composability.Simple.githubLink
+
+    | Page.ComposabilityWithConfiguration subModel ->
+        renderDemoPage
+            "Composability via \"configuration\""
+            (Page.Composability.WithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
+            Page.Composability.WithConfiguration.code
+            Page.Composability.WithConfiguration.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"

@@ -1,8 +1,8 @@
-module Page.Composability.Simple
+module Page.Composability.WithConfiguration
 
 open Warded.Simple
 open Elmish
-open Page.Composability.Simple
+open Page.Composability.WithConfiguration
 
 // Student
 // Teacher
@@ -87,15 +87,14 @@ let form : Form.Form<FormValues, Msg> =
     Form.succeed formOutput
         |> Form.append nameField
         |> Form.append (
-            Form.mapValues
-                {|
-                    Value =
+            WithConfiguration.AddressForm.form
+                {
+                    Get =
                         fun values -> values.Address
                     Update =
                         fun newValue values ->
                             { values with Address = newValue }
-                |}
-                AddressForm.form
+                }
         )
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
@@ -115,15 +114,14 @@ let code =
 Form.succeed formOutput
     |> Form.append nameField
     |> Form.append (
-        Form.mapValues
-            {|
-                Value =
+        WithConfiguration.AddressForm.form
+            {
+                Get =
                     fun values -> values.Address
                 Update =
                     fun newValue values ->
                         { values with Address = newValue }
-            |}
-            AddressForm.form
+            }
     )
     """
 

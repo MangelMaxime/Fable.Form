@@ -16,7 +16,9 @@
         <Compile Include="src\Page\DynamicForm.fs" />
         <Compile Include="src\Page\FormList.fs" />
         <Compile Include="src\Page\Composability\Simple\AddressForm.fs" />
+        <Compile Include="src\Page\Composability\WithConfiguration\AddressForm.fs" />
         <Compile Include="src\Page\Composability\Simple.fs" />
+        <Compile Include="src\Page\Composability\WithConfiguration.fs" />
         <Compile Include="src\Router.fs" />
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />
