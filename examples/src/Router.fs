@@ -26,6 +26,7 @@ type Route =
     | DynamicForm
     | FormList
     | Composability of ComposabilityRoute
+    | ValidationStrategies
     | NotFound
 
 
@@ -38,6 +39,7 @@ let private toHash page =
         | Route.NotFound -> "not-found"
         | Route.DynamicForm -> "dynamic-form"
         | Route.Composability subRoute -> "composability/" + ComposabilityRoute.toSegment subRoute
+        | Route.ValidationStrategies -> "validation-strategies"
         | Route.FormList -> "form-list"
 
     "#" + segmentsPart
@@ -50,6 +52,7 @@ let routeParser: Parser<Route->Route,Route> =
             map Route.Login (s "login")
             map Route.DynamicForm (s "dynamic-form")
             map Route.FormList (s "form-list")
+            map Route.ValidationStrategies (s "validation-strategies")
             map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
             map (Route.Composability ComposabilityRoute.WithConfiguration) (s "composability" </> s "with-configuration")
             map Route.Home top

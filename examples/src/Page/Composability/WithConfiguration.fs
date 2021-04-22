@@ -104,7 +104,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             OnChange = FormChanged
             Action = "Submit"
             Loading = "Loading"
-            Validation = Form.View.Validation.ValidateOnSubmit
+            Validation = Form.View.ValidateOnSubmit
         }
         form
         model

@@ -1,4 +1,4 @@
-module Page.Login
+module Page.ValidationStrategies
 
 open Warded.Simple
 open Elmish
@@ -8,9 +8,9 @@ open Elmish
 /// </summary>
 type Values =
     {
+        ValidationStrategy : string
         Email : string
         Password : string
-        RememberMe : bool
     }
 
 /// <summary>
@@ -28,13 +28,13 @@ type Msg =
     // Used when a change occure in the form
     | FormChanged of Model
     // Used when the user submit the form
-    | LogIn of EmailAddress.T * string * bool
+    | Submit of EmailAddress.T * User.Password.T
 
 let init () =
     {
+        ValidationStrategy = "onBlur"
         Email = ""
         Password = ""
-        RememberMe = false
     }
     |> Form.View.idle
     , Cmd.none
@@ -48,7 +48,7 @@ let update (msg : Msg) (model : Model) =
 
     // Form has been submitted
     // Here, we have access to the value submitted from the from
-    | LogIn (email, password, rememberMe) ->
+    | Submit (email, password) ->
         // For the example, we just set a message in the Form view
         { model with
             State = Form.View.Success "You have been logged in successfully"
@@ -63,6 +63,29 @@ let update (msg : Msg) (model : Model) =
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
 let form : Form.Form<Values, Msg> =
+    let validationStrategiesField =
+        Form.radioField
+            {
+                Parser = Ok
+                Value =
+                    fun values -> values.ValidationStrategy
+                Update =
+                    fun newValue values ->
+                        { values with ValidationStrategy = newValue }
+                Error =
+                    always None
+                Attributes =
+                    {
+                        Label = "Validation strategy"
+                        Options =
+                            [
+                                "onSubmit", "Validate on form submit"
+                                "onBlur", "Validate on field blur"
+                            ]
+                    }
+
+            }
+
     let emailField =
         Form.textField
             {
@@ -85,7 +108,8 @@ let form : Form.Form<Values, Msg> =
     let passwordField =
         Form.passwordField
             {
-                Parser = Ok
+                Parser =
+                    User.Password.tryParse
                 Value =
                     fun values -> values.Password
                 Update =
@@ -100,36 +124,19 @@ let form : Form.Form<Values, Msg> =
                     }
             }
 
-    let rememberMe =
-        Form.checkboxField
-            {
-                Parser = Ok
-                Value =
-                    fun values -> values.RememberMe
-                Update =
-                    fun newValue values ->
-                        { values with RememberMe = newValue }
-                Error =
-                    fun _ -> None
-                Attributes =
-                    {
-                        Text = "Remember me"
-                    }
-            }
-
 
     /// <summary>
     /// Function used to map the form values into the message to send back to the update function
     /// </summary>
     /// <returns></returns>
     let formOutput =
-        fun email password rememberMe ->
-            LogIn (email, password, rememberMe)
+        fun _ email password ->
+            Submit (email, password)
 
     Form.succeed formOutput
+        |> Form.append validationStrategiesField
         |> Form.append emailField
         |> Form.append passwordField
-        |> Form.append rememberMe
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     Form.View.asHtml
@@ -138,7 +145,11 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             OnChange = FormChanged
             Action = "Submit"
             Loading = "Loading"
-            Validation = Form.View.ValidateOnSubmit
+            Validation =
+                if model.Values.ValidationStrategy = "onSubmit" then
+                    Form.View.ValidateOnSubmit
+                else
+                    Form.View.ValidateOnBlur
         }
         form
         model

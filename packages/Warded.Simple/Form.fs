@@ -455,6 +455,16 @@ module Form =
 
             inputFunc [
                 prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
+
+                match config.OnBlur with
+                | Some onBlur ->
+                    prop.onBlur (fun _ ->
+                        config.Dispatch onBlur
+                    )
+
+                | None ->
+                    ()
+
                 prop.disabled config.Disabled
                 prop.value config.Value
                 prop.placeholder config.Attributes.Placeholder
@@ -466,6 +476,16 @@ module Form =
         let textareaField (config : TextFieldConfig<'Msg>) =
             Bulma.textarea [
                 prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
+
+                match config.OnBlur with
+                | Some onBlur ->
+                    prop.onBlur (fun _ ->
+                        config.Dispatch onBlur
+                    )
+
+                | None ->
+                    ()
+
                 prop.disabled config.Disabled
                 prop.value config.Value
                 prop.placeholder config.Attributes.Placeholder
@@ -480,6 +500,14 @@ module Form =
                     prop.children [
                         Bulma.input.checkbox [
                             prop.onChange (fun (isChecked : bool) -> config.OnChange isChecked |> config.Dispatch )
+                            match config.OnBlur with
+                            | Some onBlur ->
+                                prop.onBlur (fun _ ->
+                                    config.Dispatch onBlur
+                                )
+
+                            | None ->
+                                ()
                             prop.disabled config.Disabled
                             prop.isChecked config.Value
                         ]
@@ -499,6 +527,14 @@ module Form =
                         prop.isChecked (config.Value = key)
                         prop.disabled config.Disabled
                         prop.onChange (fun (_ : bool) -> config.OnChange key |> config.Dispatch)
+                        match config.OnBlur with
+                        | Some onBlur ->
+                            prop.onBlur (fun _ ->
+                                config.Dispatch onBlur
+                            )
+
+                        | None ->
+                            ()
                     ]
 
                     Html.text label
@@ -534,6 +570,15 @@ module Form =
                 prop.onChange (fun (value : string) ->
                     config.OnChange value |> config.Dispatch
                 )
+
+                match config.OnBlur with
+                | Some onBlur ->
+                    prop.onBlur (fun _ ->
+                        config.Dispatch onBlur
+                    )
+
+                | None ->
+                    ()
 
                 prop.value config.Value
 
@@ -740,7 +785,8 @@ module Form =
             (field : FilledField<'Values>)
             : ReactElement =
 
-            let blur = None // TODO:
+            let blur label =
+                Option.map (fun onBlurEvent -> onBlurEvent label) fieldConfig.OnBlur
 
             match field.State with
             | Field.Text (typ, info) ->
@@ -748,7 +794,7 @@ module Form =
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
-                        OnBlur = blur // TODO:
+                        OnBlur = blur info.Attributes.Label
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                         Value = info.Value
                         Error = field.Error
@@ -771,7 +817,7 @@ module Form =
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
-                        OnBlur = blur // TODO:
+                        OnBlur = blur info.Attributes.Text
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                         Value = info.Value
                         Error = field.Error
@@ -786,7 +832,7 @@ module Form =
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
-                        OnBlur = blur // TODO:
+                        OnBlur = blur info.Attributes.Label
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                         Value = info.Value
                         Error = field.Error
@@ -801,7 +847,7 @@ module Form =
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
-                        OnBlur = blur // TODO:
+                        OnBlur = blur info.Attributes.Label
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                         Value = info.Value
                         Error = field.Error
@@ -891,9 +937,31 @@ module Form =
                     else
                         viewConfig.OnChange
                             { model with
-                                    ErrorTracking = ErrorTracking {| errorTracking with ShowAllErrors = true |}
+                                    ErrorTracking =
+                                        ErrorTracking
+                                            {| errorTracking with
+                                                ShowAllErrors = true
+                                            |}
                             }
                         |> Some
+
+            let onBlur =
+                match viewConfig.Validation with
+                | ValidateOnSubmit ->
+                    None
+
+                | ValidateOnBlur ->
+                    Some (fun label ->
+                        viewConfig.OnChange
+                            { model with
+                                ErrorTracking =
+                                    ErrorTracking
+                                        {| errorTracking with
+                                            ShowFieldError =
+                                                Set.add label errorTracking.ShowFieldError
+                                        |}
+                            }
+                    )
 
             let showError (label : string) =
                 errorTracking.ShowAllErrors || Set.contains label errorTracking.ShowFieldError
@@ -904,12 +972,10 @@ module Form =
                     config
                     {
                         OnChange = fun values -> viewConfig.OnChange { model with Values = values }
-                        OnBlur = None // TODO
+                        OnBlur = onBlur
                         Disabled = model.State = Loading
                         ShowError = showError
                     }
-
-            let onBlur = None // TODO
 
             config.Form
                 {

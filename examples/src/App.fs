@@ -15,6 +15,7 @@ type Page =
     | Login of Page.Login.Model
     | DynamicForm of Page.DynamicForm.Model
     | FormList of Page.FormList.Model
+    | ValidationStrategies of Page.ValidationStrategies.Model
     | ComposabilitySimple of Page.Composability.Simple.Model
     | ComposabilityWithConfiguration of Page.Composability.WithConfiguration.Model
     | NotFound
@@ -25,6 +26,7 @@ type Msg =
     | LoginMsg of Page.Login.Msg
     | DynamicFormMsg of Page.DynamicForm.Msg
     | FormListMsg of Page.FormList.Msg
+    | ValidationStrategiesMsg of Page.ValidationStrategies.Msg
     | ComposabilitySimpleMsg of Page.Composability.Simple.Msg
     | ComposabilityWithConfigurationMsg of Page.Composability.WithConfiguration.Msg
 
@@ -74,6 +76,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.FormList subModel
             }
             , Cmd.map FormListMsg subCmd
+
+        | Router.Route.ValidationStrategies ->
+            let (subModel, subCmd) = Page.ValidationStrategies.init ()
+            { model with
+                ActivePage = Page.ValidationStrategies subModel
+            }
+            , Cmd.map ValidationStrategiesMsg subCmd
 
         | Router.Route.Composability Router.ComposabilityRoute.Simple ->
             let (subModel, subCmd) = Page.Composability.Simple.init ()
@@ -173,6 +182,18 @@ let private update (msg : Msg) (model : Model) =
             |> Tuple.mapFirst Page.ComposabilityWithConfiguration
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map ComposabilityWithConfigurationMsg)
+
+        | _ ->
+            model
+            , Cmd.none
+
+    | ValidationStrategiesMsg subMsg ->
+        match model.ActivePage with
+        | Page.ValidationStrategies subModel ->
+            Page.ValidationStrategies.update subMsg subModel
+            |> Tuple.mapFirst Page.ValidationStrategies
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map ValidationStrategiesMsg)
 
         | _ ->
             model
@@ -287,6 +308,11 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
                     "A form where you can add and remove a list of forms"
 
                 renderLink
+                    Router.Route.ValidationStrategies
+                    "Validation strategies"
+                    "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'"
+
+                renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.Simple)
                     "Composability"
                     "Demonstrate how you can re-use a form the 'simple way'"
@@ -325,6 +351,13 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             (Page.FormList.view subModel (FormListMsg >> dispatch))
             Page.FormList.code
             Page.FormList.githubLink
+
+    | Page.ValidationStrategies subModel ->
+        renderDemoPage
+            "Validation strategies"
+            (Page.ValidationStrategies.view subModel (ValidationStrategiesMsg >> dispatch))
+            Page.ValidationStrategies.code
+            Page.ValidationStrategies.githubLink
 
     | Page.ComposabilitySimple subModel ->
         renderDemoPage
