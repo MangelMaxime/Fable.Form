@@ -6,7 +6,7 @@ open Elmish
 /// <summary>
 /// Type used to represent the form values
 /// </summary>
-type FormValues =
+type Values =
     {
         Email : string
         Password : string
@@ -19,7 +19,7 @@ type FormValues =
 /// In the case of the Login example, we just need to keep track of the Form model state
 /// </summary>
 type Model =
-    Form.View.Model<FormValues>
+    Form.View.Model<Values>
 
 /// <summary>
 /// Represents the different messages that your application can react too
@@ -62,7 +62,7 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form : Form.Form<FormValues, Msg> =
+let form : Form.Form<Values, Msg> =
     let emailField =
         Form.textField
             {

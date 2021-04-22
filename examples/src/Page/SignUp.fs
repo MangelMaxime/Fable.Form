@@ -32,7 +32,7 @@ type FormResult =
         MakePublic : bool
     }
 
-type FormValues =
+type Values =
     {
         Email : string
         Password : string
@@ -43,12 +43,12 @@ type FormValues =
     }
 
 type Model =
-    | FillingForm of Form.View.Model<FormValues>
+    | FillingForm of Form.View.Model<Values>
     | SignedUp of User.T
 
 
 type Msg =
-    | FormChanged of Form.View.Model<FormValues>
+    | FormChanged of Form.View.Model<Values>
     | SignUp of FormResult
     | SignupAttempted of Result<User.T, string>
 
@@ -132,7 +132,7 @@ let convertMakePublicOptionToBool (makePublic : string) =
     | "option-no"
     | _ -> false
 
-let form : Form.Form<FormValues, Msg> =
+let form : Form.Form<Values, Msg> =
     let emailField =
         Form.textField
             {
@@ -270,7 +270,7 @@ let form : Form.Form<FormValues, Msg> =
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model with
-    | FillingForm formValues ->
+    | FillingForm Values ->
 
         Form.View.asHtml
             {
@@ -281,7 +281,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
                 Validation = Form.View.Validation.ValidateOnSubmit
             }
             form
-            formValues
+            Values
 
     | SignedUp user ->
         Html.text "User signed up"

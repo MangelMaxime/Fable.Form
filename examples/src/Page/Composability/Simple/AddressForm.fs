@@ -2,7 +2,7 @@ module Page.Composability.Simple.AddressForm
 
 open Warded.Simple
 
-type FormValues =
+type Values =
     {
         Country : string
         City : string
@@ -16,7 +16,7 @@ let blank =
         PostalCode = ""
     }
 
-let form : Form.Form<FormValues, Address.T> =
+let form : Form.Form<Values, Address.T> =
     let countryField =
         Form.textField
             {

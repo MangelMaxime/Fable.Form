@@ -5,7 +5,7 @@ open Warded.Simple
 type AddressForm<'Values> =
     Form.Form<'Values, Address.T>
 
-type FormValues =
+type Values =
     {
         Country : string
         City : string
@@ -21,16 +21,16 @@ let blank =
 
 type Config<'A> =
     {
-        Get : 'A -> FormValues
-        Update : FormValues -> 'A -> 'A
+        Get : 'A -> Values
+        Update : Values -> 'A -> 'A
     }
 
 let form
     ({ Get = get; Update = update} : Config<'A>)
     : AddressForm<'A> =
 
-    let updateField f value values =
-        update (f value (get values)) values
+    let updateField fn value values =
+        update (fn value (get values)) values
 
     let countryField =
         Form.textField
