@@ -204,3 +204,9 @@ userTypeField
 
 let githubLink =
     Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+
+let title =
+    "Dynamic form"
+
+let remark =
+    None

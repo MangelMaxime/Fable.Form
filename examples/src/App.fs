@@ -222,7 +222,7 @@ let renderLink (route : Router.Route) (linkText : string) (description : string)
     ]
 
 
-let renderDemoPage (titleText : string) (content : ReactElement) (codeText : string) (sourceCodeUrl : string) =
+let renderDemoPage (titleText : string) (optRemark : ReactElement option) (content : ReactElement) (codeText : string) (sourceCodeUrl : string) =
     Html.div [
         Html.br [ ]
 
@@ -236,6 +236,13 @@ let renderDemoPage (titleText : string) (content : ReactElement) (codeText : str
                 ]
             ]
         ]
+
+        match optRemark with
+        | Some remark ->
+            remark
+
+        | None ->
+            Html.none
 
         Html.hr [ ]
 
@@ -286,89 +293,123 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
 
             Html.hr [ ]
 
+            Bulma.content [
+                Bulma.subtitle.p [
+                    title.is5
+                    prop.text "Basic"
+                ]
+
+                Html.p [
+                    Html.text "The features demonstrated in this section are available for all the library based on "
+                    Html.b "Fable.Form"
+                ]
+            ]
+
             Html.ul [
                 renderLink
                     Router.Route.Login
-                    "Login"
+                    Page.Login.title
                     "A simple login form with 3 fields"
 
                 renderLink
                     Router.Route.SignUp
-                    "Sign-up"
+                    Page.SignUp.title
                     "A form demonstrating how to handle external errors"
 
                 renderLink
                     Router.Route.DynamicForm
-                    "Dynamic form"
+                    Page.DynamicForm.title
                     "A form that changes dynamically based on its own values"
 
                 renderLink
                     Router.Route.FormList
-                    "Form list"
+                    Page.FormList.title
                     "A form where you can add and remove a list of forms"
 
                 renderLink
-                    Router.Route.ValidationStrategies
-                    "Validation strategies"
-                    "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'"
-
-                renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.Simple)
-                    "Composability"
+                    Page.Composability.Simple.title
                     "Demonstrate how you can re-use a form the 'simple way'"
 
                 renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.WithConfiguration)
-                    "Composability via configuration"
+                    Page.Composability.WithConfiguration.title
                     "Demonstrate how you can re-use a form using a 'configuration object'"
+            ]
+
+
+            Bulma.content [
+                Bulma.subtitle.p [
+                    title.is5
+                    prop.text "Advanced"
+                ]
+
+                Html.p "The features demonstrated in this section depends on the library which provides the view implementation"
+
+                Html.p "The goal here is to demonstrate advanced usage that you could need when implementing your own view"
+
+            ]
+
+            Html.ul [
+                renderLink
+                    Router.Route.ValidationStrategies
+                    Page.ValidationStrategies.title
+                    "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'."
             ]
         ]
 
     | Page.SignUp subModel ->
         renderDemoPage
-            "Sign up"
+            Page.SignUp.title
+            Page.SignUp.remark
             (Page.SignUp.view subModel (SignUpMsg >> dispatch))
             Page.SignUp.code
             Page.SignUp.githubLink
 
     | Page.Login subModel ->
         renderDemoPage
-            "Login"
+            Page.Login.title
+            Page.Login.remark
             (Page.Login.view subModel (LoginMsg >> dispatch))
             Page.Login.code
             Page.Login.githubLink
 
     | Page.DynamicForm subModel ->
         renderDemoPage
-            "Dynamic form"
+            Page.DynamicForm.title
+            Page.DynamicForm.remark
             (Page.DynamicForm.view subModel (DynamicFormMsg >> dispatch))
             Page.DynamicForm.code
             Page.DynamicForm.githubLink
 
     | Page.FormList subModel ->
         renderDemoPage
-            "Form list"
+            Page.FormList.title
+            Page.FormList.remark
             (Page.FormList.view subModel (FormListMsg >> dispatch))
             Page.FormList.code
             Page.FormList.githubLink
 
     | Page.ValidationStrategies subModel ->
         renderDemoPage
-            "Validation strategies"
+            Page.ValidationStrategies.title
+            Page.ValidationStrategies.remark
             (Page.ValidationStrategies.view subModel (ValidationStrategiesMsg >> dispatch))
             Page.ValidationStrategies.code
             Page.ValidationStrategies.githubLink
 
     | Page.ComposabilitySimple subModel ->
         renderDemoPage
-            "Composability"
+            Page.Composability.Simple.title
+            Page.Composability.Simple.remark
             (Page.Composability.Simple.view subModel (ComposabilitySimpleMsg >> dispatch))
             Page.Composability.Simple.code
             Page.Composability.Simple.githubLink
 
     | Page.ComposabilityWithConfiguration subModel ->
         renderDemoPage
-            "Composability via \"configuration\""
+            Page.Composability.WithConfiguration.title
+            Page.Composability.WithConfiguration.remark
             (Page.Composability.WithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
             Page.Composability.WithConfiguration.code
             Page.Composability.WithConfiguration.githubLink

@@ -2,6 +2,8 @@ module Page.ValidationStrategies
 
 open Warded.Simple
 open Elmish
+open Feliz
+open Feliz.Bulma
 
 /// <summary>
 /// Type used to represent the form values
@@ -164,3 +166,20 @@ Form.succeed formOutput
 
 let githubLink =
     Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+
+let title =
+    "Validation strategies"
+
+let remark =
+    Bulma.content [
+        text.hasTextCentered
+
+        prop.children [
+            Html.text "This feature depends on the view implementation, here it is offered by "
+            Html.b "Fable.Form.Simple"
+            Html.text " package"
+        ]
+    ]
+    |> Some
+
+
