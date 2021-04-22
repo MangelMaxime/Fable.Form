@@ -1,6 +1,6 @@
 module Page.Composability.Simple.AddressForm
 
-open Warded.Simple
+open Fable.Form.Simple
 
 type Values =
     {

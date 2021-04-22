@@ -1,6 +1,6 @@
-module Page.DynamicForm
+module Page.DynamicForm.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 
 // Student

@@ -1,6 +1,6 @@
-﻿module Page.SignUp
+﻿module Page.SignUp.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 open Feliz
 open Feliz.Bulma

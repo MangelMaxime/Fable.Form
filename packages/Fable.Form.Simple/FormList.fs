@@ -1,6 +1,6 @@
-namespace Warded.Simple
+namespace Fable.Form.Simple
 
-open Warded
+open Fable.Form
 
 module FormList =
 

@@ -1,7 +1,7 @@
-namespace Warded.Simple
+namespace Fable.Form.Simple
 
-open Warded
-open Warded.Simple.Field
+open Fable.Form
+open Fable.Form.Simple.Field
 
 [<RequireQualifiedAccess>]
 module Form =

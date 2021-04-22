@@ -8,27 +8,35 @@ open Fable.Core.JsInterop
 
 importSideEffects "./../style/style.scss"
 
+module SignUp = Page.SignUp.Component
+module Login = Page.Login.Component
+module DynamicForm = Page.DynamicForm.Component
+module FormList = Page.FormList.Component
+module ValidationStrategies = Page.ValidationStrategies.Component
+module ComposabilitySimple = Page.Composability.Simple.Component
+module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
+
 [<RequireQualifiedAccess>]
 type Page =
     | Home
-    | SignUp of Page.SignUp.Model
-    | Login of Page.Login.Model
-    | DynamicForm of Page.DynamicForm.Model
-    | FormList of Page.FormList.Model
-    | ValidationStrategies of Page.ValidationStrategies.Model
-    | ComposabilitySimple of Page.Composability.Simple.Model
-    | ComposabilityWithConfiguration of Page.Composability.WithConfiguration.Model
+    | SignUp of SignUp.Model
+    | Login of Login.Model
+    | DynamicForm of DynamicForm.Model
+    | FormList of FormList.Model
+    | ValidationStrategies of ValidationStrategies.Model
+    | ComposabilitySimple of ComposabilitySimple.Model
+    | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
     | NotFound
 
 type Msg =
     | SetRoute of Router.Route option
-    | SignUpMsg of Page.SignUp.Msg
-    | LoginMsg of Page.Login.Msg
-    | DynamicFormMsg of Page.DynamicForm.Msg
-    | FormListMsg of Page.FormList.Msg
-    | ValidationStrategiesMsg of Page.ValidationStrategies.Msg
-    | ComposabilitySimpleMsg of Page.Composability.Simple.Msg
-    | ComposabilityWithConfigurationMsg of Page.Composability.WithConfiguration.Msg
+    | SignUpMsg of SignUp.Msg
+    | LoginMsg of Login.Msg
+    | DynamicFormMsg of DynamicForm.Msg
+    | FormListMsg of FormList.Msg
+    | ValidationStrategiesMsg of ValidationStrategies.Msg
+    | ComposabilitySimpleMsg of ComposabilitySimple.Msg
+    | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
 
 
 type Model =
@@ -50,49 +58,49 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
     | Some route ->
         match route with
         | Router.Route.SignUp ->
-            let (subModel, subCmd) = Page.SignUp.init ()
+            let (subModel, subCmd) = SignUp.init ()
             { model with
                 ActivePage = Page.SignUp subModel
             }
             , Cmd.map SignUpMsg subCmd
 
         | Router.Route.Login ->
-            let (subModel, subCmd) = Page.Login.init ()
+            let (subModel, subCmd) = Login.init ()
             { model with
                 ActivePage = Page.Login subModel
             }
             , Cmd.map LoginMsg subCmd
 
         | Router.Route.DynamicForm ->
-            let (subModel, subCmd) = Page.DynamicForm.init ()
+            let (subModel, subCmd) = DynamicForm.init ()
             { model with
                 ActivePage = Page.DynamicForm subModel
             }
             , Cmd.map DynamicFormMsg subCmd
 
         | Router.Route.FormList ->
-            let (subModel, subCmd) = Page.FormList.init ()
+            let (subModel, subCmd) = FormList.init ()
             { model with
                 ActivePage = Page.FormList subModel
             }
             , Cmd.map FormListMsg subCmd
 
         | Router.Route.ValidationStrategies ->
-            let (subModel, subCmd) = Page.ValidationStrategies.init ()
+            let (subModel, subCmd) = ValidationStrategies.init ()
             { model with
                 ActivePage = Page.ValidationStrategies subModel
             }
             , Cmd.map ValidationStrategiesMsg subCmd
 
         | Router.Route.Composability Router.ComposabilityRoute.Simple ->
-            let (subModel, subCmd) = Page.Composability.Simple.init ()
+            let (subModel, subCmd) = ComposabilitySimple.init ()
             { model with
                 ActivePage = Page.ComposabilitySimple subModel
             }
             , Cmd.map ComposabilitySimpleMsg subCmd
 
         | Router.Route.Composability Router.ComposabilityRoute.WithConfiguration ->
-            let (subModel, subCmd) = Page.Composability.WithConfiguration.init ()
+            let (subModel, subCmd) = ComposabilityWithConfiguration.init ()
             { model with
                 ActivePage = Page.ComposabilityWithConfiguration subModel
             }
@@ -118,7 +126,7 @@ let private update (msg : Msg) (model : Model) =
     | SignUpMsg subMsg ->
         match model.ActivePage with
         | Page.SignUp subModel ->
-            Page.SignUp.update subMsg subModel
+            SignUp.update subMsg subModel
             |> Tuple.mapFirst Page.SignUp
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map SignUpMsg)
@@ -130,7 +138,7 @@ let private update (msg : Msg) (model : Model) =
     | LoginMsg subMsg ->
         match model.ActivePage with
         | Page.Login subModel ->
-            Page.Login.update subMsg subModel
+            Login.update subMsg subModel
             |> Tuple.mapFirst Page.Login
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map LoginMsg)
@@ -142,7 +150,7 @@ let private update (msg : Msg) (model : Model) =
     | DynamicFormMsg subMsg ->
         match model.ActivePage with
         | Page.DynamicForm subModel ->
-            Page.DynamicForm.update subMsg subModel
+            DynamicForm.update subMsg subModel
             |> Tuple.mapFirst Page.DynamicForm
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map DynamicFormMsg)
@@ -154,7 +162,7 @@ let private update (msg : Msg) (model : Model) =
     | FormListMsg subMsg ->
         match model.ActivePage with
         | Page.FormList subModel ->
-            Page.FormList.update subMsg subModel
+            FormList.update subMsg subModel
             |> Tuple.mapFirst Page.FormList
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map FormListMsg)
@@ -166,7 +174,7 @@ let private update (msg : Msg) (model : Model) =
     | ComposabilitySimpleMsg subMsg ->
         match model.ActivePage with
         | Page.ComposabilitySimple subModel ->
-            Page.Composability.Simple.update subMsg subModel
+            ComposabilitySimple.update subMsg subModel
             |> Tuple.mapFirst Page.ComposabilitySimple
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map ComposabilitySimpleMsg)
@@ -178,7 +186,7 @@ let private update (msg : Msg) (model : Model) =
     | ComposabilityWithConfigurationMsg subMsg ->
         match model.ActivePage with
         | Page.ComposabilityWithConfiguration subModel ->
-            Page.Composability.WithConfiguration.update subMsg subModel
+            ComposabilityWithConfiguration.update subMsg subModel
             |> Tuple.mapFirst Page.ComposabilityWithConfiguration
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map ComposabilityWithConfigurationMsg)
@@ -190,7 +198,7 @@ let private update (msg : Msg) (model : Model) =
     | ValidationStrategiesMsg subMsg ->
         match model.ActivePage with
         | Page.ValidationStrategies subModel ->
-            Page.ValidationStrategies.update subMsg subModel
+            ValidationStrategies.update subMsg subModel
             |> Tuple.mapFirst Page.ValidationStrategies
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map ValidationStrategiesMsg)
@@ -308,32 +316,32 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             Html.ul [
                 renderLink
                     Router.Route.Login
-                    Page.Login.title
+                    Login.title
                     "A simple login form with 3 fields"
 
                 renderLink
                     Router.Route.SignUp
-                    Page.SignUp.title
+                    SignUp.title
                     "A form demonstrating how to handle external errors"
 
                 renderLink
                     Router.Route.DynamicForm
-                    Page.DynamicForm.title
+                    DynamicForm.title
                     "A form that changes dynamically based on its own values"
 
                 renderLink
                     Router.Route.FormList
-                    Page.FormList.title
+                    FormList.title
                     "A form where you can add and remove a list of forms"
 
                 renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.Simple)
-                    Page.Composability.Simple.title
+                    ComposabilitySimple.title
                     "Demonstrate how you can re-use a form the 'simple way'"
 
                 renderLink
                     (Router.Route.Composability Router.ComposabilityRoute.WithConfiguration)
-                    Page.Composability.WithConfiguration.title
+                    ComposabilityWithConfiguration.title
                     "Demonstrate how you can re-use a form using a 'configuration object'"
             ]
 
@@ -353,66 +361,66 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             Html.ul [
                 renderLink
                     Router.Route.ValidationStrategies
-                    Page.ValidationStrategies.title
+                    ValidationStrategies.title
                     "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'."
             ]
         ]
 
     | Page.SignUp subModel ->
         renderDemoPage
-            Page.SignUp.title
-            Page.SignUp.remark
-            (Page.SignUp.view subModel (SignUpMsg >> dispatch))
-            Page.SignUp.code
-            Page.SignUp.githubLink
+            SignUp.title
+            SignUp.remark
+            (SignUp.view subModel (SignUpMsg >> dispatch))
+            SignUp.code
+            SignUp.githubLink
 
     | Page.Login subModel ->
         renderDemoPage
-            Page.Login.title
-            Page.Login.remark
-            (Page.Login.view subModel (LoginMsg >> dispatch))
-            Page.Login.code
-            Page.Login.githubLink
+            Login.title
+            Login.remark
+            (Login.view subModel (LoginMsg >> dispatch))
+            Login.code
+            Login.githubLink
 
     | Page.DynamicForm subModel ->
         renderDemoPage
-            Page.DynamicForm.title
-            Page.DynamicForm.remark
-            (Page.DynamicForm.view subModel (DynamicFormMsg >> dispatch))
-            Page.DynamicForm.code
-            Page.DynamicForm.githubLink
+            DynamicForm.title
+            DynamicForm.remark
+            (DynamicForm.view subModel (DynamicFormMsg >> dispatch))
+            DynamicForm.code
+            DynamicForm.githubLink
 
     | Page.FormList subModel ->
         renderDemoPage
-            Page.FormList.title
-            Page.FormList.remark
-            (Page.FormList.view subModel (FormListMsg >> dispatch))
-            Page.FormList.code
-            Page.FormList.githubLink
+            FormList.title
+            FormList.remark
+            (FormList.view subModel (FormListMsg >> dispatch))
+            FormList.code
+            FormList.githubLink
 
     | Page.ValidationStrategies subModel ->
         renderDemoPage
-            Page.ValidationStrategies.title
-            Page.ValidationStrategies.remark
-            (Page.ValidationStrategies.view subModel (ValidationStrategiesMsg >> dispatch))
-            Page.ValidationStrategies.code
-            Page.ValidationStrategies.githubLink
+            ValidationStrategies.title
+            ValidationStrategies.remark
+            (ValidationStrategies.view subModel (ValidationStrategiesMsg >> dispatch))
+            ValidationStrategies.code
+            ValidationStrategies.githubLink
 
     | Page.ComposabilitySimple subModel ->
         renderDemoPage
-            Page.Composability.Simple.title
-            Page.Composability.Simple.remark
-            (Page.Composability.Simple.view subModel (ComposabilitySimpleMsg >> dispatch))
-            Page.Composability.Simple.code
-            Page.Composability.Simple.githubLink
+            ComposabilitySimple.title
+            ComposabilitySimple.remark
+            (ComposabilitySimple.view subModel (ComposabilitySimpleMsg >> dispatch))
+            ComposabilitySimple.code
+            ComposabilitySimple.githubLink
 
     | Page.ComposabilityWithConfiguration subModel ->
         renderDemoPage
-            Page.Composability.WithConfiguration.title
-            Page.Composability.WithConfiguration.remark
-            (Page.Composability.WithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
-            Page.Composability.WithConfiguration.code
-            Page.Composability.WithConfiguration.githubLink
+            ComposabilityWithConfiguration.title
+            ComposabilityWithConfiguration.remark
+            (ComposabilityWithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
+            ComposabilityWithConfiguration.code
+            ComposabilityWithConfiguration.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"

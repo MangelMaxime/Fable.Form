@@ -1,6 +1,6 @@
-module Page.ValidationStrategies
+module Page.ValidationStrategies.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 open Feliz
 open Feliz.Bulma

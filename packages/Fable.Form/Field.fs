@@ -1,4 +1,4 @@
-module Warded.Field
+module Fable.Form.Field
 
 type Field<'Attributes, 'Value, 'Values> =
     {

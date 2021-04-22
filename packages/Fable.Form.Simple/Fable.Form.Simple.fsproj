@@ -24,7 +24,7 @@
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Warded\Warded.fsproj" />
+      <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
     </ItemGroup>
     <!-- This package doesn't contain actual code
         so we don't need to add the sources -->

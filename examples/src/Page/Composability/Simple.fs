@@ -1,6 +1,6 @@
-module Page.Composability.Simple
+module Page.Composability.Simple.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 open Page.Composability.Simple
 

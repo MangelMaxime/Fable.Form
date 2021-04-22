@@ -1,4 +1,4 @@
-module Warded.Base
+module Fable.Form.Base
 
 type FilledField<'Field> =
     {

@@ -1,6 +1,6 @@
-module Page.Login
+module Page.Login.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 
 /// <summary>

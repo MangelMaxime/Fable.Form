@@ -1,4 +1,4 @@
-module Warded.Error
+module Fable.Form.Error
 
 
 type Error =

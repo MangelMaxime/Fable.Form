@@ -1,6 +1,6 @@
-namespace Warded.Simple.Field
+namespace Fable.Form.Simple.Field
 
-open Warded
+open Fable.Form
 
 module SelectField =
 

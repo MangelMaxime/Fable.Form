@@ -36,7 +36,7 @@
       <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\packages\Warded.Simple\Warded.Simple.fsproj" />
-      <ProjectReference Include="..\packages\Warded\Warded.fsproj" />
+      <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
+      <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
     </ItemGroup>
 </Project>

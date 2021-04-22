@@ -1,6 +1,6 @@
-module Page.FormList
+module Page.FormList.Component
 
-open Warded.Simple
+open Fable.Form.Simple
 open Elmish
 
 // Student
