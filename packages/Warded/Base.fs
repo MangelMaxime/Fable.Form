@@ -76,6 +76,36 @@ let meta (fn : 'Values -> Form<'Values, 'Output, 'Field>) : Form<'Values, 'Outpu
     fun values ->
         fill (fn values) values
 
+let mapValues
+    (fn : 'A -> 'B)
+    (form : Form<'B, 'Output, 'Field>)
+    : Form<'A, 'Output, 'Field> =
+
+    fn >> fill form
+
+let mapField
+    (fn : 'A -> 'B)
+    (form : Form<'Values, 'Output, 'A>)
+    : Form<'Values, 'Output, 'B> =
+
+    fun values ->
+        let filled =
+            fill form values
+
+        {
+            Fields =
+                filled.Fields
+                |> List.map (fun filledField ->
+                    {
+                        State = fn filledField.State
+                        Error = filledField.Error
+                        IsDisabled = filledField.IsDisabled
+                    }
+                )
+            Result = filled.Result
+            IsEmpty = filled.IsEmpty
+        }
+
 let append (newForm : Form<'Values, 'A, 'Field>) (currentForm : Form<'Values, 'A -> 'B, 'Field>) : Form<'Values, 'B, 'Field> =
     fun values ->
         let filledNew =

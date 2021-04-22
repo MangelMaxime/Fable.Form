@@ -120,8 +120,6 @@ let form : Form.Form<FormValues, Msg> =
 
     /// <summary>
     /// Function used to map the form values into the message to send back to the update function
-    ///
-    /// As you can see, it is possible here to transform the "loosy" types into domain types
     /// </summary>
     /// <returns></returns>
     let formOutput =

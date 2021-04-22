@@ -11,14 +11,9 @@ open Elmish
 /// </summary>
 type FormValues =
     {
-        UserType : string
         Name : string
-        Subject : string
+        Address : Simple.AddressForm.FormValues
     }
-
-type UserType
-    = Student
-    | Teacher
 
 /// <summary>
 /// Represents the model of your Elmish component
@@ -33,14 +28,12 @@ type Msg =
     // Used when a change occure in the form
     | FormChanged of Model
     // Used when the user submit the form
-    | NewStudent of string
-    | NewTeacher of string * string
+    | Submit of User.Name.T * Address.T
 
 let init () =
     {
-        UserType = ""
         Name = ""
-        Subject = ""
+        Address = Simple.AddressForm.blank
     }
     |> Form.View.idle
     , Cmd.none
@@ -61,74 +54,6 @@ let update (msg : Msg) (model : Model) =
     //     }
     //     , Cmd.none
 
-let studentForm =
-    let nameField =
-        Form.textField
-            {
-                Parser = Ok
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
-                Attributes =
-                    {
-                        Label = "Name"
-                        Placeholder = "Student name"
-                    }
-            }
-
-    Form.succeed NewStudent
-        |> Form.append nameField
-        |> Form.section "Student"
-
-let teacherForm =
-    let nameField =
-        Form.textField
-            {
-                Parser = Ok
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
-                Attributes =
-                    {
-                        Label = "Name"
-                        Placeholder = "Teacher name"
-                    }
-            }
-
-    let subjectField =
-        Form.textField
-            {
-                Parser = Ok
-                Value =
-                    fun values -> values.Subject
-                Update =
-                    fun newValue values ->
-                        { values with Subject = newValue }
-                Error =
-                    fun _ -> None
-                Attributes =
-                    {
-                        Label = "Subject"
-                        Placeholder = "Taught subject"
-                    }
-            }
-
-    let formOutput name subject =
-        NewTeacher (name, subject)
-
-    Form.succeed formOutput
-        |> Form.append nameField
-        |> Form.append subjectField
-        |> Form.section "Teacher"
-
 /// <summary>
 /// Define the form logic
 ///
@@ -136,46 +61,41 @@ let teacherForm =
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
 let form : Form.Form<FormValues, Msg> =
-    let userTypeField =
-        Form.selectField
+    let nameField =
+        Form.textField
             {
-                Parser = function
-                    | "student" ->
-                        Ok Student
-
-                    | "teacher" ->
-                        Ok Teacher
-
-                    | _ ->
-                        Error "Invalid user type"
+                Parser =
+                    User.Name.tryParse
                 Value =
-                    fun values -> values.UserType
+                    fun values -> values.Name
                 Update =
                     fun newValue values ->
-                        { values with UserType = newValue }
+                        { values with Name = newValue }
                 Error =
                     fun _ -> None
                 Attributes =
                     {
-                        Label = "Type of user"
-                        Placeholder = "Choose a user type"
-                        Options =
-                            [
-                                "student", "Student"
-                                "teacher", "Teacher"
-                            ]
+                        Label = "Name"
+                        Placeholder = "Your name"
                     }
             }
 
-    userTypeField
-    |> Form.andThen (
-        function
-        | Student ->
-            studentForm
+    let formOutput user address =
+        Submit (user, address)
 
-        | Teacher ->
-            teacherForm
-    )
+    Form.succeed formOutput
+        |> Form.append nameField
+        |> Form.append (
+            Form.mapValues
+                {|
+                    Value =
+                        fun values -> values.Address
+                    Update =
+                        fun newValue values ->
+                            { values with Address = newValue }
+                |}
+                Simple.AddressForm.form
+        )
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     Form.View.asHtml
@@ -191,14 +111,18 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 
 let code =
     """
-userTypeField
-    |> Form.andThen (
-        function
-        | Student ->
-            studentForm
-
-        | Teacher ->
-            teacherForm
+Form.succeed formOutput
+    |> Form.append nameField
+    |> Form.append (
+        Form.mapValues
+            {|
+                Value =
+                    fun values -> values.Address
+                Update =
+                    fun newValue values ->
+                        { values with Address = newValue }
+            |}
+            Simple.AddressForm.form
     )
     """
 

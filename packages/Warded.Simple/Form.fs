@@ -218,6 +218,18 @@ module Form =
     let meta : ('Values -> Form<'Values, 'Output>) -> Form<'Values, 'Output> =
         Base.meta
 
+    let mapValues
+        (config : {| Value : 'A -> 'B; Update : 'B -> 'A -> 'A |})
+        (form : Form<'B, 'Output>)
+        : Form<'A, 'Output> =
+
+        Base.meta (fun values ->
+            form
+            |> Base.mapValues config.Value
+            |> Base.mapField (mapFieldValues config.Update values)
+        )
+
+
     module View =
 
         open Feliz
