@@ -88,13 +88,13 @@ let form : Form.Form<Values, Msg> =
         |> Form.append nameField
         |> Form.append (
             Form.mapValues
-                {|
+                {
                     Value =
                         fun values -> values.Address
                     Update =
                         fun newValue values ->
                             { values with Address = newValue }
-                |}
+                }
                 AddressForm.form
         )
 
@@ -116,13 +116,13 @@ Form.succeed formOutput
     |> Form.append nameField
     |> Form.append (
         Form.mapValues
-            {|
+            {
                 Value =
                     fun values -> values.Address
                 Update =
                     fun newValue values ->
                         { values with Address = newValue }
-            |}
+            }
             AddressForm.form
     )
     """

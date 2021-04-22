@@ -218,17 +218,22 @@ module Form =
     let meta : ('Values -> Form<'Values, 'Output>) -> Form<'Values, 'Output> =
         Base.meta
 
+    type MapValuesConfig<'A, 'B> =
+        {
+            Value : 'A -> 'B
+            Update : 'B -> 'A -> 'A
+        }
+
     let mapValues
-        (config : {| Value : 'A -> 'B; Update : 'B -> 'A -> 'A |})
+        ({ Value = value; Update = update } : MapValuesConfig<'A, 'B>)
         (form : Form<'B, 'Output>)
         : Form<'A, 'Output> =
 
         Base.meta (fun values ->
             form
-            |> Base.mapValues config.Value
-            |> Base.mapField (mapFieldValues config.Update values)
+            |> Base.mapValues value
+            |> Base.mapField (mapFieldValues update values)
         )
-
 
     module View =
 
