@@ -87,7 +87,7 @@ let form : Form.Form<Values, Msg> =
     Form.succeed formOutput
         |> Form.append nameField
         |> Form.append (
-            WithConfiguration.AddressForm.form
+            AddressForm.form
                 {
                     Get =
                         fun values -> values.Address
@@ -114,7 +114,7 @@ let code =
 Form.succeed formOutput
     |> Form.append nameField
     |> Form.append (
-        WithConfiguration.AddressForm.form
+        AddressForm.form
             {
                 Get =
                     fun values -> values.Address
