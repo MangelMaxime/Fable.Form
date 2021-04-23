@@ -7,9 +7,7 @@ module Form =
 
         open Feliz
         open Feliz.Bulma
-        open Elmish
         open Fable.Form
-        open Fable.Form.Simple.Field
         open Fable.Form.Simple
         open Fable.Form.Simple.Form.View
 

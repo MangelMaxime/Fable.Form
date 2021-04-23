@@ -24,20 +24,23 @@
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />
     </ItemGroup>
+    <PropertyGroup>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Fable.Browser.Dom" Version="2.3.0" />
-      <PackageReference Include="Fable.Core" Version="3.2.5" />
-      <PackageReference Include="Fable.Elmish" Version="3.1.0" />
-      <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
-      <PackageReference Include="Fable.Elmish.HMR" Version="4.1.0" />
-      <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
-      <PackageReference Include="Fable.Promise" Version="2.2.0" />
-      <PackageReference Include="Feliz" Version="1.40.0" />
-      <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
+        <PackageReference Include="Fable.Browser.Dom" Version="2.3.0" />
+        <PackageReference Include="Fable.Core" Version="3.2.5" />
+        <PackageReference Include="Fable.Elmish" Version="3.1.0" />
+        <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
+        <PackageReference Include="Fable.Elmish.HMR" Version="4.1.0" />
+        <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
+        <PackageReference Include="Fable.Promise" Version="2.2.0" />
+        <PackageReference Include="Feliz" Version="1.40.0" />
+        <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
-      <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
-      <ProjectReference Include="..\packages\Fable.Form.Simple.Feliz.Bulma\Fable.Form.Simple.Feliz.Bulma.fsproj" />
+        <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
+        <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
+        <ProjectReference Include="..\packages\Fable.Form.Simple.Feliz.Bulma\Fable.Form.Simple.Feliz.Bulma.fsproj" />
     </ItemGroup>
 </Project>
