@@ -1,6 +1,7 @@
 ﻿module Page.SignUp.Component
 
 open Fable.Form.Simple
+open Fable.Form.Simple.Feliz.Bulma
 open Elmish
 open Feliz
 open Feliz.Bulma

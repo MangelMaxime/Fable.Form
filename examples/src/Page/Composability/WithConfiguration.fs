@@ -1,6 +1,7 @@
 module Page.Composability.WithConfiguration.Component
 
 open Fable.Form.Simple
+open Fable.Form.Simple.Feliz.Bulma
 open Elmish
 open Page.Composability.WithConfiguration
 

@@ -38,5 +38,6 @@
     <ItemGroup>
       <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
       <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
+      <ProjectReference Include="..\packages\Fable.Form.Simple.Feliz.Bulma\Fable.Form.Simple.Feliz.Bulma.fsproj" />
     </ItemGroup>
 </Project>
