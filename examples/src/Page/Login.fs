@@ -1,8 +1,8 @@
 module Page.Login.Component
 
+open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Feliz.Bulma
-open Elmish
 
 /// <summary>
 /// Type used to represent the form values

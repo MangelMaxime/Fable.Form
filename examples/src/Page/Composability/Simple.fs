@@ -1,9 +1,8 @@
 module Page.Composability.Simple.Component
 
+open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Feliz.Bulma
-open Elmish
-open Page.Composability.Simple
 
 // Student
 // Teacher

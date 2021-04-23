@@ -1,10 +1,10 @@
 module Page.ValidationStrategies.Component
 
-open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
 open Elmish
 open Feliz
 open Feliz.Bulma
+open Fable.Form.Simple
+open Fable.Form.Simple.Feliz.Bulma
 
 /// <summary>
 /// Type used to represent the form values

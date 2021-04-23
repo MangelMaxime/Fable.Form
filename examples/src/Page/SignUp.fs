@@ -1,10 +1,9 @@
 ﻿module Page.SignUp.Component
 
-open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
 open Elmish
 open Feliz
-open Feliz.Bulma
+open Fable.Form.Simple
+open Fable.Form.Simple.Feliz.Bulma
 
 type FieldError =
     {
@@ -271,7 +270,7 @@ let form : Form.Form<Values, Msg> =
 
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model with
-    | FillingForm Values ->
+    | FillingForm values ->
 
         Form.View.asHtml
             {
@@ -282,7 +281,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
                 Validation = Form.View.ValidateOnSubmit
             }
             form
-            Values
+            values
 
     | SignedUp user ->
         Html.text "User signed up"

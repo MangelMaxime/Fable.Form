@@ -1,8 +1,8 @@
 module Page.DynamicForm.Component
 
+open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Feliz.Bulma
-open Elmish
 
 // Student
 // Teacher
