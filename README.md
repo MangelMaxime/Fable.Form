@@ -6,7 +6,7 @@
 
 Naming library is super annoying.
 
-To make it easy to discover, in general, you need to choose a simple and clear name. Especially in a "small" ecosystem like Fable.
+To make it easy to discover, in general, you need to choose a simple and clear name. Especially in a "small" ecosystem like Fable. The problem is that these names are rarely fun neither exciting.
 
 But, it is possible spice thing up for this reason `Fable.Form` stands for `Fable.Formidable`.
 
