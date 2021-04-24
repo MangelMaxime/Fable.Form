@@ -1,0 +1,17 @@
+{
+    "extends": "@tsconfig/node14/tsconfig.json",
+    "compilerOptions": {
+        "preserveConstEnums": true,
+        "noUnusedLocals": true
+    },
+    "include": [
+        "build.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ],
+    "ts-node": {
+        "transpileOnly": true
+    }
+}
