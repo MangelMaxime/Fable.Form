@@ -159,10 +159,26 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 
 let code =
     """
-Form.succeed formOutput
-    |> Form.append emailField
-    |> Form.append passwordField
-    |> Form.append rememberMe
+let form =
+    Form.succeed formOutput
+        |> Form.append emailField
+        |> Form.append passwordField
+        |> Form.append rememberMe
+
+Form.View.asHtml
+    {
+        Dispatch = dispatch
+        OnChange = FormChanged
+        Action = "Submit"
+        Loading = "Loading"
+        Validation =
+            if model.Values.ValidationStrategy = "onSubmit" then
+                Form.View.ValidateOnSubmit
+            else
+                Form.View.ValidateOnBlur
+    }
+    form
+    model
     """
 
 let githubLink =
