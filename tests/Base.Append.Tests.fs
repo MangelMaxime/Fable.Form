@@ -3,7 +3,6 @@
 open Mocha
 open Fable.Form
 open Fable.Form.Simple
-open Node
 
 type Values =
         {
@@ -177,7 +176,7 @@ describe "Base.append" (fun () ->
                 filledForm.IsEmpty,
                 true
             )
-        )    
+        )
     )
 
 )

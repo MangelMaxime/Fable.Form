@@ -12,6 +12,7 @@
         <Compile Include="Base.Succeed.fs" />
         <Compile Include="Base.Map.Tests.fs" />
         <Compile Include="Base.Append.Tests.fs" />
+        <Compile Include="Base.AndThen.Tests.fs" />
     </ItemGroup>
     <PropertyGroup>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
