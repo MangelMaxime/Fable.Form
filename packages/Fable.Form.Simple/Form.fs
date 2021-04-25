@@ -14,6 +14,7 @@ module Form =
     type TextType =
         | TextRaw
         | TextPassword
+        | TextEmail
         | TextArea
 
     [<RequireQualifiedAccess>]
@@ -50,6 +51,11 @@ module Form =
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         TextField.form (fun x -> Field.Text (TextPassword, x)) config
+
+    let emailField
+        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        : Form<'Values, 'Output> =
+        TextField.form (fun x -> Field.Text (TextEmail, x)) config
 
     let textareaField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
@@ -366,6 +372,7 @@ module Form =
                 Form : FormConfig<'Msg> -> ReactElement
                 TextField : TextFieldConfig<'Msg> -> ReactElement
                 PasswordField : TextFieldConfig<'Msg> -> ReactElement
+                EmailField : TextFieldConfig<'Msg> -> ReactElement
                 TextAreaField : TextFieldConfig<'Msg> -> ReactElement
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
@@ -387,6 +394,7 @@ module Form =
         type InputType =
             | Text
             | Password
+            | Email
 
         let errorToString (error : Error.Error) =
             match error with
@@ -445,6 +453,9 @@ module Form =
 
                 | TextType.TextArea ->
                     customConfig.TextAreaField config
+
+                | TextType.TextEmail ->
+                    customConfig.EmailField config
 
             | Field.Checkbox info ->
                 let config : CheckboxFieldConfig<'Msg> =

@@ -9,11 +9,19 @@
         <Compile Include="Node.Assert.fs" />
         <Compile Include="Fable.Core.JsInterop.fs" />
         <Compile Include="Globals.fs" />
-        <Compile Include="Main.fs" />
+        <Compile Include="Base.Succeed.fs" />
+        <Compile Include="Base.Map.Tests.fs" />
+        <Compile Include="Base.Append.Tests.fs" />
     </ItemGroup>
+    <PropertyGroup>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
     <ItemGroup>
+      <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
+      <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Fable.Core" Version="3.2.5" />
+      <PackageReference Include="Fable.React" Version="7.3.0" />
     </ItemGroup>
 </Project>

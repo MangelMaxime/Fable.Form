@@ -44,16 +44,19 @@ class Examples {
     static get root() {
         return resolve("examples");
     }
+    static resolve(...args) {
+        return resolve(Examples.root, ...args);
+    }
     static shellExec(command) {
         shelljs_1.default.exec(command, {
             cwd: Examples.root
         });
     }
     static clean() {
-        shelljs_1.default.rm("-rf", resolve("examples", "fableBuild"));
-        shelljs_1.default.rm("-rf", resolve("examples", "src", "obj"));
-        shelljs_1.default.rm("-rf", resolve("examples", "src", "bin"));
-        shelljs_1.default.rm("-rf", resolve("examples", "output"));
+        shelljs_1.default.rm("-rf", Examples.resolve("fableBuild"));
+        shelljs_1.default.rm("-rf", Examples.resolve("src", "obj"));
+        shelljs_1.default.rm("-rf", Examples.resolve("src", "bin"));
+        shelljs_1.default.rm("-rf", Examples.resolve("output"));
     }
     static async watch() {
         Examples.clean();
@@ -78,6 +81,41 @@ class Examples {
         Examples.shellExec("npx webpack --mode production");
     }
 }
+class Tests {
+    static get root() {
+        return resolve("tests");
+    }
+    static resolve(...args) {
+        return resolve(Tests.root, ...args);
+    }
+    static shellExec(command) {
+        shelljs_1.default.exec(command, {
+            cwd: Examples.root
+        });
+    }
+    static clean() {
+        shelljs_1.default.rm("-rf", Tests.resolve("bin"));
+        shelljs_1.default.rm("-rf", Tests.resolve("obj"));
+        shelljs_1.default.rm("-rf", Tests.resolve("fableBuild"));
+    }
+    static async watch() {
+        Tests.clean();
+        // We need to create the fableBuild directory in order to get nodemon / mocha to watch in it
+        shelljs_1.default.mkdir(Tests.resolve("fableBuild"));
+        await concurrently_1.default([
+            {
+                command: 'npx nodemon --watch fableBuild --delay 150ms --exec "npx mocha -r esm -r mocha.env.js --reporter dot --recursive fableBuild"',
+                cwd: Tests.root
+            },
+            {
+                command: "dotnet fable --watch --outDir fableBuild",
+                cwd: Tests.root
+            }
+        ], {
+            prefix: "none"
+        });
+    }
+}
 yargs_1.default(helpers_1.hideBin(process.argv))
     .strict()
     .help()
@@ -86,6 +124,10 @@ yargs_1.default(helpers_1.hideBin(process.argv))
     return argv
         .command("watch", "Start Example in watch mode.", () => { }, Examples.watch)
         .command("build", "Build Example project using production mode", () => { }, Examples.build);
+})
+    .command("tests", "Commands related to the tests", (argv) => {
+    return argv
+        .command("watch", "Start the Test in watch mode re-compiling and re-running them on file change", () => { }, Tests.watch);
 })
     // .command(
     //     "publish",

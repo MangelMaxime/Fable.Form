@@ -49,6 +49,10 @@ class Examples {
         return resolve("examples")
     }
 
+    static resolve(...args: string[]) {
+        return resolve(Examples.root, ...args)
+    }
+
     static shellExec(command: string) {
         shell.exec(
             command,
@@ -59,10 +63,10 @@ class Examples {
     }
 
     static clean() {
-        shell.rm("-rf", resolve("examples", "fableBuild"))
-        shell.rm("-rf", resolve("examples", "src", "obj"))
-        shell.rm("-rf", resolve("examples", "src", "bin"))
-        shell.rm("-rf", resolve("examples", "output"))
+        shell.rm("-rf", Examples.resolve("fableBuild"))
+        shell.rm("-rf", Examples.resolve("src", "obj"))
+        shell.rm("-rf", Examples.resolve("src", "bin"))
+        shell.rm("-rf", Examples.resolve("output"))
     }
 
     static async watch() {
@@ -95,6 +99,55 @@ class Examples {
 
 }
 
+class Tests {
+
+    static get root () {
+        return resolve("tests");
+    }
+
+    static resolve(...args: string[]) {
+        return resolve(Tests.root, ...args)
+    }
+
+    static shellExec(command: string) {
+        shell.exec(
+            command,
+            {
+                cwd: Examples.root
+            }
+        )
+    }
+
+    static clean() {
+        shell.rm("-rf", Tests.resolve("bin"));
+        shell.rm("-rf", Tests.resolve("obj"));
+        shell.rm("-rf", Tests.resolve("fableBuild"));
+    }
+
+    static async watch() {
+        Tests.clean();
+
+        // We need to create the fableBuild directory in order to get nodemon / mocha to watch in it
+        shell.mkdir(Tests.resolve("fableBuild"))
+
+        await concurrently(
+            [
+                {
+                    command: 'npx nodemon --watch fableBuild --delay 150ms --exec "npx mocha -r esm -r mocha.env.js --reporter dot --recursive fableBuild"',
+                    cwd: Tests.root
+                },
+                {
+                    command: "dotnet fable --watch --outDir fableBuild",
+                    cwd: Tests.root
+                }
+            ],
+            {
+                prefix: "none"
+            });
+    }
+
+}
+
 yargs(hideBin(process.argv))
     .strict()
     .help()
@@ -115,6 +168,19 @@ yargs(hideBin(process.argv))
                     "Build Example project using production mode",
                     () => { },
                     Examples.build
+                )
+        }
+    )
+    .command(
+        "tests",
+        "Commands related to the tests",
+        (argv) => {
+            return argv
+                .command(
+                    "watch",
+                    "Start the Test in watch mode re-compiling and re-running them on file change",
+                    () => {},
+                    Tests.watch
                 )
         }
     )

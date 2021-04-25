@@ -68,6 +68,9 @@ module Form =
                 | InputType.Password ->
                     Bulma.input.password
 
+                | InputType.Email ->
+                    Bulma.input.email
+
             inputFunc [
                 prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
 
@@ -380,6 +383,7 @@ module Form =
                 Form = form
                 TextField = inputField Text
                 PasswordField = inputField Password
+                EmailField = inputField Email
                 TextAreaField = textareaField
                 CheckboxField = checkboxField
                 RadioField = radioField

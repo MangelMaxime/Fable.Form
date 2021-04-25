@@ -175,6 +175,30 @@ let andThen
                 IsEmpty = filled.IsEmpty
             }
 
+/// <summary>
+/// Transform the 'output' of a form
+///
+/// You can use it to keep your forms decoupled from your specific view messages:
+///
+/// <code lang="fsharp">
+/// Base.map SignUp signupForm
+/// </code>
+/// </summary>
+let map
+    (fn : 'A -> 'B)
+    (form : Form<'Values, 'A, 'Field>)
+    : Form<'Values, 'B, 'Field> =
+
+    fun values ->
+        let filled =
+            fill form values
+
+        {
+            Fields = filled.Fields
+            Result = Result.map fn filled.Result
+            IsEmpty = filled.IsEmpty
+        }
+
 let field
     (isEmpty : 'Input -> bool)
     (build : Field.Field<'Attributes, 'Input, 'Values> -> 'Field)

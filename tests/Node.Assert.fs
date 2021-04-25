@@ -25,7 +25,7 @@ type [<AllowNullLiteral>] IExports =
     abstract notDeepEqual: actual: obj * expected: obj option * ?message: U2<string, Error> -> unit
     abstract strictEqual: actual: obj * expected: 'T * ?message: U2<string, Error> -> unit
     abstract notStrictEqual: actual: obj * expected: 'T * ?message: U2<string, Error> -> unit
-    abstract deepStrictEqual: actual: obj * expected: 'T * ?message: U2<string, Error> -> unit
+    abstract deepStrictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
     abstract notDeepStrictEqual: actual: obj * expected: obj option * ?message: U2<string, Error> -> unit
     abstract throws: block: (unit -> 'T) * ?message: string -> unit
     abstract throws: block: (unit -> obj) * ?message: Error -> unit
