@@ -1,4 +1,4 @@
-﻿module Tests.Base_AndThen_Tests
+﻿module Tests.Base_AndThen
 
 open Mocha
 open Fable.Form

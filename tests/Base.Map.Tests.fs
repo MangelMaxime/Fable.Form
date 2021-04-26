@@ -1,4 +1,4 @@
-﻿module Tests.Base_Map_Tests
+﻿module Tests.Base_Map
 
 open Mocha
 open Fable.Form

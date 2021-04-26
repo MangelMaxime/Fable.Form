@@ -1,4 +1,4 @@
-﻿module Tests.Base_Append
+﻿module Tests.Base_Optional
 
 open Mocha
 open Fable.Form
@@ -62,6 +62,7 @@ let form =
         Base.succeed (fun x y -> (x, y))
             |> Base.append emailField
             |> Base.append passwordField
+            |> Base.optional
 
 let fill =
     Base.fill form
@@ -70,6 +71,12 @@ let validValues =
     {
         Email = "test@mail.com"
         Password = "123456789"
+    }
+
+let partiallyValidValues =
+    {
+        Email = "test@mail.com"
+        Password = ""
     }
 
 let invalidValues =
@@ -84,25 +91,44 @@ let emptyValues =
         Password = ""
     }
 
-describe "Base.append" (fun () ->
+describe "Base.optional" (fun () ->
 
-    describe "when filled" (fun () ->
+    describe "when filled with empty values" (fun () ->
 
-        it "contains the appended fields" (fun () ->
-            let filledForm = fill emptyValues
+            it "contains no field errors" (fun () ->
+                let filledForm =
+                    fill emptyValues
 
-            Assert.strictEqual(
-                filledForm.Fields.Length,
-                2
+                let fieldErrors =
+                    filledForm.Fields
+                    |> List.map (fun field ->
+                        field.Error
+                    )
+
+                Assert.deepStrictEqual(
+                    fieldErrors,
+                    [ None; None ]
+                )
             )
-        )
+
+            it "produces None" (fun () ->
+                let filledForm =
+                    fill emptyValues
+
+                Assert.deepStrictEqual(
+                    filledForm.Result,
+                    Ok None
+                )
+            )
 
     )
 
     describe "when filled with valid values" (fun () ->
 
         it "contains no field errors" (fun () ->
-            let filledForm = fill validValues
+            let filledForm =
+                fill validValues
+
             let fieldErrors =
                 filledForm.Fields
                 |> List.map (fun field ->
@@ -115,12 +141,27 @@ describe "Base.append" (fun () ->
             )
         )
 
-        it "result in the correct output" (fun () ->
-            let filledForm = fill validValues
+        it "results in the correct output" (fun () ->
+            let filledForm =
+                fill validValues
 
             Assert.deepStrictEqual(
                 filledForm.Result,
-                Ok ("test@mail.com", "123456789")
+                Ok (Some ("test@mail.com", "123456789"))
+            )
+        )
+
+    )
+
+    describe "when partially filled" (fun () ->
+
+        it "results in required field errors" (fun () ->
+            let filledForm =
+                fill partiallyValidValues
+
+            Assert.deepStrictEqual(
+                filledForm.Result,
+                Error (Error.RequiredFieldIsEmpty, [])
             )
         )
 
@@ -129,7 +170,9 @@ describe "Base.append" (fun () ->
     describe "when filled with invalid values" (fun () ->
 
         it "contains the first error of each field" (fun () ->
-            let filledForm = fill invalidValues
+            let filledForm =
+                fill invalidValues
+
             let fieldErrors =
                 filledForm.Fields
                 |> List.map (fun field ->
@@ -146,7 +189,8 @@ describe "Base.append" (fun () ->
         )
 
         it "results in a non-empty list with the errors of the fields" (fun () ->
-            let filledForm = fill invalidValues
+            let filledForm =
+                fill invalidValues
 
             Assert.deepStrictEqual(
                 filledForm.Result,
@@ -157,27 +201,6 @@ describe "Base.append" (fun () ->
             )
         )
 
-        it "is not empty" (fun () ->
-            let filledForm = fill invalidValues
-
-            Assert.strictEqual(
-                filledForm.IsEmpty,
-                false
-            )
-        )
-
-    )
-
-    describe "when filled with empty values" (fun () ->
-        it "is empty" (fun () ->
-            let filledForm = fill emptyValues
-
-            Assert.strictEqual(
-                filledForm.IsEmpty,
-                true
-            )
-        )
     )
 
 )
-

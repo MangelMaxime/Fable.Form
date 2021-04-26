@@ -255,3 +255,38 @@ let field
             Result = result
             IsEmpty = isEmpty_
         }
+
+let optional
+    (form : Form<'Values, 'Output, 'Field>)
+    : Form<'Values, 'Output option, 'Field> =
+
+    fun values ->
+        let filled =
+            fill form values
+
+        match filled.Result with
+        | Ok value ->
+            {
+                Fields = filled.Fields
+                Result = Ok (Some value)
+                IsEmpty = filled.IsEmpty
+            }
+
+        | Error (firstError, otherErrors) ->
+            if filled.IsEmpty then
+                {
+                    Fields =
+                        filled.Fields
+                        |> List.map (fun field ->
+                            { field with Error = None }
+                        )
+                    Result = Ok None
+                    IsEmpty = filled.IsEmpty
+                }
+            else
+                {
+                    Fields = filled.Fields
+                    Result = Error (firstError, otherErrors)
+                    IsEmpty = false
+                }
+

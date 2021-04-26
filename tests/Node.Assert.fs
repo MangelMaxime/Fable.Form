@@ -22,11 +22,11 @@ type [<AllowNullLiteral>] IExports =
     [<Obsolete("since v9.9.0 - use deepStrictEqual() instead.")>]
     abstract deepEqual: actual: obj * expected: obj option * ?message: U2<string, Error> -> unit
     [<Obsolete("since v9.9.0 - use notDeepStrictEqual() instead.")>]
-    abstract notDeepEqual: actual: obj * expected: obj option * ?message: U2<string, Error> -> unit
-    abstract strictEqual: actual: obj * expected: 'T * ?message: U2<string, Error> -> unit
-    abstract notStrictEqual: actual: obj * expected: 'T * ?message: U2<string, Error> -> unit
+    abstract notDeepEqual: actual: 'T * expected: 'T option * ?message: U2<string, Error> -> unit
+    abstract strictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
+    abstract notStrictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
     abstract deepStrictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
-    abstract notDeepStrictEqual: actual: obj * expected: obj option * ?message: U2<string, Error> -> unit
+    abstract notDeepStrictEqual: actual: 'T * expected: 'T option * ?message: U2<string, Error> -> unit
     abstract throws: block: (unit -> 'T) * ?message: string -> unit
     abstract throws: block: (unit -> obj) * ?message: Error -> unit
     abstract throws: block: (unit -> obj) -> unit

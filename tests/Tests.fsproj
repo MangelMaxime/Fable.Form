@@ -12,6 +12,10 @@
         <Compile Include="Base.Succeed.fs" />
         <Compile Include="Base.Map.Tests.fs" />
         <Compile Include="Base.Append.Tests.fs" />
+        <Compile Include="Base.Optional.Tests.fs" />
+        <Compile Include="Base.Meta.Tests.fs" />
+        <Compile Include="Base.Custom.Tests.fs" />
+        <Compile Include="Base.Field.Tests.fs" />
         <Compile Include="Base.AndThen.Tests.fs" />
     </ItemGroup>
     <PropertyGroup>
