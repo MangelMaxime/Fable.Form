@@ -128,7 +128,8 @@ class Examples {
     }
 
     static async publish() {
-        GHPages.publishPromise(Examples.resolve("output"))
+        Examples.build();
+        await GHPages.publishPromise(Examples.resolve("output"));
     }
 
 }
@@ -182,16 +183,6 @@ class Tests {
 
 }
 
-const publishHandler = async (argv: { ghpagesOnly: any; }) => {
-    Examples.build();
-
-    if (!argv.ghpagesOnly) {
-
-    }
-
-    await Examples.publish();
-}
-
 yargs(hideBin(process.argv))
     .strict()
     .help()
@@ -230,19 +221,16 @@ yargs(hideBin(process.argv))
     )
     .command(
         "publish",
-        "Use this command when you want to release a new version of the library and update the example project on Github pages",
+        "Command used to released a new version, update Github pages, etc.",
         (argv) => {
-            argv
-                .options(
-                    "ghpages-only",
-                    {
-                        description: "If true, the publish task will only publish the example project on Github pages",
-                        type: "boolean",
-                        default: false
-                    }
+            return argv
+                .command(
+                    "ghpages",
+                    "Publish the example project on Github pages",
+                    () => {},
+                    Examples.publish
                 )
-        },
-        publishHandler
+        }
     )
     .version(false)
     .argv

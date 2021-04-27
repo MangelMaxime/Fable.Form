@@ -110,7 +110,8 @@ class Examples {
         Examples.shellExec("npx webpack --mode production");
     }
     static async publish() {
-        GHPages.publishPromise(Examples.resolve("output"));
+        Examples.build();
+        await GHPages.publishPromise(Examples.resolve("output"));
     }
 }
 class Tests {
@@ -148,12 +149,6 @@ class Tests {
         });
     }
 }
-const publishHandler = async (argv) => {
-    Examples.build();
-    if (!argv.ghpagesOnly) {
-    }
-    await Examples.publish();
-};
 yargs_1.default(helpers_1.hideBin(process.argv))
     .strict()
     .help()
@@ -167,13 +162,9 @@ yargs_1.default(helpers_1.hideBin(process.argv))
     return argv
         .command("watch", "Start the Test in watch mode re-compiling and re-running them on file change", () => { }, Tests.watch);
 })
-    .command("publish", "Use this command when you want to release a new version of the library and update the example project on Github pages", (argv) => {
-    argv
-        .options("ghpages-only", {
-        description: "If true, the publish task will only publish the example project on Github pages",
-        type: "boolean",
-        default: false
-    });
-}, publishHandler)
+    .command("publish", "Command used to released a new version, update Github pages, etc.", (argv) => {
+    return argv
+        .command("ghpages", "Publish the example project on Github pages", () => { }, Examples.publish);
+})
     .version(false)
     .argv;
