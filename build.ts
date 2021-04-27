@@ -15,6 +15,7 @@ import chalk from "chalk";
 import shell from "shelljs";
 import path from 'path';
 import concurrently from 'concurrently';
+import ghpages from 'gh-pages';
 
 // Ignore TypeScript warning about unused variable for the helpers
 /** @ts-ignore */
@@ -42,6 +43,35 @@ shell.config.fatal = true
 //         return value;
 //     }
 // }
+
+
+class GHPages {
+
+    static publishPromise (path : string, config?: ghpages.PublishOptions) {
+        if (config === undefined) {
+            return new Promise<void>((resolve, reject) => {
+                ghpages.publish(path, (err) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve();
+                    }
+                })
+            })
+        } else {
+            return new Promise<void>((resolve, reject) => {
+                ghpages.publish(path, config, (err) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve();
+                    }
+                })
+            })
+        }
+    }
+
+}
 
 class Examples {
 
@@ -90,11 +120,15 @@ class Examples {
         )
     }
 
-    static async build() {
+    static build() {
         Examples.clean();
         Examples.shellExec("npm install");
         Examples.shellExec("dotnet fable --outDir fableBuild");
         Examples.shellExec("npx webpack --mode production");
+    }
+
+    static async publish() {
+        GHPages.publishPromise(Examples.resolve("output"))
     }
 
 }
@@ -148,6 +182,16 @@ class Tests {
 
 }
 
+const publishHandler = async (argv: { ghpagesOnly: any; }) => {
+    Examples.build();
+
+    if (!argv.ghpagesOnly) {
+
+    }
+
+    await Examples.publish();
+}
+
 yargs(hideBin(process.argv))
     .strict()
     .help()
@@ -184,21 +228,21 @@ yargs(hideBin(process.argv))
                 )
         }
     )
-    // .command(
-    //     "publish",
-    //     "Use this command when you want to release a new version of the library and update the demo project on Github pages",
-    //     (argv) => {
-    //         argv
-    //             .options(
-    //                 "demo-only",
-    //                 {
-    //                     description: "When active, the publish task will only publish the demo project on Github pages",
-    //                     type: "boolean",
-    //                     default: false
-    //                 }
-    //             )
-    //     },
-    //     publishHandler
-    // )
+    .command(
+        "publish",
+        "Use this command when you want to release a new version of the library and update the example project on Github pages",
+        (argv) => {
+            argv
+                .options(
+                    "ghpages-only",
+                    {
+                        description: "If true, the publish task will only publish the example project on Github pages",
+                        type: "boolean",
+                        default: false
+                    }
+                )
+        },
+        publishHandler
+    )
     .version(false)
     .argv

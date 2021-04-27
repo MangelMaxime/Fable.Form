@@ -16,6 +16,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const shelljs_1 = __importDefault(require("shelljs"));
 const path_1 = __importDefault(require("path"));
 const concurrently_1 = __importDefault(require("concurrently"));
+const gh_pages_1 = __importDefault(require("gh-pages"));
 // Ignore TypeScript warning about unused variable for the helpers
 /** @ts-ignore */
 const info = chalk_1.default.blueBright;
@@ -40,6 +41,34 @@ shelljs_1.default.config.fatal = true;
 //         return value;
 //     }
 // }
+class GHPages {
+    static publishPromise(path, config) {
+        if (config === undefined) {
+            return new Promise((resolve, reject) => {
+                gh_pages_1.default.publish(path, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            });
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                gh_pages_1.default.publish(path, config, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            });
+        }
+    }
+}
 class Examples {
     static get root() {
         return resolve("examples");
@@ -74,11 +103,14 @@ class Examples {
             prefix: "none"
         });
     }
-    static async build() {
+    static build() {
         Examples.clean();
         Examples.shellExec("npm install");
         Examples.shellExec("dotnet fable --outDir fableBuild");
         Examples.shellExec("npx webpack --mode production");
+    }
+    static async publish() {
+        GHPages.publishPromise(Examples.resolve("output"));
     }
 }
 class Tests {
@@ -116,6 +148,12 @@ class Tests {
         });
     }
 }
+const publishHandler = async (argv) => {
+    Examples.build();
+    if (!argv.ghpagesOnly) {
+    }
+    await Examples.publish();
+};
 yargs_1.default(helpers_1.hideBin(process.argv))
     .strict()
     .help()
@@ -129,21 +167,13 @@ yargs_1.default(helpers_1.hideBin(process.argv))
     return argv
         .command("watch", "Start the Test in watch mode re-compiling and re-running them on file change", () => { }, Tests.watch);
 })
-    // .command(
-    //     "publish",
-    //     "Use this command when you want to release a new version of the library and update the demo project on Github pages",
-    //     (argv) => {
-    //         argv
-    //             .options(
-    //                 "demo-only",
-    //                 {
-    //                     description: "When active, the publish task will only publish the demo project on Github pages",
-    //                     type: "boolean",
-    //                     default: false
-    //                 }
-    //             )
-    //     },
-    //     publishHandler
-    // )
+    .command("publish", "Use this command when you want to release a new version of the library and update the example project on Github pages", (argv) => {
+    argv
+        .options("ghpages-only", {
+        description: "If true, the publish task will only publish the example project on Github pages",
+        type: "boolean",
+        default: false
+    });
+}, publishHandler)
     .version(false)
     .argv;

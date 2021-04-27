@@ -337,3 +337,4 @@ ASALocalRun/
 *.fs.js.map
 
 fableBuild
+examples/output/
