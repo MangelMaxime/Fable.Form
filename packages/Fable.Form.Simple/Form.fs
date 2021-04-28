@@ -6,17 +6,39 @@ open Fable.Form.Simple.Field
 [<RequireQualifiedAccess>]
 module Form =
 
+    /// <summary>
+    /// Type alias for TextField.TextField&lt;'Values&gt;
+    /// </summary>
     type TextField<'Values> = TextField.TextField<'Values>
+
+    /// <summary>
+    /// Type alias for RadioField.RadioField&lt;'Values&gt;
+    /// </summary>
     type RadioField<'Values> = RadioField.RadioField<'Values>
+
+    /// <summary>
+    /// Type alias for CheckboxField.CheckboxField&lt;'Values&gt;
+    /// </summary>
     type CheckboxField<'Values> = CheckboxField.CheckboxField<'Values>
+
+    /// <summary>
+    /// Type alias for SelectField.SelectField&lt;'Values&gt;
+    /// </summary>
     type SelectField<'Values> = SelectField.SelectField<'Values>
 
+
+    /// <summary>
+    /// Represents the type of TextField
+    /// </summary>
     type TextType =
         | TextRaw
         | TextPassword
         | TextEmail
         | TextArea
 
+    /// <summary>
+    /// DUs used to represents the different of Field supported by Fable.Form.Simple
+    /// </summary>
     [<RequireQualifiedAccess>]
     type Field<'Values> =
         | Text of TextType * TextField<'Values>
@@ -27,20 +49,146 @@ module Form =
         | Section of title : string * FilledField<'Values> list
         | List of FormList.FormList<'Values, Field<'Values>>
 
+    /// <summary>
+    /// Represents a FilledField using Fable.Form.Simple representation
+    /// </summary>
     and FilledField<'Values> =
         Base.FilledField<Field<'Values>>
 
+    /// <summary>
+    /// Represents a form using Fable.Form.Simple representation
+    /// </summary>
     type Form<'Values, 'Output> =
         Base.Form<'Values, 'Output, Field<'Values>>
 
+    // Redifined some function from the Base module so the user can access them transparently and they are also specifically type for the Fable.Form.Simple absttraction
+
+    /// <summary>
+    /// Create a form that always succeeds when filled.
+    /// </summary>
+    /// <param name="output">The value to return when the form is filled</param>
+    /// <returns>The given <c>Output</c></returns>
     let succeed (output : 'Output) : Form<'Values, 'Output> =
         Base.succeed output
 
-    let append : Form<'Values, 'A> -> Form<'Values, 'A -> 'B> -> Form<'Values, 'B> =
-        Base.append
+    /// <summary>
+    /// Append a form to another one while <b>capturing</b> the output of the first one
+    /// </summary>
+    /// <param name="newForm">Form to append</param>
+    /// <param name="currentForm">Form to append to</param>
+    /// <returns>A new form resulting in the combination of <c>newForm</c> and <c>currentForm</c></returns>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let emailField =
+    ///     Form.emailField
+    ///         {
+    ///             // ...
+    ///         }
+    ///
+    /// let passwordField =
+    ///     Form.passwordField
+    ///         {
+    ///             // ...
+    ///         }
+    ///
+    /// let formOutput =
+    ///     fun email password ->
+    ///         LogIn (email, password)
+    ///
+    /// Form.succeed formOutput
+    ///     |> Form.append emailField
+    ///     |> Form.append passwordField
+    /// </code>
+    ///
+    /// In this example, <c>append</c> is used to feed <c>formOutput</c> function and combine it into a <c>Login</c> message when submitted.
+    /// </example>
+    let append
+        (newForm : Form<'Values, 'A>)
+        (currentForm : Form<'Values, 'A -> 'B>)
+        : Form<'Values, 'B> =
 
-    let andThen : ('A -> Form<'Values, 'B>) -> Form<'Values, 'A> -> Form<'Values, 'B> =
-        Base.andThen
+        Base.append newForm currentForm
+
+    /// <summary>
+    /// Fill a form <c>andThen</c> fill another one.
+    ///
+    /// This type of form is useful when some part of your form can dynamically change based on the value of another field.
+    /// </summary>
+    /// <param name="child">The child form</param>
+    /// <param name="parent">The parent form which is filled first</param>
+    /// <returns>A new form which is the result of filling the <c>parent</c> and then filling the <c>child</c> form</returns>
+    /// <example>
+    /// <para>Imagine you have a form to create a student or a teacher. Based on the type of user selected you can show the student form or the teacher form.</para>
+    /// <code lang="fsharp">
+    /// Form.selectField
+    ///     {
+    ///         Parser = function
+    ///             | "student" ->
+    ///                 Ok Student
+    ///
+    ///             | "teacher" ->
+    ///                 Ok Teacher
+    ///
+    ///             | _ ->
+    ///                 Error "Invalid user type"
+    ///         Value =
+    ///             fun values -> values.UserType
+    ///         Update =
+    ///             fun newValue values ->
+    ///                 { values with UserType = newValue }
+    ///         Error =
+    ///             fun _ -> None
+    ///         Attributes =
+    ///             {
+    ///                 Label = "Type of user"
+    ///                 Placeholder = "Choose a user type"
+    ///                 Options =
+    ///                     [
+    ///                         "student", "Student"
+    ///                         "teacher", "Teacher"
+    ///                     ]
+    ///             }
+    ///     }
+    /// |> Form.andThen (
+    ///     function
+    ///     | Student ->
+    ///         let nameField =
+    ///             Form.textField
+    ///                 {
+    ///                     // ...
+    ///                 }
+    ///
+    ///         Form.succeed NewStudent
+    ///             |> Form.append nameField
+    ///
+    ///     | Teacher ->
+    ///         let nameField =
+    ///             Form.textField
+    ///                 {
+    ///                     // ...
+    ///                 }
+    ///
+    ///         let subjectField =
+    ///             Form.textField
+    ///                 {
+    ///                     // ...
+    ///                 }
+    ///
+    ///         let formOutput name subject =
+    ///             NewTeacher (name, subject)
+    ///
+    ///         Form.succeed formOutput
+    ///             |> Form.append nameField
+    ///             |> Form.append subjectField
+    /// )
+    /// </code>
+    /// </example>
+    let andThen
+        (child : 'A -> Form<'Values, 'B>)
+        (parent : Form<'Values, 'A>)
+        : Form<'Values, 'B> =
+
+        Base.andThen child parent
 
     let textField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
