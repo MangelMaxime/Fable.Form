@@ -84,6 +84,16 @@ type CustomField<'Output, 'Field> =
 
 /// <summary>
 /// Create a form that always succeeds when filled.
+///
+/// Note: You can choose to discard one of the function argument. The classic example for that is when dealing with a <c>repeatPasswordField</c>
+///
+/// <para>
+/// <code lang="fsharp">
+/// Form.succeed (fun password _ -> password )
+///     |> Form.append passwordField
+///     |> Form.append repeatPasswordField
+/// </code>
+/// </para>
 /// </summary>
 /// <param name="output">The value to return when the form is filled</param>
 /// <returns>The given <c>Output</c></returns>
@@ -152,37 +162,10 @@ let custom (fillField : 'Values -> CustomField<'Output, 'Field>) : Form<'Values,
 /// Build a form that depends on its own <c>'Values</c>
 ///
 /// This is useful when a field need to checks it's value against another field value.
-/// </summary>
-/// <example>
-/// The classic example for using <c>Base.meta</c> is when dealing with a repeat password field.
-/// <code lang="fsharp">
-/// Form.meta
-///     (fun values ->
-///         Form.passwordField
-///             {
-///                 Parser =
-///                     fun value ->
-///                         if value = values.Password then
-///                             Ok ()
 ///
-///                         else
-///                             Error "The passwords do not match"
-///                 Value = fun values -> values.RepeatPassword
-///                 Update =
-///                     fun newValue values_ ->
-///                         { values_ with RepeatPassword = newValue }
-///                 Error =
-///                     fun _ -> None
-///                 Attributes =
-///                     {
-///                         Label = "Repeat password"
-///                         Placeholder = "Your password again..."
-///                     }
-///             }
-///     )
-/// </code>
-/// </example>
-/// <param name="fn"></param>
+/// The classic example for using <c>meta</c> is when dealing with a repeat password field.
+/// </summary>
+/// <param name="fn">Function to apply to transform the form values</param>
 /// <returns></returns>
 let meta (fn : 'Values -> Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Field> =
     Form (
@@ -200,42 +183,6 @@ let meta (fn : 'Values -> Form<'Values, 'Output, 'Field>) : Form<'Values, 'Outpu
 /// <returns>
 /// A new form resulting of <c>fn >> fill form</c>
 /// </returns>
-/// <example>
-/// The classic example for using <c>Base.meta</c> is when dealing with a repeat password field.
-/// <code lang="fsharp">
-/// // Module contains a re-usable form
-/// module AddressForm =
-///     type Values =
-///         {
-///             Country : string
-///             City : string
-///             PostalCode : string
-///         }
-///
-/// // Module in which we want to re-use the AddressForm
-/// module ParentForm =
-///     type Values =
-///         {
-///             Name : string
-///             Address : AddressForm.Values
-///         }
-///
-///     Form.succeed formOutput
-///         |> Form.append nameField
-///         |> Form.append (
-///             // Here we are mapping how the parent form should use the property Address to apply the AddressForm.form function
-///             Form.mapValues
-///                 {
-///                     Value =
-///                         fun values -> values.Address
-///                     Update =
-///                         fun newValue values ->
-///                             { values with Address = newValue }
-///                 }
-///                 AddressForm.form
-///         )
-/// </code>
-/// </example>
 let mapValues
     (fn : 'A -> 'B)
     (form : Form<'B, 'Output, 'Field>)
