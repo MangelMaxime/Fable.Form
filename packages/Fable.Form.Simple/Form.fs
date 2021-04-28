@@ -190,41 +190,116 @@ module Form =
 
         Base.andThen child parent
 
+    /// <summary>
+    /// Create a form that contains a single text field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a text field</returns>
     let textField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         TextField.form (fun x -> Field.Text (TextRaw, x)) config
 
+    /// <summary>
+    /// Create a form that contains a single password field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a password field</returns>
     let passwordField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         TextField.form (fun x -> Field.Text (TextPassword, x)) config
 
+    /// <summary>
+    /// Create a form that contains a single email field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a email field</returns>
     let emailField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         TextField.form (fun x -> Field.Text (TextEmail, x)) config
 
+    /// <summary>
+    /// Create a form that contains a single textarea field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a textarea field</returns>
     let textareaField
         (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         TextField.form (fun x -> Field.Text (TextArea, x)) config
 
+    /// <summary>
+    /// Create a form that contains a single checkbox field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a checkbox field</returns>
     let checkboxField
         (config : Base.FieldConfig<CheckboxField.Attributes, bool, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         CheckboxField.form Field.Checkbox config
 
+    /// <summary>
+    /// Create a form that contains a single radio field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a radio field</returns>
     let radioField
         (config : Base.FieldConfig<RadioField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         RadioField.form Field.Radio config
 
+    /// <summary>
+    /// Create a form that contains a single select field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a select field</returns>
     let selectField
         (config : Base.FieldConfig<SelectField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output> =
         SelectField.form Field.Select config
 
+
+    /// <summary>
+    /// Wrap a form in a group
+    ///
+    /// The behaviour of the form is not altered but it can be rendered differently.
+    ///
+    /// For example, Fable.Form.Simple.Feliz.Bulma will render the groups horizontally.
+    ///
+    /// See the fields password and repeat password <a href="https://mangelmaxime.github.io/Fable.Form/#sign-up">on this page</a>
+    /// </summary>
+    /// <param name="form">The form to group</param>
+    /// <returns>A form marked as a <c>Group</c> field</returns>
     let group
         (form : Form<'Values, 'Output>)
         : Form<'Values, 'Output> =
@@ -238,6 +313,18 @@ module Form =
             }
         )
 
+    /// <summary>
+    /// Wrap a form in a section
+    ///
+    /// The behaviour of the form is not altered but it can be rendered differently.
+    ///
+    /// For example, Fable.Form.Simple.Feliz.Bulma will the form in section with a border and the title display above.
+    ///
+    /// An example is available <a href="https://mangelmaxime.github.io/Fable.Form/#dynamic-form">on this page</a>
+    /// </summary>
+    /// <param name="title">The title to display on the section</param>
+    /// <param name="form">The form to group</param>
+    /// <returns>A form marked as a <c>Section</c> field</returns>
     let section
         (title : string)
         (form : Form<'Values, 'Output>)
@@ -255,20 +342,32 @@ module Form =
     //type FilledForm<'Output, 'Field> =
     //    Base.FilledForm<'Output, FilledField<'Field>>
 
+    /// <summary>
+    /// Fill a form with some <c>'Values</c>
+    /// </summary>
+    /// <param name="form">The form to fill</param>
+    /// <param name="values">The values to give to the form</param>
+    /// <returns>
+    /// - A list of the fields of the form, with their errors
+    /// - The result of the filled form which can be:
+    ///     - The correct <c>'Output</c>
+    ///     - A non-empty list of validation errors
+    /// - Whether the form is empty or not
+    /// </returns>
     let fill
         (form : Form<'Values, 'Output>)
         (values : 'Values) =
         // Work around type system complaining about the 'Field behind forced to a type
         // Revisit? Good enough?
-        let x = Base.fill form values
+        let filledForm = Base.fill form values
 
         {|
-            Fields = x.Fields
-            Result = x.Result
-            IsEmpty = x.IsEmpty
+            Fields = filledForm.Fields
+            Result = filledForm.Result
+            IsEmpty = filledForm.IsEmpty
         |}
 
-    let rec mapFieldValues
+    let rec private mapFieldValues
         (update : 'A -> 'B -> 'B)
         (values : 'B)
         (field : Field<'A>)
@@ -340,7 +439,51 @@ module Form =
                     Attributes = formList.Attributes
                 }
 
-
+    /// <summary>
+    /// Build a variable list of forms
+    ///
+    /// An example is available <a href="https://mangelmaxime.github.io/Fable.Form/#form-list">on this page</a>
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Base.FormList.Config"/> for more informations
+    /// </para>
+    /// </param>
+    /// <param name="elementForIndex">A function taking an index and returning a new form</param>
+    /// <returns>A form representing the list of form as a single form</returns>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let bookForm (index : int) : Form.Form&gt;BookValues,Book&lt; =
+    ///     // ...
+    ///
+    /// Form.succeed formOutput
+    ///     |> Form.append (
+    ///         Form.list
+    ///             {
+    ///                 Default =
+    ///                     {
+    ///                         Title = ""
+    ///                         Author = ""
+    ///                         Summary = ""
+    ///                     }
+    ///                 Value =
+    ///                     fun values -> values.Books
+    ///                 Update =
+    ///                     fun newValue values ->
+    ///                         { values with Books = newValue }
+    ///                 Attributes =
+    ///                     {
+    ///                         Label = "Books"
+    ///                         Add = Some "Add book"
+    ///                         Delete = Some "Remove book"
+    ///                     }
+    ///             }
+    ///             bookForm
+    ///     )
+    /// </code>
+    ///
+    /// In this example, <c>append</c> is used to feed <c>formOutput</c> function and combine it into a <c>Login</c> message when submitted.
+    /// </example>
     let list
         (config : FormList.Config<'Values, 'ElementValues>)
         (elementForIndex : int -> Form<'ElementValues, 'Output>)
@@ -369,8 +512,49 @@ module Form =
 
         FormList.form tagger config fillElement
 
-    let meta : ('Values -> Form<'Values, 'Output>) -> Form<'Values, 'Output> =
-        Base.meta
+    /// <summary>
+    /// Build a form that depends on its own <c>'Values</c>
+    ///
+    /// This is useful when a field need to checks it's value against another field value.
+    ///
+    /// The classic example for using <c>meta</c> is when dealing with a repeat password field.
+    /// </summary>
+    /// <param name="fn">Function to apply to transform the form values</param>
+    /// <returns>A new form resulting of the application of <c>fn</c> when filling it</returns>
+    /// <example>
+    /// The classic example for using <c>Base.meta</c> is when dealing with a repeat password field.
+    /// <code lang="fsharp">
+    /// Form.meta
+    ///     (fun values ->
+    ///         Form.passwordField
+    ///             {
+    ///                 Parser =
+    ///                     fun value ->
+    ///                         if value = values.Password then
+    ///                             Ok ()
+    ///
+    ///                         else
+    ///                             Error "The passwords do not match"
+    ///                 Value = fun values -> values.RepeatPassword
+    ///                 Update =
+    ///                     fun newValue values_ ->
+    ///                         { values_ with RepeatPassword = newValue }
+    ///                 Error =
+    ///                     fun _ -> None
+    ///                 Attributes =
+    ///                     {
+    ///                         Label = "Repeat password"
+    ///                         Placeholder = "Your password again..."
+    ///                     }
+    ///             }
+    ///     )
+    /// </code>
+    /// </example>
+    let meta
+        (fn : 'Values -> Form<'Values, 'Output>)
+        : Form<'Values, 'Output> =
+
+        Base.meta fn
 
     type MapValuesConfig<'A, 'B> =
         {
@@ -378,15 +562,29 @@ module Form =
             Update : 'B -> 'A -> 'A
         }
 
+    /// <summary>
+    /// Transform the values of a form.
+    ///
+    /// This function is useful when you want to re-use existing form or nest them.
+    /// </summary>
+    /// <param name="config">A record used to configure the mapping behaviour.
+    /// <para>
+    /// See <see cref="T:Fable.Form.Simple.Form.MapValuesConfig`2"/> for more informations
+    /// </para>
+    /// </param>
+    /// <param name="form">The form to which we want to pass the result of the transformation</param>
+    /// <returns>
+    /// A new form resulting of <c>fn >> fill form</c>
+    /// </returns>
     let mapValues
-        ({ Value = value; Update = update } : MapValuesConfig<'A, 'B>)
+        (config : MapValuesConfig<'A, 'B>)
         (form : Form<'B, 'Output>)
         : Form<'A, 'Output> =
 
         Base.meta (fun values ->
             form
-            |> Base.mapValues value
-            |> Base.mapField (mapFieldValues update values)
+            |> Base.mapValues config.Value
+            |> Base.mapField (mapFieldValues config.Update values)
         )
 
     module View =
@@ -402,13 +600,13 @@ module Form =
 
         type ErrorTracking =
             | ErrorTracking of {| ShowAllErrors : bool; ShowFieldError : Set<string> |}
+
         type Model<'Values> =
             {
                 Values : 'Values
                 State : State
                 ErrorTracking : ErrorTracking
             }
-
 
         type Validation =
             | ValidateOnBlur
@@ -596,13 +794,13 @@ module Form =
                 | TextRaw ->
                     customConfig.TextField config
 
-                | TextType.TextPassword ->
+                | TextPassword ->
                     customConfig.PasswordField config
 
-                | TextType.TextArea ->
+                | TextArea ->
                     customConfig.TextAreaField config
 
-                | TextType.TextEmail ->
+                | TextEmail ->
                     customConfig.EmailField config
 
             | Field.Checkbox info ->

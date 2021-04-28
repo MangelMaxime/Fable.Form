@@ -166,7 +166,7 @@ let custom (fillField : 'Values -> CustomField<'Output, 'Field>) : Form<'Values,
 /// The classic example for using <c>meta</c> is when dealing with a repeat password field.
 /// </summary>
 /// <param name="fn">Function to apply to transform the form values</param>
-/// <returns></returns>
+/// <returns>A new form resulting of the application of <c>fn</c> when filling it</returns>
 let meta (fn : 'Values -> Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Field> =
     Form (
         fun values ->
