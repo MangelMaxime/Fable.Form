@@ -1,5 +1,8 @@
 module Fable.Form.Base
 
+/// <summary>
+/// Represents a filled field
+/// </summary>
 type FilledField<'Field> =
     {
         State : 'Field
@@ -7,6 +10,11 @@ type FilledField<'Field> =
         IsDisabled : bool
     }
 
+/// <summary>
+/// Represents a filled form
+///
+/// You can obtain this by using <see cref="fill"/>
+/// </summary>
 type FilledForm<'Output, 'Field> =
     {
         Fields : FilledField<'Field> list
@@ -14,22 +22,55 @@ type FilledForm<'Output, 'Field> =
         IsEmpty : bool
     }
 
+/// <summary>
+/// A <see cref="T:Form"/> which can contain any type of 'field'
+/// </summary>
 type Form<'Values, 'Output, 'Field> =
     Form of ('Values -> FilledForm<'Output, 'Field>)
 
+/// <summary>
+/// <see cref="T:FieldConfig"/> is a contract allowing you to describe how a field will behave
+/// </summary>
 type FieldConfig<'Attributes, 'Input, 'Values, 'Output> =
     {
+        /// <summary>
+        /// Function that valides the <c>'Input</c> value and produce an <c>Ok 'Ouput</c> on success or an <c>Error</c> describing the problem
+        /// </summary>
         Parser : 'Input -> Result<'Output, string>
+        /// <summary>
+        /// Function which defined how to access the <c>'Input</c> from <c>'Value</c> type
+        /// </summary>
         Value : 'Values -> 'Input
+        /// <summary>
+        /// Function which defined how the current form <c>'Values</c> should be update with the new <c>'Input</c>
+        /// </summary>
         Update : 'Input -> 'Values -> 'Values
+        /// <summary>
+        /// Defube how to obtain a potential external error. Useful when dealing with Server-side validation for example
+        /// </summary>
         Error : 'Values -> string option
+        /// <summary>
+        /// Type used to represents data specific to the field. For example, you can use it to ask the user to provide a label and placeholder.
+        /// </summary>
         Attributes : 'Attributes
     }
 
+/// <summary>
+/// Represents a custom field on a form that has been filled with some values.
+/// </summary>
 type CustomField<'Output, 'Field> =
     {
+        /// <summary>
+        ///
+        /// </summary>
         State : 'Field
+        /// <summary>
+        ///
+        /// </summary>
         Result : Result<'Output, (Error.Error * Error.Error list)>
+        /// <summary>
+        ///
+        /// </summary>
         IsEmpty : bool
     }
 
