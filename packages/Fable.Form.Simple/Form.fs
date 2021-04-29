@@ -39,7 +39,7 @@ module Form =
     /// <summary>
     /// DUs used to represents the different of Field supported by Fable.Form.Simple
     /// </summary>
-    [<RequireQualifiedAccess>]
+    [<RequireQualifiedAccess; NoComparison; NoEquality>]
     type Field<'Values> =
         | Text of TextType * TextField<'Values>
         | Radio of RadioField<'Values>
@@ -556,6 +556,7 @@ module Form =
 
         Base.meta fn
 
+    [<NoComparison; NoEquality>]
     type MapValuesConfig<'A, 'B> =
         {
             Value : 'A -> 'B
@@ -577,14 +578,14 @@ module Form =
     /// A new form resulting of <c>fn >> fill form</c>
     /// </returns>
     let mapValues
-        (config : MapValuesConfig<'A, 'B>)
+        ({ Value = value; Update = update} as config : MapValuesConfig<'A, 'B>)
         (form : Form<'B, 'Output>)
         : Form<'A, 'Output> =
 
         Base.meta (fun values ->
             form
-            |> Base.mapValues config.Value
-            |> Base.mapField (mapFieldValues config.Update values)
+            |> Base.mapValues value
+            |> Base.mapField (mapFieldValues update values)
         )
 
     module View =
@@ -612,6 +613,7 @@ module Form =
             | ValidateOnBlur
             | ValidateOnSubmit
 
+        [<NoComparison; NoEquality>]
         type ViewConfig<'Values, 'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -621,6 +623,7 @@ module Form =
                 Validation : Validation
             }
 
+        [<NoComparison; NoEquality>]
         type FormConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -631,6 +634,7 @@ module Form =
                 Fields : ReactElement list
             }
 
+        [<NoComparison; NoEquality>]
         type TextFieldConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -643,6 +647,7 @@ module Form =
                 Attributes : TextField.Attributes
             }
 
+        [<NoComparison; NoEquality>]
         type CheckboxFieldConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -655,6 +660,7 @@ module Form =
                 Attributes : CheckboxField.Attributes
             }
 
+        [<NoComparison; NoEquality>]
         type RadioFieldConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -667,6 +673,7 @@ module Form =
                 Attributes : RadioField.Attributes
             }
 
+        [<NoComparison; NoEquality>]
         type SelectFieldConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -679,6 +686,7 @@ module Form =
                 Attributes : SelectField.Attributes
             }
 
+        [<NoComparison; NoEquality>]
         type FormListConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -688,6 +696,7 @@ module Form =
                 Disabled : bool
             }
 
+        [<NoComparison; NoEquality>]
         type FormListItemConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -713,6 +722,7 @@ module Form =
                 State = Loading
             }
 
+        [<NoComparison; NoEquality>]
         type CustomConfig<'Msg> =
             {
                 Form : FormConfig<'Msg> -> ReactElement
@@ -729,6 +739,7 @@ module Form =
                 FormListItem : FormListItemConfig<'Msg> -> ReactElement
             }
 
+        [<NoComparison; NoEquality>]
         type FieldConfig<'Values, 'Msg> =
             {
                 OnChange : 'Values -> 'Msg
@@ -794,13 +805,13 @@ module Form =
                 | TextRaw ->
                     customConfig.TextField config
 
-                | TextPassword ->
+                | TextType.TextPassword ->
                     customConfig.PasswordField config
 
-                | TextArea ->
+                | TextType.TextArea ->
                     customConfig.TextAreaField config
 
-                | TextEmail ->
+                | TextType.TextEmail ->
                     customConfig.EmailField config
 
             | Field.Checkbox info ->

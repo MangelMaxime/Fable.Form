@@ -1,5 +1,6 @@
 module Fable.Form.Field
 
+[<NoComparison; NoEquality>]
 type Field<'Attributes, 'Value, 'Values> =
     {
         Value : 'Value

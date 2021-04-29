@@ -19,6 +19,7 @@ let blank =
         PostalCode = ""
     }
 
+[<NoComparison; NoEquality>]
 type Config<'A> =
     {
         Value : 'A -> Values

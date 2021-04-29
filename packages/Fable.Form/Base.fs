@@ -25,12 +25,14 @@ type FilledForm<'Output, 'Field> =
 /// <summary>
 /// A <see cref="T:Form"/> which can contain any type of 'field'
 /// </summary>
+[<NoComparison; NoEquality>]
 type Form<'Values, 'Output, 'Field> =
     Form of ('Values -> FilledForm<'Output, 'Field>)
 
 /// <summary>
 /// <see cref="T:FieldConfig"/> is a contract allowing you to describe how a field will behave
 /// </summary>
+[<NoComparison; NoEquality>]
 type FieldConfig<'Attributes, 'Input, 'Values, 'Output> =
     {
         /// <summary>

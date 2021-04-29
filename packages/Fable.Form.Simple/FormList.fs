@@ -4,6 +4,7 @@ open Fable.Form
 
 module FormList =
 
+    [<NoComparison; NoEquality>]
     type Form<'Values, 'Field> =
         {
             Fields : Base.FilledField<'Field> list
@@ -17,6 +18,7 @@ module FormList =
             Delete : string option
         }
 
+    [<NoComparison; NoEquality>]
     type FormList<'Values, 'Field> =
         {
             Forms : Form<'Values, 'Field> list
@@ -24,6 +26,7 @@ module FormList =
             Attributes : Attributes
         }
 
+    [<NoComparison; NoEquality>]
     type Config<'Values, 'ElementValues> =
         {
             Value : 'Values -> 'ElementValues list
@@ -32,6 +35,7 @@ module FormList =
             Attributes : Attributes
         }
 
+    [<NoComparison; NoEquality>]
     type ElementState<'Values, 'ElementValues> =
         {
             Index : int
