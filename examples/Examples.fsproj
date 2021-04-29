@@ -24,9 +24,6 @@
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />
     </ItemGroup>
-    <PropertyGroup>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Fable.Browser.Dom" Version="2.3.0" />
         <PackageReference Include="Fable.Core" Version="3.2.5" />

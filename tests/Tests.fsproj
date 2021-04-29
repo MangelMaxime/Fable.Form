@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Mocha.fs" />
@@ -18,9 +17,6 @@
         <Compile Include="Base.Field.Tests.fs" />
         <Compile Include="Base.AndThen.Tests.fs" />
     </ItemGroup>
-    <PropertyGroup>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
       <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />

@@ -1,0 +1,20 @@
+<Project>
+	<PropertyGroup>
+		<!-- Make all the projects use a lock file -->
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<!-- Make all the projects use the highest warning level -->
+		<WarningLevel>5</WarningLevel>
+	</PropertyGroup>
+	<!-- NuGet Metadata -->
+	<PropertyGroup>
+        <PackageProjectUrl>https://mangelmaxime.gitbook.io/fable-form/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/MangelMaxime/Fable.Form</RepositoryUrl>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Authors>Maxime Mangel</Authors>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="*.fsproj; **\*.fs; **\*.css" PackagePath="fable" />
+		<None Include="$(MSBuildThisFileDirectory)\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+	</ItemGroup>
+</Project>
