@@ -59,7 +59,21 @@ module Form =
             ]
             |> wrapInFieldContainer
 
-        let inputField (typ : InputType) (config : TextFieldConfig<'Msg>) =
+        let inputField
+            (typ : InputType)
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    OnBlur = onBlur
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : TextFieldConfig<'Msg>
+            ) =
+
             let inputFunc =
                 match typ with
                 | InputType.Text ->
@@ -72,83 +86,122 @@ module Form =
                     Bulma.input.email
 
             inputFunc [
-                prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
+                prop.onChange (fun (text : string) -> onChange text |> dispatch)
 
-                match config.OnBlur with
+                match onBlur with
                 | Some onBlur ->
                     prop.onBlur (fun _ ->
-                        config.Dispatch onBlur
+                        dispatch onBlur
                     )
 
                 | None ->
                     ()
 
-                prop.disabled config.Disabled
-                prop.value config.Value
-                prop.placeholder config.Attributes.Placeholder
-                if config.ShowError && config.Error.IsSome then
+                prop.disabled disabled
+                prop.value value
+                prop.placeholder attributes.Placeholder
+                if showError && error.IsSome then
                     color.isDanger
             ]
-            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+            |> withLabelAndError attributes.Label showError error
 
-        let textareaField (config : TextFieldConfig<'Msg>) =
+        let textareaField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    OnBlur = onBlur
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : TextFieldConfig<'Msg>
+            ) =
+
             Bulma.textarea [
-                prop.onChange (fun (text : string) -> config.OnChange text |> config.Dispatch)
+                prop.onChange (fun (text : string) -> onChange text |> dispatch)
 
-                match config.OnBlur with
+                match onBlur with
                 | Some onBlur ->
                     prop.onBlur (fun _ ->
-                        config.Dispatch onBlur
+                        dispatch onBlur
                     )
 
                 | None ->
                     ()
 
-                prop.disabled config.Disabled
-                prop.value config.Value
-                prop.placeholder config.Attributes.Placeholder
-                if config.ShowError && config.Error.IsSome then
+                prop.disabled disabled
+                prop.value value
+                prop.placeholder attributes.Placeholder
+                if showError && error.IsSome then
                     color.isDanger
             ]
-            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+            |> withLabelAndError attributes.Label showError error
 
-        let checkboxField (config : CheckboxFieldConfig<'Msg>) =
+        let checkboxField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    OnBlur = onBlur
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : CheckboxFieldConfig<'Msg>
+            ) =
+
             Bulma.control.div [
                 Bulma.input.labels.checkbox [
                     prop.children [
                         Bulma.input.checkbox [
-                            prop.onChange (fun (isChecked : bool) -> config.OnChange isChecked |> config.Dispatch )
-                            match config.OnBlur with
+                            prop.onChange (fun (isChecked : bool) -> onChange isChecked |> dispatch )
+                            match onBlur with
                             | Some onBlur ->
                                 prop.onBlur (fun _ ->
-                                    config.Dispatch onBlur
+                                    dispatch onBlur
                                 )
 
                             | None ->
                                 ()
-                            prop.disabled config.Disabled
-                            prop.isChecked config.Value
+                            prop.disabled disabled
+                            prop.isChecked value
                         ]
 
-                        Html.text config.Attributes.Text
+                        Html.text attributes.Text
                     ]
                 ]
             ]
             |> (fun x -> [ x ])
             |> wrapInFieldContainer
 
-        let radioField (config : RadioFieldConfig<'Msg>) =
+        let radioField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    OnBlur = onBlur
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : RadioFieldConfig<'Msg>
+            ) =
+
             let radio (key : string, label : string) =
                 Bulma.input.labels.radio [
                     Bulma.input.radio [
-                        prop.name config.Attributes.Label
-                        prop.isChecked (config.Value = key)
-                        prop.disabled config.Disabled
-                        prop.onChange (fun (_ : bool) -> config.OnChange key |> config.Dispatch)
-                        match config.OnBlur with
+                        prop.name attributes.Label
+                        prop.isChecked (key = value : bool)
+                        prop.disabled disabled
+                        prop.onChange (fun (_ : bool) -> onChange key |> dispatch)
+                        match onBlur with
                         | Some onBlur ->
                             prop.onBlur (fun _ ->
-                                config.Dispatch onBlur
+                                dispatch onBlur
                             )
 
                         | None ->
@@ -160,15 +213,28 @@ module Form =
 
 
             Bulma.control.div [
-                config.Attributes.Options
+                attributes.Options
                 |> List.map (fun option ->
                     radio option
                 )
                 |> prop.children
             ]
-            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+            |> withLabelAndError attributes.Label showError error
 
-        let selectField (config : SelectFieldConfig<'Msg>) =
+        let selectField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    OnBlur = onBlur
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : SelectFieldConfig<'Msg>
+            ) =
+
             let toOption (key : string, label : string) =
                 Html.option [
                     prop.value key
@@ -180,34 +246,34 @@ module Form =
                     prop.disabled true
                     prop.value ""
 
-                    prop.text ("-- " + config.Attributes.Placeholder + " --")
+                    prop.text ("-- " + attributes.Placeholder + " --")
                 ]
 
             Bulma.select [
-                prop.disabled config.Disabled
+                prop.disabled disabled
                 prop.onChange (fun (value : string) ->
-                    config.OnChange value |> config.Dispatch
+                    onChange value |> dispatch
                 )
 
-                match config.OnBlur with
+                match onBlur with
                 | Some onBlur ->
                     prop.onBlur (fun _ ->
-                        config.Dispatch onBlur
+                        dispatch onBlur
                     )
 
                 | None ->
                     ()
 
-                prop.value config.Value
+                prop.value value
 
                 prop.children [
                     placeholderOption
 
-                    yield! config.Attributes.Options
+                    yield! attributes.Options
                     |> List.map toOption
                 ]
             ]
-            |> withLabelAndError config.Attributes.Label config.ShowError config.Error
+            |> withLabelAndError attributes.Label showError error
 
         let group (fields : ReactElement list) =
             Bulma.field.div [
@@ -243,13 +309,23 @@ module Form =
             | None ->
                 { field with Error = None }
 
-        let formList (formConfig : FormListConfig<'Msg>) : ReactElement =
+        let formList
+            (
+                {
+                    Dispatch = dispatch
+                    Forms = forms
+                    Label = label
+                    Add = add
+                    Disabled = disabled
+                } : FormListConfig<'Msg>
+            ) =
+
             let addButton =
-                match formConfig.Disabled, formConfig.Add with
+                match disabled, add with
                 | (false, Some add) ->
                     Bulma.button.a [
                         prop.onClick (fun _ ->
-                            add.Action() |> formConfig.Dispatch
+                            add.Action() |> dispatch
                         )
 
                         prop.children [
@@ -272,21 +348,30 @@ module Form =
 
             Bulma.field.div [
                 Bulma.control.div [
-                    fieldLabel formConfig.Label
+                    fieldLabel label
 
-                    yield! formConfig.Forms
+                    yield! forms
 
                     addButton
                 ]
             ]
 
-        let formListItem (config : FormListItemConfig<'Msg>) : ReactElement =
+        let formListItem
+            (
+                {
+                    Dispatch = dispatch
+                    Fields = fields
+                    Delete = delete
+                    Disabled = disabled
+                } : FormListItemConfig<'Msg>
+            ) =
+
             let removeButton =
-                match config.Disabled, config.Delete with
+                match disabled, delete with
                 | (false, Some delete) ->
                     Bulma.button.a [
                         prop.onClick (fun _ ->
-                            delete.Action() |> config.Dispatch
+                            delete.Action() |> dispatch
                         )
 
                         prop.children [
@@ -312,7 +397,7 @@ module Form =
                 prop.className "form-list"
 
                 prop.children [
-                    yield! config.Fields
+                    yield! fields
 
                     Bulma.field.div [
                         field.isGrouped
@@ -327,20 +412,31 @@ module Form =
                 ]
             ]
 
-        let form (config : FormConfig<'Msg>) =
+        let form
+            (
+                {
+                    Dispatch = dispatch
+                    OnSubmit = onSubmit
+                    State = state
+                    Action = action
+                    Loading = loading
+                    Fields = fields
+                } : FormConfig<'Msg>
+            ) =
+
             Html.form [
                 prop.onSubmit (fun ev ->
                     ev.stopPropagation()
                     ev.preventDefault()
 
-                    config.OnSubmit
-                    |> Option.map config.Dispatch
+                    onSubmit
+                    |> Option.map dispatch
                     |> Option.defaultWith ignore
                 )
                 prop.children [
-                    yield! config.Fields
+                    yield! fields
 
-                    match config.State with
+                    match state with
                     | Error error ->
                         errorMessage error
 
@@ -367,10 +463,10 @@ module Form =
                             Bulma.control.div [
                                 Bulma.button.submit [
                                      color.isPrimary
-                                     if config.State = Loading then
-                                        prop.value config.Loading
+                                     if state = Loading then
+                                        prop.value loading
                                     else
-                                        prop.value config.Action
+                                        prop.value action
                                 ]
                             ]
                         ]

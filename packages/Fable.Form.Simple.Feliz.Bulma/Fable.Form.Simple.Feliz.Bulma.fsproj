@@ -8,6 +8,7 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Form.fsi" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
@@ -19,9 +20,4 @@
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
         <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
     </ItemGroup>
-    <!-- This package doesn't contain actual code
-        so we don't need to add the sources -->
-    <!-- <ItemGroup>
-    <Content Include="*.fsproj; *.fs" PackagePath="fable" />
-    </ItemGroup> -->
 </Project>
