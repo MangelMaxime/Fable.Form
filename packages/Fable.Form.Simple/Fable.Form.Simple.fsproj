@@ -8,11 +8,17 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="TextField.fsi" />
         <Compile Include="TextField.fs" />
+        <Compile Include="RadioField.fsi" />
         <Compile Include="RadioField.fs" />
+        <Compile Include="CheckboxField.fsi" />
         <Compile Include="CheckboxField.fs" />
+        <Compile Include="SelectField.fsi" />
         <Compile Include="SelectField.fs" />
+        <Compile Include="FormList.fsi" />
         <Compile Include="FormList.fs" />
+        <Compile Include="Form.fsi" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
@@ -23,9 +29,4 @@
     <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
     </ItemGroup>
-    <!-- This package doesn't contain actual code
-        so we don't need to add the sources -->
-    <!-- <ItemGroup>
-    <Content Include="*.fsproj; *.fs" PackagePath="fable" />
-    </ItemGroup> -->
 </Project>
