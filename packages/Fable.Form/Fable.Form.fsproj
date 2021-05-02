@@ -8,18 +8,16 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Result.fs" />
-        <Compile Include="List.fs" />
+        <Compile Include="Extensions.fsi" />
+        <Compile Include="Extensions.fs" />
+        <Compile Include="Error.fsi" />
         <Compile Include="Error.fs" />
+        <Compile Include="Field.fsi" />
         <Compile Include="Field.fs" />
+        <Compile Include="Base.fsi" />
         <Compile Include="Base.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fable.Core" Version="3.2.5" />
     </ItemGroup>
-    <!-- This package doesn't contain actual code
-        so we don't need to add the sources -->
-    <!-- <ItemGroup>
-    <Content Include="*.fsproj; *.fs" PackagePath="fable" />
-    </ItemGroup> -->
 </Project>
