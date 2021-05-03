@@ -7,7 +7,7 @@ open Fable.Form.Simple
 open Fable.Form.Simple.Feliz.Bulma
 
 /// <summary>
-/// Type used to represent the form values
+/// Represent the form values
 /// </summary>
 type Values =
     {
@@ -16,22 +16,20 @@ type Values =
         Password : string
     }
 
-/// <summary>
-/// Represents the model of your Elmish component
-///
-/// In the case of the Login example, we just need to keep track of the Form model state
-/// </summary>
 type Model =
-    Form.View.Model<Values>
+    // Used when the form is being filled
+    | FillingForm of Form.View.Model<Values>
+    // User when the form has been submitted with success
+    | FormFilled of EmailAddress.T * User.Password.T
 
-/// <summary>
-/// Represents the different messages that your application can react too
-/// </summary>
+
 type Msg =
     // Used when a change occure in the form
-    | FormChanged of Model
+    | FormChanged of Form.View.Model<Values>
     // Used when the user submit the form
     | Submit of EmailAddress.T * User.Password.T
+    // Message sent when the user ask to reset the demo
+    | ResetDemo
 
 let init () =
     {
@@ -40,23 +38,34 @@ let init () =
         Password = ""
     }
     |> Form.View.idle
+    |> FillingForm
     , Cmd.none
 
 let update (msg : Msg) (model : Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged newModel ->
-        newModel
-        , Cmd.none
+        match model with
+        | FillingForm _ ->
+            FillingForm newModel
+            , Cmd.none
 
-    // Form has been submitted
-    // Here, we have access to the value submitted from the from
+        | FormFilled _ ->
+            model
+            , Cmd.none
+
     | Submit (email, password) ->
-        // For the example, we just set a message in the Form view
-        { model with
-            State = Form.View.Success "You have been logged in successfully"
-        }
-        , Cmd.none
+        match model with
+        | FillingForm _ ->
+            FormFilled (email, password)
+            , Cmd.none
+
+        | FormFilled _ ->
+            model
+            , Cmd.none
+    
+    | ResetDemo ->
+        init ()
 
 
 /// <summary>
@@ -65,7 +74,7 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form : Form.Form<Values, Msg> =
+let private form : Form.Form<Values, Msg> =
     let validationStrategiesField =
         Form.radioField
             {
@@ -127,35 +136,67 @@ let form : Form.Form<Values, Msg> =
                     }
             }
 
+    let onSmubit _ email password =
+        Submit (email, password)
 
-    /// <summary>
-    /// Function used to map the form values into the message to send back to the update function
-    /// </summary>
-    /// <returns></returns>
-    let formOutput =
-        fun _ email password ->
-            Submit (email, password)
-
-    Form.succeed formOutput
+    Form.succeed onSmubit
         |> Form.append validationStrategiesField
         |> Form.append emailField
         |> Form.append passwordField
 
+
+// Function used to render the filled view (when the form has been submitted)
+let private renderFilledView (email : EmailAddress.T) (password : User.Password.T) dispatch =
+    Bulma.content [
+        
+        Bulma.message [
+            color.isSuccess
+
+            prop.children [
+                Bulma.messageBody [
+                    Html.text "You, "
+                    Html.b (EmailAddress.toString email)
+                    Html.text ", have been signed in using the following password "
+                    Html.b (User.Password.toString password)
+                ]
+            ]
+
+        ]
+                
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
-    Form.View.asHtml
-        {
-            Dispatch = dispatch
-            OnChange = FormChanged
-            Action = "Submit"
-            Loading = "Loading"
-            Validation =
-                if model.Values.ValidationStrategy = "onSubmit" then
-                    Form.View.ValidateOnSubmit
-                else
-                    Form.View.ValidateOnBlur
-        }
-        form
-        model
+    match model with
+    | FillingForm values ->
+        Form.View.asHtml
+            {
+                Dispatch = dispatch
+                OnChange = FormChanged
+                Action = "Sign in"
+                Validation =
+                    if values.Values.ValidationStrategy = "onSubmit" then
+                        Form.View.ValidateOnSubmit
+                    else
+                        Form.View.ValidateOnBlur
+            }
+            form
+            values
+
+    | FormFilled (email, name) ->
+        renderFilledView email name dispatch
 
 let code =
     """
@@ -170,7 +211,6 @@ Form.View.asHtml
         Dispatch = dispatch
         OnChange = FormChanged
         Action = "Submit"
-        Loading = "Loading"
         Validation =
             if model.Values.ValidationStrategy = "onSubmit" then
                 Form.View.ValidateOnSubmit
