@@ -74,7 +74,7 @@ type Msg =
     | SignUp of FormResult
     // Result of a sign up attenpt. It will either be Ok or contains an error message representing the external error for the email field.
     | SignupAttempted of Result<User.T, string>
-    // Message send when the user ask to reset the demo
+    // Message sent when the user ask to reset the demo
     | ResetTheDemo
 
 let init () =
