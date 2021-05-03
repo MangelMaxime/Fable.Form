@@ -49,8 +49,8 @@ let update (msg : Msg) (model : Model) =
 
     // Form has been submitted
     // Here, we have access to the value submitted from the from
-    | LogIn (email, password, rememberMe) ->
-        // For the example, we just set a message in the Form view
+    | LogIn (_email, _password, _rememberMe) ->
+        // For this example, we just set a message in the Form view
         { model with
             State = Form.View.Success "You have been logged in successfully"
         }
@@ -138,7 +138,6 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             Dispatch = dispatch
             OnChange = FormChanged
             Action = "Submit"
-            Loading = "Loading"
             Validation = Form.View.ValidateOnSubmit
         }
         form
