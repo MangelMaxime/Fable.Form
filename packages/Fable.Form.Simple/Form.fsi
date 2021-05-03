@@ -452,7 +452,6 @@ module Form =
                 Dispatch: Elmish.Dispatch<'Msg>
                 OnChange: Model<'Values> -> 'Msg
                 Action: string
-                Loading: string
                 Validation: Validation
             }
 
@@ -463,7 +462,6 @@ module Form =
                 OnSubmit: 'Msg option
                 State: State
                 Action: string
-                Loading: string
                 Fields: Feliz.ReactElement list
             }
 

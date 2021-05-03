@@ -17,6 +17,9 @@ module ValidEmail =
     type T =
         private ValidEmail of EmailAddress.T
 
+    let toString (ValidEmail email) = 
+        EmailAddress.toString email
+
     let validateEmailAddress (email : string) =
         match EmailAddress.tryParse email with
         | Ok email ->
@@ -65,19 +68,11 @@ module Password =
             Ok (Password text)
 
 type T =
-    private {
+    {
         Email : ValidEmail.T
         Name : Name.T
         Password : Password.T
         IsProfilePublic : bool
-    }
-
-let create email name password isProfilePublic =
-    {
-        Email = email
-        Name = name
-        Password = password
-        IsProfilePublic = isProfilePublic
     }
 
 let signUp
@@ -88,5 +83,10 @@ let signUp
 
     checkEmailAddress email
     |> Promise.mapResult (fun validEmail ->
-        create validEmail name password makePublic
+        {
+            Email = validEmail 
+            Name = name 
+            Password = password 
+            IsProfilePublic = makePublic
+        }
     )

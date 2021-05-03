@@ -1,6 +1,7 @@
 namespace Fable.Form.Simple
 
 open Fable.Form
+open Fable.Form.Extensions
 
 module FormList =
 

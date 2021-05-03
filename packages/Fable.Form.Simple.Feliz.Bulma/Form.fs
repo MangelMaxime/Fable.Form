@@ -147,8 +147,6 @@ module Form =
                     OnBlur = onBlur
                     Disabled = disabled
                     Value = value
-                    Error = error
-                    ShowError = showError
                     Attributes = attributes
                 } : CheckboxFieldConfig<'Msg>
             ) =
@@ -419,7 +417,6 @@ module Form =
                     OnSubmit = onSubmit
                     State = state
                     Action = action
-                    Loading = loading
                     Fields = fields
                 } : FormConfig<'Msg>
             ) =
@@ -461,12 +458,12 @@ module Form =
 
                         prop.children [
                             Bulma.control.div [
-                                Bulma.button.submit [
-                                     color.isPrimary
-                                     if state = Loading then
-                                        prop.value loading
-                                    else
-                                        prop.value action
+                                Bulma.button.button [
+                                    color.isPrimary
+                                    prop.text action
+                                    // If the form is loading animate the submit button with the loading animation
+                                    if state = Loading then
+                                        button.isLoading
                                 ]
                             ]
                         ]

@@ -241,7 +241,12 @@ module Form =
         }
 
     let mapValues
-        ({ Value = value; Update = update} as config : MapValuesConfig<'A, 'B>)
+        (
+            { 
+                Value = value
+                Update = update
+            } : MapValuesConfig<'A, 'B>
+        )
         (form : Form<'B, 'Output>)
         : Form<'A, 'Output> =
 
@@ -282,7 +287,6 @@ module Form =
                 Dispatch : Dispatch<'Msg>
                 OnChange : Model<'Values> -> 'Msg
                 Action : string
-                Loading : string
                 Validation : Validation
             }
 
@@ -293,7 +297,6 @@ module Form =
                 OnSubmit : 'Msg option
                 State : State
                 Action : string
-                Loading : string
                 Fields : ReactElement list
             }
 
@@ -646,7 +649,6 @@ module Form =
                     Dispatch = viewConfig.Dispatch
                     OnSubmit = onSubmit
                     Action = viewConfig.Action
-                    Loading = viewConfig.Loading
                     State = model.State
                     Fields = List.map fieldToElement fields
                 }

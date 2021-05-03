@@ -5,7 +5,11 @@ module Country =
 
     type T = private Country of string
 
-    let create text = Country text
+    let create text = 
+        Country text
+
+    let toString (Country country) = 
+        country
 
     let tryParse (text : string) =
         Ok (create text)
@@ -13,6 +17,9 @@ module Country =
 module City =
 
     type T = private City of string
+
+    let toString (City city) = 
+        city
 
     let create text = City text
 
@@ -23,13 +30,16 @@ module PostalCode =
 
     type T = private PostalCode of string
 
+    let toString (PostalCode postalCode) =
+        postalCode
+
     let create text = PostalCode text
 
     let tryParse (text : string) =
         Ok (create text)
 
 type T =
-    private {
+    {
         Country : Country.T
         City : City.T
         PostalCode : PostalCode.T
