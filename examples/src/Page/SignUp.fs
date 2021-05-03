@@ -362,7 +362,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             {
                 Dispatch = dispatch
                 OnChange = FormChanged
-                Action = "Submit"
+                Action = "Sign up"
                 Validation = Form.View.ValidateOnSubmit
             }
             form

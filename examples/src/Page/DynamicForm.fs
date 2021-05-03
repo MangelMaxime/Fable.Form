@@ -20,6 +20,19 @@ type UserType
     = Student
     | Teacher
 
+module UserType =
+    
+    let tryParse (text : string) =
+        match text with
+        | "student" ->
+            Ok Student
+
+        | "teacher" ->
+            Ok Teacher
+
+        | _ ->
+            Error "Invalid user type"
+
 type Model =
     // The form is being filled
     | FillingForm of Form.View.Model<Values>
@@ -166,15 +179,8 @@ let private form : Form.Form<Values, Msg> =
     let userTypeField =
         Form.selectField
             {
-                Parser = function
-                    | "student" ->
-                        Ok Student
-
-                    | "teacher" ->
-                        Ok Teacher
-
-                    | _ ->
-                        Error "Invalid user type"
+                Parser = 
+                    UserType.tryParse
                 Value =
                     fun values -> values.UserType
                 Update =
@@ -262,11 +268,22 @@ let private renderTeacherView (name : string) (subject : string) dispatch =
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model with
     | FillingForm values ->
+        let actionText =
+            match UserType.tryParse values.Values.UserType with
+            | Ok Student ->
+                "Create student"
+
+            | Ok Teacher ->
+                "Create teacher"
+
+            | Error _ ->
+                "Create"
+
         Form.View.asHtml
             {
                 Dispatch = dispatch
                 OnChange = FormChanged
-                Action = "Submit"
+                Action = actionText
                 Validation = Form.View.ValidateOnSubmit
             }
             form
