@@ -1,14 +1,13 @@
 module Page.Composability.Simple.Component
 
+open Feliz
+open Feliz.Bulma
 open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Feliz.Bulma
 
-// Student
-// Teacher
-
 /// <summary>
-/// Type used to represent the form values
+/// Represent the form values
 /// </summary>
 type Values =
     {
@@ -16,20 +15,17 @@ type Values =
         Address : AddressForm.Values
     }
 
-/// <summary>
-/// Represents the model of your Elmish component
-/// </summary>
 type Model =
-    Form.View.Model<Values>
+    | FillingForm of Form.View.Model<Values>
+    | Submitted of User.Name.T * Address.T
 
-/// <summary>
-/// Represents the different messages that your application can react too
-/// </summary>
 type Msg =
     // Used when a change occure in the form
-    | FormChanged of Model
+    | FormChanged of Form.View.Model<Values>
     // Used when the user submit the form
     | Submit of User.Name.T * Address.T
+    // Used when the user ask to reset the demo
+    | ResetDemo
 
 let init () =
     {
@@ -37,23 +33,35 @@ let init () =
         Address = AddressForm.blank
     }
     |> Form.View.idle
+    |> FillingForm
     , Cmd.none
 
 let update (msg : Msg) (model : Model) =
     match msg with
     // Update our model to it's new state
-    | FormChanged newModel ->
-        newModel
-        , Cmd.none
+    | FormChanged formModel ->
+        match model with
+        | FillingForm _ ->
+            FillingForm formModel
+            , Cmd.none
 
-    // Form has been submitted
-    // Here, we have access to the value submitted from the from
-    // | LogIn (email, password, rememberMe) ->
-    //     // For the example, we just set a message in the Form view
-    //     { model with
-    //         State = Form.View.Success "You have been logged in successfully"
-    //     }
-    //     , Cmd.none
+        | Submitted _ ->
+            model
+            , Cmd.none
+
+    | Submit (name, address) ->
+        match model with
+        | FillingForm _ ->
+            Submitted (name, address)
+            , Cmd.none
+
+        | Submitted _ ->
+            model
+            , Cmd.none
+
+    | ResetDemo ->
+        init ()
+
 
 /// <summary>
 /// Define the form logic
@@ -61,7 +69,7 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form : Form.Form<Values, Msg> =
+let private form : Form.Form<Values, Msg> =
     let nameField =
         Form.textField
             {
@@ -81,10 +89,10 @@ let form : Form.Form<Values, Msg> =
                     }
             }
 
-    let formOutput user address =
+    let onSubmit user address =
         Submit (user, address)
 
-    Form.succeed formOutput
+    Form.succeed onSubmit
         |> Form.append nameField
         |> Form.append (
             Form.mapValues
@@ -98,17 +106,78 @@ let form : Form.Form<Values, Msg> =
                 AddressForm.form
         )
 
+// Function used to render a row in the submitted table
+let private renderRow (leftValue : string) (rightValue : string) =
+    Html.tr [
+        Html.td leftValue
+        Html.td rightValue
+    ]
+
+// Function used to render the view when the form has been submitted
+let private renderSubmittedView (name : User.Name.T) (address : Address.T) dispatch =
+    Bulma.content [
+        
+        Bulma.message [
+            color.isSuccess
+
+            prop.children [
+                Bulma.messageBody [
+                    prop.text "Entry has been created"
+                ]
+            ]
+        ]      
+
+        Bulma.table [
+            table.isStriped
+
+            prop.children [
+                Html.thead [
+                    Html.tr [
+                        Html.th "Field"
+                        Html.th "Value"
+                    ]
+                ]
+
+                Html.tableBody [
+                    renderRow "Name" (User.Name.toString name)
+                    renderRow "Country" (Address.Country.toString address.Country)
+                    renderRow "City" (Address.City.toString address.City)
+                    renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
+                ] 
+            ]
+
+        ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
-    Form.View.asHtml
-        {
-            Dispatch = dispatch
-            OnChange = FormChanged
-            Action = "Submit"
-            Loading = "Loading"
-            Validation = Form.View.ValidateOnSubmit
-        }
-        form
-        model
+    match model with
+    | FillingForm values ->
+        Form.View.asHtml
+            {
+                Dispatch = dispatch
+                OnChange = FormChanged
+                Action = "Submit"
+                Validation = Form.View.ValidateOnSubmit
+            }
+            form
+            values
+
+    | Submitted (name, address) ->
+        renderSubmittedView name address dispatch
 
 let code =
     """
@@ -135,3 +204,5 @@ let title =
 
 let remark =
     None
+
+let x = 2
