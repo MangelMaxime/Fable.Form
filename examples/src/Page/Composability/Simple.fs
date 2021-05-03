@@ -116,7 +116,7 @@ let private renderRow (leftValue : string) (rightValue : string) =
 // Function used to render the view when the form has been submitted
 let private renderSubmittedView (name : User.Name.T) (address : Address.T) dispatch =
     Bulma.content [
-        
+
         Bulma.message [
             color.isSuccess
 
@@ -125,7 +125,7 @@ let private renderSubmittedView (name : User.Name.T) (address : Address.T) dispa
                     prop.text "Entry has been created"
                 ]
             ]
-        ]      
+        ]
 
         Bulma.table [
             table.isStriped
@@ -143,7 +143,7 @@ let private renderSubmittedView (name : User.Name.T) (address : Address.T) dispa
                     renderRow "Country" (Address.Country.toString address.Country)
                     renderRow "City" (Address.City.toString address.City)
                     renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
-                ] 
+                ]
             ]
 
         ]
@@ -179,30 +179,27 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     | Submitted (name, address) ->
         renderSubmittedView name address dispatch
 
-let code =
-    """
-Form.succeed formOutput
-    |> Form.append nameField
-    |> Form.append (
-        Form.mapValues
-            {
-                Value =
-                    fun values -> values.Address
-                Update =
-                    fun newValue values ->
-                        { values with Address = newValue }
-            }
-            AddressForm.form
-    )
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Composability"
-
-let remark =
-    None
-
-let x = 2
+let information : DemoInformation.T =
+    {
+        Title = "Composability"
+        Remark = None
+        Route = Router.Route.Composability Router.ComposabilityRoute.Simple
+        Description = "Demonstrate how you can re-use a form the 'simple way'"
+        Code =
+            """
+Form.succeed onSubmit
+|> Form.append nameField
+|> Form.append (
+    Form.mapValues
+        {
+            Value =
+                fun values -> values.Address
+            Update =
+                fun newValue values ->
+                    { values with Address = newValue }
+        }
+        AddressForm.form
+)
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

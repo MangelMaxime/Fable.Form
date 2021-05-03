@@ -207,7 +207,7 @@ let private update (msg : Msg) (model : Model) =
             model
             , Cmd.none
 
-let init (location ) =
+let private init (location ) =
     setRoute
         location
         {
@@ -216,11 +216,18 @@ let init (location ) =
         }
 
 
-let renderLink (route : Router.Route) (linkText : string) (description : string) =
+let private renderLink 
+    (
+        {
+            Title = titleText
+            Description = description
+            Route = route
+        } : DemoInformation.T
+    ) =
     Html.li [
         Html.a [
             Router.href route
-            prop.text linkText
+            prop.text titleText
         ]
 
         Bulma.content [
@@ -230,7 +237,18 @@ let renderLink (route : Router.Route) (linkText : string) (description : string)
     ]
 
 
-let renderDemoPage (titleText : string) (optRemark : ReactElement option) (content : ReactElement) (codeText : string) (sourceCodeUrl : string) =
+let private renderDemoPage 
+    (
+        {
+            Title = titleText
+            Remark = optRemark
+            Code = codeText
+            GithubLink = sourceCodeUrl
+        } : DemoInformation.T
+    ) 
+    (content : ReactElement)
+    =
+
     Html.div [
         Html.br [ ]
 
@@ -282,7 +300,7 @@ let renderDemoPage (titleText : string) (optRemark : ReactElement option) (conte
 
     ]
 
-let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
+let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
     match page with
     | Page.Home ->
         Bulma.content [
@@ -314,37 +332,13 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             ]
 
             Html.ul [
-                renderLink
-                    Router.Route.Login
-                    Login.title
-                    "A simple login form with 3 fields"
-
-                renderLink
-                    Router.Route.SignUp
-                    SignUp.title
-                    "A form demonstrating how to handle external errors"
-
-                renderLink
-                    Router.Route.DynamicForm
-                    DynamicForm.title
-                    "A form that changes dynamically based on its own values"
-
-                renderLink
-                    Router.Route.FormList
-                    FormList.title
-                    "A form where you can add and remove a list of forms"
-
-                renderLink
-                    (Router.Route.Composability Router.ComposabilityRoute.Simple)
-                    ComposabilitySimple.title
-                    "Demonstrate how you can re-use a form the 'simple way'"
-
-                renderLink
-                    (Router.Route.Composability Router.ComposabilityRoute.WithConfiguration)
-                    ComposabilityWithConfiguration.title
-                    "Demonstrate how you can re-use a form using a 'configuration object'"
+                renderLink Login.information
+                renderLink SignUp.information
+                renderLink DynamicForm.information
+                renderLink FormList.information
+                renderLink ComposabilitySimple.information
+                renderLink ComposabilityWithConfiguration.information
             ]
-
 
             Bulma.content [
                 Bulma.subtitle.p [
@@ -359,73 +353,49 @@ let contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             ]
 
             Html.ul [
-                renderLink
-                    Router.Route.ValidationStrategies
-                    ValidationStrategies.title
-                    "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'."
+                renderLink ValidationStrategies.information
             ]
         ]
 
     | Page.SignUp subModel ->
         renderDemoPage
-            SignUp.title
-            SignUp.remark
+            SignUp.information
             (SignUp.view subModel (SignUpMsg >> dispatch))
-            SignUp.code
-            SignUp.githubLink
 
     | Page.Login subModel ->
         renderDemoPage
-            Login.title
-            Login.remark
+            Login.information
             (Login.view subModel (LoginMsg >> dispatch))
-            Login.code
-            Login.githubLink
 
     | Page.DynamicForm subModel ->
         renderDemoPage
-            DynamicForm.title
-            DynamicForm.remark
+            DynamicForm.information
             (DynamicForm.view subModel (DynamicFormMsg >> dispatch))
-            DynamicForm.code
-            DynamicForm.githubLink
 
     | Page.FormList subModel ->
         renderDemoPage
-            FormList.title
-            FormList.remark
+            FormList.information
             (FormList.view subModel (FormListMsg >> dispatch))
-            FormList.code
-            FormList.githubLink
 
     | Page.ValidationStrategies subModel ->
         renderDemoPage
-            ValidationStrategies.title
-            ValidationStrategies.remark
+            ValidationStrategies.information
             (ValidationStrategies.view subModel (ValidationStrategiesMsg >> dispatch))
-            ValidationStrategies.code
-            ValidationStrategies.githubLink
 
     | Page.ComposabilitySimple subModel ->
         renderDemoPage
-            ComposabilitySimple.title
-            ComposabilitySimple.remark
+            ComposabilitySimple.information
             (ComposabilitySimple.view subModel (ComposabilitySimpleMsg >> dispatch))
-            ComposabilitySimple.code
-            ComposabilitySimple.githubLink
 
     | Page.ComposabilityWithConfiguration subModel ->
         renderDemoPage
-            ComposabilityWithConfiguration.title
-            ComposabilityWithConfiguration.remark
+            ComposabilityWithConfiguration.information
             (ComposabilityWithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
-            ComposabilityWithConfiguration.code
-            ComposabilityWithConfiguration.githubLink
 
     | Page.NotFound ->
         Html.text "Page not found"
 
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let private view (model : Model) (dispatch : Dispatch<Msg>) =
    Bulma.columns [
        Bulma.column [
            column.is8

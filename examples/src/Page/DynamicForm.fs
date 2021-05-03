@@ -21,7 +21,7 @@ type UserType
     | Teacher
 
 module UserType =
-    
+
     let tryParse (text : string) =
         match text with
         | "student" ->
@@ -70,7 +70,7 @@ let update (msg : Msg) (model : Model) =
             FillingForm newModel
             , Cmd.none
 
-        | CreatedAStudent _ 
+        | CreatedAStudent _
         | CreatedATeacher _ ->
             model
             , Cmd.none
@@ -81,7 +81,7 @@ let update (msg : Msg) (model : Model) =
             CreatedAStudent name
             , Cmd.none
 
-        | CreatedAStudent _ 
+        | CreatedAStudent _
         | CreatedATeacher _ ->
             model
             , Cmd.none
@@ -92,7 +92,7 @@ let update (msg : Msg) (model : Model) =
             CreatedATeacher (name, subject)
             , Cmd.none
 
-        | CreatedAStudent _ 
+        | CreatedAStudent _
         | CreatedATeacher _ ->
             model
             , Cmd.none
@@ -179,7 +179,7 @@ let private form : Form.Form<Values, Msg> =
     let userTypeField =
         Form.selectField
             {
-                Parser = 
+                Parser =
                     UserType.tryParse
                 Value =
                     fun values -> values.UserType
@@ -213,7 +213,7 @@ let private form : Form.Form<Values, Msg> =
 // Function used to render the result of the form (when submitted)
 let private renderResultView (messageBody : ReactElement) dispatch =
     Bulma.content [
-    
+
         Bulma.message [
             color.isSuccess
 
@@ -222,7 +222,7 @@ let private renderResultView (messageBody : ReactElement) dispatch =
             ]
 
         ]
-            
+
         Bulma.text.p [
             text.hasTextCentered
 
@@ -251,7 +251,7 @@ let private renderStudentView (name : string) dispatch =
     renderResultView messageBody dispatch
 
 // Function used to render the view when a teacher has been created
-let private renderTeacherView (name : string) (subject : string) dispatch = 
+let private renderTeacherView (name : string) (subject : string) dispatch =
     let messageBody =
         Bulma.messageBody [
             Html.text "A new teacher has been created"
@@ -295,24 +295,23 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     | CreatedATeacher (name, subject) ->
         renderTeacherView name subject dispatch
 
-let code =
-    """
+let information : DemoInformation.T =
+    {
+        Title = "Dynamic form"
+        Remark = None
+        Route = Router.Route.DynamicForm
+        Description = "A form that changes dynamically based on its own values"
+        Code =
+            """
 userTypeField
-    |> Form.andThen (
-        function
-        | Student ->
-            studentForm
+|> Form.andThen (
+    function
+    | Student ->
+        studentForm
 
-        | Teacher ->
-            teacherForm
-    )
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Dynamic form"
-
-let remark =
-    None
+    | Teacher ->
+        teacherForm
+)
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

@@ -8,7 +8,7 @@ open Fable.Form.Simple.Feliz.Bulma
 
 /// <summary>
 /// Type use to represent a FieldError
-/// 
+///
 /// It consists of two fields:
 /// - Value: which represent the value of the field when the error is to be shown
 /// - Error: The error message to display
@@ -308,7 +308,7 @@ let private renderRow (leftValue : string) (rightValue : string) =
 
 let private renderSignedUpView (user : User.T) dispatch =
     Bulma.content [
-        
+
         Bulma.message [
             color.isSuccess
 
@@ -317,7 +317,7 @@ let private renderSignedUpView (user : User.T) dispatch =
                     prop.text "User signed up with the following informations"
                 ]
             ]
-        ]      
+        ]
 
         Bulma.table [
             table.isStriped
@@ -335,7 +335,7 @@ let private renderSignedUpView (user : User.T) dispatch =
                     renderRow "Name" (User.Name.toString user.Name)
                     renderRow "Password" (User.Password.toString user.Password)
                     renderRow "Is profil public?" (string user.IsProfilePublic)
-                ] 
+                ]
             ]
 
         ]
@@ -354,7 +354,7 @@ let private renderSignedUpView (user : User.T) dispatch =
         ]
 
     ]
-     
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model with
     | FillingForm values ->
@@ -371,9 +371,15 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     | SignedUp user ->
         renderSignedUpView user dispatch
 
-let code =
-    """
-Form.succeed formOutput
+let information : DemoInformation.T =
+    {
+        Title = "Sign up"
+        Route = Router.Route.SignUp
+        Description = "A form demonstrating how to handle external errors"
+        Remark = None
+        Code =
+            """
+Form.succeed onSubmit
     |> Form.append emailField
     |> Form.append nameField
     |> Form.append
@@ -384,13 +390,6 @@ Form.succeed formOutput
             |> Form.group
         )
     |> Form.append makePublicField
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Sign up"
-
-let remark =
-    None
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

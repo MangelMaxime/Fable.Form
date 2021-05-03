@@ -63,7 +63,7 @@ let update (msg : Msg) (model : Model) =
         | FormFilled _ ->
             model
             , Cmd.none
-    
+
     | ResetDemo ->
         init ()
 
@@ -148,7 +148,7 @@ let private form : Form.Form<Values, Msg> =
 // Function used to render the filled view (when the form has been submitted)
 let private renderFilledView (email : EmailAddress.T) (password : User.Password.T) dispatch =
     Bulma.content [
-        
+
         Bulma.message [
             color.isSuccess
 
@@ -162,7 +162,7 @@ let private renderFilledView (email : EmailAddress.T) (password : User.Password.
             ]
 
         ]
-                
+
         Bulma.text.p [
             text.hasTextCentered
 
@@ -198,10 +198,28 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     | FormFilled (email, name) ->
         renderFilledView email name dispatch
 
-let code =
-    """
+let information : DemoInformation.T =
+    let remark =
+        Bulma.content [
+            text.hasTextCentered
+
+            prop.children [
+                Html.text "This feature depends on the view implementation, here it is offered by "
+                Html.b "Fable.Form.Simple"
+                Html.text " package"
+            ]
+        ]
+        |> Some
+
+    {
+        Title = "Validation strategies"
+        Remark = remark
+        Route = Router.Route.ValidationStrategies
+        Description = "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'."
+        Code =
+            """
 let form =
-    Form.succeed formOutput
+    Form.succeed onSubmit
         |> Form.append emailField
         |> Form.append passwordField
         |> Form.append rememberMe
@@ -219,24 +237,6 @@ Form.View.asHtml
     }
     form
     model
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Validation strategies"
-
-let remark =
-    Bulma.content [
-        text.hasTextCentered
-
-        prop.children [
-            Html.text "This feature depends on the view implementation, here it is offered by "
-            Html.b "Fable.Form.Simple"
-            Html.text " package"
-        ]
-    ]
-    |> Some
-
-
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

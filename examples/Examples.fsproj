@@ -10,9 +10,11 @@
         <Compile Include="src\ConsoleTracer.fs" />
         <Compile Include="src\Tuple.fs" />
         <Compile Include="src\Cmd.fs" />
+        <Compile Include="src\Router.fs" />
         <Compile Include="src\Types\EmailAddress.fs" />
         <Compile Include="src\Types\User.fs" />
         <Compile Include="src\Types\Address.fs" />
+        <Compile Include="src\Types\DemoInformation.fs" />
         <Compile Include="src\Page\SignUp.fs" />
         <Compile Include="src\Page\Login.fs" />
         <Compile Include="src\Page\DynamicForm.fs" />
@@ -22,7 +24,6 @@
         <Compile Include="src\Page\Composability\WithConfiguration\AddressForm.fs" />
         <Compile Include="src\Page\Composability\Simple.fs" />
         <Compile Include="src\Page\Composability\WithConfiguration.fs" />
-        <Compile Include="src\Router.fs" />
         <Compile Include="src\App.fs" />
         <Content Include="style\style.scss" />
     </ItemGroup>

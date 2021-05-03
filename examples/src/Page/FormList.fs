@@ -149,7 +149,7 @@ let private bookForm (index : int) =
                     }
             }
 
-    let formOutput title author summary =
+    let onSubmit title author summary =
         {
             Title = title
             Author = author
@@ -157,7 +157,7 @@ let private bookForm (index : int) =
         } : Book
 
 
-    Form.succeed formOutput
+    Form.succeed onSubmit
         |> Form.append titleField
         |> Form.append authorField
         |> Form.append summary
@@ -187,10 +187,10 @@ let private form : Form.Form<Values, Msg> =
                     }
             }
 
-    let formOutput name books =
+    let onSubmit name books =
         Submit (name, books)
 
-    Form.succeed formOutput
+    Form.succeed onSubmit
         |> Form.append nameField
         |> Form.append (
             Form.list
@@ -230,7 +230,7 @@ let private renderBook (rank : int) (book : Book) =
 // Function used to render the filled view (when the form has been submitted)
 let private renderFilledView (name : string) (books : Book list) dispatch =
     Bulma.content [
-        
+
         Bulma.message [
             color.isSuccess
 
@@ -245,7 +245,7 @@ let private renderFilledView (name : string) (books : Book list) dispatch =
             ]
 
         ]
-                
+
         Bulma.table [
             table.isStriped
             prop.className "is-vcentered-cells"
@@ -297,9 +297,15 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
     | FormFilled (name, books) ->
         renderFilledView name books dispatch
 
-let code =
-    """
-Form.succeed formOutput
+let information : DemoInformation.T =
+    {
+        Title = "Form list"
+        Remark = None
+        Route = Router.Route.FormList
+        Description = "A form where you can add and remove a list of forms"
+        Code =
+            """
+Form.succeed onSubmit
     |> Form.append nameField
     |> Form.append (
         Form.list
@@ -324,13 +330,6 @@ Form.succeed formOutput
             }
             bookForm
     )
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Form list"
-
-let remark =
-    None
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

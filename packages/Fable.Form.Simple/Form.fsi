@@ -71,16 +71,16 @@ module Form =
     ///             // ...
     ///         }
     ///
-    /// let formOutput =
+    /// let onSubmit =
     ///     fun email password ->
     ///         LogIn (email, password)
     ///
-    /// Form.succeed formOutput
+    /// Form.succeed onSubmit
     ///     |> Form.append emailField
     ///     |> Form.append passwordField
     /// </code>
     ///
-    /// In this example, <c>append</c> is used to feed <c>formOutput</c> function and combine it into a <c>Login</c> message when submitted.
+    /// In this example, <c>append</c> is used to feed <c>onSubmit</c> function and combine it into a <c>Login</c> message when submitted.
     /// </example>
     val append :
         newForm : Form<'Values,'A> ->
@@ -153,10 +153,10 @@ module Form =
     ///                     // ...
     ///                 }
     ///
-    ///         let formOutput name subject =
+    ///         let onSubmit name subject =
     ///             NewTeacher (name, subject)
     ///
-    ///         Form.succeed formOutput
+    ///         Form.succeed onSubmit
     ///             |> Form.append nameField
     ///             |> Form.append subjectField
     /// )
@@ -324,7 +324,7 @@ module Form =
     /// let bookForm (index : int) : Form.Form&gt;BookValues,Book&lt; =
     ///     // ...
     ///
-    /// Form.succeed formOutput
+    /// Form.succeed onSubmit
     ///     |> Form.append (
     ///         Form.list
     ///             {
@@ -350,7 +350,7 @@ module Form =
     ///     )
     /// </code>
     ///
-    /// In this example, <c>append</c> is used to feed <c>formOutput</c> function and combine it into a <c>Login</c> message when submitted.
+    /// In this example, <c>append</c> is used to feed <c>onSubmit</c> function and combine it into a <c>Login</c> message when submitted.
     /// </example>
     val list :
         config          : FormList.Config<'Values,'ElementValues> ->

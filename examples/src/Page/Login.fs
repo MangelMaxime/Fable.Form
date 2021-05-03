@@ -123,11 +123,11 @@ let form : Form.Form<Values, Msg> =
     /// Function used to map the form values into the message to send back to the update function
     /// </summary>
     /// <returns></returns>
-    let formOutput =
+    let onSubmit =
         fun email password rememberMe ->
             LogIn (email, password, rememberMe)
 
-    Form.succeed formOutput
+    Form.succeed onSubmit
         |> Form.append emailField
         |> Form.append passwordField
         |> Form.append rememberMe
@@ -143,19 +143,18 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
         form
         model
 
-let code =
-    """
-Form.succeed formOutput
-    |> Form.append emailField
-    |> Form.append passwordField
-    |> Form.append rememberMe
-    """
-
-let githubLink =
-    Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-
-let title =
-    "Login"
-
-let remark =
-    None
+let information : DemoInformation.T =
+    {
+        Title = "Login"
+        Route = Router.Route.Login
+        Description = "A simple login form with 3 fields"
+        Remark = None
+        Code =
+            """
+Form.succeed onSubmit
+|> Form.append emailField
+|> Form.append passwordField
+|> Form.append rememberMe
+            """
+        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
+    }

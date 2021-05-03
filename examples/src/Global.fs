@@ -21,5 +21,3 @@ module Env =
             |> String.concat "/"
 
         githubBaseUrl + relativeFilePath + "/" + fileName
-
-
