@@ -5,7 +5,7 @@ module.exports = {
     githubURL: "https://github.com/MangelMaxime/Fable.Form",
     url: "https://mangelmaxime.github.io",
     baseUrl: "/Fable.Form/",
-    editUrl : "https://github.com/MangelMaxime/Fable.Form/edit/master/docs",
+    editUrl : "https://github.com/MangelMaxime/Fable.Form/edit/main/docs",
     source: "docs",
     serverPort: 8081,
     output: "temp",
