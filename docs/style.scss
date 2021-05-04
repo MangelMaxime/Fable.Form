@@ -18,11 +18,32 @@ $menu-item-hover-background-color: transparent;
 
 $toc-item-active-font-weight: $weight-semibold;
 
-$link: $primary;
-
-$body-size: 14px;
+$body-size: 15px;
 
 @import './../node_modules/bulma/bulma.sass';
 @import './../node_modules/nacara/scss/nacara.scss';
 
+a:hover {
+    text-decoration: underline;
+}
 
+// Ensure mininal size of the doc content
+// This allows to not have the 'Previous' & 'Next' button in the middle of the screen
+// when their are not a lot of content on the page
+.is-main-content >.section {
+    min-height: calc(100vh - 7.5em); // 7.5em = 3em (section margin top) - 3em (section margin bottom) - 1.5em (to not stick too low)
+}
+
+// Add a border to the menu-container making it easier to see the different section of the page
+// Menu | Content | Toc
+.menu-container {
+
+    .menu {
+        border-right: 1px solid #e0e0e0;
+        padding-right: 1rem;
+    }
+}
+
+.toc-container {
+    margin-top: 1.5rem;
+}
