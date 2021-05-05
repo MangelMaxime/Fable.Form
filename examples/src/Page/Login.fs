@@ -29,7 +29,7 @@ type Msg =
     // Used when a change occure in the form
     | FormChanged of Model
     // Used when the user submit the form
-    | LogIn of string * string * bool
+    | LogIn of EmailAddress.T * string * bool
 
 let init () =
     {
