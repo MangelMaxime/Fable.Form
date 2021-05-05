@@ -109,9 +109,17 @@ class Examples {
         Examples.shellExec("dotnet fable --outDir fableBuild");
         Examples.shellExec("npx webpack --mode production");
     }
-    static async publish() {
-        Examples.build();
-        await GHPages.publishPromise(Examples.resolve("output"));
+}
+class Documentation {
+    static clean() {
+        shelljs_1.default.rm("-rf", "temp");
+    }
+    static watch() {
+        Documentation.clean();
+        shelljs_1.default.exec("npx nacara --watch");
+    }
+    static build() {
+        shelljs_1.default.exec("npx nacara");
     }
 }
 class Tests {
@@ -149,6 +157,13 @@ class Tests {
         });
     }
 }
+const publishDocs = async () => {
+    shelljs_1.default.rm("-rf", "temp");
+    Examples.build();
+    Documentation.build();
+    await GHPages.publishPromise(path_1.default.resolve(__dirname, "temp"));
+    log(success("Published"));
+};
 yargs_1.default(helpers_1.hideBin(process.argv))
     .strict()
     .help()
@@ -164,7 +179,7 @@ yargs_1.default(helpers_1.hideBin(process.argv))
 })
     .command("publish", "Command used to released a new version, update Github pages, etc.", (argv) => {
     return argv
-        .command("ghpages", "Publish the example project on Github pages", () => { }, Examples.publish);
+        .command("ghpages", "Publish the example project on Github pages", () => { }, publishDocs);
 })
     .version(false)
     .argv;

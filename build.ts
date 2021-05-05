@@ -127,9 +127,21 @@ class Examples {
         Examples.shellExec("npx webpack --mode production");
     }
 
-    static async publish() {
-        Examples.build();
-        await GHPages.publishPromise(Examples.resolve("output"));
+}
+
+class Documentation {
+
+    static clean() {
+        shell.rm("-rf", "temp");
+    }
+
+    static watch() {
+        Documentation.clean();
+        shell.exec("npx nacara --watch")
+    }
+
+    static build() {
+        shell.exec("npx nacara")
     }
 
 }
@@ -183,6 +195,14 @@ class Tests {
 
 }
 
+const publishDocs = async () => {
+    shell.rm("-rf", "temp");
+    Examples.build();
+    Documentation.build();
+    await GHPages.publishPromise(path.resolve(__dirname, "temp"));
+    log(success("Published"));
+}
+
 yargs(hideBin(process.argv))
     .strict()
     .help()
@@ -228,7 +248,7 @@ yargs(hideBin(process.argv))
                     "ghpages",
                     "Publish the example project on Github pages",
                     () => {},
-                    Examples.publish
+                    publishDocs
                 )
         }
     )
