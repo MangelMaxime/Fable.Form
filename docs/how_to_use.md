@@ -130,7 +130,11 @@ let form : Form.Form<Values, Msg> =
         Form.textField
             {
                 Parser =
-                    EmailAddress.tryParse
+                    fun value ->
+                        if value.Contains("@") then
+                            Ok value
+                        else
+                            Error "The e-mail adress must contain a '@' symbol"
                 Value =
                     fun values -> values.Email
                 Update =
