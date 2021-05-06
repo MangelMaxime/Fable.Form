@@ -1,4 +1,4 @@
-namespace Fable.Form.Simple.Feliz.Bulma
+namespace Fable.Form.Simple.Bulma
 
 [<RequireQualifiedAccess>]
 module Form =

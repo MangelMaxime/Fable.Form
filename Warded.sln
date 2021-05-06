@@ -13,7 +13,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form", "packages\Fabl
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form.Simple", "packages\Fable.Form.Simple\Fable.Form.Simple.fsproj", "{01E923FB-FDAD-4D63-81E1-AA6E808BAE4E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form.Simple.Feliz.Bulma", "packages\Fable.Form.Simple.Feliz.Bulma\Fable.Form.Simple.Feliz.Bulma.fsproj", "{70F625ED-572C-4340-9893-FA0F965026AA}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form.Simple.Bulma", "packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj", "{70F625ED-572C-4340-9893-FA0F965026AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

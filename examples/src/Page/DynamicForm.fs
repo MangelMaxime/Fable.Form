@@ -4,7 +4,7 @@ open Feliz
 open Feliz.Bulma
 open Elmish
 open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
+open Fable.Form.Simple.Bulma
 
 /// <summary>
 /// Represent the form values

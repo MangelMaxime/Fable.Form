@@ -4,7 +4,7 @@ open Elmish
 open Feliz
 open Feliz.Bulma
 open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
+open Fable.Form.Simple.Bulma
 
 /// <summary>
 /// Type use to represent a FieldError

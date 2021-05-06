@@ -262,7 +262,7 @@ module Form =
     ///
     /// The behaviour of the form is not altered but it can be rendered differently.
     ///
-    /// For example, Fable.Form.Simple.Feliz.Bulma will render the groups horizontally.
+    /// For example, Fable.Form.Simple.Bulma will render the groups horizontally.
     ///
     /// See the fields password and repeat password <a href="https://mangelmaxime.github.io/Fable.Form/#sign-up">on this page</a>
     /// </summary>
@@ -276,7 +276,7 @@ module Form =
     ///
     /// The behaviour of the form is not altered but it can be rendered differently.
     ///
-    /// For example, Fable.Form.Simple.Feliz.Bulma will the form in section with a border and the title display above.
+    /// For example, Fable.Form.Simple.Bulma will the form in section with a border and the title display above.
     ///
     /// An example is available <a href="https://mangelmaxime.github.io/Fable.Form/#dynamic-form">on this page</a>
     /// </summary>

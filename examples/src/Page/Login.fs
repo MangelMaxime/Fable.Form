@@ -2,7 +2,7 @@ module Page.Login.Component
 
 open Elmish
 open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
+open Fable.Form.Simple.Bulma
 
 /// <summary>
 /// Type used to represent the form values
@@ -131,7 +131,7 @@ let form : Form.Form<Values, Msg> =
         |> Form.append emailField
         |> Form.append passwordField
         |> Form.append rememberMe
-         
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     Form.View.asHtml
         {

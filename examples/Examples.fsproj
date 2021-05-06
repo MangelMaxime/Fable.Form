@@ -39,6 +39,6 @@
         <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\packages\Fable.Form.Simple.Feliz.Bulma\Fable.Form.Simple.Feliz.Bulma.fsproj" />
+        <ProjectReference Include="..\packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj" />
     </ItemGroup>
 </Project>
