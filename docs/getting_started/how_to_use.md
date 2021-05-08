@@ -1,24 +1,22 @@
 ---
-title: How to use?
+title: How to use ?
 ---
 
 In this section, we are going to focus on the easiest way to use Fable.Form.
 
-We are going to create a login form as the one available [here](Fable.Form/examples/index.html#login)
+We are going to create a login form similar to [this one](Fable.Form/examples/index.html#login)
 
-It will allows you to quickly test it and decide if it can fit your needs.
-
-Later, once you are more experience with Fable.Form and decide to use it in your application, you should read the [Advanced section](Fable.Form/advance)
+*In this section, we are assuming that you already have an Elmish application set up*
 
 <ul class="textual-steps">
 <li>
 
-Add **Fable.Form.Simple.Feliz.Bulma** to your project
+Add **Fable.Form.Simple.Bulma** to your project
 
 For example, if you are using `dotnet` you need to do:
 
 ```
-dotnet add yourProject.fsproj package Fable.Form.Simple.Feliz.Bulma
+dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
 ```
 
 </li>
@@ -29,7 +27,7 @@ Open the library modules
 
 ```fsharp
 open Fable.Form.Simple
-open Fable.Form.Simple.Feliz.Bulma
+open Fable.Form.Simple.Bulma
 ```
 
 </li>
@@ -216,3 +214,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 </li>
 
 </ul>
+
+Congratulation 🎉, you now know how to use `Fable.Form` in your application.
+
+You can now play more with it to make you use to it.
+
+In the next section, you will learn how to customize `Fable.Form` to your needs.

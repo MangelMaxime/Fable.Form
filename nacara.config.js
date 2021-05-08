@@ -47,16 +47,21 @@ module.exports = {
     menu: {
         "Getting Started": [
             "index",
-            "how_to_use"
+            "getting_started/how_to_use",
+            "getting_started/use_what_you_need"
+        ],
+        "Fable.Form.Simple": [
+            "Fable.Form.Simple/features",
+            "Fable.Form.Simple/customisation"
         ],
         "Changelogs": [
             "changelog/Fable.Form",
             "changelog/Fable.Form.Simple",
-            "changelog/Fable.Form.Simple.Feliz.Bulma"
+            "changelog/Fable.Form.Simple.Bulma"
         ]
     },
     lightner: {
-        backgroundColor: "#FAFAFA",
+        backgroundColor: "#F7F7F7",
         textColor: "",
         themeFile: "./lightner/themes/OneLight.json",
         grammars: [
