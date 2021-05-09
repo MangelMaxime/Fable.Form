@@ -16,8 +16,7 @@ $danger: #b3507a;
 $body-size: 15px;
 
 @import "~bulma";
-@import "./fieldset.scss";
-@import "./form-list.scss";
+@import "./../../packages/fable-form-simple-bulma/index.scss";
 @import "./table.scss";
 
 input[type="checkbox"],

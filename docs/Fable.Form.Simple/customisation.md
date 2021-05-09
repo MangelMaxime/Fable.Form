@@ -4,7 +4,9 @@ title: Custom view templates
 
 `Fable.Form.Simple` allows you to adapt the view code to make your form match your application looks.
 
-If you need to customize the view code, you should start from this file structure:
+If you are using [Bulma](https://bulma.io/) in your application you should use [Fable.Form.Simple.Bulma](/Fable.Form/Fable.Form.Simple.Bulma/installation.html).
+
+However, if you need to customize the view code, you should start from this file structure:
 
 ```fsharp
 // Have the name of your implementation as a suffix of Fable.Form.Simple
@@ -49,4 +51,4 @@ module Form =
             custom htmlViewConfig config
 ```
 
-You can take a look at [Fable.Form.Simple.Bulma](https://github.com/MangelMaxime/Fable.Form/blob/38a41274940e98a50b30d6991722d780ffe00189/packages/Fable.Form.Simple.Bulma/Form.fs) implementation. It is done in less that 500 lines of code.
+You can take a look at [Fable.Form.Simple.Bulma](https://github.com/MangelMaxime/Fable.Form/blob/38a41274940e98a50b30d6991722d780ffe00189/packages/Fable.Form.Simple.Bulma/Form.fs) implementation. It is done in less than 500 lines of code.

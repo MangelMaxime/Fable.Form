@@ -1,0 +1,24 @@
+{
+  "name": "fable-form-simple-bulma",
+  "version": "1.0.0",
+  "description": "SCSS style needed when using Fable.Form.Simple.Bulma",
+  "main": "index.scss",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MangelMaxime/Fable.Form.git"
+  },
+  "keywords": [
+    "scss",
+    "bulma",
+    "fable"
+  ],
+  "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/MangelMaxime/Fable.Form/issues"
+  },
+  "homepage": "https://github.com/MangelMaxime/Fable.Form#readme"
+}

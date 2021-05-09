@@ -6,14 +6,16 @@ In this section, we are going to focus on the easiest way to use Fable.Form.
 
 We are going to create a login form similar to [this one](Fable.Form/examples/index.html#login)
 
-*In this section, we are assuming that you already have an Elmish application set up*
+:::info
+We are assuming that you already have an Elmish application set up with [Bulma](https://bulma.io/)
+
+Later, it will be explained how you can customise the view to fit your application style.
+:::
 
 <ul class="textual-steps">
 <li>
 
 Add **Fable.Form.Simple.Bulma** to your project
-
-For example, if you are using `dotnet` you need to do:
 
 ```
 dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
@@ -218,5 +220,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 Congratulation 🎉, you now know how to use `Fable.Form` in your application.
 
 You can now play more with it to make you use to it.
+
+:::info
+If you want, to play with the more advanced features like [Group](/Fable.Form/Fable.Form.Simple/features.html#Group), [Section](/Fable.Form/Fable.Form.Simple/features.html#Section), [List](/Fable.Form/Fable.Form.Simple/features.html#List-of-form), please read [Fable.Form.Simple.Bulma - Installation](/Fable.Form/Fable.Form.Simple.Bulma/installation.html)
+:::
 
 In the next section, you will learn how to customize `Fable.Form` to your needs.

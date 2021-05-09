@@ -54,10 +54,20 @@ module.exports = {
             "Fable.Form.Simple/features",
             "Fable.Form.Simple/customisation"
         ],
+        "Fable.Form.Simple.Bulma": [
+            "Fable.Form.Simple.Bulma/installation",
+            {
+                "Components": [
+                    "Fable.Form.Simple.Bulma/components/fieldset",
+                    "Fable.Form.Simple.Bulma/components/form-list"
+                ]
+            }
+        ],
         "Changelogs": [
             "changelog/Fable.Form",
             "changelog/Fable.Form.Simple",
-            "changelog/Fable.Form.Simple.Bulma"
+            "changelog/Fable.Form.Simple.Bulma",
+            "changelog/fable-form-simple-bulma"
         ]
     },
     lightner: {
@@ -65,7 +75,9 @@ module.exports = {
         textColor: "",
         themeFile: "./lightner/themes/OneLight.json",
         grammars: [
-            "./lightner/grammars/fsharp.json"
+            "./lightner/grammars/fsharp.json",
+            "./lightner/grammars/scss.json",
+            "./lightner/grammars/html.json"
         ]
     },
     layouts: {

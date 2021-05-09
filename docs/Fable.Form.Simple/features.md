@@ -2,8 +2,6 @@
 title: Features
 ---
 
-[[toc]]
-
 Here is a list of all the fields supported by `Fable.Form.Simple`:
 
 ### Standard HTML fields
