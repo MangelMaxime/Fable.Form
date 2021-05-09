@@ -65,7 +65,9 @@ Wraps a list of fields inside of a box.
     <div class="field"><label class="label">Summary of book #1</label>
         <div class="control">
             <textarea class="textarea" readonly="true" placeholder="">
-            The Painted Man, book one of the Demon Cycle, is a captivating and thrilling fantasy adventure, pulling the reader into a world of demons, darkness and heroes.
+            The Painted Man, book one of the Demon Cycle, is a captivating
+            and thrilling fantasy adventure, pulling the reader
+            into a world of demons, darkness and heroes.
             </textarea>
         </div>
         <p class="help"></p>
