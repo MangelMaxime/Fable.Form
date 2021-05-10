@@ -9195,7 +9195,6 @@ ul.textual-steps > li {
   position: relative;
   padding-left: 4em;
   margin-bottom: 2em;
-  font-weight: 300;
   padding-top: 1em;
 }
 ul.textual-steps > li::before {
@@ -9508,19 +9507,70 @@ h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
   z-index: 100;
 }
 
+.form-list {
+  border-radius: 6px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  padding: 1.25em;
+  border: 1px solid #dbdbdb;
+}
+.form-list:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.fieldset {
+  border-radius: 6px;
+  box-shadow: unset;
+  padding: 1.25em;
+  border: 1px solid #dbdbdb;
+}
+.fieldset:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.fieldset > legend {
+  color: #363636;
+  font-weight: 700;
+  padding: 0 0.5em;
+}
+
 a:hover {
   text-decoration: underline;
 }
 
+.tabs a:hover {
+  text-decoration: none;
+}
+
 .is-main-content > .section {
-  min-height: calc(100vh - 7.5em);
+  min-height: calc( 100vh - 7.5em );
 }
 
 .menu-container .menu {
   border-right: 1px solid #e0e0e0;
   padding-right: 1rem;
 }
+.menu-container .menu a.is-active {
+  text-decoration: underline;
+  font-weight: 700;
+}
 
 .toc-container {
   margin-top: 1.5rem;
+}
+
+ul.textual-steps > li {
+  font-weight: 400;
+}
+
+.full-height-scrollable-content {
+  scrollbar-width: thin;
+  scrollbar-color: #b5b5b5 whitesmoke;
+}
+.full-height-scrollable-content::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+  background-color: whitesmoke;
+}
+.full-height-scrollable-content::-webkit-scrollbar-thumb {
+  background: #b5b5b5;
 }
