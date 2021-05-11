@@ -22,7 +22,7 @@
 		<Authors>Maxime Mangel</Authors>
 	</PropertyGroup>
 	<ItemGroup>
-		<Content Include="*.fsproj; **\*.fs; **\*.css" PackagePath="fable" />
+		<Content Include="*.fsproj; **\*.fs; **\*.fsi; **\*.css" PackagePath="fable" />
 		<None Include="$(MSBuildThisFileDirectory)\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
 	</ItemGroup>
 </Project>
