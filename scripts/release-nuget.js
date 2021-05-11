@@ -50,14 +50,14 @@ release({
 
         const pushNugetResult =
             shell.exec(
-                `dotnet push -s bin/Release/${fileName}.${versionInfo}.nupkg nuget.org -k ${NUGET_KEY}`,
+                `dotnet nuget push bin/Release/${fileName}.${versionInfo.version}.nupkg -s nuget.org -k ${NUGET_KEY}`,
                 {
                     cwd: baseDirectory
                 }
             )
 
         if (pushNugetResult.code !== 0) {
-            throw "Dotnet pack failed"
+            throw "Dotnet push failed"
         }
     }
 })
