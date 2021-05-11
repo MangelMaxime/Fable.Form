@@ -10,6 +10,7 @@ module.exports = {
     serverPort: 8081,
     output: "temp",
     title: "Fable.Form",
+    debug: true,
     changelog: "CHANGELOG.md",
     version: "0.0.0",
     navbar: {
