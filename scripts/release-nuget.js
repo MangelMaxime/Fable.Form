@@ -6,6 +6,16 @@ const log = console.log
 
 const release = require("./release-core").release
 
+const getEnvVariable = function (varName) {
+    const value = process.env[varName];
+    if (value === undefined) {
+        log(error(`Missing environnement variable ${varName}`))
+        process.exit(1)
+    } else {
+        return value;
+    }
+}
+
 // Check that we have enought arguments
 if (process.argv.length < 4) {
     log(chalk.red("Missing arguments"))
@@ -15,6 +25,8 @@ if (process.argv.length < 4) {
 const cwd = process.cwd()
 const baseDirectory = path.resolve(cwd, process.argv[2])
 const projectFileName = process.argv[3]
+
+const NUGET_KEY = getEnvVariable("NUGET_KEY")
 
 release({
     baseDirectory: baseDirectory,
@@ -36,16 +48,16 @@ release({
 
         const fileName = path.basename(projectFileName, ".fsproj")
 
-        // const pushNugetResult =
-        //     shell.exec(
-        //         `dotnet push -s bin/Release/${fileName}.${versionInfo}.nupkg nuget.org -k ${NUGET_KEY}`,
-        //         {
-        //             cwd: baseDirectory
-        //         }
-        //     )
+        const pushNugetResult =
+            shell.exec(
+                `dotnet push -s bin/Release/${fileName}.${versionInfo}.nupkg nuget.org -k ${NUGET_KEY}`,
+                {
+                    cwd: baseDirectory
+                }
+            )
 
-        // if (pushNugetResult.code !== 0) {
-        //     throw "Dotnet pack failed"
-        // }
+        if (pushNugetResult.code !== 0) {
+            throw "Dotnet pack failed"
+        }
     }
 })
