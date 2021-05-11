@@ -63,11 +63,11 @@ const release = async ( options ) => {
     const lastPublishedVersion = m[2];
 
     if (versionInfo.version === lastPublishedVersion) {
-        log(`Last version has already been published. Skipping...`)
+        log(chalk.blue(`Last version has already been published. Skipping...`))
         process.exit(0)
     }
 
-    log("New version detected")
+    log(chalk.blue("New version detected"))
 
     const newPackageJsonContent = packageJsonContent.replace(options.versionRegex, `$1${versionInfo.version}$3`)
 
@@ -77,10 +77,9 @@ const release = async ( options ) => {
     try {
         await options.publishFn(versionInfo)
     } catch (e) {
-        log(e)
         fs.writeFileSync(packageJsonPath, packageJsonContent)
         log(chalk.red("An error occured while publishing the new package"))
-        log("The files have been reverted to their original state")
+        log(chalk.blue("The files have been reverted to their original state"))
         process.exit(1)
     }
 
