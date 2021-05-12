@@ -219,14 +219,18 @@ window.addEventListener("DOMContentLoaded", () => {
 <p>We are going to create a login form similar to <a href="Fable.Form/examples/index.html#login">this one</a></p>
 <article class="message is-info">
                 <div class="message-body"><p>We are assuming that you already have an Elmish application set up with <a href="https://bulma.io/">Bulma</a></p>
+<p>If needed, you can use <a href="https://fulma.github.io/Fulma/#template">Fulma minimal template</a> as a starting point</p>
 <p>Later, it will be explained how you can customise the view to fit your application style.</p>
 </div>
 </article>
 <ul class="textual-steps">
 <li>
 <p>Add <strong>Fable.Form.Simple.Bulma</strong> to your project</p>
-<pre><code>dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
-</code></pre>
+<pre style="background-color: #F7F7F7;color: ;padding: 1em"><code><span style="color: #A0A1A7;font-style: italic"># .NET CLI</span>
+<span>dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma</span>
+
+<span style="color: #A0A1A7;font-style: italic"># Paket CLI</span>
+<span>paket add Fable.Form.Simple --version 1.0.1</span></code></pre>
 </li>
 <li>
 <p>Open the library modules</p>
