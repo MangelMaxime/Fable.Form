@@ -12,8 +12,12 @@ In order, to support them, Fable.Form.Simple.Bulma comes with an npm package [fa
 
 Add the NuGet package to your project
 
-```
-dotnet add package Fable.Form.Simple.Bulma
+```bash
+# .NET CLI
+dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
+
+# Paket CLI
+paket add Fable.Form.Simple --version 1.0.1
 ```
 
 </li>

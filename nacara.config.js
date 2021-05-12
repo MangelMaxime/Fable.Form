@@ -78,7 +78,8 @@ module.exports = {
         grammars: [
             "./lightner/grammars/fsharp.json",
             "./lightner/grammars/scss.json",
-            "./lightner/grammars/html.json"
+            "./lightner/grammars/html.json",
+            "./lightner/grammars/bash.json"
         ]
     },
     layouts: {

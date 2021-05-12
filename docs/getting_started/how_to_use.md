@@ -9,6 +9,8 @@ We are going to create a login form similar to [this one](Fable.Form/examples/in
 :::info
 We are assuming that you already have an Elmish application set up with [Bulma](https://bulma.io/)
 
+If needed, you can use [Fulma minimal template](https://fulma.github.io/Fulma/#template) as a starting point
+
 Later, it will be explained how you can customise the view to fit your application style.
 :::
 
@@ -17,8 +19,12 @@ Later, it will be explained how you can customise the view to fit your applicati
 
 Add **Fable.Form.Simple.Bulma** to your project
 
-```
+```bash
+# .NET CLI
 dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
+
+# Paket CLI
+paket add Fable.Form.Simple --version 1.0.1
 ```
 
 </li>
