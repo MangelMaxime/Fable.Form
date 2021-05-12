@@ -17,7 +17,7 @@ Add the NuGet package to your project
 dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
 
 # Paket CLI
-paket add Fable.Form.Simple --version 1.0.1
+paket add Fable.Form.Simple
 ```
 
 </li>
