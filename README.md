@@ -1,5 +1,7 @@
 # Fable.Form
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/MangelMaxime/Fable.Form)
+
 **[Documentation](https://mangelmaxime.github.io/Fable.Form/)**
 
 Fable.Form allows you to build forms that are:
