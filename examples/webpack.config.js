@@ -2,9 +2,21 @@ const path = require("path")
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const execSync = require("child_process").execSync;
 
 function resolve(filePath) {
     return path.join(__dirname, filePath)
+}
+
+var isGitPod = process.env.GITPOD_INSTANCE_ID !== undefined;
+
+function getDevServerUrl() {
+    if (isGitPod) {
+        const url = execSync(`gp url 8080`);
+        return url.toString().trim();
+    } else {
+        return `http://localhost:8080`;
+    }
 }
 
 module.exports = (_env, options) => {
@@ -41,11 +53,13 @@ module.exports = (_env, options) => {
                 new MiniCssExtractPlugin()
             ].filter(Boolean),
         devServer: {
+            public: getDevServerUrl(),
             contentBase: resolve("public"),
             publicPath: "/",
             port: 8080,
             hot: true,
-            inline: true
+            inline: true,
+            disableHostCheck: true
         },
         module: {
             rules: [
