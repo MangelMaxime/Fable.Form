@@ -1,4 +1,5 @@
 {
+    "name": "fable-form-build",
     "private": true,
     "scripts": {
         "postinstall": "dotnet tool restore",
@@ -33,6 +34,10 @@
         "release-fable-form-simple-bulma-nuget": "node ./scripts/release-nuget.js packages/Fable.Form.Simple.Bulma Fable.Form.Simple.Bulma.fsproj",
         "prerelease": "npm run clean && npm run tests",
         "release": "npm run release-fable-form-simple-bulma-npm && npm run release-fable-form-nuget && npm run release-fable-form-simple-nuget && npm run release-fable-form-simple-bulma-nuget"
+    },
+    "engines": {
+        "node": ">= 14.0.0",
+        "npm": ">= 7.0.0"
     },
     "repository": {
         "type": "git",
