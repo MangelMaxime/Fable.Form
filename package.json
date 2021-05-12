@@ -1,7 +1,6 @@
 {
     "private": true,
     "scripts": {
-        "start": "ntl -o",
         "postinstall": "dotnet tool restore",
         "clean-packages": "npx shx rm -rf packages/**/bin && npx shx rm -rf packages/**/obj",
         "clean-tests": "npx shx rm -rf tests/bin && npx shx rm -rf tests/obj && npx shx rm -rf tests/fableBuild",
