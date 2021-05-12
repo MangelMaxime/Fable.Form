@@ -7,7 +7,7 @@ module.exports = {
     baseUrl: "/Fable.Form/",
     editUrl : "https://github.com/MangelMaxime/Fable.Form/edit/main/docs",
     source: "docs",
-    serverPort: 8081,
+    serverPort: 8080,
     output: "temp",
     title: "Fable.Form",
     debug: true,

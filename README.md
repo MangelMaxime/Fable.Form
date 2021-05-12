@@ -66,18 +66,16 @@ let form : Form.Form<Values, Msg> =
 
 ## Development
 
-This project use the `build.js` file as a build system. You can see the different task available by running:
+This repository use NPM scripts to control the build system here is a list of the main scripts available:
 
-| OS | Command |
+| Script | Description |
 |---|---|
-| Unix | `./build.js --help` |
-| Windows | `build.cmd --help` |
-
-`build.js` is a generated file, if you need to modify the build system please edit the `build.ts` file and generate a new `build.js` by running `npx tsc`.
-
-*Tips: When working on the build system, you can open a new terminal and `npx tsc --watch` in it so it will generate a new `build.js` each time you make a change.*
-
-> I choosed to write the build system using TypeScript because it allows for a better type checking than JavaScript.
+| `npm run clean` | To use when want to clean all the artifacts |
+| `npm run watch-examples` | To uses when working on the examples project |
+| `npm run watch-tests` | To use when working on the tests suits |
+| `npm run watch-docs` | To use when working on the documentation, hosted on [http://localhost:8080](http://localhost:8080) |
+| `npm run publish-docs` | Build a new version of the documentation and publish it to Github Pages |
+| `npm run release` | Build a new version of the packages if needed and release it |
 
 ## The secret pun
 
