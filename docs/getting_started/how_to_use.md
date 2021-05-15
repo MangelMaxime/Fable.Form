@@ -4,7 +4,7 @@ title: How to use ?
 
 In this section, we are going to focus on the easiest way to use Fable.Form.
 
-We are going to create a login form similar to [this one](Fable.Form/examples/index.html#login)
+We are going to create a login form similar to [this one](Fable.Form/blob/main/examples/src/index.html)
 
 :::info
 We are assuming that you already have an Elmish application set up with [Bulma](https://bulma.io/)
@@ -223,7 +223,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 
 </ul>
 
-Congratulation 🎉, you now know how to use `Fable.Form` in your application.
+Congratulations 🎉, you now know how to use `Fable.Form` in your application.
 
 You can now play more with it to make you use to it.
 
