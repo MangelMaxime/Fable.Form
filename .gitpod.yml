@@ -3,11 +3,9 @@ image:
 
 ports:
   - port: 8000
-  - port: 8080
-    onOpen: ignore
 
 tasks:
-  - init: npm install
+  - init: npm install && dotnet tool restore
 
 github:
   prebuilds:
