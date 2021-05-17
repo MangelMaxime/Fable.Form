@@ -2,7 +2,7 @@ image:
   file: .docker/Dockerfile
 
 ports:
-  - port: 8000
+  - port: 8080
 
 tasks:
   - init: npm install && dotnet tool restore
