@@ -11,7 +11,7 @@
         <!-- <PackageReference Include="DotNet.ReproducibleBuilds" Version="0.1.26" PrivateAssets="All"/> -->
         <!-- Depends on the same version of FSharp.Core for all the projects -->
         <!-- We don't use any feature related to FSharp.Core 5 so we force to use a lower one -->
-        <PackageReference Update="FSharp.Core" Version="4.7.2" />
+        <!-- <PackageReference Update="FSharp.Core" Version="4.7.2" /> -->
     </ItemGroup>
 	<!-- NuGet Metadata -->
 	<PropertyGroup>

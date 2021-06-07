@@ -13,20 +13,20 @@
       },
       "Fable.React": {
         "type": "Direct",
-        "requested": "[7.3.0, )",
-        "resolved": "7.3.0",
-        "contentHash": "9ygRzToUxnk84rXmc4b7eQat+SQlVCfGgmZxlDZrzQ5wHTZrEAujVMEt/fuizadbilJOYB7k+Uulj8tM4Ixx2g==",
+        "requested": "[7.4.0, )",
+        "resolved": "7.4.0",
+        "contentHash": "YCubSthKJ5CSKJs28WQC6DYiksdLdPD//aIxHqKUkYY3fS0qOHz0nEk5klalXSz6owk91Mnq9SnwccIpe4xD/A==",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Browser.Dom": "2.0.1",
           "Fable.Core": "3.1.5"
         }
       },
       "FSharp.Core": {
         "type": "Direct",
-        "requested": "[5.0.0, )",
-        "resolved": "5.0.0",
-        "contentHash": "iHoYXA0VaSQUONGENB1aVafjDDZDZpwu39MtaRCTrmwFW/cTcK0b2yKNVYneFHJMc3ChtsSoM9lNtJ1dYXkHfA=="
+        "requested": "[4.7.2, )",
+        "resolved": "4.7.2",
+        "contentHash": "w3XFVTnyZUbC8e2QT6a85ern6y7eQPPk+MYemz1FP0iBfgZcembL+wmo5cIZ1kxB8jfoXC8Q9KVkOMsGpkBKbA=="
       },
       "NETStandard.Library": {
         "type": "Direct",
@@ -119,17 +119,17 @@
       "fable.form": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Core": "3.2.5"
         }
       },
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Core": "3.2.5",
           "Fable.Elmish": "3.1.0",
-          "Fable.Form": "0.1.0-alpha-001",
+          "Fable.Form": "1.0.1",
           "Feliz": "1.40.0"
         }
       }
