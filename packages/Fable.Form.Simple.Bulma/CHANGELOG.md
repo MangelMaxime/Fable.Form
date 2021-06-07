@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.1.0 - 2021-06-07
+
+* Lower FSharp.Core requirement
+
 ## 1.0.1 - 2021-05-11
 
 ### Fixed
