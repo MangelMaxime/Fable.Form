@@ -104,9 +104,9 @@
       },
       "FSharp.Core": {
         "type": "Direct",
-        "requested": "[5.0.0, )",
-        "resolved": "5.0.0",
-        "contentHash": "iHoYXA0VaSQUONGENB1aVafjDDZDZpwu39MtaRCTrmwFW/cTcK0b2yKNVYneFHJMc3ChtsSoM9lNtJ1dYXkHfA=="
+        "requested": "[4.7.2, )",
+        "resolved": "4.7.2",
+        "contentHash": "w3XFVTnyZUbC8e2QT6a85ern6y7eQPPk+MYemz1FP0iBfgZcembL+wmo5cIZ1kxB8jfoXC8Q9KVkOMsGpkBKbA=="
       },
       "NETStandard.Library": {
         "type": "Direct",
@@ -187,27 +187,27 @@
       "fable.form": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Core": "3.2.5"
         }
       },
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Core": "3.2.5",
           "Fable.Elmish": "3.1.0",
-          "Fable.Form": "0.1.0-alpha-001",
+          "Fable.Form": "1.1.0",
           "Feliz": "1.40.0"
         }
       },
       "fable.form.simple.bulma": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "5.0.0",
+          "FSharp.Core": "4.7.2",
           "Fable.Core": "3.2.5",
-          "Fable.Form": "0.1.0-alpha-001",
-          "Fable.Form.Simple": "0.1.0-alpha-001",
+          "Fable.Form": "1.1.0",
+          "Fable.Form.Simple": "1.1.0",
           "Feliz": "1.40.0",
           "Feliz.Bulma": "2.11.0"
         }

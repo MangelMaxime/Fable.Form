@@ -140,7 +140,7 @@ let form : Form.Form<Values, Msg> =
                         if value.Contains("@") then
                             Ok value
                         else
-                            Error "The e-mail adress must contain a '@' symbol"
+                            Error "The e-mail address must contain a '@' symbol"
                 Value =
                     fun values -> values.Email
                 Update =

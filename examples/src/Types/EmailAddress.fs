@@ -15,4 +15,4 @@ let tryParse (text : string) =
         Ok (EmailAddress text)
     else
 
-        Error "The e-mail adress must contain a '@' symbol"
+        Error "The e-mail address must contain a '@' symbol"
