@@ -106,7 +106,7 @@ module Form =
 
 
             inputFunc [
-                prop.onChange (fun (text : string) -> onChange text |> dispatch)
+                prop.onChange (onChange >> dispatch)
 
                 match onBlur with
                 | Some onBlur ->
@@ -142,7 +142,7 @@ module Form =
             ) =
 
             Bulma.textarea [
-                prop.onChange (fun (text : string) -> onChange text |> dispatch)
+                prop.onChange (onChange >> dispatch)
 
                 match onBlur with
                 | Some onBlur ->
@@ -179,7 +179,7 @@ module Form =
                 Bulma.input.labels.checkbox [
                     prop.children [
                         Bulma.input.checkbox [
-                            prop.onChange (fun (isChecked : bool) -> onChange isChecked |> dispatch )
+                            prop.onChange (onChange >> dispatch)
                             match onBlur with
                             | Some onBlur ->
                                 prop.onBlur (fun _ ->
@@ -236,9 +236,7 @@ module Form =
 
             Bulma.control.div [
                 attributes.Options
-                |> List.map (fun option ->
-                    radio option
-                )
+                |> List.map radio
                 |> prop.children
             ]
             |> withLabelAndError attributes.Label showError error
@@ -273,8 +271,7 @@ module Form =
 
             Bulma.select [
                 prop.disabled disabled
-                prop.onChange (fun (value : string) ->
-                    onChange value |> dispatch
+                prop.onChange (onChange >> dispatch
                 )
 
                 match onBlur with
@@ -441,6 +438,7 @@ module Form =
                     OnSubmit = onSubmit
                     State = state
                     Action = action
+                    CancelPolicy = cancelPolicy
                     Fields = fields
                 } : FormConfig<'Msg>
             ) =
@@ -454,6 +452,13 @@ module Form =
                     |> Option.map dispatch
                     |> Option.defaultWith ignore
                 )
+                
+                match cancelPolicy with
+                    | CancelPolicy.DoNothing -> ()
+                    | CancelPolicy.Action action ->
+                        prop.onCancel (fun _ -> action())
+                        
+
                 prop.children [
                     yield! fields
 
@@ -489,6 +494,13 @@ module Form =
                                     if state = Loading then
                                         button.isLoading
                                 ]
+                                match cancelPolicy with
+                                    | CancelPolicy.DoNothing -> Html.none
+                                    | CancelPolicy.Action action ->
+                                        Bulma.button.button [
+                                            color.isLight
+                                            prop.text "Cancel"
+                                        ]                                
                             ]
                         ]
                     ]

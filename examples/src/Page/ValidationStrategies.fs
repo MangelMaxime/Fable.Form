@@ -193,6 +193,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
                         Form.View.ValidateOnSubmit
                     else
                         Form.View.ValidateOnBlur
+                CancelPolicy = Form.View.CancelPolicy.DoNothing
             }
             form
             values

@@ -147,6 +147,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             OnChange = FormChanged
             Action = "Sign in"
             Validation = Form.View.ValidateOnSubmit
+            CancelPolicy = Form.View.CancelPolicy.DoNothing
         }
         form
         model

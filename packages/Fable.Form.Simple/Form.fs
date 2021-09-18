@@ -339,12 +339,18 @@ module Form =
             | ValidateOnSubmit
 
         [<NoComparison; NoEquality>]
+        type CancelPolicy =
+            | DoNothing
+            | Action of (unit -> unit)
+
+        [<NoComparison; NoEquality>]
         type ViewConfig<'Values, 'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
                 OnChange : Model<'Values> -> 'Msg
                 Action : string
                 Validation : Validation
+                CancelPolicy: CancelPolicy
             }
 
         [<NoComparison; NoEquality>]
@@ -354,6 +360,7 @@ module Form =
                 OnSubmit : 'Msg option
                 State : State
                 Action : string
+                CancelPolicy: CancelPolicy
                 Fields : ReactElement list
             }
 
@@ -741,6 +748,7 @@ module Form =
                     Dispatch = viewConfig.Dispatch
                     OnSubmit = onSubmit
                     Action = viewConfig.Action
+                    CancelPolicy = viewConfig.CancelPolicy
                     State = model.State
                     Fields = List.map fieldToElement fields
                 }
