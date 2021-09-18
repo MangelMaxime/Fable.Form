@@ -476,6 +476,7 @@ module Form =
                                         Bulma.button.button [
                                             color.isLight
                                             prop.text "Cancel"
+                                            prop.onClick (fun _ -> action())
                                         ]                                
                             ]
                         ]
