@@ -139,7 +139,7 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             OnChange = FormChanged
             Action = "Sign in"
             Validation = Form.View.ValidateOnSubmit
-            CancelPolicy = Form.View.CancelPolicy.DoNothing
+            CancelPolicy = Form.View.CancelPolicy.Action (fun () -> Router.newUrl Route.Index)
         }
         form
         model
