@@ -453,10 +453,10 @@ module Form =
                     |> Option.defaultWith ignore
                 )
                 
-                match cancelPolicy with
-                    | CancelPolicy.DoNothing -> ()
-                    | CancelPolicy.Action action ->
-                        prop.onCancel (fun _ -> action())
+                // match cancelPolicy with
+                //     | CancelPolicy.DoNothing -> ()
+                //     | CancelPolicy.Action action ->
+                //         prop.onCancel (fun _ -> action())
                         
 
                 prop.children [
@@ -500,7 +500,11 @@ module Form =
                                         Bulma.button.button [
                                             color.isLight
                                             prop.text "Cancel"
-                                            prop.onClick (fun _ -> action())
+                                            prop.onClick (
+                                                fun _ -> 
+                                                    JS.consoole.log("Triggering cancel")
+                                                    action()
+                                            )
                                         ]                                
                             ]
                         ]
