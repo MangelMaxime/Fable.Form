@@ -502,7 +502,7 @@ module Form =
                                             prop.text "Cancel"
                                             prop.onClick (
                                                 fun _ -> 
-                                                    JS.consoole.log("Triggering cancel")
+                                                    JS.console.log("Triggering cancel")
                                                     action()
                                             )
                                         ]                                
