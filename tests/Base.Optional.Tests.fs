@@ -31,13 +31,14 @@ let emailField =
                {
                     Label = "Email"
                     Placeholder = "Type your email"
+                    HtmlAttributes = [ ]
                }
         }
 
 let passwordError =
     "The password should have at least 8 characters"
 
-let passwordField =
+let passwordField : Form.Form<Values, string, obj> =
     Form.passwordField
         {
             Parser =
@@ -55,6 +56,7 @@ let passwordField =
                {
                     Label = "Password"
                     Placeholder = "Type your password"
+                    HtmlAttributes = [ ]
                }
         }
 

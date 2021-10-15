@@ -13,7 +13,7 @@ type Values =
 let emailError =
     "Email should contains the '@' symbol"
 
-let emailField =
+let emailField : Form.Form<Values, string, obj> =
     Form.emailField
         {
             Parser =
@@ -31,6 +31,7 @@ let emailField =
                {
                     Label = "Email"
                     Placeholder = "Type your email"
+                    HtmlAttributes = [ ]
                }
         }
 
@@ -55,6 +56,7 @@ let passwordField =
                {
                     Label = "Password"
                     Placeholder = "Type your password"
+                    HtmlAttributes = [ ]
                }
         }
 
@@ -180,4 +182,3 @@ describe "Base.append" (fun () ->
     )
 
 )
-

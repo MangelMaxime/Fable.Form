@@ -20,7 +20,7 @@ type Values =
             ContentType : string
         }
 
-let titleField =
+let titleField : Form.Form<Values, string, obj> =
     Form.textField
         {
             Parser = Ok
@@ -33,6 +33,7 @@ let titleField =
                {
                     Label = "Title"
                     Placeholder = "Write a title"
+                    HtmlAttributes = [ ]
                }
         }
 
@@ -49,6 +50,7 @@ let bodyField =
                {
                     Label = "Body"
                     Placeholder = "Write a body"
+                    HtmlAttributes = [ ]
                }
         }
 
@@ -226,4 +228,3 @@ describe "Base.andThen" (fun () ->
     )
 
 )
-

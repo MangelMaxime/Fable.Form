@@ -13,7 +13,7 @@ type Values =
 let repeatPasswordError =
     "The password should have at least 8 characters"
 
-let repeatPasswordField =
+let repeatPasswordField : Base.Form<Values,unit,Form.Field<Values,obj>> =
     Base.meta
         (fun values ->
             Form.passwordField
@@ -33,6 +33,7 @@ let repeatPasswordField =
                        {
                             Label = "Repeat password"
                             Placeholder = "Type your password again"
+                            HtmlAttributes = [ ]
                        }
                 }
         )
