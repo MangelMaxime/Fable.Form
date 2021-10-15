@@ -117,6 +117,7 @@ let private studentForm =
                     {
                         Label = "Name"
                         Placeholder = "Student name"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -140,6 +141,7 @@ let private teacherForm =
                     {
                         Label = "Name"
                         Placeholder = "Teacher name"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -158,6 +160,7 @@ let private teacherForm =
                     {
                         Label = "Subject"
                         Placeholder = "Taught subject"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -175,7 +178,7 @@ let private teacherForm =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg> =
+let private form : Form.Form<Values, Msg, _> =
     let userTypeField =
         Form.selectField
             {

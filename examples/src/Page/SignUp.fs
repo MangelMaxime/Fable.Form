@@ -161,7 +161,7 @@ let private convertMakePublicOptionToBool (makePublic : string) =
     | "option-no"
     | _ -> false
 
-let private form : Form.Form<Values, Msg> =
+let private form : Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {
@@ -192,6 +192,7 @@ let private form : Form.Form<Values, Msg> =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -209,6 +210,7 @@ let private form : Form.Form<Values, Msg> =
                     {
                         Label = "Name"
                         Placeholder = "Your name"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -228,6 +230,7 @@ let private form : Form.Form<Values, Msg> =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -253,6 +256,7 @@ let private form : Form.Form<Values, Msg> =
                             {
                                 Label = "Repeat password"
                                 Placeholder = "Your password again..."
+                                HtmlAttributes = [ ]
                             }
                     }
             )

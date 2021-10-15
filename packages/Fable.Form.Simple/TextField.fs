@@ -4,14 +4,15 @@ open Fable.Form
 
 module TextField =
 
-    type Attributes =
+    type Attributes<'Attributes> =
         {
             Label : string
             Placeholder : string
+            HtmlAttributes: 'Attributes list
         }
 
-    type TextField<'Values> = Field.Field<Attributes, string, 'Values>
+    type TextField<'Values, 'Attributes> = Field.Field<Attributes<'Attributes>,string,'Values>
 
-    let form<'Values, 'Field, 'Output> : ((TextField<'Values> -> 'Field) -> Base.FieldConfig<Attributes, string, 'Values, 'Output> -> Base.Form<'Values, 'Output, 'Field>) =
+    let form<'Values, 'Attributes, 'Field, 'Output> : ((TextField<'Values, 'Attributes> -> 'Field) -> Base.FieldConfig<Attributes<'Attributes>, string, 'Values, 'Output> -> Base.Form<'Values, 'Output, 'Field>) =
         Base.field
             System.String.IsNullOrEmpty

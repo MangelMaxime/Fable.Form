@@ -6,90 +6,141 @@ open Fable.Form.Simple.Field
 [<RequireQualifiedAccess>]
 module Form =
 
-    type TextField<'Values> = TextField.TextField<'Values>
+    type TextField<'Values, 'Attributes> = TextField.TextField<'Values, 'Attributes>
     type RadioField<'Values> = RadioField.RadioField<'Values>
     type CheckboxField<'Values> = CheckboxField.CheckboxField<'Values>
     type SelectField<'Values> = SelectField.SelectField<'Values>
 
     type TextType =
-        | TextRaw
-        | TextPassword
+        | TextColor
+        | TextDate
+        | TextDateTimeLocal
         | TextEmail
+        // Not supported yet because there are not cross browser support Firefox doesn't support it for example
+        // and there is no polyfill for it
+        // | TextMonth
+        | TextNumber
+        | TextPassword
+        // TODO:
+        // | TextRange
+        | TextSearch
+        | TextTel
+        // Match for input="text"
+        | TextRaw
+        | TextTime
+        // Not supported yet because there are not cross browser support Firefox doesn't support it for example
+        // and there is no polyfill for it
+        // | TextWeek
         | TextArea
 
     [<RequireQualifiedAccess; NoComparison; NoEquality>]
-    type Field<'Values> =
-        | Text of TextType * TextField<'Values>
+    type Field<'Values, 'Attributes> =
+        | Text of TextType * TextField<'Values, 'Attributes>
         | Radio of RadioField<'Values>
         | Checkbox of CheckboxField<'Values>
         | Select of SelectField<'Values>
-        | Group of FilledField<'Values> list
-        | Section of title : string * FilledField<'Values> list
-        | List of FormList.FormList<'Values, Field<'Values>>
+        | Group of FilledField<'Values, 'Attributes> list
+        | Section of title : string * FilledField<'Values, 'Attributes> list
+        | List of FormList.FormList<'Values, Field<'Values, 'Attributes>>
 
-    and FilledField<'Values> =
-        Base.FilledField<Field<'Values>>
+    and FilledField<'Values, 'Attributes> =
+        Base.FilledField<Field<'Values, 'Attributes>>
 
-    type Form<'Values, 'Output> =
-        Base.Form<'Values, 'Output, Field<'Values>>
+    type Form<'Values, 'Output, 'Attributes> =
+        Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
 
     // Redifined some function from the Base module so the user can access them transparently and they are also specifically type for the Fable.Form.Simple absttraction
 
-    let succeed (output : 'Output) : Form<'Values, 'Output> =
+    let succeed (output : 'Output) : Form<'Values, 'Output, 'Attributes> =
         Base.succeed output
 
     let append
-        (newForm : Form<'Values, 'A>)
-        (currentForm : Form<'Values, 'A -> 'B>)
-        : Form<'Values, 'B> =
+        (newForm : Form<'Values, 'A, 'Attributes>)
+        (currentForm : Form<'Values, 'A -> 'B, 'Attributes>)
+        : Form<'Values, 'B, 'Attributes> =
 
         Base.append newForm currentForm
 
     let andThen
-        (child : 'A -> Form<'Values, 'B>)
-        (parent : Form<'Values, 'A>)
-        : Form<'Values, 'B> =
+        (child : 'A -> Form<'Values, 'B, 'Attributes>)
+        (parent : Form<'Values, 'A, 'Attributes>)
+        : Form<'Values, 'B, 'Attributes> =
 
         Base.andThen child parent
 
     let textField
-        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextRaw, x)) config
 
     let passwordField
-        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextPassword, x)) config
 
+    let colorField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextColor, x)) config
+
+    let dateField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextDate, x)) config
+
+    let dateTimeLocalField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextDateTimeLocal, x)) config
+
+    let numberField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextNumber, x)) config
+
+    let searchField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextSearch, x)) config
+
+    let telField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextTel, x)) config
+
+    let timeField
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        TextField.form (fun x -> Field.Text (TextTime, x)) config
+
     let emailField
-        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextEmail, x)) config
 
     let textareaField
-        (config : Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextArea, x)) config
 
     let checkboxField
         (config : Base.FieldConfig<CheckboxField.Attributes, bool, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        : Form<'Values, 'Output, 'Attributes> =
         CheckboxField.form Field.Checkbox config
 
     let radioField
         (config : Base.FieldConfig<RadioField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        : Form<'Values, 'Output, 'Attributes> =
         RadioField.form Field.Radio config
 
     let selectField
         (config : Base.FieldConfig<SelectField.Attributes, string, 'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        : Form<'Values, 'Output, 'Attributes> =
         SelectField.form Field.Select config
 
     let group
-        (form : Form<'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (form : Form<'Values, 'Output, 'Attributes>)
+        : Form<'Values, 'Output, 'Attributes> =
         Base.custom (fun values ->
             let res = Base.fill form values
 
@@ -102,8 +153,8 @@ module Form =
 
     let section
         (title : string)
-        (form : Form<'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (form : Form<'Values, 'Output, 'Attributes>)
+        : Form<'Values, 'Output, 'Attributes> =
         Base.custom (fun values ->
             let res = Base.fill form values
 
@@ -115,7 +166,7 @@ module Form =
         )
 
     let fill
-        (form : Form<'Values, 'Output>)
+        (form : Form<'Values, 'Output, 'Attributes>)
         (values : 'Values) =
         // Work around type system complaining about the 'Field behind forced to a type
         // Revisit? Good enough?
@@ -130,8 +181,8 @@ module Form =
     let rec private mapFieldValues
         (update : 'A -> 'B -> 'B)
         (values : 'B)
-        (field : Field<'A>)
-        : Field<'B> =
+        (field : Field<'A, 'Attributes>)
+        : Field<'B, 'Attributes> =
 
         let newUpdate oldValues =
             update oldValues values
@@ -156,7 +207,7 @@ module Form =
                     State = mapFieldValues update values filledField.State
                     Error = filledField.Error
                     IsDisabled = filledField.IsDisabled
-                } : FilledField<'B>
+                } : FilledField<'B, 'Attributes>
             )
             |> Field.Group
 
@@ -168,7 +219,7 @@ module Form =
                         State = mapFieldValues update values filledField.State
                         Error = filledField.Error
                         IsDisabled = filledField.IsDisabled
-                    } : FilledField<'B>
+                    } : FilledField<'B, 'Attributes>
                 )
 
             Field.Section (title, newFields)
@@ -178,11 +229,11 @@ module Form =
                 {
                     Forms =
                         List.map
-                            (fun (form : FormList.Form<'A,Field<'A>>) ->
+                            (fun (form : FormList.Form<'A,Field<'A, 'Attributes>>) ->
                                 {
                                     Fields =
                                         List.map
-                                            (fun (filledField : Base.FilledField<Field<'A>>) ->
+                                            (fun (filledField : Base.FilledField<Field<'A, 'Attributes>>) ->
                                                 {
                                                     State = mapFieldValues update values filledField.State
                                                     Error = filledField.Error
@@ -201,10 +252,10 @@ module Form =
 
     let list
         (config : FormList.Config<'Values, 'ElementValues>)
-        (elementForIndex : int -> Form<'ElementValues, 'Output>)
-        : Form<'Values, 'Output list> =
+        (elementForIndex : int -> Form<'ElementValues, 'Output, 'Attributes>)
+        : Form<'Values, 'Output list, 'Attributes> =
 
-        let fillElement (elementState : FormList.ElementState<'Values, 'ElementValues>) : Base.FilledForm<'Output, Field<'Values>> =
+        let fillElement (elementState : FormList.ElementState<'Values, 'ElementValues>) : Base.FilledForm<'Output, Field<'Values, 'Attributes>> =
             let filledElement =
                 fill (elementForIndex elementState.Index) elementState.ElementValues
 
@@ -228,8 +279,8 @@ module Form =
         FormList.form tagger config fillElement
 
     let meta
-        (fn : 'Values -> Form<'Values, 'Output>)
-        : Form<'Values, 'Output> =
+        (fn : 'Values -> Form<'Values, 'Output, 'Attributes>)
+        : Form<'Values, 'Output, 'Attributes> =
 
         Base.meta fn
 
@@ -242,13 +293,13 @@ module Form =
 
     let mapValues
         (
-            { 
+            {
                 Value = value
                 Update = update
             } : MapValuesConfig<'A, 'B>
         )
-        (form : Form<'B, 'Output>)
-        : Form<'A, 'Output> =
+        (form : Form<'B, 'Output, 'Attributes>)
+        : Form<'A, 'Output, 'Attributes> =
 
         Base.meta (fun values ->
             form
@@ -301,7 +352,7 @@ module Form =
             }
 
         [<NoComparison; NoEquality>]
-        type TextFieldConfig<'Msg> =
+        type TextFieldConfig<'Msg, 'Attributes> =
             {
                 Dispatch : Dispatch<'Msg>
                 OnChange : string -> 'Msg
@@ -310,7 +361,7 @@ module Form =
                 Value : string
                 Error : Error.Error option
                 ShowError : bool
-                Attributes : TextField.Attributes
+                Attributes : TextField.Attributes<'Attributes>
             }
 
         [<NoComparison; NoEquality>]
@@ -389,13 +440,20 @@ module Form =
             }
 
         [<NoComparison; NoEquality>]
-        type CustomConfig<'Msg> =
+        type CustomConfig<'Msg, 'Attributes> =
             {
                 Form : FormConfig<'Msg> -> ReactElement
-                TextField : TextFieldConfig<'Msg> -> ReactElement
-                PasswordField : TextFieldConfig<'Msg> -> ReactElement
-                EmailField : TextFieldConfig<'Msg> -> ReactElement
-                TextAreaField : TextFieldConfig<'Msg> -> ReactElement
+                TextField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                PasswordField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                EmailField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                ColorField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                DateField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                DateTimeLocalField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                NumberField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                SearchField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TelField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TimeField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TextAreaField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
                 SelectField : SelectFieldConfig<'Msg> -> ReactElement
@@ -418,6 +476,13 @@ module Form =
             | Text
             | Password
             | Email
+            | Color
+            | Date
+            | DateTimeLocal
+            | Number
+            | Search
+            | Tel
+            | Time
 
         let errorToString (error : Error.Error) =
             match error with
@@ -432,8 +497,8 @@ module Form =
 
         let ignoreChildError
             (parentError : Error.Error option)
-            (field : FilledField<'Values>)
-            : FilledField<'Values> =
+            (field : FilledField<'Values, 'Attributes>)
+            : FilledField<'Values, 'Attributes> =
 
             match parentError with
             | Some _ ->
@@ -445,9 +510,9 @@ module Form =
 
         let rec renderField
             (dispatch : Dispatch<'Msg>)
-            (customConfig : CustomConfig<'Msg>)
+            (customConfig : CustomConfig<'Msg, 'Attributes>)
             (fieldConfig : FieldConfig<'Values, 'Msg>)
-            (field : FilledField<'Values>)
+            (field : FilledField<'Values, 'Attributes>)
             : ReactElement =
 
             let blur label =
@@ -455,7 +520,7 @@ module Form =
 
             match field.State with
             | Field.Text (typ, info) ->
-                let config : TextFieldConfig<'Msg> =
+                let config : TextFieldConfig<'Msg, 'Attributes> =
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
@@ -471,14 +536,35 @@ module Form =
                 | TextRaw ->
                     customConfig.TextField config
 
-                | TextType.TextPassword ->
+                | TextPassword ->
                     customConfig.PasswordField config
 
-                | TextType.TextArea ->
+                | TextArea ->
                     customConfig.TextAreaField config
 
-                | TextType.TextEmail ->
+                | TextEmail ->
                     customConfig.EmailField config
+
+                | TextColor ->
+                    customConfig.ColorField config
+
+                | TextDate ->
+                    customConfig.DateField config
+
+                | TextDateTimeLocal ->
+                    customConfig.DateTimeLocalField config
+
+                | TextNumber ->
+                    customConfig.NumberField config
+
+                | TextSearch ->
+                    customConfig.SearchField config
+
+                | TextTel ->
+                    customConfig.TelField config
+
+                | TextTime ->
+                    customConfig.TimeField config
 
             | Field.Checkbox info ->
                 let config : CheckboxFieldConfig<'Msg> =
@@ -574,9 +660,9 @@ module Form =
                     }
 
         let custom
-            (config : CustomConfig<'Msg>)
+            (config : CustomConfig<'Msg, 'Attributes>)
             (viewConfig : ViewConfig<'Values, 'Msg>)
-            (form : Form<'Values, 'Msg>)
+            (form : Form<'Values, 'Msg, 'Attributes>)
             (model : Model<'Values>) =
 
             let (fields, result) =

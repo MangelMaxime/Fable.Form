@@ -3,6 +3,7 @@ module Page.Login.Component
 open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
+open Feliz
 
 /// <summary>
 /// Type used to represent the form values
@@ -50,6 +51,7 @@ let update (msg : Msg) (model : Model) =
     // Form has been submitted
     // Here, we have access to the value submitted from the from
     | LogIn (_email, _password, _rememberMe) ->
+        printfn "%A" _password
         // For this example, we just set a message in the Form view
         { model with
             State = Form.View.Success "You have been logged in successfully"
@@ -63,7 +65,7 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form : Form.Form<Values, Msg> =
+let form : Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {
@@ -80,6 +82,9 @@ let form : Form.Form<Values, Msg> =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
+                        HtmlAttributes = [
+                            prop.autoComplete "email"
+                        ]
                     }
             }
 
@@ -98,6 +103,9 @@ let form : Form.Form<Values, Msg> =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
+                        HtmlAttributes = [
+                            prop.autoComplete "current-password"
+                        ]
                     }
             }
 

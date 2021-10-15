@@ -2,8 +2,8 @@ module Page.Composability.WithConfiguration.AddressForm
 
 open Fable.Form.Simple
 
-type AddressForm<'Values> =
-    Form.Form<'Values, Address.T>
+type AddressForm<'Values, 'Attributes> =
+    Form.Form<'Values, Address.T, 'Attributes>
 
 type Values =
     {
@@ -28,7 +28,7 @@ type Config<'A> =
 
 let form
     ({ Value = getValue; Update = update} : Config<'A>)
-    : AddressForm<'A> =
+    : AddressForm<'A, 'Attributes> =
 
     let updateField fn newValue values =
         update (fn newValue (getValue values)) values
@@ -50,6 +50,7 @@ let form
                     {
                         Label = "Country"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -70,6 +71,7 @@ let form
                     {
                         Label = "City"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -88,6 +90,7 @@ let form
                     {
                         Label = "PostalCode"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 

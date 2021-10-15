@@ -35,9 +35,7 @@ module Form =
                     |> Option.defaultValue (Bulma.help [ ])
 
                 else
-                    Bulma.help [
-
-                    ]
+                    Bulma.help [ ]
 
         let wrapInFieldContainer (children : ReactElement list) =
             Bulma.field.div [
@@ -71,19 +69,41 @@ module Form =
                     Error = error
                     ShowError = showError
                     Attributes = attributes
-                } : TextFieldConfig<'Msg>
+                } : TextFieldConfig<'Msg, IReactProperty>
             ) =
 
             let inputFunc =
                 match typ with
-                | InputType.Text ->
+                | Text ->
                     Bulma.input.text
 
-                | InputType.Password ->
+                | Password ->
                     Bulma.input.password
 
-                | InputType.Email ->
+                | Email ->
                     Bulma.input.email
+
+                | Color ->
+                    Bulma.input.color
+
+                | Date ->
+                    Bulma.input.date
+
+                | DateTimeLocal ->
+                    Bulma.input.datetimeLocal
+
+                | Number ->
+                    Bulma.input.number
+
+                | Search ->
+                    Bulma.input.search
+
+                | Tel ->
+                    Bulma.input.tel
+
+                | Time ->
+                    Bulma.input.time
+
 
             inputFunc [
                 prop.onChange (fun (text : string) -> onChange text |> dispatch)
@@ -102,6 +122,8 @@ module Form =
                 prop.placeholder attributes.Placeholder
                 if showError && error.IsSome then
                     color.isDanger
+
+                yield! attributes.HtmlAttributes
             ]
             |> withLabelAndError attributes.Label showError error
 
@@ -116,7 +138,7 @@ module Form =
                     Error = error
                     ShowError = showError
                     Attributes = attributes
-                } : TextFieldConfig<'Msg>
+                } : TextFieldConfig<'Msg, IReactProperty>
             ) =
 
             Bulma.textarea [
@@ -136,6 +158,8 @@ module Form =
                 prop.placeholder attributes.Placeholder
                 if showError && error.IsSome then
                     color.isDanger
+
+                yield! attributes.HtmlAttributes
             ]
             |> withLabelAndError attributes.Label showError error
 
@@ -297,8 +321,8 @@ module Form =
 
         let ignoreChildError
             (parentError : Error.Error option)
-            (field : Form.FilledField<'Values>)
-            : Form.FilledField<'Values> =
+            (field : Form.FilledField<'Values, IReactProperty>)
+            : Form.FilledField<'Values, IReactProperty> =
 
             match parentError with
             | Some _ ->
@@ -471,13 +495,20 @@ module Form =
                 ]
             ]
 
-        let htmlViewConfig<'Msg> : CustomConfig<'Msg> =
+        let htmlViewConfig<'Msg> : CustomConfig<'Msg, IReactProperty> =
             {
                 Form = form
                 TextField = inputField Text
                 PasswordField = inputField Password
                 EmailField = inputField Email
                 TextAreaField = textareaField
+                ColorField = inputField Color
+                DateField = inputField  Date
+                DateTimeLocalField = inputField DateTimeLocal
+                NumberField = inputField Number
+                SearchField = inputField Search
+                TelField = inputField Tel
+                TimeField = inputField Time
                 CheckboxField = checkboxField
                 RadioField = radioField
                 SelectField = selectField

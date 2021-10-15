@@ -1,6 +1,7 @@
 module Page.Composability.Simple.AddressForm
 
 open Fable.Form.Simple
+open Feliz
 
 type Values =
     {
@@ -16,7 +17,7 @@ let blank =
         PostalCode = ""
     }
 
-let form : Form.Form<Values, Address.T> =
+let form : Form.Form<Values, Address.T, IReactProperty> =
     let countryField =
         Form.textField
             {
@@ -35,6 +36,7 @@ let form : Form.Form<Values, Address.T> =
                     {
                         Label = "Country"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -56,6 +58,7 @@ let form : Form.Form<Values, Address.T> =
                     {
                         Label = "City"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -75,6 +78,7 @@ let form : Form.Form<Values, Address.T> =
                     {
                         Label = "PostalCode"
                         Placeholder = ""
+                        HtmlAttributes = [ ]
                     }
             }
 

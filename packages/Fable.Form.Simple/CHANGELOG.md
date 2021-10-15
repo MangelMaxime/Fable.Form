@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.2.0 - 2021-10-15
+
+### Added
+
+* Add support for more field type:
+    - `Color`
+    - `Date`
+    - `DateTimeLocal`
+    - `Email`
+    - `Number`
+    - `Search`
+    - `Tel`
+    - `Time`
+
+* Allow to pass any attributes to an input field using the new `HtmlAttributes` property
+
 ## 1.1.0 - 2021-06-07
 
 ### Changed

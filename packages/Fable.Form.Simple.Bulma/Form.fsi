@@ -35,11 +35,11 @@ module Form =
 
         val inputField :
             typ : Form.View.InputType ->
-            config : Form.View.TextFieldConfig<'Msg> ->
+            config : Form.View.TextFieldConfig<'Msg, IReactProperty> ->
             ReactElement
 
         val textareaField :
-            config : Form.View.TextFieldConfig<'Msg> ->
+            config : Form.View.TextFieldConfig<'Msg, IReactProperty> ->
             ReactElement
 
         val checkboxField :
@@ -65,8 +65,8 @@ module Form =
 
         val ignoreChildError :
             parentError : Error.Error option ->
-            field : Form.FilledField<'Values> ->
-            Form.FilledField<'Values>
+            field : Form.FilledField<'Values, IReactProperty> ->
+            Form.FilledField<'Values, IReactProperty>
 
         val formList :
             formConfig : Form.View.FormListConfig<'Msg> ->
@@ -81,8 +81,8 @@ module Form =
             ReactElement
 
         val htmlViewConfig<'Msg> :
-            Form.View.CustomConfig<'Msg>
+            Form.View.CustomConfig<'Msg, IReactProperty>
 
         val asHtml :
             config : Form.View.ViewConfig<'Values,'Msg> ->
-            (Form.Form<'Values,'Msg> -> Form.View.Model<'Values> -> ReactElement)
+            (Form.Form<'Values,'Msg, IReactProperty> -> Form.View.Model<'Values> -> ReactElement)

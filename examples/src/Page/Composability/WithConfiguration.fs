@@ -71,7 +71,7 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg> =
+let private form : Form.Form<Values, Msg, _> =
     let nameField =
         Form.textField
             {
@@ -88,6 +88,7 @@ let private form : Form.Form<Values, Msg> =
                     {
                         Label = "Name"
                         Placeholder = "Your name"
+                        HtmlAttributes = [ ]
                     }
             }
 
