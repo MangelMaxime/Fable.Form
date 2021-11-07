@@ -152,6 +152,7 @@ let form : Form.Form<Values, Msg> =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
+                        HtmlAttributes = [ ]
                     }
             }
 
@@ -170,6 +171,7 @@ let form : Form.Form<Values, Msg> =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
+                        HtmlAttributes = [ ]
                     }
             }
 

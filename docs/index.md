@@ -32,6 +32,7 @@ let form : Form.Form<Values, Msg> =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
+                        HtmlAttributes = [ ]
                     }
             }
 
