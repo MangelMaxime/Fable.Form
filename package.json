@@ -39,16 +39,8 @@
         "node": ">= 14.0.0",
         "npm": ">= 7.0.0"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/glutinum-org/Glutinum.Converter.git"
-    },
     "author": "Maxime Mangel",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/glutinum-org/Glutinum.Converter/issues"
-    },
-    "homepage": "https://github.com/glutinum-org/Glutinum.Converter#readme",
     "devDependencies": {
         "bulma": "^0.7.5",
         "chalk": "^4.1.0",
