@@ -184,6 +184,42 @@ module Form =
         parent : Form<'Values,'A, 'Attributes> -> Form<'Values,'B, 'Attributes>
 
     /// <summary>
+    /// Make a form be <b>optional</b>
+    ///
+    /// If the form has values set, it will return <c>Some 'Value</c>.
+    ///
+    /// Otherwise, it returns <c>None</c>.
+    /// </summary>
+    /// <param name="form">Form to make optional</param>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let emailField =
+    ///     Form.emailField
+    ///         {
+    ///             // ...
+    ///         }
+    ///
+    /// let ageField =
+    ///     Form.numberField
+    ///         {
+    ///             // ...
+    ///         }
+    ///
+    /// let onSubmit =
+    ///     fun email ageOpt ->
+    ///         LogIn (email, ageOpt)
+    ///
+    /// Form.succeed onSubmit
+    ///     |> Form.append emailField
+    ///     |> Form.append (Form.optional ageField)
+    /// </code>
+    /// </example>
+    /// <returns>An optional form</returns>
+    val optional :
+        form : Form<'Values, 'A, 'Attributes> ->
+        Form<'Values, 'A option, 'Attributes>
+
+    /// <summary>
     /// Create a form that contains a single text field
     /// </summary>
     /// <param name="config">A record used to configure the field behaviour.

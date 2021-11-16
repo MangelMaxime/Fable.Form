@@ -68,6 +68,12 @@ module Form =
 
         Base.andThen child parent
 
+    let optional
+        (form : Form<'Values, 'A, 'Attributes>)
+        : Form<'Values, 'A option, 'Attributes> =
+
+        Base.optional form
+
     let textField
         (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes> =
