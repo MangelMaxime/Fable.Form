@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="Mocha.fs" />
-        <Compile Include="Node.Assert.fs" />
-        <Compile Include="Fable.Core.JsInterop.fs" />
-        <Compile Include="Globals.fs" />
-        <Compile Include="Base.Succeed.fs" />
-        <Compile Include="Base.Map.Tests.fs" />
-        <Compile Include="Base.Append.Tests.fs" />
-        <Compile Include="Base.Optional.Tests.fs" />
-        <Compile Include="Base.Meta.Tests.fs" />
-        <Compile Include="Base.Custom.Tests.fs" />
-        <Compile Include="Base.Field.Tests.fs" />
-        <Compile Include="Base.AndThen.Tests.fs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
-      <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="Fable.Core" Version="3.2.5" />
-      <PackageReference Include="Fable.React" Version="7.4.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Mocha.fs" />
+    <Compile Include="Node.Assert.fs" />
+    <Compile Include="Fable.Core.JsInterop.fs" />
+    <Compile Include="Globals.fs" />
+    <Compile Include="Base.Succeed.fs" />
+    <Compile Include="Base.Map.Tests.fs" />
+    <Compile Include="Base.Append.Tests.fs" />
+    <Compile Include="Base.Optional.Tests.fs" />
+    <Compile Include="Base.Meta.Tests.fs" />
+    <Compile Include="Base.Custom.Tests.fs" />
+    <Compile Include="Base.Field.Tests.fs" />
+    <Compile Include="Base.AndThen.Tests.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\packages\Fable.Form\Fable.Form.fsproj" />
+    <ProjectReference Include="..\packages\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

@@ -12,12 +12,8 @@
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Fable.Core" Version="3.2.5" />
-        <PackageReference Include="Feliz" Version="1.40.0" />
-        <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
         <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
     </ItemGroup>
+    <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

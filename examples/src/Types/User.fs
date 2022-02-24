@@ -1,6 +1,5 @@
 module rec User
 
-
 let checkEmailAddress (email : EmailAddress.T) =
     promise {
         // Add some delay to simulate a Server request
@@ -17,7 +16,7 @@ module ValidEmail =
     type T =
         private ValidEmail of EmailAddress.T
 
-    let toString (ValidEmail email) = 
+    let toString (ValidEmail email) =
         EmailAddress.toString email
 
     let validateEmailAddress (email : string) =
@@ -26,7 +25,7 @@ module ValidEmail =
             checkEmailAddress email
 
         | Error error ->
-            Promise.reject error
+            Promise.reject (System.Exception error)
 
     let create (email : EmailAddress.T) : T =
         ValidEmail email
@@ -84,9 +83,9 @@ let signUp
     checkEmailAddress email
     |> Promise.mapResult (fun validEmail ->
         {
-            Email = validEmail 
-            Name = name 
-            Password = password 
+            Email = validEmail
+            Name = name
+            Password = password
             IsProfilePublic = makePublic
         }
     )

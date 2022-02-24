@@ -1,7 +1,5 @@
 <Project>
 	<PropertyGroup>
-		<!-- Make all the projects use a lock file -->
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<!-- Make all the projects use the highest warning level -->
 		<WarningLevel>5</WarningLevel>
 	</PropertyGroup>

@@ -14,7 +14,7 @@
         "prewatch-examples": "concurrently -p none 'npm:restore-examples' 'npm:clean-examples'",
         "watch-examples": "concurrently -p none 'npm:watch-examples-*'",
         "prewatch-docs": "npm run clean-docs",
-        "nacara-watch": "nacara --watch",
+        "nacara-watch": "nacara watch",
         "nacara-build": "nacara",
         "watch-docs": "concurrently -p none 'npm:build-examples' 'npm:nacara-watch'",
         "prebuild-examples": "concurrently -p none 'npm:restore-examples' 'npm:clean-examples'",

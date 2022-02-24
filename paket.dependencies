@@ -1,0 +1,15 @@
+source https://api.nuget.org/v3/index.json
+
+storage: none
+
+nuget FSharp.Core ~> 5.0 redirects: force #Feliz.Bulma depends on FSharp.Core >= 5.0
+nuget Fable.Browser.Dom
+nuget Fable.Core
+nuget Fable.Elmish
+nuget Fable.Elmish.Browser
+nuget Fable.Elmish.HMR
+nuget Fable.Elmish.React
+nuget Fable.Promise
+nuget Fable.React
+nuget Feliz
+nuget Feliz.Bulma

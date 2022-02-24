@@ -1,45 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <!-- Warn on ununsed variables -->
-        <OtherFlags>--warnon:1182</OtherFlags>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="src\Global.fs" />
-        <Compile Include="src\ConsoleTracer.fs" />
-        <Compile Include="src\Tuple.fs" />
-        <Compile Include="src\Cmd.fs" />
-        <Compile Include="src\Router.fs" />
-        <Compile Include="src\Types\EmailAddress.fs" />
-        <Compile Include="src\Types\User.fs" />
-        <Compile Include="src\Types\Address.fs" />
-        <Compile Include="src\Types\DemoInformation.fs" />
-        <Compile Include="src\Page\SignUp.fs" />
-        <Compile Include="src\Page\Login.fs" />
-        <Compile Include="src\Page\DynamicForm.fs" />
-        <Compile Include="src\Page\FormList.fs" />
-        <Compile Include="src\Page\ValidationStrategies.fs" />
-        <Compile Include="src\Page\CancelPolicy.fs" />
-        <Compile Include="src\Page\Composability\Simple\AddressForm.fs" />
-        <Compile Include="src\Page\Composability\WithConfiguration\AddressForm.fs" />
-        <Compile Include="src\Page\Composability\Simple.fs" />
-        <Compile Include="src\Page\Composability\WithConfiguration.fs" />
-        <Compile Include="src\App.fs" />
-        <Content Include="style\style.scss" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Fable.Browser.Dom" Version="2.3.0" />
-        <PackageReference Include="Fable.Core" Version="3.2.5" />
-        <PackageReference Include="Fable.Elmish" Version="3.1.0" />
-        <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
-        <PackageReference Include="Fable.Elmish.HMR" Version="4.1.0" />
-        <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
-        <PackageReference Include="Fable.Promise" Version="2.2.0" />
-        <PackageReference Include="Feliz" Version="1.40.0" />
-        <PackageReference Include="Feliz.Bulma" Version="2.11.0" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- Warn on ununsed variables -->
+    <OtherFlags>--warnon:1182</OtherFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\Global.fs" />
+    <Compile Include="src\ConsoleTracer.fs" />
+    <Compile Include="src\Tuple.fs" />
+    <Compile Include="src\Cmd.fs" />
+    <Compile Include="src\Router.fs" />
+    <Compile Include="src\Types\EmailAddress.fs" />
+    <Compile Include="src\Types\User.fs" />
+    <Compile Include="src\Types\Address.fs" />
+    <Compile Include="src\Types\DemoInformation.fs" />
+    <Compile Include="src\Page\SignUp.fs" />
+    <Compile Include="src\Page\Login.fs" />
+    <Compile Include="src\Page\DynamicForm.fs" />
+    <Compile Include="src\Page\FormList.fs" />
+    <Compile Include="src\Page\ValidationStrategies.fs" />
+    <Compile Include="src\Page\CancelPolicy.fs" />
+    <Compile Include="src\Page\Composability\Simple\AddressForm.fs" />
+    <Compile Include="src\Page\Composability\WithConfiguration\AddressForm.fs" />
+    <Compile Include="src\Page\Composability\Simple.fs" />
+    <Compile Include="src\Page\Composability\WithConfiguration.fs" />
+    <Compile Include="src\App.fs" />
+    <Content Include="style\style.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
