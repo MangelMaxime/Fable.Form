@@ -42,18 +42,18 @@
     "author": "Maxime Mangel",
     "license": "MIT",
     "devDependencies": {
-        "bulma": "^0.7.5",
-        "chalk": "^4.1.0",
+        "bulma": "^0.9.3",
+        "chalk": "^5.0.0",
         "changelog-parser": "^2.8.0",
-        "concurrently": "^6.0.2",
+        "concurrently": "^7.0.0",
         "esm": "^3.2.25",
-        "gh-pages": "^3.1.0",
-        "mocha": "^8.3.2",
-        "nacara": "^0.4.1",
-        "nodemon": "^2.0.7",
+        "gh-pages": "^3.2.3",
+        "mocha": "^9.2.1",
+        "nacara": "^1.5.1",
+        "nodemon": "^2.0.15",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "shelljs": "^0.8.4",
-        "shx": "^0.3.3"
+        "shelljs": "^0.8.5",
+        "shx": "^0.3.4"
     }
 }
