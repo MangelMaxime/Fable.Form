@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+* Fix #24: Add "onCancel" functionality (by @zelenij)
+
 ## 2.0.0 - 2021-10-15
 
 ### Added
