@@ -15,6 +15,7 @@ module FormList = Page.FormList.Component
 module ValidationStrategies = Page.ValidationStrategies.Component
 module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
+module CancelPolicy = Page.CancelPolicy.Component
 
 [<RequireQualifiedAccess>]
 type Page =
@@ -26,6 +27,7 @@ type Page =
     | ValidationStrategies of ValidationStrategies.Model
     | ComposabilitySimple of ComposabilitySimple.Model
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
+    | CancelPolicy of CancelPolicy.Model
     | NotFound
 
 type Msg =
@@ -37,6 +39,7 @@ type Msg =
     | ValidationStrategiesMsg of ValidationStrategies.Msg
     | ComposabilitySimpleMsg of ComposabilitySimple.Msg
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
+    | CancelPolicyMsg of CancelPolicy.Msg
 
 
 type Model =
@@ -105,6 +108,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.ComposabilityWithConfiguration subModel
             }
             , Cmd.map ComposabilityWithConfigurationMsg subCmd
+
+        | Router.Route.CancelPolicy ->
+            let (subModel, subCmd) = CancelPolicy.init ()
+            { model with
+                ActivePage = Page.CancelPolicy subModel
+            }
+            , Cmd.map CancelPolicyMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -207,6 +217,18 @@ let private update (msg : Msg) (model : Model) =
             model
             , Cmd.none
 
+    | CancelPolicyMsg subMsg ->
+        match model.ActivePage with
+        | Page.CancelPolicy subModel ->
+            CancelPolicy.update subMsg subModel
+            |> Tuple.mapFirst Page.CancelPolicy
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map CancelPolicyMsg)
+
+        | _ ->
+            model
+            , Cmd.none
+
 let private init (location ) =
     setRoute
         location
@@ -216,7 +238,7 @@ let private init (location ) =
         }
 
 
-let private renderLink 
+let private renderLink
     (
         {
             Title = titleText
@@ -237,7 +259,7 @@ let private renderLink
     ]
 
 
-let private renderDemoPage 
+let private renderDemoPage
     (
         {
             Title = titleText
@@ -245,7 +267,7 @@ let private renderDemoPage
             Code = codeText
             GithubLink = sourceCodeUrl
         } : DemoInformation.T
-    ) 
+    )
     (content : ReactElement)
     =
 
@@ -354,6 +376,7 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
 
             Html.ul [
                 renderLink ValidationStrategies.information
+                renderLink CancelPolicy.information
             ]
         ]
 
@@ -391,6 +414,11 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
         renderDemoPage
             ComposabilityWithConfiguration.information
             (ComposabilityWithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
+
+    | Page.CancelPolicy subModel ->
+        renderDemoPage
+            CancelPolicy.information
+            (CancelPolicy.view subModel (CancelPolicyMsg >> dispatch))
 
     | Page.NotFound ->
         Html.text "Page not found"

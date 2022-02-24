@@ -591,9 +591,16 @@ module Form =
             | ValidateOnSubmit
 
         [<NoComparison; NoEquality>]
+        type CancelPolicyActionConfig =
+            {
+                Label : string
+                Func : (unit -> unit)
+            }
+
+        [<RequireQualifiedAccess; NoComparison; NoEquality>]
         type CancelPolicy =
             | DoNothing
-            | Action of (unit -> unit)
+            | Action of CancelPolicyActionConfig
 
         [<NoComparison; NoEquality>]
         type ViewConfig<'Values,'Msg> =

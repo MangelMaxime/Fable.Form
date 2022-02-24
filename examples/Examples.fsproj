@@ -20,6 +20,7 @@
         <Compile Include="src\Page\DynamicForm.fs" />
         <Compile Include="src\Page\FormList.fs" />
         <Compile Include="src\Page\ValidationStrategies.fs" />
+        <Compile Include="src\Page\CancelPolicy.fs" />
         <Compile Include="src\Page\Composability\Simple\AddressForm.fs" />
         <Compile Include="src\Page\Composability\WithConfiguration\AddressForm.fs" />
         <Compile Include="src\Page\Composability\Simple.fs" />

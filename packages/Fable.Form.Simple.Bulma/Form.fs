@@ -452,12 +452,6 @@ module Form =
                     |> Option.map dispatch
                     |> Option.defaultWith ignore
                 )
-                
-                // match cancelPolicy with
-                //     | CancelPolicy.DoNothing -> ()
-                //     | CancelPolicy.Action action ->
-                //         prop.onCancel (fun _ -> action())
-                        
 
                 prop.children [
                     yield! fields
@@ -494,19 +488,26 @@ module Form =
                                     if state = Loading then
                                         button.isLoading
                                 ]
-                                match cancelPolicy with
-                                    | CancelPolicy.DoNothing -> Html.none
-                                    | CancelPolicy.Action action ->
-                                        Bulma.button.button [
-                                            color.isLight
-                                            prop.text "Cancel"
-                                            prop.onClick (
-                                                fun _ -> 
-                                                    JS.console.log("Triggering cancel")
-                                                    action()
-                                            )
-                                        ]                                
                             ]
+
+                            match cancelPolicy with
+                            | CancelPolicy.DoNothing ->
+                                Html.none
+
+                            | CancelPolicy.Action action ->
+                                Bulma.control.div [
+                                    Bulma.button.button [
+                                        color.isLight
+                                        prop.text action.Label
+                                        // Explicitly set the button type to prevent
+                                        // it to trigger the default form submit
+                                        prop.type'.button
+                                        prop.onClick (
+                                            fun _ ->
+                                                action.Func()
+                                        )
+                                    ]
+                                ]
                         ]
                     ]
                 ]
