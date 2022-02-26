@@ -1,6 +1,11 @@
 ---
+layout: navbar-only
 title: Introduction
 ---
+
+<div class="container content section">
+    <div class="columns">
+        <div class="column is-8-widescreen is-offset-2-widescreen">
 
 Fable.Form allows you to build forms that are:
 
@@ -50,3 +55,14 @@ let form : Form.Form<Values, Msg> =
         |> Form.append emailField
         |> Form.append passwordField
 ```
+<br />
+
+<div class="is-flex is-justify-content-center">
+    <a href="/Fable.Form/fable-form/how_to_use.html" class="button is-primary is-medium">
+        Gettting Started
+    </a>
+</div>
+
+</div>
+</div>
+</div>

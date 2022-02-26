@@ -1,0 +1,108 @@
+{
+    "serverPort": 8081,
+    "siteMetadata": {
+        "title": "Fable.Form",
+        "url": "https://mangelmaxime.github.io",
+        "baseUrl": "/Fable.Form/",
+        "editUrl" : "https://github.com/MangelMaxime/Fable.Form/edit/main/docs"
+    },
+    "navbar": {
+        "start": [
+            {
+                "pinned": true,
+                "label": "Docs",
+                "items": [
+                    {
+                        "section": "fable-form",
+                        "label": "Fable.Form",
+                        "description": "Extensible core library used to build forms",
+                        "url": "/Fable.Form/fable-form/how_to_use.html"
+                    },
+                    "divider",
+                    {
+                        "section": "fable-form-simple",
+                        "label": "Fable.Form.Simple",
+                        "description": "Simple form implementation, you can write your own view on top of it",
+                        "url": "/Fable.Form/fable-form-simple/features.html"
+                    },
+                    "divider",
+                    {
+                        "section": "fable-form-simple-bulma",
+                        "label": "Fable.Form.Simple.Bulma",
+                        "description": "View implementation for Fable.Form.Simple based on Bulma",
+                        "url": "/Fable.Form/fable-form-simple-bulma/installation.html"
+                    }
+                ]
+            },
+            {
+                "section": "examples",
+                "label": "Examples",
+                "url": "/Nacara/reference/Nacara.Core/index.html"
+            },
+            {
+                "section": "changelogs",
+                "label": "Changelogs",
+                "items": [
+                    {
+                        "label": "Nacara",
+                        "url": "/Nacara/changelogs/nacara.html"
+                    },
+                    {
+                        "label": "Nacara.Core",
+                        "url": "/Nacara/changelogs/nacara-core.html"
+                    },
+                    {
+                        "label": "Nacara.Standard.Layout",
+                        "url": "/Nacara/changelogs/nacara-layout-standard.html"
+                    },
+                    {
+                        "label": "Nacara.ApiGen",
+                        "url": "/Nacara/changelogs/nacara-apigen.html"
+                    }
+                ]
+            },
+            {
+                "url": "https://gitter.im/fable-compiler/Fable",
+                "label": "Support"
+            },
+            {
+                "section": "sponsors",
+                "label": "Sponsors",
+                "url": "/Fable.Form/sponsors.html"
+            }
+        ],
+        "end": [
+            {
+                "url": "https://github.com/MangelMaxime/Fable.Form",
+                "icon": "fab fa-github",
+                "label": "GitHub"
+            },
+            {
+                "url": "https://twitter.com/MangelMaxime",
+                "icon": "fab fa-twitter",
+                "label": "Twitter"
+            }
+        ]
+    },
+    "remarkPlugins": [
+        {
+            "resolve": "gatsby-remark-vscode",
+            "property": "remarkPlugin",
+            "options": {
+                "theme": "Atom One Light",
+                "extensions": [
+                    "vscode-theme-onelight"
+                ]
+            }
+        },
+        {
+            "resolve": "remark-github",
+            "options": {
+                "repository": "MangelMaxime/Fable.Form"
+            }
+        }
+    ],
+    "layouts": [
+        "nacara-layout-standard"
+    ]
+}

@@ -1,27 +1,58 @@
 @import "./../node_modules/bulma/sass/utilities/initial-variables";
 
 $primary: #176663;
+$primary-light: lighten($primary, 8%);
+$primary-dark: white;
 $success: #66bd77;
 $warning: #ffa17a;
 $info: #6672b4;
 $danger: #b3507a;
 
+@import "./../node_modules/bulma/sass/utilities/derived-variables";
+
+/////////////////////////////////
+/// nacara-layout-standard customizations
+/// Do not touch unless you know what you are doing
+/////////////////////////////////
+$navbar-breakpoint: 0px;
+$navbar-padding-vertical: 0.5rem;
+$navbar-padding-horizontal: 1rem;
+/////////////////////////////////
+
+// Specific to gatsby-remark-vscode usage
+$content-pre-padding: unset;
+
+/////////////////////////////////
+/// Customize Bulma
+/////////////////////////////////
+
 $navbar-item-color: $white;
 $navbar-background-color: $primary;
+$navbar-item-active-color: $white;
+$navbar-item-active-background-color: lighten($primary, 8%);
 $navbar-item-hover-color: $white;
 $navbar-item-hover-background-color: lighten($primary, 8%);
+$navbar-dropdown-item-active-background-color: lighten($primary, 8%);
+$navbar-dropdown-item-hover-background-color: lighten($primary, 8%);
+$navbar-dropdown-item-hover-color: $white;
+$navbar-dropdown-item-active-color: $white;
 
 $menu-item-active-background-color: transparent;
 $menu-item-active-color: $primary;
 $menu-item-hover-color: $primary;
 $menu-item-hover-background-color: transparent;
 
-$toc-item-active-font-weight: $weight-semibold;
+$menu-item-active-background-color: $primary;
+$menu-item-active-color: $white;
+$menu-item-hover-color: $primary;
+$menu-item-hover-background-color: transparent;
+$menu-label-font-size: $size-6;
+$menu-item-radius: $radius-large $radius-large;
 
 $body-size: 15px;
 
 @import "./../node_modules/bulma/bulma.sass";
-@import "./../node_modules/nacara/scss/nacara.scss";
+@import "./../node_modules/nacara-layout-standard/scss/nacara.scss";
 
 // Begin: fable-form-simple-bulma
 
@@ -30,59 +61,13 @@ $fieldset-shadow: unset;
 
 // End: fable-form-simple-bulma
 
-a:hover {
-    text-decoration: underline;
-}
+// a:hover {
+//     text-decoration: underline;
+// }
 
 // Doesn't underline link inside tabs element
 .tabs {
     a:hover {
         text-decoration: none;
-    }
-}
-
-// Ensure minimal size of the doc content
-// This allows to not have the 'Previous' & 'Next' button in the middle of the screen
-// when their are not a lot of content on the page
-.is-main-content > .section {
-    min-height: calc(
-        100vh - 7.5em
-    ); // 7.5em = 3em (section margin top) - 3em (section margin bottom) - 1.5em (to not stick too low)
-}
-
-// Add a border to the menu-container making it easier to see the different section of the page
-// Menu | Content | Toc
-.menu-container {
-    .menu {
-        border-right: 1px solid #e0e0e0;
-        padding-right: 1rem;
-
-        a.is-active {
-            text-decoration: underline;
-            font-weight: $weight-bold;
-        }
-    }
-}
-
-.toc-container {
-    margin-top: 1.5rem;
-}
-
-ul.textual-steps > li {
-    font-weight: $weight-normal;
-}
-
-.full-height-scrollable-content {
-    scrollbar-width: thin;
-    scrollbar-color: $grey-light $white-ter;
-
-    &::-webkit-scrollbar {
-        width: 6px;
-        height: 8px;
-        background-color: $white-ter;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: $grey-light;
     }
 }

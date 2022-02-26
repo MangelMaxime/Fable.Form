@@ -339,3 +339,5 @@ ASALocalRun/
 fableBuild
 examples/output/
 temp/
+docs_deploy/
+.nacara/

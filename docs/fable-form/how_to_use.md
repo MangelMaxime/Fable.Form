@@ -1,4 +1,5 @@
 ---
+layout: standard
 title: How to use ?
 ---
 
