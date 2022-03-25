@@ -53,6 +53,7 @@ $body-size: 15px;
 
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/nacara-layout-standard/scss/nacara.scss";
+@import "./scss/table.scss";
 
 // Begin: fable-form-simple-bulma
 
@@ -70,4 +71,16 @@ $fieldset-shadow: unset;
     a:hover {
         text-decoration: none;
     }
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 0.5em;
+}
+
+.code-preview {
+    background-color: $primary;
+    color: $white;
+    border-radius: 12px;
+    margin: 3em 3em 1em;
 }

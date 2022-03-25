@@ -1,0 +1,11 @@
+[
+    "Fable.Form.Simple.Bulma/installation",
+    {
+        "type": "section",
+        "label": "Components",
+        "items": [
+            "Fable.Form.Simple.Bulma/components/fieldset",
+            "Fable.Form.Simple.Bulma/components/form-list"
+        ]
+    }
+]

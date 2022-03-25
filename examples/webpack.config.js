@@ -27,8 +27,8 @@ module.exports = (_env, options) => {
         entry: './fableBuild/src/App.js',
         mode: isDevelopment ? "development" : "production",
         output: {
-            path: resolve('./../temp/examples'),
-            filename: isDevelopment ? '[name].js' : '[name].[fullhash].js',
+            path: resolve('./../docs_deploy/examples'),
+            filename: '[name].js',
         },
         devtool: isDevelopment ? 'eval-source-map' : false,
         optimization: {

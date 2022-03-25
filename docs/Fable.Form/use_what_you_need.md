@@ -25,7 +25,7 @@ Only `Fable.Form` is mandatory, see below how to choose what you should use depe
 
 <span class="has-text-centered">
 
-*[Click here to see the list of supported field by Fable.Form.Simple](/Fable.Form/docs/Fable.Form.Simple/features.html)*
+*[Click here to see the list of supported field by Fable.Form.Simple](/Fable.Form/Fable.Form.Simple/features.html)*
 
 </span>
 

@@ -13,51 +13,54 @@
                 "label": "Docs",
                 "items": [
                     {
-                        "section": "fable-form",
+                        "section": "Fable.Form",
                         "label": "Fable.Form",
                         "description": "Extensible core library used to build forms",
-                        "url": "/Fable.Form/fable-form/how_to_use.html"
+                        "url": "/Fable.Form/Fable.Form/how_to_use.html"
                     },
                     "divider",
                     {
-                        "section": "fable-form-simple",
+                        "section": "Fable.Form.Simple",
                         "label": "Fable.Form.Simple",
                         "description": "Simple form implementation, you can write your own view on top of it",
-                        "url": "/Fable.Form/fable-form-simple/features.html"
+                        "url": "/Fable.Form/Fable.Form.Simple/features.html"
                     },
                     "divider",
                     {
-                        "section": "fable-form-simple-bulma",
+                        "section": "Fable.Form.Simple.Bulma",
                         "label": "Fable.Form.Simple.Bulma",
                         "description": "View implementation for Fable.Form.Simple based on Bulma",
-                        "url": "/Fable.Form/fable-form-simple-bulma/installation.html"
+                        "url": "/Fable.Form/Fable.Form.Simple.Bulma/installation.html"
                     }
                 ]
             },
             {
                 "section": "examples",
                 "label": "Examples",
-                "url": "/Nacara/reference/Nacara.Core/index.html"
+                "url": "/Fable.Form/examples.html"
             },
             {
-                "section": "changelogs",
                 "label": "Changelogs",
                 "items": [
                     {
-                        "label": "Nacara",
-                        "url": "/Nacara/changelogs/nacara.html"
+                        "section": "changelogs",
+                        "label": "Fable.Form",
+                        "url": "/Fable.Form/changelogs/Fable.Form.html"
                     },
                     {
-                        "label": "Nacara.Core",
-                        "url": "/Nacara/changelogs/nacara-core.html"
+                        "section": "changelogs",
+                        "label": "Fable.Form.Simple",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.html"
                     },
                     {
-                        "label": "Nacara.Standard.Layout",
-                        "url": "/Nacara/changelogs/nacara-layout-standard.html"
+                        "section": "changelogs",
+                        "label": "Fable.Form.Simple.Bulma",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Bulma.html"
                     },
                     {
-                        "label": "Nacara.ApiGen",
-                        "url": "/Nacara/changelogs/nacara-apigen.html"
+                        "section": "changelogs",
+                        "label": "fable-form-simple-bulma",
+                        "url": "/Fable.Form/changelogs/fable-form-simple-bulma.html"
                     }
                 ]
             },

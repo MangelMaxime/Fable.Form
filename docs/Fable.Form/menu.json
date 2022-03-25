@@ -3,8 +3,8 @@
         "type": "section",
         "label": "Getting started",
         "items": [
-            "fable-form/how_to_use",
-            "fable-form/use_what_you_need"
+            "Fable.Form/how_to_use",
+            "Fable.Form/use_what_you_need"
         ]
     }
 ]

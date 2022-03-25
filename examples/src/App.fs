@@ -6,7 +6,11 @@ open Elmish
 open Fable.Core
 open Fable.Core.JsInterop
 
-importSideEffects "./../style/style.scss"
+// Only import the style if we are in DEBUG mode
+// otherwise the style will be included by Nacara directly
+#if DEBUG
+importSideEffects "./../../docs/style.scss"
+#endif
 
 module SignUp = Page.SignUp.Component
 module Login = Page.Login.Component
