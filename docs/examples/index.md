@@ -10,5 +10,5 @@ layout: navbar-only
     </div>
 </div>
 
-<script defer="defer" src="examples/vendors.js"></script>
-<script defer="defer" src="examples/main.js"></script>
+<script defer="defer" src="vendors.js"></script>
+<script defer="defer" src="main.js"></script>

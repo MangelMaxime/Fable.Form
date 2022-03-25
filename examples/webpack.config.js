@@ -46,11 +46,11 @@ module.exports = (_env, options) => {
         },
         plugins:
             [
-                new HtmlWebpackPlugin({
+                isDevelopment && new HtmlWebpackPlugin({
                     filename: "./index.html",
                     template: "./src/index.html"
                 }),
-                new MiniCssExtractPlugin()
+                isDevelopment && new MiniCssExtractPlugin()
             ].filter(Boolean),
         devServer: {
             public: getDevServerUrl(),
