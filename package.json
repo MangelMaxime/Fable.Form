@@ -1,6 +1,7 @@
 {
     "name": "fable-form-build",
     "private": true,
+    "type": "module",
     "scripts": {
         "postinstall": "dotnet tool restore",
         "clean-packages": "npx shx rm -rf packages/**/bin && npx shx rm -rf packages/**/obj",
@@ -19,10 +20,10 @@
         "build-examples": "cd examples && dotnet fable --outDir fableBuild && npx webpack --mode production",
         "build-docs": "npm run nacara-build && npm run build-examples",
         "watch-tests-fable": "cd tests && dotnet fable --watch --outDir fableBuild",
-        "watch-tests-mocha": "cd tests && nodemon --watch fableBuild --delay 150ms --exec \"npx mocha -r esm -r mocha.env.js --reporter dot --recursive fableBuild\"",
+        "watch-tests-mocha": "cd tests && nodemon --watch fableBuild --delay 150ms --exec \"npx mocha -r mocha.env.js --reporter dot --recursive fableBuild\"",
         "watch-tests": "concurrently -p none 'npm:watch-tests-*'",
         "pretests": "npm run clean-tests && cd tests && dotnet fable --outDir fableBuild",
-        "tests": "cd tests && npx mocha -r esm -r mocha.env.js --reporter dot --recursive fableBuild",
+        "tests": "cd tests && npx mocha -r mocha.env.js --reporter dot --recursive fableBuild",
         "prepublish-docs": "npm run build-docs",
         "publish-docs": "gh-pages -d docs_deploy",
         "release-fable-form-simple-bulma-npm": "node ./scripts/release-npm.js packages/fable-form-simple-bulma",
@@ -43,7 +44,6 @@
         "chalk": "^5.0.1",
         "changelog-parser": "^2.8.1",
         "concurrently": "^7.0.0",
-        "esm": "^3.2.25",
         "gatsby-remark-vscode": "^3.3.1",
         "gh-pages": "^3.2.3",
         "mocha": "^9.2.2",
