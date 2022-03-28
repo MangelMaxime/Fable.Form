@@ -1,4 +1,4 @@
-module Page.CancelPolicy.Component
+module Page.CustomAction.Component
 
 open Elmish
 open Feliz
@@ -241,6 +241,43 @@ let private renderCancelledView (resetDelay : int) =
 
     ]
 
+let private formAction
+    (state : Form.View.State)
+    (dispatch : Dispatch<Msg>) =
+
+    Bulma.field.div [
+        field.isGrouped
+        field.isGroupedCentered
+
+        prop.children [
+            // Default submit button
+            Bulma.control.div [
+                Bulma.button.button [
+                    prop.type'.submit
+                    color.isPrimary
+                    prop.text "Sign up"
+                    // If the form is loading animate the button with the loading animation
+                    if state = Form.View.Loading then
+                        button.isLoading
+                ]
+            ]
+
+            // Custom button to cancel the form
+            Bulma.control.div [
+                Bulma.button.button [
+                    prop.text "Cancel"
+                    // If the form is loading animate the button with the loading animation
+                    if state = Form.View.Loading then
+                        button.isLoading
+
+                    prop.onClick (fun _ ->
+                        dispatch CancelTheForm
+                    )
+                ]
+            ]
+        ]
+    ]
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     match model with
     | FillingForm values ->
@@ -248,14 +285,8 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             {
                 Dispatch = dispatch
                 OnChange = FormChanged
-                Action = "Sign up"
+                Action = Form.View.Action.Custom formAction
                 Validation = Form.View.ValidateOnSubmit
-                CancelPolicy =
-                    Form.View.CancelPolicy.Action
-                        {
-                            Label = "Cancel"
-                            Func = fun _ -> dispatch CancelTheForm
-                        }
             }
             form
             values
@@ -269,9 +300,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
 
 let information : DemoInformation.T =
     {
-        Title = "Cancel policy"
-        Route = Router.Route.CancelPolicy
-        Description = "A form demonstrating how you can use the cancel policy"
+        Title = "Custom actions"
+        Route = Router.Route.CustomAction
+        Description = "A form demonstrating how you can customize the actions, can be used to add a cancel button for example."
         Remark = None
         Code =
             """
@@ -280,18 +311,18 @@ let form =
         |> Form.append emailField
         |> Form.append passwordField
 
+let formAction
+    (state : Form.View.State)
+    (dispatch : Dispatch<Msg>) =
+    // Definition of the custom action view
+    // ...
+
 Form.View.asHtml
     {
         Dispatch = dispatch
         OnChange = FormChanged
-        Action = "Sign up"
+        Action = Form.View.Action.Custom formAction
         Validation = Form.View.ValidateOnSubmit
-        CancelPolicy =
-            Form.View.CancelPolicy.Action
-                {
-                    Label = "Cancel"
-                    Func = fun _ -> dispatch CancelTheForm
-                }
     }
     form
     values

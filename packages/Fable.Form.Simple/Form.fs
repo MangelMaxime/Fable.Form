@@ -338,26 +338,18 @@ module Form =
             | ValidateOnBlur
             | ValidateOnSubmit
 
-        [<NoComparison; NoEquality>]
-        type CancelPolicyActionConfig =
-            {
-                Label : string
-                Func : (unit -> unit)
-            }
-
-        [<NoComparison; NoEquality>]
-        type CancelPolicy =
-            | DoNothing
-            | Action of CancelPolicyActionConfig
+        [<RequireQualifiedAccess;NoComparison; NoEquality>]
+        type Action<'Msg> =
+            | SubmitOnly of string
+            | Custom of (State -> Elmish.Dispatch<'Msg> -> ReactElement)
 
         [<NoComparison; NoEquality>]
         type ViewConfig<'Values, 'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
                 OnChange : Model<'Values> -> 'Msg
-                Action : string
+                Action : Action<'Msg>
                 Validation : Validation
-                CancelPolicy: CancelPolicy
             }
 
         [<NoComparison; NoEquality>]
@@ -366,8 +358,7 @@ module Form =
                 Dispatch : Dispatch<'Msg>
                 OnSubmit : 'Msg option
                 State : State
-                Action : string
-                CancelPolicy: CancelPolicy
+                Action : Action<'Msg>
                 Fields : ReactElement list
             }
 
@@ -755,7 +746,6 @@ module Form =
                     Dispatch = viewConfig.Dispatch
                     OnSubmit = onSubmit
                     Action = viewConfig.Action
-                    CancelPolicy = viewConfig.CancelPolicy
                     State = model.State
                     Fields = List.map fieldToElement fields
                 }

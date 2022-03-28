@@ -187,13 +187,12 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             {
                 Dispatch = dispatch
                 OnChange = FormChanged
-                Action = "Sign in"
+                Action = Form.View.Action.SubmitOnly "Sign in"
                 Validation =
                     if values.Values.ValidationStrategy = "onSubmit" then
                         Form.View.ValidateOnSubmit
                     else
                         Form.View.ValidateOnBlur
-                CancelPolicy = Form.View.CancelPolicy.DoNothing
             }
             form
             values
@@ -231,7 +230,7 @@ Form.View.asHtml
     {
         Dispatch = dispatch
         OnChange = FormChanged
-        Action = "Submit"
+        Action = Form.View.Action.SubmitOnly "Submit"
         Validation =
             if model.Values.ValidationStrategy = "onSubmit" then
                 Form.View.ValidateOnSubmit

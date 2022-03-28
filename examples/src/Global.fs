@@ -6,7 +6,7 @@ let always x _ = x
 module Env =
 
     [<Literal>]
-    let commitHash = "4cb633cc1b5177632448f19cae70483dbdc8d914"
+    let commitHash = "master"
 
     let githubBaseUrl = sprintf "https://github.com/MangelMaxime/Fable.Form/blob/%s/" commitHash
 

@@ -438,7 +438,6 @@ module Form =
                     OnSubmit = onSubmit
                     State = state
                     Action = action
-                    CancelPolicy = cancelPolicy
                     Fields = fields
                 } : FormConfig<'Msg>
             ) =
@@ -475,41 +474,29 @@ module Form =
                     | Idle ->
                         Html.none
 
-                    Bulma.field.div [
-                        field.isGrouped
-                        field.isGroupedRight
+                    match action with
+                    | Action.SubmitOnly submitLabel ->
+                        Bulma.field.div [
+                            field.isGrouped
+                            field.isGroupedRight
 
-                        prop.children [
-                            Bulma.control.div [
-                                Bulma.button.button [
-                                    color.isPrimary
-                                    prop.text action
-                                    // If the form is loading animate the submit button with the loading animation
-                                    if state = Loading then
-                                        button.isLoading
-                                ]
-                            ]
-
-                            match cancelPolicy with
-                            | CancelPolicy.DoNothing ->
-                                Html.none
-
-                            | CancelPolicy.Action action ->
+                            prop.children [
                                 Bulma.control.div [
                                     Bulma.button.button [
-                                        color.isLight
-                                        prop.text action.Label
-                                        // Explicitly set the button type to prevent
-                                        // it to trigger the default form submit
-                                        prop.type'.button
-                                        prop.onClick (
-                                            fun _ ->
-                                                action.Func()
-                                        )
+                                        prop.type'.submit
+                                        color.isPrimary
+                                        prop.text submitLabel
+                                        // If the form is loading animate the submit button with the loading animation
+                                        if state = Loading then
+                                            button.isLoading
                                     ]
                                 ]
+
+                            ]
                         ]
-                    ]
+
+                    | Action.Custom func ->
+                        func state dispatch
                 ]
             ]
 

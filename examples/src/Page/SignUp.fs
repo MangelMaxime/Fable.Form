@@ -366,9 +366,8 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             {
                 Dispatch = dispatch
                 OnChange = FormChanged
-                Action = "Sign up"
+                Action = Form.View.Action.SubmitOnly "Sign up"
                 Validation = Form.View.ValidateOnSubmit
-                CancelPolicy = Form.View.CancelPolicy.DoNothing
             }
             form
             values

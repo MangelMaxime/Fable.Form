@@ -6,9 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
+## 3.0.0 - 2022-03-28
 
-* Fix #24: Add "onCancel" functionality (by @zelenij)
+### Changed
+
+* Fix #24: Allows to customise the actions of the form.
+
+    Here is how to migrate your old code:
+
+    ```diff
+        {
+            Dispatch = dispatch
+            OnChange = FormChanged
+    -       Action = "Sign in"
+    +       Action = Form.View.Action.SubmitOnly "Sign in"
+            Validation = Form.View.ValidateOnSubmit
+        }
+    ```
 
 ## 2.1.0 - 2021-11-16
 

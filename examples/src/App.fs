@@ -19,7 +19,7 @@ module FormList = Page.FormList.Component
 module ValidationStrategies = Page.ValidationStrategies.Component
 module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
-module CancelPolicy = Page.CancelPolicy.Component
+module CustomAction = Page.CustomAction.Component
 
 [<RequireQualifiedAccess>]
 type Page =
@@ -31,7 +31,7 @@ type Page =
     | ValidationStrategies of ValidationStrategies.Model
     | ComposabilitySimple of ComposabilitySimple.Model
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
-    | CancelPolicy of CancelPolicy.Model
+    | CustomAction of CustomAction.Model
     | NotFound
 
 type Msg =
@@ -43,7 +43,7 @@ type Msg =
     | ValidationStrategiesMsg of ValidationStrategies.Msg
     | ComposabilitySimpleMsg of ComposabilitySimple.Msg
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
-    | CancelPolicyMsg of CancelPolicy.Msg
+    | CustomActionMsg of CustomAction.Msg
 
 
 type Model =
@@ -113,12 +113,12 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
             }
             , Cmd.map ComposabilityWithConfigurationMsg subCmd
 
-        | Router.Route.CancelPolicy ->
-            let (subModel, subCmd) = CancelPolicy.init ()
+        | Router.Route.CustomAction ->
+            let (subModel, subCmd) = CustomAction.init ()
             { model with
-                ActivePage = Page.CancelPolicy subModel
+                ActivePage = Page.CustomAction subModel
             }
-            , Cmd.map CancelPolicyMsg subCmd
+            , Cmd.map CustomActionMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -221,13 +221,13 @@ let private update (msg : Msg) (model : Model) =
             model
             , Cmd.none
 
-    | CancelPolicyMsg subMsg ->
+    | CustomActionMsg subMsg ->
         match model.ActivePage with
-        | Page.CancelPolicy subModel ->
-            CancelPolicy.update subMsg subModel
-            |> Tuple.mapFirst Page.CancelPolicy
+        | Page.CustomAction subModel ->
+            CustomAction.update subMsg subModel
+            |> Tuple.mapFirst Page.CustomAction
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
-            |> Tuple.mapSecond (Cmd.map CancelPolicyMsg)
+            |> Tuple.mapSecond (Cmd.map CustomActionMsg)
 
         | _ ->
             model
@@ -380,7 +380,7 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
 
             Html.ul [
                 renderLink ValidationStrategies.information
-                renderLink CancelPolicy.information
+                renderLink CustomAction.information
             ]
         ]
 
@@ -419,10 +419,10 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             ComposabilityWithConfiguration.information
             (ComposabilityWithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
 
-    | Page.CancelPolicy subModel ->
+    | Page.CustomAction subModel ->
         renderDemoPage
-            CancelPolicy.information
-            (CancelPolicy.view subModel (CancelPolicyMsg >> dispatch))
+            CustomAction.information
+            (CustomAction.view subModel (CustomActionMsg >> dispatch))
 
     | Page.NotFound ->
         Html.text "Page not found"
