@@ -58,7 +58,7 @@ let form : Form.Form<Values, Msg> =
 <br />
 
 <div class="is-flex is-justify-content-center">
-    <a href="/Fable.Form/fable-form/how_to_use.html" class="button is-primary is-medium">
+    <a href="/Fable.Form/Fable.Form/how_to_use.html" class="button is-primary is-medium">
         Gettting Started
     </a>
 </div>
