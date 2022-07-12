@@ -26,7 +26,6 @@
     <Compile Include="src\Page\Composability\Simple.fs" />
     <Compile Include="src\Page\Composability\WithConfiguration.fs" />
     <Compile Include="src\App.fs" />
-    <Content Include="style\style.scss" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj" />
