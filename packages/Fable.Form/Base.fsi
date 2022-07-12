@@ -179,6 +179,17 @@ val append :
     Form<'Values,'B,'Field>
 
 /// <summary>
+/// Disable a form
+///
+/// You can combine this with meta to disable parts of a form based on its own values.
+/// </summary>
+/// <param name="form">The form to disable</param>
+/// <returns>A new form which has been marked as disabled</returns>
+val disable :
+    form : Form<'Values,'Output,'Field> ->
+    Form<'Values,'Output,'Field>
+
+/// <summary>
 /// Fill a form <c>andThen</c> fill another one.
 ///
 /// This type of form is useful when some part of your form can dynamically change based on the value of another field.

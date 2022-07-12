@@ -49,7 +49,7 @@ module Form =
     type Form<'Values, 'Output, 'Attributes> =
         Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
 
-    // Redifined some function from the Base module so the user can access them transparently and they are also specifically type for the Fable.Form.Simple absttraction
+    // Redefined some function from the Base module so the user can access them transparently and they are also specifically type for the Fable.Form.Simple absttraction
 
     let succeed (output : 'Output) : Form<'Values, 'Output, 'Attributes> =
         Base.succeed output
@@ -60,6 +60,12 @@ module Form =
         : Form<'Values, 'B, 'Attributes> =
 
         Base.append newForm currentForm
+
+    let disable
+        (form : Form<'Values, 'A, 'Attributes>)
+        : Form<'Values, 'A, 'Attributes> =
+
+        Base.disable form
 
     let andThen
         (child : 'A -> Form<'Values, 'B, 'Attributes>)
@@ -78,7 +84,7 @@ module Form =
         (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextRaw, x)) config
-
+ 
     let passwordField
         (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes> =

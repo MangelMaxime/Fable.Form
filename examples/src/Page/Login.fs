@@ -27,7 +27,7 @@ type Model =
 /// Represents the different messages that your application can react too
 /// </summary>
 type Msg =
-    // Used when a change occure in the form
+    // Used when a change occur in the form
     | FormChanged of Model
     // Used when the user submit the form
     | LogIn of EmailAddress.T * string * bool

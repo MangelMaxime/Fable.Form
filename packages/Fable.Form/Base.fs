@@ -193,6 +193,22 @@ let andThen
                 }
     )
 
+let disable (form : Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Field> =
+    Form (
+        fun values ->
+            let filled =
+                fill form values
+            {
+                Fields =
+                    filled.Fields
+                    |> List.map (fun filledField ->
+                        { filledField with IsDisabled = true}
+                    )
+                Result = filled.Result
+                IsEmpty = filled.IsEmpty
+            }
+    )
+
 let map
     (fn : 'A -> 'B)
     (form : Form<'Values, 'A, 'Field>)

@@ -67,6 +67,16 @@ module Form =
         output : 'Output ->
         Form<'Values,'Output, 'Attributes>
 
+    /// <summary>
+    /// Disable a form
+    ///
+    /// You can combine this with meta to disable parts of a form based on its own values.
+    /// </summary>
+    /// <param name="form">The form to disable</param>
+    /// <returns>A new form which has been marked as disabled</returns>
+    val disable :
+        form : Form<'Values,'Output, 'Attributes> ->
+        Form<'Values,'Output, 'Attributes>
 
     /// <summary>
     /// Append a form to another one while <b>capturing</b> the output of the first one
