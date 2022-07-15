@@ -45,6 +45,13 @@ module Form =
                 Section = failwith "Not implemented yet"
                 FormList = failwith "Not implemented yet"
                 FormListItem = failwith "Not implemented yet"
+                ColorField = failwith "Not implemented yet"
+                DateField = failwith "Not implemented yet"
+                DateTimeLocalField = failwith "Not implemented yet"
+                NumberField = failwith "Not implemented yet"
+                SearchField = failwith "Not implemented yet"
+                TelField = failwith "Not implemented yet"
+                TimeField = failwith "Not implemented yet"
             }
 
         // Function which will be called by the consumer to render the form
