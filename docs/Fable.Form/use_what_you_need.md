@@ -31,4 +31,4 @@ Only `Fable.Form` is mandatory, see below how to choose what you should use depe
 
 <br />
 
-![What to use schema](../../assets/what_to_use_schema.svg)
+![What to use schema](/Fable.Form/assets/what_to_use_schema.svg)
