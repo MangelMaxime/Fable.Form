@@ -16,7 +16,7 @@ Fable.Form allows you to build forms that are:
 - **Modular:** you can create your own fields and customize how existing fields are rendered
 
 ```fsharp
-let form : Form.Form<Values, Msg> =
+let form : Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {

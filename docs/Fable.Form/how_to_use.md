@@ -132,7 +132,7 @@ Create the form logic:
 3. Tie the fields and the `onSubmit` function together
 
 ```fsharp
-let form : Form.Form<Values, Msg> =
+let form : Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {
