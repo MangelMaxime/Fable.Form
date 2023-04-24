@@ -48,7 +48,7 @@ type FieldConfig<'Attributes,'Input,'Values,'Output> =
         /// </summary>
         Update : 'Input -> 'Values -> 'Values
         /// <summary>
-        /// Defube how to obtain a potential external error. Useful when dealing with Server-side validation for example
+        /// Define how to obtain a potential external error. Useful when dealing with Server-side validation for example
         /// </summary>
         Error : 'Values -> string option
         /// <summary>
