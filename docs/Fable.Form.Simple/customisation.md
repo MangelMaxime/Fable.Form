@@ -31,7 +31,10 @@ module Form =
 
         // Contract that we need to implement to support
         // all the feature offered by Fable.Simple.Form
-        let htmlViewConfig<'Msg> : CustomConfig<'Msg, IReactProperty> =
+        let htmlViewConfig<'Msg> : CustomConfig<'Msg, 'Attributes> = 
+            // 'Attributes needs to be replaced by the actual type that your
+            // library use to represent HTML attributes.
+            // For exampe, when using Feliz, you should replace it with IReactProperty
             {
                 Form = failwith "Not implemented yet"
                 TextField = failwith "Not implemented yet"
