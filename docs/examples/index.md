@@ -10,5 +10,4 @@ layout: navbar-only
     </div>
 </div>
 
-<script defer="defer" src="vendors.js"></script>
-<script defer="defer" src="main.js"></script>
+<script type="module" defer="defer" crossorigin src="dist/index.js"></script>

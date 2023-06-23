@@ -1,13 +1,25 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-    clearScreen: false,
-    server: {
-        watch: {
-            ignored: [
-                "**/*.fs" // Don't watch F# files
-            ]
-        }
-    }
-})
+
+export default defineConfig(({ mode}) => {
+
+    const isProduction = mode === "production";
+
+    return {
+        build: {
+            rollupOptions: {
+                output: {
+                    entryFileNames: "[name].js",
+                    dir: isProduction ? "../docs_deploy/examples/dist/" : "dist-dev",
+                }
+            }
+        },
+        server: {
+            watch: {
+                ignored: [
+                    "**/*.fs", // Don't watch F# files
+                ],
+            },
+        },
+    };
+});
