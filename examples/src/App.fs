@@ -448,7 +448,6 @@ open Elmish.HMR
 #endif
 
 Program.mkProgram init update view
-|> Program.withTrace ConsoleTracer.withTrace
 |> Program.toNavigable (parseHash Router.routeParser) setRoute
 |> Program.withReactSynchronous "root"
 |> Program.run

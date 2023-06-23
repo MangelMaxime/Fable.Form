@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 4.0.0 - 2022-06-23
+
+### Changed
+
+* Upgrade to Fable 4 and Feliz 2
+
 ## 3.1.0 - 2022-07-12
 
 ### Fixed

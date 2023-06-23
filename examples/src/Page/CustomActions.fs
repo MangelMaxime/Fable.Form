@@ -87,7 +87,7 @@ let update (msg : Msg) (model : Model) =
 
     | CancelTheForm ->
         Cancelled 3
-        , Cmd.ofSub tickDelay
+        , Cmd.ofEffect tickDelay
 
     | TickResetDelay ->
         match model with
@@ -97,7 +97,7 @@ let update (msg : Msg) (model : Model) =
             if newDelay > 0
             then
                 Cancelled newDelay
-                , Cmd.ofSub tickDelay
+                , Cmd.ofEffect tickDelay
             else
                 init ()
 
