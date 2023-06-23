@@ -25,7 +25,7 @@ Add **Fable.Form.Simple.Bulma** to your project
 dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
 
 # Paket CLI
-paket add Fable.Form.Simple
+paket add Fable.Form.Simple.Bulma
 ```
 
 </li>
