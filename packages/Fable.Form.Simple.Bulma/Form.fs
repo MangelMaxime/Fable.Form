@@ -1,5 +1,7 @@
 namespace Fable.Form.Simple.Bulma
 
+open Fable.Form.Simple.Field
+
 [<RequireQualifiedAccess>]
 module Form =
 
@@ -294,6 +296,72 @@ module Form =
             ]
             |> withLabelAndError attributes.Label showError error
 
+        let fileField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : FileFieldConfig<'Msg>
+            ) =
+
+            let fileInput =
+                Bulma.file [
+                    if not (value |> Array.isEmpty) then
+                        Bulma.file.hasName
+
+                    prop.children [
+                        Bulma.fileLabel.label [
+                            Bulma.fileInput [
+                                prop.onInput (fun x ->
+                                    let files = (x.currentTarget :?> Browser.Types.HTMLInputElement).files
+                                    let files =
+                                        Array.init files.length (fun i -> files[i])
+
+                                    files
+                                    |> onChange
+                                    |> dispatch)
+
+                                prop.multiple attributes.Multiple
+
+                                match attributes.Accept with
+                                | FileField.FileType.Any ->
+                                    ()
+                                | FileField.FileType.Specific fileTypes ->
+                                    prop.accept (fileTypes |> String.concat ",")
+
+                                prop.disabled disabled
+                            ]
+                            Bulma.fileCta [
+                                Bulma.fileIcon [
+                                    Html.i [
+                                        match attributes.FileIconClassName with
+                                        | FileField.FileIconClassName.Default ->
+                                            prop.className "fas fa-upload"
+                                        | FileField.FileIconClassName.Custom className ->
+                                            prop.className className
+                                    ]
+                                ]
+                                Bulma.fileLabel.span [
+                                    prop.text attributes.Label
+                                ]
+                            ]
+
+                            if not (value |> Array.isEmpty) then
+                                Bulma.fileName [
+                                    prop.text (value |> Array.head).name
+                                ]
+                        ]
+                    ]
+                ]
+
+            fileInput
+            |> withLabelAndError attributes.Label showError error
+
         let group (fields : ReactElement list) =
             Bulma.field.div [
                 Bulma.columns [
@@ -517,6 +585,7 @@ module Form =
                 CheckboxField = checkboxField
                 RadioField = radioField
                 SelectField = selectField
+                FileField = fileField
                 Group = group
                 Section = section
                 FormList = formList
