@@ -9,6 +9,7 @@ module Form =
     type RadioField<'Values> = Field.RadioField.RadioField<'Values>
     type CheckboxField<'Values> = Field.CheckboxField.CheckboxField<'Values>
     type SelectField<'Values> = Field.SelectField.SelectField<'Values>
+    type FileField<'Values> = Field.FileField.FileField<'Values>
 
     /// <summary>
     /// Represents the type of a TextField
@@ -44,6 +45,7 @@ module Form =
         | Radio of RadioField<'Values>
         | Checkbox of CheckboxField<'Values>
         | Select of SelectField<'Values>
+        | File of FileField<'Values>
         | Group of FilledField<'Values, 'Attributes> list
         | Section of title: string * FilledField<'Values, 'Attributes> list
         | List of FormList.FormList<'Values,Field<'Values, 'Attributes>>
@@ -412,6 +414,19 @@ module Form =
         Form<'Values,'Output, 'Attributes>
 
     /// <summary>
+    /// Create a form that contains a file field
+    /// </summary>
+    /// <param name="config">A record used to configure the field behaviour.
+    /// <para>
+    /// See <see cref="Fable.Form.Base.FieldConfig"/> for more informations
+    /// </para>
+    /// </param>
+    /// <returns>Returns a form representing a file field</returns>
+    val fileField :
+        config : Base.FieldConfig<Field.FileField.Attributes, Browser.Types.File array,'Values, 'Output> ->
+        Form<'Values,'Output, 'Attributes>
+
+    /// <summary>
     /// Wrap a form in a group
     ///
     /// The behaviour of the form is not altered but it can be rendered differently.
@@ -677,6 +692,18 @@ module Form =
             }
 
         [<NoComparison; NoEquality>]
+        type FileFieldConfig<'Msg> =
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange : Browser.Types.File array -> 'Msg
+                Disabled: bool
+                Value: Browser.Types.File array
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.FileField.Attributes
+            }
+
+        [<NoComparison; NoEquality>]
         type FormListConfig<'Msg> =
             {
                 Dispatch: Elmish.Dispatch<'Msg>
@@ -717,6 +744,7 @@ module Form =
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
                 SelectField : SelectFieldConfig<'Msg> -> ReactElement
+                FileField : FileFieldConfig<'Msg> -> ReactElement
                 Group : ReactElement list -> ReactElement
                 Section : string -> ReactElement list -> ReactElement
                 FormList : FormListConfig<'Msg> -> ReactElement

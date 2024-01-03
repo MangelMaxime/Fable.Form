@@ -1,5 +1,7 @@
 namespace Fable.Form.Simple.Bulma
 
+open Fable.Form.Simple.Field
+
 [<RequireQualifiedAccess>]
 module Form =
 
@@ -294,6 +296,85 @@ module Form =
             ]
             |> withLabelAndError attributes.Label showError error
 
+        let fileField
+            (
+                {
+                    Dispatch = dispatch
+                    OnChange = onChange
+                    Disabled = disabled
+                    Value = value
+                    Error = error
+                    ShowError = showError
+                    Attributes = attributes
+                } : FileFieldConfig<'Msg>
+            ) =
+
+            let fileInput =
+                Bulma.file [
+                    if not (value |> Array.isEmpty) then
+                        Bulma.file.hasName
+
+                    prop.children [
+                        Bulma.fileLabel.label [
+                            Bulma.fileInput [
+                                prop.onInput (fun x ->
+                                    let files = (x.currentTarget :?> Browser.Types.HTMLInputElement).files
+                                    let files =
+                                        Array.init files.length (fun i -> files[i])
+
+                                    files
+                                    |> onChange
+                                    |> dispatch)
+
+                                prop.multiple attributes.Multiple
+
+                                match attributes.Accept with
+                                | FileField.FileType.Any ->
+                                    ()
+                                | FileField.FileType.Specific fileTypes ->
+                                    prop.accept (fileTypes |> String.concat ",")
+
+                                prop.disabled disabled
+                            ]
+                            Bulma.fileCta [
+                                match attributes.FileIconClassName with
+                                | FileField.FileIconClassName.Default ->
+                                    Bulma.fileIcon [
+                                        prop.innerHtml """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="17 8 12 3 7 8"/>
+    <line x1="12" x2="12" y1="3" y2="15"/>
+</svg>
+<!--
+    This icon has been taken from Lucide icons project
+
+    See: https://lucide.dev/license
+-->"""
+                                    ]
+
+                                | FileField.FileIconClassName.Custom className ->
+                                    Bulma.fileIcon [
+                                        Html.i [
+                                            prop.className className
+                                        ]
+                                    ]
+
+                                Bulma.fileLabel.span [
+                                    prop.text attributes.InputLabel
+                                ]
+                            ]
+
+                            if not (value |> Array.isEmpty) then
+                                Bulma.fileName [
+                                    prop.text (value |> Array.head).name
+                                ]
+                        ]
+                    ]
+                ]
+
+            fileInput
+            |> withLabelAndError attributes.Label showError error
+
         let group (fields : ReactElement list) =
             Bulma.field.div [
                 Bulma.columns [
@@ -517,6 +598,7 @@ module Form =
                 CheckboxField = checkboxField
                 RadioField = radioField
                 SelectField = selectField
+                FileField = fileField
                 Group = group
                 Section = section
                 FormList = formList

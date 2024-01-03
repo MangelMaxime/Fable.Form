@@ -16,6 +16,8 @@
         <Compile Include="CheckboxField.fs" />
         <Compile Include="SelectField.fsi" />
         <Compile Include="SelectField.fs" />
+        <Compile Include="FileField.fsi" />
+        <Compile Include="FileField.fs" />
         <Compile Include="FormList.fsi" />
         <Compile Include="FormList.fs" />
         <Compile Include="Form.fsi" />

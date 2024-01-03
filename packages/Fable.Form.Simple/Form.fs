@@ -10,6 +10,7 @@ module Form =
     type RadioField<'Values> = RadioField.RadioField<'Values>
     type CheckboxField<'Values> = CheckboxField.CheckboxField<'Values>
     type SelectField<'Values> = SelectField.SelectField<'Values>
+    type FileField<'Values> = FileField.FileField<'Values>
 
     type TextType =
         | TextColor
@@ -39,6 +40,7 @@ module Form =
         | Radio of RadioField<'Values>
         | Checkbox of CheckboxField<'Values>
         | Select of SelectField<'Values>
+        | File of FileField<'Values>
         | Group of FilledField<'Values, 'Attributes> list
         | Section of title : string * FilledField<'Values, 'Attributes> list
         | List of FormList.FormList<'Values, Field<'Values, 'Attributes>>
@@ -84,7 +86,7 @@ module Form =
         (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes> =
         TextField.form (fun x -> Field.Text (TextRaw, x)) config
- 
+
     let passwordField
         (config : Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes> =
@@ -150,6 +152,11 @@ module Form =
         : Form<'Values, 'Output, 'Attributes> =
         SelectField.form Field.Select config
 
+    let fileField
+        (config : Base.FieldConfig<FileField.Attributes, Browser.Types.File array, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes> =
+        FileField.form Field.File config
+
     let group
         (form : Form<'Values, 'Output, 'Attributes>)
         : Form<'Values, 'Output, 'Attributes> =
@@ -211,6 +218,9 @@ module Form =
 
         | Field.Select selectField ->
             Field.Select (Field.mapValues newUpdate selectField)
+
+        | Field.File fileField ->
+            Field.File (Field.mapValues newUpdate fileField)
 
         | Field.Group fields ->
             fields
@@ -421,6 +431,18 @@ module Form =
             }
 
         [<NoComparison; NoEquality>]
+        type FileFieldConfig<'Msg> =
+            {
+                Dispatch : Dispatch<'Msg>
+                OnChange : Browser.Types.File array -> 'Msg
+                Disabled : bool
+                Value : Browser.Types.File array
+                Error : Error.Error option
+                ShowError : bool
+                Attributes : FileField.Attributes
+            }
+
+        [<NoComparison; NoEquality>]
         type FormListConfig<'Msg> =
             {
                 Dispatch : Dispatch<'Msg>
@@ -474,6 +496,7 @@ module Form =
                 CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
                 RadioField : RadioFieldConfig<'Msg> -> ReactElement
                 SelectField : SelectFieldConfig<'Msg> -> ReactElement
+                FileField : FileFieldConfig<'Msg> -> ReactElement
                 Group : ReactElement list -> ReactElement
                 Section : string -> ReactElement list -> ReactElement
                 FormList : FormListConfig<'Msg> -> ReactElement
@@ -627,6 +650,20 @@ module Form =
                     }
 
                 customConfig.SelectField config
+
+            | Field.File info ->
+                let config : FileFieldConfig<'Msg> =
+                    {
+                        Dispatch = dispatch
+                        OnChange = info.Update >> fieldConfig.OnChange
+                        Disabled = field.IsDisabled || fieldConfig.Disabled
+                        Value = info.Value
+                        Error = field.Error
+                        ShowError = fieldConfig.ShowError info.Attributes.Label
+                        Attributes = info.Attributes
+                    }
+
+                customConfig.FileField config
 
             | Field.Group fields ->
                 fields

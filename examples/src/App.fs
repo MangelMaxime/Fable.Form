@@ -14,6 +14,7 @@ importSideEffects "./../../docs/style.scss"
 
 module SignUp = Page.SignUp.Component
 module Login = Page.Login.Component
+module File = Page.File.Component
 module DynamicForm = Page.DynamicForm.Component
 module FormList = Page.FormList.Component
 module ValidationStrategies = Page.ValidationStrategies.Component
@@ -22,10 +23,12 @@ module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Com
 module CustomAction = Page.CustomAction.Component
 
 [<RequireQualifiedAccess>]
+[<NoComparison>]
 type Page =
     | Home
     | SignUp of SignUp.Model
     | Login of Login.Model
+    | File of File.Model
     | DynamicForm of DynamicForm.Model
     | FormList of FormList.Model
     | ValidationStrategies of ValidationStrategies.Model
@@ -34,10 +37,12 @@ type Page =
     | CustomAction of CustomAction.Model
     | NotFound
 
+[<NoComparison>]
 type Msg =
     | SetRoute of Router.Route option
     | SignUpMsg of SignUp.Msg
     | LoginMsg of Login.Msg
+    | FileMsg of File.Msg
     | DynamicFormMsg of DynamicForm.Msg
     | FormListMsg of FormList.Msg
     | ValidationStrategiesMsg of ValidationStrategies.Msg
@@ -45,7 +50,7 @@ type Msg =
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
 
-
+[<NoComparison>]
 type Model =
     {
         CurrentRoute : Router.Route option
@@ -77,6 +82,13 @@ let private setRoute (optRoute : Router.Route option) (model : Model) =
                 ActivePage = Page.Login subModel
             }
             , Cmd.map LoginMsg subCmd
+
+        | Router.Route.File ->
+            let (subModel, subCmd) = File.init ()
+            { model with
+                ActivePage = Page.File subModel
+            }
+            , Cmd.map FileMsg subCmd
 
         | Router.Route.DynamicForm ->
             let (subModel, subCmd) = DynamicForm.init ()
@@ -156,6 +168,18 @@ let private update (msg : Msg) (model : Model) =
             |> Tuple.mapFirst Page.Login
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map LoginMsg)
+
+        | _ ->
+            model
+            , Cmd.none
+
+    | FileMsg subMsg ->
+        match model.ActivePage with
+        | Page.File subModel ->
+            File.update subMsg subModel
+            |> Tuple.mapFirst Page.File
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map FileMsg)
 
         | _ ->
             model
@@ -360,6 +384,7 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
             Html.ul [
                 renderLink Login.information
                 renderLink SignUp.information
+                renderLink File.information
                 renderLink DynamicForm.information
                 renderLink FormList.information
                 renderLink ComposabilitySimple.information
@@ -393,6 +418,11 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
         renderDemoPage
             Login.information
             (Login.view subModel (LoginMsg >> dispatch))
+
+    | Page.File subModel ->
+        renderDemoPage
+            File.information
+            (File.view subModel (FileMsg >> dispatch))
 
     | Page.DynamicForm subModel ->
         renderDemoPage
