@@ -15,6 +15,7 @@ module FileField =
     type Attributes =
         {
             Label: string
+            InputLabel : string
             Accept: FileType
             FileIconClassName: FileIconClassName
             Multiple: bool

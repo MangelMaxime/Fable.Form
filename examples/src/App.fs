@@ -23,6 +23,7 @@ module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Com
 module CustomAction = Page.CustomAction.Component
 
 [<RequireQualifiedAccess>]
+[<NoComparison>]
 type Page =
     | Home
     | SignUp of SignUp.Model
@@ -36,6 +37,7 @@ type Page =
     | CustomAction of CustomAction.Model
     | NotFound
 
+[<NoComparison>]
 type Msg =
     | SetRoute of Router.Route option
     | SignUpMsg of SignUp.Msg
@@ -48,7 +50,7 @@ type Msg =
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
 
-
+[<NoComparison>]
 type Model =
     {
         CurrentRoute : Router.Route option
@@ -381,8 +383,8 @@ let private contentFromPage (page : Page) (dispatch : Dispatch<Msg>) =
 
             Html.ul [
                 renderLink Login.information
-                renderLink File.information
                 renderLink SignUp.information
+                renderLink File.information
                 renderLink DynamicForm.information
                 renderLink FormList.information
                 renderLink ComposabilitySimple.information
