@@ -20,7 +20,9 @@ module TextField =
             HtmlAttributes: 'Attributes list
         }
 
-    type TextField<'Values, 'Attributes> = Field.Field<Attributes<'Attributes>,string,'Values>
+    type TextField<'Values, 'Attributes> = Field.Field<Attributes<'Attributes>, string, 'Values>
 
-    val form<'Values,'Attributes,'Field,'Output> :
-        ((TextField<'Values,'Attributes> -> 'Field) -> Base.FieldConfig<Attributes<'Attributes>,string,'Values,'Output> -> Base.Form<'Values,'Output,'Field>)
+    val form<'Values, 'Attributes, 'Field, 'Output> :
+        ((TextField<'Values, 'Attributes> -> 'Field)
+            -> Base.FieldConfig<Attributes<'Attributes>, string, 'Values, 'Output>
+            -> Base.Form<'Values, 'Output, 'Field>)

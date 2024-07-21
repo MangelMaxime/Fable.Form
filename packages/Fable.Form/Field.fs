@@ -3,15 +3,12 @@ module Fable.Form.Field
 [<NoComparison; NoEquality>]
 type Field<'Attributes, 'Value, 'Values> =
     {
-        Value : 'Value
-        Update : 'Value -> 'Values
-        Attributes : 'Attributes
+        Value: 'Value
+        Update: 'Value -> 'Values
+        Attributes: 'Attributes
     }
 
-let mapValues
-    (fn : 'A -> 'B)
-    (field : Field<'Attributes, 'Value, 'A>)
-    : Field<'Attributes, 'Value, 'B> =
+let mapValues (fn: 'A -> 'B) (field: Field<'Attributes, 'Value, 'A>) : Field<'Attributes, 'Value, 'B> =
 
     {
         Value = field.Value

@@ -5,9 +5,9 @@ open Feliz
 
 type Values =
     {
-        Country : string
-        City : string
-        PostalCode : string
+        Country: string
+        City: string
+        PostalCode: string
     }
 
 let blank =
@@ -17,26 +17,21 @@ let blank =
         PostalCode = ""
     }
 
-let form : Form.Form<Values, Address.T, IReactProperty> =
+let form: Form.Form<Values, Address.T, IReactProperty> =
     let countryField =
         Form.textField
             {
                 // Use a custom EmailAddress parser and map the result back into a string
                 // as the email field is represented using a string in the Form
-                Parser =
-                    Address.Country.tryParse
-                Value =
-                    fun values -> values.Country
-                Update =
-                    fun newValue values ->
-                        { values with Country = newValue }
-                Error =
-                    fun _ -> None
+                Parser = Address.Country.tryParse
+                Value = fun values -> values.Country
+                Update = fun newValue values -> { values with Country = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Country"
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -45,44 +40,34 @@ let form : Form.Form<Values, Address.T, IReactProperty> =
             {
                 // Use a custom EmailAddress parser and map the result back into a string
                 // as the email field is represented using a string in the Form
-                Parser =
-                    Address.City.tryParse
-                Value =
-                    fun values -> values.City
-                Update =
-                    fun newValue values ->
-                        { values with City = newValue }
-                Error =
-                    fun _ -> None
+                Parser = Address.City.tryParse
+                Value = fun values -> values.City
+                Update = fun newValue values -> { values with City = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "City"
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
     let postalCodeField =
         Form.textField
             {
-                Parser =
-                    Address.PostalCode.tryParse
-                Value =
-                    fun values -> values.PostalCode
-                Update =
-                    fun newValue values ->
-                        { values with PostalCode = newValue }
-                Error =
-                    fun _ -> None
+                Parser = Address.PostalCode.tryParse
+                Value = fun values -> values.PostalCode
+                Update = fun newValue values -> { values with PostalCode = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "PostalCode"
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
     Form.succeed Address.create
-        |> Form.append countryField
-        |> Form.append cityField
-        |> Form.append postalCodeField
+    |> Form.append countryField
+    |> Form.append cityField
+    |> Form.append postalCodeField

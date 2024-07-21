@@ -13,38 +13,27 @@ open Fable.Form.Simple.Bulma
 /// - Value: which represent the value of the field when the error is to be shown
 /// - Error: The error message to display
 /// </summary>
-type FieldError =
-    {
-        Value : string
-        Error : string
-    }
+type FieldError = { Value: string; Error: string }
 
 // Small helper module making it easier to create a FieldError
 module FieldError =
 
-    let inline create value error =
-        {
-            Value = value
-            Error = error
-        }
+    let inline create value error = { Value = value; Error = error }
 
 /// <summary>
 /// Type used to represents all the external error handled by our form
 /// </summary>
-type FormErrors =
-    {
-        Email : FieldError option
-    }
+type FormErrors = { Email: FieldError option }
 
 /// <summary>
 /// Type used to represents the result of the form. When the form is submitted this is what we are returned
 /// </summary>
 type FormResult =
     {
-        Email : EmailAddress.T
-        Password : User.Password.T
-        Name : User.Name.T
-        MakePublic : bool
+        Email: EmailAddress.T
+        Password: User.Password.T
+        Name: User.Name.T
+        MakePublic: bool
     }
 
 /// <summary>
@@ -52,12 +41,12 @@ type FormResult =
 /// </summary>
 type Values =
     {
-        Email : string
-        Password : string
-        RepeatPassword : string
-        Name : string
-        MakePublic : string
-        Errors : FormErrors
+        Email: string
+        Password: string
+        RepeatPassword: string
+        Name: string
+        MakePublic: string
+        Errors: FormErrors
     }
 
 type Model =
@@ -65,7 +54,6 @@ type Model =
     | FillingForm of Form.View.Model<Values>
     // Used when the form has been submitted with success
     | SignedUp of User.T
-
 
 type Msg =
     // Message to react to form change
@@ -87,53 +75,36 @@ let init () =
         Errors = { Email = None } // At first, there is no external error
     }
     |> Form.View.idle // By default, set the form in idle mode
-    |> FillingForm
-    , Cmd.none
+    |> FillingForm,
+    Cmd.none
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     | FormChanged formModel ->
         match model with
-        | FillingForm _ ->
-            FillingForm formModel
-            , Cmd.none
+        | FillingForm _ -> FillingForm formModel, Cmd.none
 
-        | _ ->
-            model
-            , Cmd.none
+        | _ -> model, Cmd.none
 
     | SignUp formResult ->
         match model with
         | FillingForm formModel ->
             let signUp () =
-                User.signUp
-                    formResult.Email
-                    formResult.Name
-                    formResult.Password
-                    formResult.MakePublic
+                User.signUp formResult.Email formResult.Name formResult.Password formResult.MakePublic
 
-            formModel
-            |> Form.View.setLoading
-            |> FillingForm
-            , Cmd.OfPromise.perform signUp () SignupAttempted
+            formModel |> Form.View.setLoading |> FillingForm, Cmd.OfPromise.perform signUp () SignupAttempted
 
-        | _ ->
-            model,
-            Cmd.none
+        | _ -> model, Cmd.none
 
-    | SignupAttempted (Ok user) ->
-        SignedUp user
-        , Cmd.none
+    | SignupAttempted(Ok user) -> SignedUp user, Cmd.none
 
     // The signup attempt failed, we are going to update the external error received
-    | SignupAttempted (Error error) ->
+    | SignupAttempted(Error error) ->
         match model with
         | FillingForm formModel ->
-            let values =
-                formModel.Values
+            let values = formModel.Values
 
-            let errors =
-                values.Errors
+            let errors = values.Errors
 
             { formModel with
                 State = Form.View.Idle
@@ -141,37 +112,30 @@ let update (msg : Msg) (model : Model) =
                     { values with
                         Errors =
                             { errors with
-                                Email = Some (FieldError.create values.Email error)
+                                Email = Some(FieldError.create values.Email error)
                             }
                     }
             }
-            |> FillingForm
-            , Cmd.none
+            |> FillingForm,
+            Cmd.none
 
-        | _ ->
-            model
-            , Cmd.none
+        | _ -> model, Cmd.none
 
-    | ResetTheDemo ->
-        init ()
+    | ResetTheDemo -> init ()
 
-let private convertMakePublicOptionToBool (makePublic : string) =
+let private convertMakePublicOptionToBool (makePublic: string) =
     match makePublic with
     | "option-yes" -> true
     | "option-no"
     | _ -> false
 
-let private form : Form.Form<Values, Msg, _> =
+let private form: Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {
-                Parser =
-                    EmailAddress.tryParse
-                Value =
-                    fun values -> values.Email
-                Update =
-                    fun newValue values ->
-                        { values with Email = newValue }
+                Parser = EmailAddress.tryParse
+                Value = fun values -> values.Email
+                Update = fun newValue values -> { values with Email = newValue }
                 Error =
                     // Here, we have a bit of custom logic compared to the other field
                     // because we can have external error for this field
@@ -186,13 +150,12 @@ let private form : Form.Form<Values, Msg, _> =
                             else
                                 None
 
-                        | None ->
-                            None
+                        | None -> None
                 Attributes =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -201,85 +164,69 @@ let private form : Form.Form<Values, Msg, _> =
             {
                 Parser = User.Name.tryParse
                 Value = fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
+                Update = fun newValue values -> { values with Name = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name"
                         Placeholder = "Your name"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
     let passwordField =
         Form.passwordField
             {
-                Parser =
-                    User.Password.tryParse
-                Value =
-                    fun values -> values.Password
-                Update =
-                    fun newValue values ->
-                        { values with Password = newValue }
-                Error =
-                    fun _ -> None
+                Parser = User.Password.tryParse
+                Value = fun values -> values.Password
+                Update = fun newValue values -> { values with Password = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
     let repeatPasswordField =
-        Form.meta
-            (fun values ->
-                Form.passwordField
-                    {
-                        Parser =
-                            fun value ->
-                                if value = values.Password then
-                                    Ok ()
+        Form.meta (fun values ->
+            Form.passwordField
+                {
+                    Parser =
+                        fun value ->
+                            if value = values.Password then
+                                Ok()
 
-                                else
-                                    Error "The passwords do not match"
-                        Value = fun values -> values.RepeatPassword
-                        Update =
-                            fun newValue values_ ->
-                                { values_ with RepeatPassword = newValue }
-                        Error =
-                            fun _ -> None
-                        Attributes =
-                            {
-                                Label = "Repeat password"
-                                Placeholder = "Your password again..."
-                                HtmlAttributes = [ ]
+                            else
+                                Error "The passwords do not match"
+                    Value = fun values -> values.RepeatPassword
+                    Update =
+                        fun newValue values_ ->
+                            { values_ with
+                                RepeatPassword = newValue
                             }
-                    }
-            )
+                    Error = fun _ -> None
+                    Attributes =
+                        {
+                            Label = "Repeat password"
+                            Placeholder = "Your password again..."
+                            HtmlAttributes = []
+                        }
+                }
+        )
 
     let makePublicField =
         Form.radioField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.MakePublic
-                Update =
-                    fun newValue values ->
-                        { values with MakePublic = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.MakePublic
+                Update = fun newValue values -> { values with MakePublic = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Make your profile public ?"
-                        Options =
-                            [
-                                "option-yes", "Yes"
-                                "option-no", "No"
-                            ]
+                        Options = [ "option-yes", "Yes"; "option-no", "No" ]
                     }
             }
 
@@ -293,73 +240,71 @@ let private form : Form.Form<Values, Msg, _> =
             }
 
     Form.succeed onSubmit
-        |> Form.append emailField
-        |> Form.append nameField
-        |> Form.append
-            (
-                Form.succeed (fun password _ -> password )
-                |> Form.append passwordField
-                |> Form.append repeatPasswordField
-                |> Form.group
-            )
-        |> Form.append makePublicField
+    |> Form.append emailField
+    |> Form.append nameField
+    |> Form.append (
+        Form.succeed (fun password _ -> password)
+        |> Form.append passwordField
+        |> Form.append repeatPasswordField
+        |> Form.group
+    )
+    |> Form.append makePublicField
 
-let private renderRow (leftValue : string) (rightValue : string) =
-    Html.tr [
-        Html.td leftValue
-        Html.td rightValue
-    ]
+let private renderRow (leftValue: string) (rightValue: string) =
+    Html.tr [ Html.td leftValue; Html.td rightValue ]
 
-let private renderSignedUpView (user : User.T) dispatch =
-    Bulma.content [
+let private renderSignedUpView (user: User.T) dispatch =
+    Bulma.content
+        [
 
-        Bulma.message [
-            color.isSuccess
+            Bulma.message
+                [
+                    color.isSuccess
 
-            prop.children [
-                Bulma.messageBody [
-                    prop.text "User signed up with the following informations"
+                    prop.children
+                        [
+                            Bulma.messageBody [ prop.text "User signed up with the following informations" ]
+                        ]
                 ]
-            ]
+
+            Bulma.table
+                [
+                    table.isStriped
+
+                    prop.children
+                        [
+                            Html.thead [ Html.tr [ Html.th "Field"; Html.th "Value" ] ]
+
+                            Html.tableBody
+                                [
+                                    renderRow "Email" (User.ValidEmail.toString user.Email)
+                                    renderRow "Name" (User.Name.toString user.Name)
+                                    renderRow "Password" (User.Password.toString user.Password)
+                                    renderRow "Is profil public?" (string user.IsProfilePublic)
+                                ]
+                        ]
+
+                ]
+
+            Bulma.text.p
+                [
+                    text.hasTextCentered
+
+                    prop.children
+                        [
+                            Bulma.button.button
+                                [
+                                    prop.onClick (fun _ -> dispatch ResetTheDemo)
+                                    color.isPrimary
+
+                                    prop.text "Reset the demo"
+                                ]
+                        ]
+                ]
+
         ]
 
-        Bulma.table [
-            table.isStriped
-
-            prop.children [
-                Html.thead [
-                    Html.tr [
-                        Html.th "Field"
-                        Html.th "Value"
-                    ]
-                ]
-
-                Html.tableBody [
-                    renderRow "Email" (User.ValidEmail.toString user.Email)
-                    renderRow "Name" (User.Name.toString user.Name)
-                    renderRow "Password" (User.Password.toString user.Password)
-                    renderRow "Is profil public?" (string user.IsProfilePublic)
-                ]
-            ]
-
-        ]
-
-        Bulma.text.p [
-            text.hasTextCentered
-
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetTheDemo)
-                    color.isPrimary
-
-                    prop.text "Reset the demo"
-                ]
-            ]
-        ]
-
-    ]
-
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         Form.View.asHtml
@@ -372,10 +317,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             form
             values
 
-    | SignedUp user ->
-        renderSignedUpView user dispatch
+    | SignedUp user -> renderSignedUpView user dispatch
 
-let information : DemoInformation.T =
+let information: DemoInformation.T =
     {
         Title = "Sign up"
         Route = Router.Route.SignUp

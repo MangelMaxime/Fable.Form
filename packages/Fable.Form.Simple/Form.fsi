@@ -48,7 +48,7 @@ module Form =
         | File of FileField<'Values>
         | Group of FilledField<'Values, 'Attributes> list
         | Section of title: string * FilledField<'Values, 'Attributes> list
-        | List of FormList.FormList<'Values,Field<'Values, 'Attributes>>
+        | List of FormList.FormList<'Values, Field<'Values, 'Attributes>>
 
     /// <summary>
     /// Represents a FilledField using Fable.Form.Simple representation
@@ -58,16 +58,14 @@ module Form =
     /// <summary>
     /// Represents a form using Fable.Form.Simple representation
     /// </summary>
-    type Form<'Values,'Output, 'Attributes> = Base.Form<'Values,'Output,Field<'Values, 'Attributes>>
+    type Form<'Values, 'Output, 'Attributes> = Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
 
     /// <summary>
     /// Create a form that always succeeds when filled.
     /// </summary>
     /// <param name="output">The value to return when the form is filled</param>
     /// <returns>The given <c>Output</c></returns>
-    val succeed :
-        output : 'Output ->
-        Form<'Values,'Output, 'Attributes>
+    val succeed: output: 'Output -> Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Disable a form
@@ -76,9 +74,7 @@ module Form =
     /// </summary>
     /// <param name="form">The form to disable</param>
     /// <returns>A new form which has been marked as disabled</returns>
-    val disable :
-        form : Form<'Values,'Output, 'Attributes> ->
-        Form<'Values,'Output, 'Attributes>
+    val disable: form: Form<'Values, 'Output, 'Attributes> -> Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Append a form to another one while <b>capturing</b> the output of the first one
@@ -111,10 +107,10 @@ module Form =
     ///
     /// In this example, <c>append</c> is used to feed <c>onSubmit</c> function and combine it into a <c>Login</c> message when submitted.
     /// </example>
-    val append :
-        newForm : Form<'Values,'A, 'Attributes> ->
-        currentForm : Form<'Values,('A -> 'B), 'Attributes> ->
-        Form<'Values,'B, 'Attributes>
+    val append:
+        newForm: Form<'Values, 'A, 'Attributes> ->
+        currentForm: Form<'Values, ('A -> 'B), 'Attributes> ->
+            Form<'Values, 'B, 'Attributes>
 
 
     /// <summary>
@@ -191,9 +187,10 @@ module Form =
     /// )
     /// </code>
     /// </example>
-    val andThen :
-        child : ('A -> Form<'Values,'B, 'Attributes>) ->
-        parent : Form<'Values,'A, 'Attributes> -> Form<'Values,'B, 'Attributes>
+    val andThen:
+        child: ('A -> Form<'Values, 'B, 'Attributes>) ->
+        parent: Form<'Values, 'A, 'Attributes> ->
+            Form<'Values, 'B, 'Attributes>
 
     /// <summary>
     /// Make a form be <b>optional</b>
@@ -227,9 +224,7 @@ module Form =
     /// </code>
     /// </example>
     /// <returns>An optional form</returns>
-    val optional :
-        form : Form<'Values, 'A, 'Attributes> ->
-        Form<'Values, 'A option, 'Attributes>
+    val optional: form: Form<'Values, 'A, 'Attributes> -> Form<'Values, 'A option, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single text field
@@ -240,9 +235,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a text field</returns>
-    val textField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val textField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single password field
@@ -253,9 +248,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a password field</returns>
-    val passwordField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val passwordField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single color field
@@ -266,9 +261,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a color field</returns>
-    val colorField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val colorField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single date field
@@ -279,9 +274,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a date field</returns>
-    val dateField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val dateField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single datetime-local field
@@ -292,9 +287,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a datetime-local field</returns>
-    val dateTimeLocalField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val dateTimeLocalField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single number field
@@ -305,9 +300,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a number field</returns>
-    val numberField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val numberField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single search field
@@ -318,9 +313,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a search field</returns>
-    val searchField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val searchField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single tel field
@@ -331,9 +326,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a tel field</returns>
-    val telField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val telField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single time field
@@ -344,9 +339,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a time field</returns>
-    val timeField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val timeField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single email field
@@ -357,9 +352,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a email field</returns>
-    val emailField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val emailField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single textarea field
@@ -370,9 +365,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a textarea field</returns>
-    val textareaField :
-        config : Base.FieldConfig<Field.TextField.Attributes<'Attributes>,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val textareaField:
+        config: Base.FieldConfig<Field.TextField.Attributes<'Attributes>, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single checkbox field
@@ -383,9 +378,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a checkbox field</returns>
-    val checkboxField :
-        config : Base.FieldConfig<Field.CheckboxField.Attributes,bool,'Values, 'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val checkboxField:
+        config: Base.FieldConfig<Field.CheckboxField.Attributes, bool, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single radio field
@@ -396,9 +391,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a radio field</returns>
-    val radioField :
-        config : Base.FieldConfig<Field.RadioField.Attributes,string,'Values,'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val radioField:
+        config: Base.FieldConfig<Field.RadioField.Attributes, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a single select field
@@ -409,9 +404,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a select field</returns>
-    val selectField :
-        config : Base.FieldConfig<Field.SelectField.Attributes,string,'Values, 'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val selectField:
+        config: Base.FieldConfig<Field.SelectField.Attributes, string, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Create a form that contains a file field
@@ -422,9 +417,9 @@ module Form =
     /// </para>
     /// </param>
     /// <returns>Returns a form representing a file field</returns>
-    val fileField :
-        config : Base.FieldConfig<Field.FileField.Attributes, Browser.Types.File array,'Values, 'Output> ->
-        Form<'Values,'Output, 'Attributes>
+    val fileField:
+        config: Base.FieldConfig<Field.FileField.Attributes, Browser.Types.File array, 'Values, 'Output> ->
+            Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Wrap a form in a group
@@ -437,8 +432,7 @@ module Form =
     /// </summary>
     /// <param name="form">The form to group</param>
     /// <returns>A form marked as a <c>Group</c> field</returns>
-    val group :
-        form : Form<'Values,'Output, 'Attributes> -> Form<'Values,'Output, 'Attributes>
+    val group: form: Form<'Values, 'Output, 'Attributes> -> Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
     /// Wrap a form in a section
@@ -452,10 +446,7 @@ module Form =
     /// <param name="title">The title to display on the section</param>
     /// <param name="form">The form to group</param>
     /// <returns>A form marked as a <c>Section</c> field</returns>
-    val section :
-        title : string ->
-        form : Form<'Values,'Output, 'Attributes> ->
-        Form<'Values,'Output, 'Attributes>
+    val section: title: string -> form: Form<'Values, 'Output, 'Attributes> -> Form<'Values, 'Output, 'Attributes>
 
     //type FilledForm<'Output, 'Field> =
     //    Base.FilledForm<'Output, FilledField<'Field>>
@@ -472,9 +463,12 @@ module Form =
     ///     - A non-empty list of validation errors
     /// - Whether the form is empty or not
     /// </returns>
-    val fill :
-        form : Form<'Values,'Output, 'Attributes> ->
-        values : 'Values -> {| Fields: Base.FilledField<Field<'Values, 'Attributes>> list; IsEmpty: bool; Result: Result<'Output,(Error.Error * Error.Error list)> |}
+    val fill:
+        form: Form<'Values, 'Output, 'Attributes> ->
+        values: 'Values ->
+            {| Fields: Base.FilledField<Field<'Values, 'Attributes>> list
+               IsEmpty: bool
+               Result: Result<'Output, (Error.Error * Error.Error list)> |}
 
     /// <summary>
     /// Build a variable list of forms
@@ -521,10 +515,10 @@ module Form =
     ///
     /// In this example, <c>append</c> is used to feed <c>onSubmit</c> function and combine it into a <c>Login</c> message when submitted.
     /// </example>
-    val list :
-        config          : FormList.Config<'Values,'ElementValues> ->
-        elementForIndex : (int -> Form<'ElementValues,'Output, 'Attributes>) ->
-        Form<'Values,'Output list, 'Attributes>
+    val list:
+        config: FormList.Config<'Values, 'ElementValues> ->
+        elementForIndex: (int -> Form<'ElementValues, 'Output, 'Attributes>) ->
+            Form<'Values, 'Output list, 'Attributes>
 
     /// <summary>
     /// Build a form that depends on its own <c>'Values</c>
@@ -564,16 +558,12 @@ module Form =
     ///     )
     /// </code>
     /// </example>
-    val meta :
-        fn : ('Values -> Form<'Values,'Output, 'Attributes>) ->
-        Form<'Values,'Output, 'Attributes>
+    val meta: fn: ('Values -> Form<'Values, 'Output, 'Attributes>) -> Form<'Values, 'Output, 'Attributes>
 
     [<NoComparison; NoEquality>]
-    type MapValuesConfig<'A,'B> =
-        {
-            Value: 'A -> 'B
-            Update: 'B -> 'A -> 'A
-        }
+    type MapValuesConfig<'A, 'B> =
+        { Value: 'A -> 'B
+          Update: 'B -> 'A -> 'A }
 
     /// <summary>
     /// Transform the values of a form.
@@ -589,10 +579,8 @@ module Form =
     /// <returns>
     /// A new form resulting of <c>fn >> fill form</c>
     /// </returns>
-    val mapValues :
-        config : MapValuesConfig<'A,'B> ->
-        form : Form<'B,'Output, 'Attributes> ->
-        Form<'A,'Output, 'Attributes>
+    val mapValues:
+        config: MapValuesConfig<'A, 'B> -> form: Form<'B, 'Output, 'Attributes> -> Form<'A, 'Output, 'Attributes>
 
     module View =
         type State =
@@ -602,163 +590,145 @@ module Form =
             | Success of string
 
         type ErrorTracking =
-            | ErrorTracking of {| ShowAllErrors: bool; ShowFieldError: Set<string> |}
+            | ErrorTracking of
+                {| ShowAllErrors: bool
+                   ShowFieldError: Set<string> |}
 
         type Model<'Values> =
-            {
-                Values: 'Values
-                State: State
-                ErrorTracking: ErrorTracking
-            }
+            { Values: 'Values
+              State: State
+              ErrorTracking: ErrorTracking }
 
         type Validation =
             | ValidateOnBlur
             | ValidateOnSubmit
 
-        [<RequireQualifiedAccess;NoComparison; NoEquality>]
+        [<RequireQualifiedAccess; NoComparison; NoEquality>]
         type Action<'Msg> =
             | SubmitOnly of string
             | Custom of (State -> Elmish.Dispatch<'Msg> -> ReactElement)
 
         [<NoComparison; NoEquality>]
-        type ViewConfig<'Values,'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange: Model<'Values> -> 'Msg
-                Action: Action<'Msg>
-                Validation: Validation
-            }
+        type ViewConfig<'Values, 'Msg> =
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: Model<'Values> -> 'Msg
+              Action: Action<'Msg>
+              Validation: Validation }
 
         [<NoComparison; NoEquality>]
         type FormConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnSubmit: 'Msg option
-                State: State
-                Action: Action<'Msg>
-                Fields: Feliz.ReactElement list
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnSubmit: 'Msg option
+              State: State
+              Action: Action<'Msg>
+              Fields: Feliz.ReactElement list }
 
         [<NoComparison; NoEquality>]
         type TextFieldConfig<'Msg, 'Attributes> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange: string -> 'Msg
-                OnBlur: 'Msg option
-                Disabled: bool
-                Value: string
-                Error: Error.Error option
-                ShowError: bool
-                Attributes: Field.TextField.Attributes<'Attributes>
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: string -> 'Msg
+              OnBlur: 'Msg option
+              Disabled: bool
+              Value: string
+              Error: Error.Error option
+              ShowError: bool
+              Attributes: Field.TextField.Attributes<'Attributes> }
 
         [<NoComparison; NoEquality>]
         type CheckboxFieldConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange: bool -> 'Msg
-                OnBlur: 'Msg option
-                Disabled: bool
-                Value: bool
-                Error: Error.Error option
-                ShowError: bool
-                Attributes: Field.CheckboxField.Attributes
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: bool -> 'Msg
+              OnBlur: 'Msg option
+              Disabled: bool
+              Value: bool
+              Error: Error.Error option
+              ShowError: bool
+              Attributes: Field.CheckboxField.Attributes }
 
         [<NoComparison; NoEquality>]
         type RadioFieldConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange: string -> 'Msg
-                OnBlur: 'Msg option
-                Disabled: bool
-                Value: string
-                Error: Error.Error option
-                ShowError: bool
-                Attributes: Field.RadioField.Attributes
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: string -> 'Msg
+              OnBlur: 'Msg option
+              Disabled: bool
+              Value: string
+              Error: Error.Error option
+              ShowError: bool
+              Attributes: Field.RadioField.Attributes }
 
         [<NoComparison; NoEquality>]
         type SelectFieldConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange: string -> 'Msg
-                OnBlur: 'Msg option
-                Disabled: bool
-                Value: string
-                Error: Error.Error option
-                ShowError: bool
-                Attributes: Field.SelectField.Attributes
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: string -> 'Msg
+              OnBlur: 'Msg option
+              Disabled: bool
+              Value: string
+              Error: Error.Error option
+              ShowError: bool
+              Attributes: Field.SelectField.Attributes }
 
         [<NoComparison; NoEquality>]
         type FileFieldConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                OnChange : Browser.Types.File array -> 'Msg
-                Disabled: bool
-                Value: Browser.Types.File array
-                Error: Error.Error option
-                ShowError: bool
-                Attributes: Field.FileField.Attributes
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              OnChange: Browser.Types.File array -> 'Msg
+              Disabled: bool
+              Value: Browser.Types.File array
+              Error: Error.Error option
+              ShowError: bool
+              Attributes: Field.FileField.Attributes }
 
         [<NoComparison; NoEquality>]
         type FormListConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                Forms: Feliz.ReactElement list
-                Label: string
-                Add: {| Action: (unit -> 'Msg); Label: string |} option
-                Disabled: bool
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              Forms: Feliz.ReactElement list
+              Label: string
+              Add:
+                  {| Action: (unit -> 'Msg)
+                     Label: string |} option
+              Disabled: bool }
 
         [<NoComparison; NoEquality>]
         type FormListItemConfig<'Msg> =
-            {
-                Dispatch: Elmish.Dispatch<'Msg>
-                Fields: Feliz.ReactElement list
-                Delete: {| Action: (unit -> 'Msg); Label: string |} option
-                Disabled: bool
-            }
+            { Dispatch: Elmish.Dispatch<'Msg>
+              Fields: Feliz.ReactElement list
+              Delete:
+                  {| Action: (unit -> 'Msg)
+                     Label: string |} option
+              Disabled: bool }
 
-        val idle : values:'Values -> Model<'Values>
+        val idle: values: 'Values -> Model<'Values>
 
-        val setLoading : formModel:Model<'Values> -> Model<'Values>
+        val setLoading: formModel: Model<'Values> -> Model<'Values>
 
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
-            {
-                Form : FormConfig<'Msg> -> ReactElement
-                TextField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                PasswordField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                EmailField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                ColorField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                DateField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                DateTimeLocalField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                NumberField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                SearchField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                TelField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                TimeField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                TextAreaField : TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-                CheckboxField : CheckboxFieldConfig<'Msg> -> ReactElement
-                RadioField : RadioFieldConfig<'Msg> -> ReactElement
-                SelectField : SelectFieldConfig<'Msg> -> ReactElement
-                FileField : FileFieldConfig<'Msg> -> ReactElement
-                Group : ReactElement list -> ReactElement
-                Section : string -> ReactElement list -> ReactElement
-                FormList : FormListConfig<'Msg> -> ReactElement
-                FormListItem : FormListItemConfig<'Msg> -> ReactElement
-            }
+            { Form: FormConfig<'Msg> -> ReactElement
+              TextField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              PasswordField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              EmailField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              ColorField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              DateField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              DateTimeLocalField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              NumberField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              SearchField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              TelField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              TimeField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              TextAreaField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+              CheckboxField: CheckboxFieldConfig<'Msg> -> ReactElement
+              RadioField: RadioFieldConfig<'Msg> -> ReactElement
+              SelectField: SelectFieldConfig<'Msg> -> ReactElement
+              FileField: FileFieldConfig<'Msg> -> ReactElement
+              Group: ReactElement list -> ReactElement
+              Section: string -> ReactElement list -> ReactElement
+              FormList: FormListConfig<'Msg> -> ReactElement
+              FormListItem: FormListItemConfig<'Msg> -> ReactElement }
 
         [<NoComparison; NoEquality>]
-        type FieldConfig<'Values,'Msg> =
-            {
-                OnChange: 'Values -> 'Msg
-                OnBlur: (string -> 'Msg) option
-                Disabled: bool
-                ShowError: string -> bool
-            }
+        type FieldConfig<'Values, 'Msg> =
+            { OnChange: 'Values -> 'Msg
+              OnBlur: (string -> 'Msg) option
+              Disabled: bool
+              ShowError: string -> bool }
 
         type InputType =
             | Text
@@ -772,23 +742,23 @@ module Form =
             | Tel
             | Time
 
-        val errorToString : error:Error.Error -> string
+        val errorToString: error: Error.Error -> string
 
-        val ignoreChildError :
-            parentError : Error.Error option ->
-            field : FilledField<'Values, 'Attributes> ->
-            FilledField<'Values, 'Attributes>
+        val ignoreChildError:
+            parentError: Error.Error option ->
+            field: FilledField<'Values, 'Attributes> ->
+                FilledField<'Values, 'Attributes>
 
-        val renderField :
-            dispatch : Elmish.Dispatch<'Msg> ->
-            customConfig : CustomConfig<'Msg, 'Attributes> ->
-            fieldConfig : FieldConfig<'Values,'Msg> ->
-            field : FilledField<'Values, 'Attributes> ->
-            Feliz.ReactElement
+        val renderField:
+            dispatch: Elmish.Dispatch<'Msg> ->
+            customConfig: CustomConfig<'Msg, 'Attributes> ->
+            fieldConfig: FieldConfig<'Values, 'Msg> ->
+            field: FilledField<'Values, 'Attributes> ->
+                Feliz.ReactElement
 
-        val custom :
-            config : CustomConfig<'Msg, 'Attributes> ->
-            viewConfig : ViewConfig<'Values,'Msg> ->
-            form : Form<'Values,'Msg, 'Attributes> ->
-            model : Model<'Values> ->
-            Feliz.ReactElement
+        val custom:
+            config: CustomConfig<'Msg, 'Attributes> ->
+            viewConfig: ViewConfig<'Values, 'Msg> ->
+            form: Form<'Values, 'Msg, 'Attributes> ->
+            model: Model<'Values> ->
+                Feliz.ReactElement

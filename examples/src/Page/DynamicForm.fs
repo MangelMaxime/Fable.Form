@@ -11,27 +11,24 @@ open Fable.Form.Simple.Bulma
 /// </summary>
 type Values =
     {
-        UserType : string
-        Name : string
-        Subject : string
+        UserType: string
+        Name: string
+        Subject: string
     }
 
-type UserType
-    = Student
+type UserType =
+    | Student
     | Teacher
 
 module UserType =
 
-    let tryParse (text : string) =
+    let tryParse (text: string) =
         match text with
-        | "student" ->
-            Ok Student
+        | "student" -> Ok Student
 
-        | "teacher" ->
-            Ok Teacher
+        | "teacher" -> Ok Teacher
 
-        | _ ->
-            Error "Invalid user type"
+        | _ -> Error "Invalid user type"
 
 type Model =
     // The form is being filled
@@ -58,90 +55,66 @@ let init () =
         Subject = ""
     }
     |> Form.View.idle
-    |> FillingForm
-    , Cmd.none
+    |> FillingForm,
+    Cmd.none
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged newModel ->
         match model with
-        | FillingForm _ ->
-            FillingForm newModel
-            , Cmd.none
+        | FillingForm _ -> FillingForm newModel, Cmd.none
 
         | CreatedAStudent _
-        | CreatedATeacher _ ->
-            model
-            , Cmd.none
+        | CreatedATeacher _ -> model, Cmd.none
 
     | NewStudent name ->
         match model with
-        | FillingForm _ ->
-            CreatedAStudent name
-            , Cmd.none
+        | FillingForm _ -> CreatedAStudent name, Cmd.none
 
         | CreatedAStudent _
-        | CreatedATeacher _ ->
-            model
-            , Cmd.none
+        | CreatedATeacher _ -> model, Cmd.none
 
-    | NewTeacher (name, subject) ->
+    | NewTeacher(name, subject) ->
         match model with
-        | FillingForm _ ->
-            CreatedATeacher (name, subject)
-            , Cmd.none
+        | FillingForm _ -> CreatedATeacher(name, subject), Cmd.none
 
         | CreatedAStudent _
-        | CreatedATeacher _ ->
-            model
-            , Cmd.none
+        | CreatedATeacher _ -> model, Cmd.none
 
-    | ResetDemo ->
-        init ()
-
+    | ResetDemo -> init ()
 
 let private studentForm =
     let nameField =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Name
+                Update = fun newValue values -> { values with Name = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name"
                         Placeholder = "Student name"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
-    Form.succeed NewStudent
-        |> Form.append nameField
-        |> Form.section "Student"
+    Form.succeed NewStudent |> Form.append nameField |> Form.section "Student"
 
 let private teacherForm =
     let nameField =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Name
+                Update = fun newValue values -> { values with Name = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name"
                         Placeholder = "Teacher name"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -149,28 +122,23 @@ let private teacherForm =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Subject
-                Update =
-                    fun newValue values ->
-                        { values with Subject = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Subject
+                Update = fun newValue values -> { values with Subject = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Subject"
                         Placeholder = "Taught subject"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
-    let onSubmit name subject =
-        NewTeacher (name, subject)
+    let onSubmit name subject = NewTeacher(name, subject)
 
     Form.succeed onSubmit
-        |> Form.append nameField
-        |> Form.append subjectField
-        |> Form.section "Teacher"
+    |> Form.append nameField
+    |> Form.append subjectField
+    |> Form.section "Teacher"
 
 /// <summary>
 /// Define the form logic
@@ -178,109 +146,100 @@ let private teacherForm =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg, _> =
+let private form: Form.Form<Values, Msg, _> =
     let userTypeField =
         Form.selectField
             {
-                Parser =
-                    UserType.tryParse
-                Value =
-                    fun values -> values.UserType
-                Update =
-                    fun newValue values ->
-                        { values with UserType = newValue }
-                Error =
-                    fun _ -> None
+                Parser = UserType.tryParse
+                Value = fun values -> values.UserType
+                Update = fun newValue values -> { values with UserType = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Type of user"
                         Placeholder = "Choose a user type"
-                        Options =
-                            [
-                                "student", "Student"
-                                "teacher", "Teacher"
-                            ]
+                        Options = [ "student", "Student"; "teacher", "Teacher" ]
                     }
             }
 
     userTypeField
     |> Form.andThen (
         function
-        | Student ->
-            studentForm
+        | Student -> studentForm
 
-        | Teacher ->
-            teacherForm
+        | Teacher -> teacherForm
     )
 
 // Function used to render the result of the form (when submitted)
-let private renderResultView (messageBody : ReactElement) dispatch =
-    Bulma.content [
+let private renderResultView (messageBody: ReactElement) dispatch =
+    Bulma.content
+        [
 
-        Bulma.message [
-            color.isSuccess
+            Bulma.message
+                [
+                    color.isSuccess
 
-            prop.children [
-                messageBody
-            ]
+                    prop.children [ messageBody ]
 
-        ]
-
-        Bulma.text.p [
-            text.hasTextCentered
-
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetDemo)
-                    color.isPrimary
-
-                    prop.text "Reset the demo"
                 ]
-            ]
-        ]
 
-    ]
+            Bulma.text.p
+                [
+                    text.hasTextCentered
+
+                    prop.children
+                        [
+                            Bulma.button.button
+                                [
+                                    prop.onClick (fun _ -> dispatch ResetDemo)
+                                    color.isPrimary
+
+                                    prop.text "Reset the demo"
+                                ]
+                        ]
+                ]
+
+        ]
 
 // Function used to render the view when a student has been created
-let private renderStudentView (name : string) dispatch =
+let private renderStudentView (name: string) dispatch =
     let messageBody =
-        Bulma.messageBody [
-            Html.text "A new student has been created"
-            Html.br []
-            Html.text "His name is: "
-            Html.b name
-        ]
+        Bulma.messageBody
+            [
+                Html.text "A new student has been created"
+                Html.br []
+                Html.text "His name is: "
+                Html.b name
+            ]
 
     renderResultView messageBody dispatch
 
 // Function used to render the view when a teacher has been created
-let private renderTeacherView (name : string) (subject : string) dispatch =
+let private renderTeacherView (name: string) (subject: string) dispatch =
     let messageBody =
-        Bulma.messageBody [
-            Html.text "A new teacher has been created"
-            Html.br []
-            Html.text "His name is: "
-            Html.b name
-            Html.br [ ]
-            Html.text "He is teaching: "
-            Html.b subject
-        ]
+        Bulma.messageBody
+            [
+                Html.text "A new teacher has been created"
+                Html.br []
+                Html.text "His name is: "
+                Html.b name
+                Html.br []
+                Html.text "He is teaching: "
+                Html.b subject
+            ]
 
     renderResultView messageBody dispatch
 
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         let actionText =
             match UserType.tryParse values.Values.UserType with
-            | Ok Student ->
-                "Create student"
+            | Ok Student -> "Create student"
 
-            | Ok Teacher ->
-                "Create teacher"
+            | Ok Teacher -> "Create teacher"
 
-            | Error _ ->
-                "Create"
+            | Error _ -> "Create"
 
         Form.View.asHtml
             {
@@ -292,13 +251,11 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             form
             values
 
-    | CreatedAStudent name ->
-        renderStudentView name dispatch
+    | CreatedAStudent name -> renderStudentView name dispatch
 
-    | CreatedATeacher (name, subject) ->
-        renderTeacherView name subject dispatch
+    | CreatedATeacher(name, subject) -> renderTeacherView name subject dispatch
 
-let information : DemoInformation.T =
+let information: DemoInformation.T =
     {
         Title = "Dynamic form"
         Remark = None

@@ -12,9 +12,9 @@ open Fable.Form.Simple.Bulma
 /// </summary>
 type Book =
     {
-        Title : string
-        Author : string
-        Summary : string
+        Title: string
+        Author: string
+        Summary: string
     }
 
 /// <summary>
@@ -22,26 +22,22 @@ type Book =
 /// </summary>
 type BookValues =
     {
-        Title : string
-        Author : string
-        Summary : string
+        Title: string
+        Author: string
+        Summary: string
     }
 
 /// <summary>
 /// Type used to represent the form values
 /// </summary>
 type Values =
-    {
-        Name : string
-        Books : BookValues list
-    }
+    { Name: string; Books: BookValues list }
 
 type Model =
     // Used when the form is being filled
     | FillingForm of Form.View.Model<Values>
     // Used when the form has been submitted with success
     | FormFilled of string * Book list
-
 
 type Msg =
     // Message to react to form change
@@ -65,52 +61,39 @@ let init () =
             ]
     }
     |> Form.View.idle
-    |> FillingForm
-    , Cmd.none
+    |> FillingForm,
+    Cmd.none
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged newModel ->
         match model with
-        | FillingForm _ ->
-            FillingForm newModel
-            , Cmd.none
+        | FillingForm _ -> FillingForm newModel, Cmd.none
 
-        | FormFilled _ ->
-            model
-            , Cmd.none
+        | FormFilled _ -> model, Cmd.none
 
-    | Submit (name, books) ->
+    | Submit(name, books) ->
         match model with
-        | FillingForm _ ->
-            FormFilled (name, books)
-            , Cmd.none
+        | FillingForm _ -> FormFilled(name, books), Cmd.none
 
-        | FormFilled _ ->
-            model
-            , Cmd.none
+        | FormFilled _ -> model, Cmd.none
 
-    | ResetDemo ->
-        init ()
+    | ResetDemo -> init ()
 
-let private bookForm (index : int) =
+let private bookForm (index: int) =
     let titleField =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Title
-                Update =
-                    fun newValue values ->
-                        { values with Title = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Title
+                Update = fun newValue values -> { values with Title = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name of book #" + string (index + 1)
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -118,18 +101,14 @@ let private bookForm (index : int) =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Author
-                Update =
-                    fun newValue values ->
-                        { values with Author = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Author
+                Update = fun newValue values -> { values with Author = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Author of book #" + string (index + 1)
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -137,18 +116,14 @@ let private bookForm (index : int) =
         Form.textareaField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Summary
-                Update =
-                    fun newValue values ->
-                        { values with Summary = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Summary
+                Update = fun newValue values -> { values with Summary = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Summary of book #" + string (index + 1)
                         Placeholder = ""
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
@@ -157,13 +132,13 @@ let private bookForm (index : int) =
             Title = title
             Author = author
             Summary = summary
-        } : Book
-
+        }
+        : Book
 
     Form.succeed onSubmit
-        |> Form.append titleField
-        |> Form.append authorField
-        |> Form.append summary
+    |> Form.append titleField
+    |> Form.append authorField
+    |> Form.append summary
 
 /// <summary>
 /// Define the form logic
@@ -171,121 +146,115 @@ let private bookForm (index : int) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg, _> =
+let private form: Form.Form<Values, Msg, _> =
     let nameField =
         Form.textField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
+                Value = fun values -> values.Name
+                Update = fun newValue values -> { values with Name = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name"
                         Placeholder = "Your name"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
-    let onSubmit name books =
-        Submit (name, books)
+    let onSubmit name books = Submit(name, books)
 
     Form.succeed onSubmit
-        |> Form.append nameField
-        |> Form.append (
-            Form.list
-                {
-                    Default =
-                        {
-                            Title = ""
-                            Author = ""
-                            Summary = ""
-                        }
-                    Value =
-                        fun values -> values.Books
-                    Update =
-                        fun newValue values ->
-                            { values with Books = newValue }
-                    Attributes =
-                        {
-                            Label = "Books"
-                            Add = Some "Add book"
-                            Delete = Some "Remove book"
-                        }
-                }
-                bookForm
-        )
+    |> Form.append nameField
+    |> Form.append (
+        Form.list
+            {
+                Default =
+                    {
+                        Title = ""
+                        Author = ""
+                        Summary = ""
+                    }
+                Value = fun values -> values.Books
+                Update = fun newValue values -> { values with Books = newValue }
+                Attributes =
+                    {
+                        Label = "Books"
+                        Add = Some "Add book"
+                        Delete = Some "Remove book"
+                    }
+            }
+            bookForm
+    )
 
 // Function used to render a book when the form has been submitted
-let private renderBook (rank : int) (book : Book) =
-    Html.tr [
-        Html.td [
-            Html.b (string (rank + 1))
+let private renderBook (rank: int) (book: Book) =
+    Html.tr
+        [
+            Html.td [ Html.b (string (rank + 1)) ]
+            Html.td book.Title
+            Html.td book.Author
+            Html.td book.Summary
         ]
-        Html.td book.Title
-        Html.td book.Author
-        Html.td book.Summary
-    ]
 
 // Function used to render the filled view (when the form has been submitted)
-let private renderFilledView (name : string) (books : Book list) dispatch =
-    Bulma.content [
+let private renderFilledView (name: string) (books: Book list) dispatch =
+    Bulma.content
+        [
 
-        Bulma.message [
-            color.isSuccess
+            Bulma.message
+                [
+                    color.isSuccess
 
-            prop.children [
-                Bulma.messageBody [
-                    Html.text "Thank you "
-                    Html.b name
-                    Html.text " for creating those "
-                    Html.b(string (List.length books))
-                    Html.text " book(s)"
+                    prop.children
+                        [
+                            Bulma.messageBody
+                                [
+                                    Html.text "Thank you "
+                                    Html.b name
+                                    Html.text " for creating those "
+                                    Html.b (string (List.length books))
+                                    Html.text " book(s)"
+                                ]
+                        ]
+
                 ]
-            ]
+
+            Bulma.table
+                [
+                    table.isStriped
+                    prop.className "is-vcentered-cells"
+
+                    prop.children
+                        [
+                            Html.thead
+                                [
+                                    Html.tr [ Html.th "#"; Html.th "Title"; Html.th "Author"; Html.th "Description" ]
+                                ]
+
+                            Html.tableBody (List.mapi renderBook books)
+                        ]
+                ]
+
+            Bulma.text.p
+                [
+                    text.hasTextCentered
+
+                    prop.children
+                        [
+                            Bulma.button.button
+                                [
+                                    prop.onClick (fun _ -> dispatch ResetDemo)
+                                    color.isPrimary
+
+                                    prop.text "Reset the demo"
+                                ]
+                        ]
+                ]
 
         ]
 
-        Bulma.table [
-            table.isStriped
-            prop.className "is-vcentered-cells"
-
-            prop.children [
-                Html.thead [
-                    Html.tr [
-                        Html.th "#"
-                        Html.th "Title"
-                        Html.th "Author"
-                        Html.th "Description"
-                    ]
-                ]
-
-                Html.tableBody (
-                    List.mapi renderBook books
-                )
-            ]
-        ]
-
-        Bulma.text.p [
-            text.hasTextCentered
-
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetDemo)
-                    color.isPrimary
-
-                    prop.text "Reset the demo"
-                ]
-            ]
-        ]
-
-    ]
-
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         Form.View.asHtml
@@ -298,10 +267,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             form
             values
 
-    | FormFilled (name, books) ->
-        renderFilledView name books dispatch
+    | FormFilled(name, books) -> renderFilledView name books dispatch
 
-let information : DemoInformation.T =
+let information: DemoInformation.T =
     {
         Title = "Form list"
         Remark = None

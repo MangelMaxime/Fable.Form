@@ -11,8 +11,8 @@ open Fable.Form.Simple.Bulma
 /// </summary>
 type Values =
     {
-        Name : string
-        Address : AddressForm.Values
+        Name: string
+        Address: AddressForm.Values
     }
 
 type Model =
@@ -33,35 +33,25 @@ let init () =
         Address = AddressForm.blank
     }
     |> Form.View.idle
-    |> FillingForm
-    , Cmd.none
+    |> FillingForm,
+    Cmd.none
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged formModel ->
         match model with
-        | FillingForm _ ->
-            FillingForm formModel
-            , Cmd.none
+        | FillingForm _ -> FillingForm formModel, Cmd.none
 
-        | Submitted _ ->
-            model
-            , Cmd.none
+        | Submitted _ -> model, Cmd.none
 
-    | Submit (name, address) ->
+    | Submit(name, address) ->
         match model with
-        | FillingForm _ ->
-            Submitted (name, address)
-            , Cmd.none
+        | FillingForm _ -> Submitted(name, address), Cmd.none
 
-        | Submitted _ ->
-            model
-            , Cmd.none
+        | Submitted _ -> model, Cmd.none
 
-    | ResetDemo ->
-        init ()
-
+    | ResetDemo -> init ()
 
 /// <summary>
 /// Define the form logic
@@ -69,102 +59,89 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg, _> =
+let private form: Form.Form<Values, Msg, _> =
     let nameField =
         Form.textField
             {
-                Parser =
-                    User.Name.tryParse
-                Value =
-                    fun values -> values.Name
-                Update =
-                    fun newValue values ->
-                        { values with Name = newValue }
-                Error =
-                    fun _ -> None
+                Parser = User.Name.tryParse
+                Value = fun values -> values.Name
+                Update = fun newValue values -> { values with Name = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Name"
                         Placeholder = "Your name"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
-    let onSubmit user address =
-        Submit (user, address)
+    let onSubmit user address = Submit(user, address)
 
     Form.succeed onSubmit
-        |> Form.append nameField
-        |> Form.append (
-            Form.mapValues
-                {
-                    Value =
-                        fun values -> values.Address
-                    Update =
-                        fun newValue values ->
-                            { values with Address = newValue }
-                }
-                AddressForm.form
-        )
+    |> Form.append nameField
+    |> Form.append (
+        Form.mapValues
+            {
+                Value = fun values -> values.Address
+                Update = fun newValue values -> { values with Address = newValue }
+            }
+            AddressForm.form
+    )
 
 // Function used to render a row in the submitted table
-let private renderRow (leftValue : string) (rightValue : string) =
-    Html.tr [
-        Html.td leftValue
-        Html.td rightValue
-    ]
+let private renderRow (leftValue: string) (rightValue: string) =
+    Html.tr [ Html.td leftValue; Html.td rightValue ]
 
 // Function used to render the view when the form has been submitted
-let private renderSubmittedView (name : User.Name.T) (address : Address.T) dispatch =
-    Bulma.content [
+let private renderSubmittedView (name: User.Name.T) (address: Address.T) dispatch =
+    Bulma.content
+        [
 
-        Bulma.message [
-            color.isSuccess
+            Bulma.message
+                [
+                    color.isSuccess
 
-            prop.children [
-                Bulma.messageBody [
-                    prop.text "Entry has been created"
+                    prop.children [ Bulma.messageBody [ prop.text "Entry has been created" ] ]
                 ]
-            ]
+
+            Bulma.table
+                [
+                    table.isStriped
+
+                    prop.children
+                        [
+                            Html.thead [ Html.tr [ Html.th "Field"; Html.th "Value" ] ]
+
+                            Html.tableBody
+                                [
+                                    renderRow "Name" (User.Name.toString name)
+                                    renderRow "Country" (Address.Country.toString address.Country)
+                                    renderRow "City" (Address.City.toString address.City)
+                                    renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
+                                ]
+                        ]
+
+                ]
+
+            Bulma.text.p
+                [
+                    text.hasTextCentered
+
+                    prop.children
+                        [
+                            Bulma.button.button
+                                [
+                                    prop.onClick (fun _ -> dispatch ResetDemo)
+                                    color.isPrimary
+
+                                    prop.text "Reset the demo"
+                                ]
+                        ]
+                ]
+
         ]
 
-        Bulma.table [
-            table.isStriped
-
-            prop.children [
-                Html.thead [
-                    Html.tr [
-                        Html.th "Field"
-                        Html.th "Value"
-                    ]
-                ]
-
-                Html.tableBody [
-                    renderRow "Name" (User.Name.toString name)
-                    renderRow "Country" (Address.Country.toString address.Country)
-                    renderRow "City" (Address.City.toString address.City)
-                    renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
-                ]
-            ]
-
-        ]
-
-        Bulma.text.p [
-            text.hasTextCentered
-
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetDemo)
-                    color.isPrimary
-
-                    prop.text "Reset the demo"
-                ]
-            ]
-        ]
-
-    ]
-
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         Form.View.asHtml
@@ -177,10 +154,9 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             form
             values
 
-    | Submitted (name, address) ->
-        renderSubmittedView name address dispatch
+    | Submitted(name, address) -> renderSubmittedView name address dispatch
 
-let information : DemoInformation.T =
+let information: DemoInformation.T =
     {
         Title = "Composability"
         Remark = None

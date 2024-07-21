@@ -11,9 +11,9 @@ open Fable.Form.Simple.Bulma
 /// </summary>
 type Values =
     {
-        ValidationStrategy : string
-        Email : string
-        Password : string
+        ValidationStrategy: string
+        Email: string
+        Password: string
     }
 
 type Model =
@@ -21,7 +21,6 @@ type Model =
     | FillingForm of Form.View.Model<Values>
     // User when the form has been submitted with success
     | FormFilled of EmailAddress.T * User.Password.T
-
 
 type Msg =
     // Used when a change occure in the form
@@ -38,35 +37,25 @@ let init () =
         Password = ""
     }
     |> Form.View.idle
-    |> FillingForm
-    , Cmd.none
+    |> FillingForm,
+    Cmd.none
 
-let update (msg : Msg) (model : Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged newModel ->
         match model with
-        | FillingForm _ ->
-            FillingForm newModel
-            , Cmd.none
+        | FillingForm _ -> FillingForm newModel, Cmd.none
 
-        | FormFilled _ ->
-            model
-            , Cmd.none
+        | FormFilled _ -> model, Cmd.none
 
-    | Submit (email, password) ->
+    | Submit(email, password) ->
         match model with
-        | FillingForm _ ->
-            FormFilled (email, password)
-            , Cmd.none
+        | FillingForm _ -> FormFilled(email, password), Cmd.none
 
-        | FormFilled _ ->
-            model
-            , Cmd.none
+        | FormFilled _ -> model, Cmd.none
 
-    | ResetDemo ->
-        init ()
-
+    | ResetDemo -> init ()
 
 /// <summary>
 /// Define the form logic
@@ -74,26 +63,22 @@ let update (msg : Msg) (model : Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form : Form.Form<Values, Msg, _> =
+let private form: Form.Form<Values, Msg, _> =
     let validationStrategiesField =
         Form.radioField
             {
                 Parser = Ok
-                Value =
-                    fun values -> values.ValidationStrategy
+                Value = fun values -> values.ValidationStrategy
                 Update =
                     fun newValue values ->
-                        { values with ValidationStrategy = newValue }
-                Error =
-                    always None
+                        { values with
+                            ValidationStrategy = newValue
+                        }
+                Error = always None
                 Attributes =
                     {
                         Label = "Validation strategy"
-                        Options =
-                            [
-                                "onSubmit", "Validate on form submit"
-                                "onBlur", "Validate on field blur"
-                            ]
+                        Options = [ "onSubmit", "Validate on form submit"; "onBlur", "Validate on field blur" ]
                     }
 
             }
@@ -101,86 +86,81 @@ let private form : Form.Form<Values, Msg, _> =
     let emailField =
         Form.textField
             {
-                Parser =
-                    EmailAddress.tryParse
-                Value =
-                    fun values -> values.Email
-                Update =
-                    fun newValue values ->
-                        { values with Email = newValue }
-                Error =
-                    fun _ -> None
+                Parser = EmailAddress.tryParse
+                Value = fun values -> values.Email
+                Update = fun newValue values -> { values with Email = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
     let passwordField =
         Form.passwordField
             {
-                Parser =
-                    User.Password.tryParse
-                Value =
-                    fun values -> values.Password
-                Update =
-                    fun newValue values ->
-                        { values with Password = newValue }
-                Error =
-                    fun _ -> None
+                Parser = User.Password.tryParse
+                Value = fun values -> values.Password
+                Update = fun newValue values -> { values with Password = newValue }
+                Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
-                        HtmlAttributes = [ ]
+                        HtmlAttributes = []
                     }
             }
 
-    let onSmubit _ email password =
-        Submit (email, password)
+    let onSmubit _ email password = Submit(email, password)
 
     Form.succeed onSmubit
-        |> Form.append validationStrategiesField
-        |> Form.append emailField
-        |> Form.append passwordField
-
+    |> Form.append validationStrategiesField
+    |> Form.append emailField
+    |> Form.append passwordField
 
 // Function used to render the filled view (when the form has been submitted)
-let private renderFilledView (email : EmailAddress.T) (password : User.Password.T) dispatch =
-    Bulma.content [
+let private renderFilledView (email: EmailAddress.T) (password: User.Password.T) dispatch =
+    Bulma.content
+        [
 
-        Bulma.message [
-            color.isSuccess
+            Bulma.message
+                [
+                    color.isSuccess
 
-            prop.children [
-                Bulma.messageBody [
-                    Html.text "You, "
-                    Html.b (EmailAddress.toString email)
-                    Html.text ", have been signed in using the following password "
-                    Html.b (User.Password.toString password)
+                    prop.children
+                        [
+                            Bulma.messageBody
+                                [
+                                    Html.text "You, "
+                                    Html.b (EmailAddress.toString email)
+                                    Html.text ", have been signed in using the following password "
+                                    Html.b (User.Password.toString password)
+                                ]
+                        ]
+
                 ]
-            ]
+
+            Bulma.text.p
+                [
+                    text.hasTextCentered
+
+                    prop.children
+                        [
+                            Bulma.button.button
+                                [
+                                    prop.onClick (fun _ -> dispatch ResetDemo)
+                                    color.isPrimary
+
+                                    prop.text "Reset the demo"
+                                ]
+                        ]
+                ]
 
         ]
 
-        Bulma.text.p [
-            text.hasTextCentered
-
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetDemo)
-                    color.isPrimary
-
-                    prop.text "Reset the demo"
-                ]
-            ]
-        ]
-
-    ]
-
-let view (model : Model) (dispatch : Dispatch<Msg>) =
+let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         Form.View.asHtml
@@ -197,20 +177,21 @@ let view (model : Model) (dispatch : Dispatch<Msg>) =
             form
             values
 
-    | FormFilled (email, name) ->
-        renderFilledView email name dispatch
+    | FormFilled(email, name) -> renderFilledView email name dispatch
 
-let information : DemoInformation.T =
+let information: DemoInformation.T =
     let remark =
-        Bulma.content [
-            text.hasTextCentered
+        Bulma.content
+            [
+                text.hasTextCentered
 
-            prop.children [
-                Html.text "This feature depends on the view implementation, here it is offered by "
-                Html.b "Fable.Form.Simple"
-                Html.text " package"
+                prop.children
+                    [
+                        Html.text "This feature depends on the view implementation, here it is offered by "
+                        Html.b "Fable.Form.Simple"
+                        Html.text " package"
+                    ]
             ]
-        ]
         |> Some
 
     {

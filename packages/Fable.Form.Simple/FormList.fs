@@ -8,60 +8,59 @@ module FormList =
     [<NoComparison; NoEquality>]
     type Form<'Values, 'Field> =
         {
-            Fields : Base.FilledField<'Field> list
-            Delete : unit -> 'Values
+            Fields: Base.FilledField<'Field> list
+            Delete: unit -> 'Values
         }
 
     type Attributes =
         {
-            Label : string
-            Add : string option
-            Delete : string option
+            Label: string
+            Add: string option
+            Delete: string option
         }
 
     [<NoComparison; NoEquality>]
     type FormList<'Values, 'Field> =
         {
-            Forms : Form<'Values, 'Field> list
-            Add : unit -> 'Values
-            Attributes : Attributes
+            Forms: Form<'Values, 'Field> list
+            Add: unit -> 'Values
+            Attributes: Attributes
         }
 
     [<NoComparison; NoEquality>]
     type Config<'Values, 'ElementValues> =
         {
-            Value : 'Values -> 'ElementValues list
-            Update : 'ElementValues list -> 'Values -> 'Values
-            Default : 'ElementValues
-            Attributes : Attributes
+            Value: 'Values -> 'ElementValues list
+            Update: 'ElementValues list -> 'Values -> 'Values
+            Default: 'ElementValues
+            Attributes: Attributes
         }
 
     [<NoComparison; NoEquality>]
     type ElementState<'Values, 'ElementValues> =
         {
-            Index : int
-            Update : 'ElementValues -> 'Values -> 'Values
-            Values : 'Values
-            ElementValues : 'ElementValues
+            Index: int
+            Update: 'ElementValues -> 'Values -> 'Values
+            Values: 'Values
+            ElementValues: 'ElementValues
         }
 
     let form<'Values, 'Field, 'ElementValues, 'Output>
-        (tagger : FormList<'Values, 'Field> -> 'Field)
-        (formConfig : Config<'Values, 'ElementValues>)
-        (buildElement : ElementState<'Values, 'ElementValues> -> Base.FilledForm<'Output, 'Field>)
-        : Base.Form<'Values, 'Output list, 'Field> =
+        (tagger: FormList<'Values, 'Field> -> 'Field)
+        (formConfig: Config<'Values, 'ElementValues>)
+        (buildElement: ElementState<'Values, 'ElementValues> -> Base.FilledForm<'Output, 'Field>)
+        : Base.Form<'Values, 'Output list, 'Field>
+        =
 
         Base.custom (fun values ->
-            let listOfElementValues =
-                formConfig.Value values
+            let listOfElementValues = formConfig.Value values
 
             let elementForIndex index elementValues =
                 buildElement
                     {
                         Update =
                             fun newElementValues values ->
-                                let newList =
-                                    List.setAt index newElementValues listOfElementValues
+                                let newList = List.setAt index newElementValues listOfElementValues
 
                                 formConfig.Update newList values
                         Index = index
@@ -69,46 +68,40 @@ module FormList =
                         ElementValues = elementValues
                     }
 
-            let filledElements =
-                List.mapi elementForIndex listOfElementValues
+            let filledElements = List.mapi elementForIndex listOfElementValues
 
-            let toForm (index : int) (form : Base.FilledForm<'Output,'Field>) =
+            let toForm (index: int) (form: Base.FilledForm<'Output, 'Field>) =
                 {
                     Fields = form.Fields
                     Delete =
                         fun () ->
-                            let previousForms =
-                                List.take index listOfElementValues
+                            let previousForms = List.take index listOfElementValues
 
-                            let nextForms =
-                                List.drop (index + 1) listOfElementValues
+                            let nextForms = List.drop (index + 1) listOfElementValues
 
                             formConfig.Update (previousForms @ nextForms) values
                 }
 
             let gatherResults
-                (next : Base.FilledForm<'Output, 'Field>)
-                (current : Result<'Output list, Error.Error * Error.Error list>)
-                : Result<'Output list, Error.Error * Error.Error list> =
+                (next: Base.FilledForm<'Output, 'Field>)
+                (current: Result<'Output list, Error.Error * Error.Error list>)
+                : Result<'Output list, Error.Error * Error.Error list>
+                =
 
                 match next.Result with
-                | Ok output ->
-                    Result.map (fun x -> output :: x) current
+                | Ok output -> Result.map (fun x -> output :: x) current
 
-                | Error (head, errors) ->
+                | Error(head, errors) ->
                     match current with
-                    | Ok _ ->
-                        Error (head, errors)
+                    | Ok _ -> Error(head, errors)
 
-                    | Error (currentHead, currentErrors) ->
-                        Error (head, errors @ (currentHead :: currentErrors))
+                    | Error(currentHead, currentErrors) -> Error(head, errors @ (currentHead :: currentErrors))
 
-            let result =
-                List.foldBack gatherResults filledElements (Ok [])
+            let result = List.foldBack gatherResults filledElements (Ok [])
 
             let isEmpty =
                 List.fold
-                    (fun state (element : Base.FilledForm<'Output,'Field>) -> element.IsEmpty && state)
+                    (fun state (element: Base.FilledForm<'Output, 'Field>) -> element.IsEmpty && state)
                     false
                     filledElements
 

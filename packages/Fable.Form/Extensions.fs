@@ -3,16 +3,15 @@ namespace Fable.Form.Extensions
 module Result =
 
     let andThen
-        (callback : 'ValueA -> Result<'ValueB, 'Error>)
-        (result : Result<'ValueA, 'Error>)
-        : Result<'ValueB, 'Error> =
+        (callback: 'ValueA -> Result<'ValueB, 'Error>)
+        (result: Result<'ValueA, 'Error>)
+        : Result<'ValueB, 'Error>
+        =
 
         match result with
-        | Ok value ->
-            callback value
+        | Ok value -> callback value
 
-        | Error error ->
-            Error error
+        | Error error -> Error error
 
 module List =
 
@@ -21,11 +20,17 @@ module List =
     let drop count source =
         let rec loop i lst =
             match lst, i with
-            | [] as x, _ | x, 0 -> x
-            | x, n -> loop (n-1) (List.tail x)
-        if count > 0 then loop count source else source
+            | [] as x, _
+            | x, 0 -> x
+            | x, n -> loop (n - 1) (List.tail x)
+
+        if count > 0 then
+            loop count source
+        else
+            source
 
     let setAt i x lst =
         if List.length lst > i && i >= 0 then
-            lst.[0..i-1] @ x::lst.[i+1..]
-        else lst
+            lst.[0 .. i - 1] @ x :: lst.[i + 1 ..]
+        else
+            lst

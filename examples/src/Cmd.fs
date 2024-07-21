@@ -5,11 +5,8 @@ open Elmish
 
 module OfPromise =
 
-    let exec (func : JS.Promise<'Result>) ofSuccess ofError : Cmd<'Msg> =
+    let exec (func: JS.Promise<'Result>) ofSuccess ofError : Cmd<'Msg> =
         let bind dispatch =
-            func
-                .``then``(ofSuccess >> dispatch)
-                .catch(ofError >> dispatch)
-                |> ignore
+            func.``then``(ofSuccess >> dispatch).catch (ofError >> dispatch) |> ignore
 
         [ bind ]

@@ -13,7 +13,7 @@ type ComposabilityRoute =
 
 module ComposabilityRoute =
 
-    let toSegment (route : ComposabilityRoute) =
+    let toSegment (route: ComposabilityRoute) =
         match route with
         | ComposabilityRoute.Simple -> "simple"
         | ComposabilityRoute.WithConfiguration -> "with-configuration"
@@ -31,7 +31,6 @@ type Route =
     | CustomAction
     | NotFound
 
-
 let private toHash page =
     let segmentsPart =
         match page with
@@ -48,7 +47,7 @@ let private toHash page =
 
     "#" + segmentsPart
 
-let routeParser: Parser<Route->Route,Route> =
+let routeParser: Parser<Route -> Route, Route> =
     oneOf
         [
             map Route.Home (s "home")
@@ -60,22 +59,16 @@ let routeParser: Parser<Route->Route,Route> =
             map Route.ValidationStrategies (s "validation-strategies")
             map Route.CustomAction (s "custom-actions")
             map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
-            map (Route.Composability ComposabilityRoute.WithConfiguration) (s "composability" </> s "with-configuration")
+            map
+                (Route.Composability ComposabilityRoute.WithConfiguration)
+                (s "composability" </> s "with-configuration")
             map Route.Home top
         ]
 
-let href route =
-    prop.href (toHash route)
+let href route = prop.href (toHash route)
 
-let modifyUrl route =
-    route
-    |> toHash
-    |> Navigation.modifyUrl
+let modifyUrl route = route |> toHash |> Navigation.modifyUrl
 
-let newUrl route =
-    route
-    |> toHash
-    |> Navigation.newUrl
+let newUrl route = route |> toHash |> Navigation.newUrl
 
-let modifyLocation route =
-    window.location.href <- toHash route
+let modifyLocation route = window.location.href <- toHash route

@@ -4,26 +4,15 @@ open Mocha
 open Fable.Form
 open Fable.Form.Simple
 
-type Attributes =
-    {
-        A : int
-        B : string
-    }
+type Attributes = { A: int; B: string }
 
-let customField =
-    Base.field System.String.IsNullOrEmpty id
+let customField = Base.field System.String.IsNullOrEmpty id
 
-let invalidString =
-    "invalid"
+let invalidString = "invalid"
 
-let externalErrorString =
-    "external_error"
+let externalErrorString = "external_error"
 
-let attributes =
-    {
-        A = 1
-        B = "Some attributes"
-    }
+let attributes = { A = 1; B = "Some attributes" }
 
 let form =
     customField
@@ -35,8 +24,7 @@ let form =
                     else
                         Ok value
             Value = id
-            Update =
-                fun value _ -> value
+            Update = fun value _ -> value
             Error =
                 fun value ->
                     if value = externalErrorString then
@@ -46,16 +34,13 @@ let form =
             Attributes = attributes
         }
 
-let fill =
-    Base.fill form
+let fill = Base.fill form
 
-let withFieldAndError fn (result : Base.FilledForm<_,_>) =
+let withFieldAndError fn (result: Base.FilledForm<_, _>) =
     match result.Fields with
-    | [ field ] ->
-        fn field
+    | [ field ] -> fn field
 
-    | _ ->
-        Assert.fail "fields do not contain a single field"
+    | _ -> Assert.fail "fields do not contain a single field"
 
 let withField fn =
     withFieldAndError ((fun field -> field.State) >> fn)
@@ -67,136 +52,152 @@ let withFieldError fn =
 module Expect =
     let strictEqual expected actual =
         // Arguments order is inverted making it easier to pipe the actual value
-        Assert.strictEqual(actual, expected)
+        Assert.strictEqual (actual, expected)
 
     let deepStrictEqual expected actual =
         // Arguments order is inverted making it easier to pipe the actual value
-        Assert.deepStrictEqual(actual, expected)
+        Assert.deepStrictEqual (actual, expected)
 
     // Alias of deepStrictEqual
     let equal = deepStrictEqual
 
-let getValue (x : Field.Field<Attributes, string, string>) : string =
-    x.Value
+let getValue (x: Field.Field<Attributes, string, string>) : string = x.Value
 
-let getAttributes (x : Field.Field<Attributes, string, string>) : Attributes =
-    x.Attributes
+let getAttributes (x: Field.Field<Attributes, string, string>) : Attributes = x.Attributes
 
-describe "Base.field" (fun () ->
+describe
+    "Base.field"
+    (fun () ->
 
-    describe "when filled" (fun () ->
+        describe
+            "when filled"
+            (fun () ->
 
-        it "contains a single field" (fun () ->
-            let filledForm =
-                fill ""
+                it
+                    "contains a single field"
+                    (fun () ->
+                        let filledForm = fill ""
 
-            Assert.strictEqual(
-                filledForm.Fields.Length,
-                1
+                        Assert.strictEqual (filledForm.Fields.Length, 1)
+                    )
+
+                it
+                    "builds the field with its current value"
+                    (fun () ->
+                        let value = "hello"
+                        let filledForm = fill value
+
+                        filledForm |> withField (getValue >> Expect.strictEqual value)
+                    )
+
+                it
+                    "builds the field with an update helper"
+                    (fun () ->
+                        fill "hello"
+                        |> withField (fun field -> field.Update "Hello world" |> Expect.strictEqual "Hello world")
+                    )
+
+                it
+                    "builds the field with its attributes"
+                    (fun () -> fill "" |> withField (getAttributes >> Expect.strictEqual attributes))
+
             )
-        )
 
-        it "builds the field with its current value" (fun () ->
-            let value = "hello"
-            let filledForm =
-                fill value
+        describe
+            "when filled with a valid value"
+            (fun () ->
 
-            filledForm
-            |> withField (getValue >> Expect.strictEqual value)
-        )
+                it "there is no field error" (fun () -> fill "hello" |> withFieldError (Expect.strictEqual None))
 
-        it "builds the field with an update helper" (fun () ->
-            fill "hello"
-            |> withField
-                (fun field ->
-                    field.Update "Hello world"
-                    |> Expect.strictEqual "Hello world"
-                )
-        )
+                it
+                    "result is the correct output"
+                    (fun () ->
+                        fill "hello"
+                        |> fun filledForm -> filledForm.Result
+                        |> Expect.equal (Ok "hello")
+                    )
 
-        it "builds the field with its attributes" (fun () ->
-            fill ""
-            |> withField (getAttributes >> Expect.strictEqual attributes)
-        )
+            )
 
-    )
+        describe
+            "when filled with a empty value"
+            (fun () ->
 
-    describe "when filled with a valid value" (fun () ->
+                it
+                    "field error is RequiredFieldIsEmpty"
+                    (fun () ->
+                        fill ""
+                        |> withFieldError (Expect.deepStrictEqual (Some Error.RequiredFieldIsEmpty))
+                    )
 
-        it "there is no field error" (fun () ->
-            fill "hello"
-            |> withFieldError (Expect.strictEqual None)
-        )
+                it
+                    "result is a RequiredFieldIsEmpty error"
+                    (fun () ->
+                        fill ""
+                        |> fun filledForm -> filledForm.Result
+                        |> Expect.equal (Error(Error.RequiredFieldIsEmpty, []))
+                    )
 
-        it "result is the correct output" (fun () ->
-            fill "hello"
-            |> fun filledForm -> filledForm.Result
-            |> Expect.equal (Ok "hello")
-        )
+                it "form is empty" (fun () -> fill "" |> (fun filledForm -> filledForm.IsEmpty) |> Expect.equal true)
 
-    )
+            )
 
-    describe "when filled with a empty value" (fun () ->
+        describe
+            "when filled with an invalid value"
+            (fun () ->
 
-        it "field error is RequiredFieldIsEmpty" (fun () ->
-            fill ""
-            |> withFieldError (Expect.deepStrictEqual (Some Error.RequiredFieldIsEmpty))
-        )
+                it
+                    "field error is ValidationFailed"
+                    (fun () ->
+                        fill invalidString
+                        |> withFieldError (Expect.equal (Some(Error.ValidationFailed "invalid input")))
+                    )
 
-        it "result is a RequiredFieldIsEmpty error" (fun () ->
-            fill ""
-            |> fun filledForm -> filledForm.Result
-            |> Expect.equal (Error (Error.RequiredFieldIsEmpty, [  ]))
-        )
+                it
+                    "result is a ValidationFailed error"
+                    (fun () ->
+                        fill invalidString
+                        |> fun filledForm -> filledForm.Result
+                        |> Expect.equal (Error(Error.ValidationFailed "invalid input", []))
+                    )
 
-        it "form is empty" (fun () ->
-            fill ""
-            |> fun filledForm -> filledForm.IsEmpty
-            |> Expect.equal true
-        )
+                it
+                    "form is not empty"
+                    (fun () ->
+                        fill invalidString
+                        |> fun filledForm -> filledForm.IsEmpty
+                        |> Expect.equal false
+                    )
 
-    )
+            )
 
-    describe "when filled with an invalid value" (fun () ->
+        describe
+            "when there is an external error"
+            (fun () ->
 
-        it "field error is ValidationFailed" (fun () ->
-            fill invalidString
-            |> withFieldError (Expect.equal (Some (Error.ValidationFailed "invalid input")))
-        )
+                it
+                    "field error is External"
+                    (fun () ->
+                        fill externalErrorString
+                        |> withFieldError (Expect.equal (Some(Error.External "External error")))
+                    )
 
-        it "result is a ValidationFailed error" (fun () ->
-            fill invalidString
-            |> fun filledForm -> filledForm.Result
-            |> Expect.equal (Error (Error.ValidationFailed "invalid input", [ ]))
-        )
+                it
+                    "result is an External error"
+                    (fun () ->
+                        fill externalErrorString
+                        |> fun filledForm -> filledForm.Result
+                        |> Expect.equal (Error(Error.External "External error", []))
+                    )
 
-        it "form is not empty" (fun () ->
-            fill invalidString
-            |> fun filledForm -> filledForm.IsEmpty
-            |> Expect.equal false
-        )
+                it
+                    "form is not empty"
+                    (fun () ->
+                        fill externalErrorString
+                        |> fun filledForm -> filledForm.IsEmpty
+                        |> Expect.equal false
+                    )
 
-    )
-
-    describe "when there is an external error" (fun () ->
-
-        it "field error is External" (fun () ->
-            fill externalErrorString
-            |> withFieldError (Expect.equal (Some (Error.External "External error")))
-        )
-
-        it "result is an External error" (fun () ->
-            fill externalErrorString
-            |> fun filledForm -> filledForm.Result
-            |> Expect.equal (Error (Error.External "External error", [ ]))
-        )
-
-        it "form is not empty" (fun () ->
-            fill externalErrorString
-            |> fun filledForm -> filledForm.IsEmpty
-            |> Expect.equal false
-        )
+            )
 
     )
-
-)

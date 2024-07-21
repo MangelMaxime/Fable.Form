@@ -8,16 +8,15 @@ module Env =
     [<Literal>]
     let commitHash = "master"
 
-    let githubBaseUrl = sprintf "https://github.com/MangelMaxime/Fable.Form/blob/%s/" commitHash
+    let githubBaseUrl =
+        sprintf "https://github.com/MangelMaxime/Fable.Form/blob/%s/" commitHash
 
-    let generateGithubUrl (sourceDirectory : string) (fileName : string) =
+    let generateGithubUrl (sourceDirectory: string) (fileName: string) =
         let segments = sourceDirectory.Replace("\\", "/").Split('/')
 
         let relativeFilePath =
             segments
-            |> Array.skipWhile (fun segment ->
-                segment <> "examples"
-            )
+            |> Array.skipWhile (fun segment -> segment <> "examples")
             |> String.concat "/"
 
         githubBaseUrl + relativeFilePath + "/" + fileName

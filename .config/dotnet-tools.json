@@ -13,6 +13,24 @@
       "commands": [
         "paket"
       ]
+    },
+    "easybuild.commitlinter": {
+      "version": "0.1.0",
+      "commands": [
+        "commit-linter"
+      ]
+    },
+    "husky": {
+      "version": "0.7.0",
+      "commands": [
+        "husky"
+      ]
+    },
+    "fantomas": {
+      "version": "6.3.10",
+      "commands": [
+        "fantomas"
+      ]
     }
   }
 }

@@ -13,15 +13,15 @@ module FileField =
         | Custom of string
 
     type Attributes =
-        {
-            Label: string
-            InputLabel : string
-            Accept: FileType
-            FileIconClassName: FileIconClassName
-            Multiple: bool
-        }
+        { Label: string
+          InputLabel: string
+          Accept: FileType
+          FileIconClassName: FileIconClassName
+          Multiple: bool }
 
     type FileField<'Values> = Field.Field<Attributes, Browser.Types.File array, 'Values>
 
-    val form<'Values,'Field,'Output> :
-        ((FileField<'Values> -> 'Field) -> Base.FieldConfig<Attributes, Browser.Types.File array,'Values,'Output> -> Base.Form<'Values,'Output,'Field>)
+    val form<'Values, 'Field, 'Output> :
+        ((FileField<'Values> -> 'Field)
+            -> Base.FieldConfig<Attributes, Browser.Types.File array, 'Values, 'Output>
+            -> Base.Form<'Values, 'Output, 'Field>)

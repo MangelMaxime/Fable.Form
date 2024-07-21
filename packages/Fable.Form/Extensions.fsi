@@ -2,10 +2,8 @@ namespace Fable.Form.Extensions
 
 module Result =
 
-    val andThen :
-        callback : ('ValueA -> Result<'ValueB, 'Error>) ->
-        result : Result<'ValueA, 'Error> ->
-        Result<'ValueB, 'Error>
+    val andThen:
+        callback: ('ValueA -> Result<'ValueB, 'Error>) -> result: Result<'ValueA, 'Error> -> Result<'ValueB, 'Error>
 
 module List =
 
@@ -17,10 +15,7 @@ module List =
     /// <param name="source">The input list.</param>
     ///
     /// <returns>The result list.</returns>
-    val drop :
-        count : int ->
-        source : 'A list ->
-        'A list
+    val drop: count: int -> source: 'A list -> 'A list
 
     /// <summary>Updates the value of an item in a list</summary>
     /// <param name="i">The index of the item to update</param>
@@ -28,8 +23,4 @@ module List =
     /// <param name="lst">The input list</param>
     ///
     /// <returns>A new list with the updated element</returns>
-    val setAt :
-        i : int ->
-        x : 'A ->
-        lst : 'A list ->
-        'A list
+    val setAt: i: int -> x: 'A -> lst: 'A list -> 'A list
