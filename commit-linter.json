@@ -10,9 +10,9 @@
         { "name": "chore", "description": "Changes to the build process or auxiliary tools and libraries such as documentation generation" }
     ],
     "tags": [
-        "base",
-        "simple",
-        "simple-bulma",
-        "npm-simple-bulma"
+        "Fable.Form",
+        "Fable.Form.Simple",
+        "Fable.Form.Simple.Bulma",
+        "fable-form-simple-bulma"
     ]
 }
