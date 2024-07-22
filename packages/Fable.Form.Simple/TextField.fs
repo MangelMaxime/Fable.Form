@@ -6,8 +6,17 @@ module TextField =
 
     type Attributes<'Attributes> =
         {
+            /// <summary>
+            /// Label to display
+            /// </summary>
             Label: string
+            /// <summary>
+            /// Placeholder to display when the field is empty
+            /// </summary>
             Placeholder: string
+            /// <summary>
+            /// A list of HTML attributes to add to the generated field
+            /// </summary>
             HtmlAttributes: 'Attributes list
         }
 
