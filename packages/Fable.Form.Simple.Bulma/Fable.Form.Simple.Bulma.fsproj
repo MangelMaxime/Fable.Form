@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>4.1.0</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
             Fable bindings for npm https://github.com/chalk/chalk package
         </Description>
@@ -15,5 +15,9 @@
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
         <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\.paket\Paket.Restore.targets" />
+    <ItemGroup>
+      <PackageReference Include="Fable.Package.SDK" />
+      <PackageReference Include="Feliz" />
+      <PackageReference Include="Feliz.Bulma" />
+    </ItemGroup>
 </Project>

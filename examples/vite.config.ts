@@ -6,6 +6,7 @@ export default defineConfig(({ mode}) => {
     const isProduction = mode === "production";
 
     return {
+        clearScreen: false,
         build: {
             rollupOptions: {
                 output: {

@@ -1,6 +1,6 @@
+.DS_Store
 .vscode/
 .ionide/
-build/
 npm/
 tests/**/out
 

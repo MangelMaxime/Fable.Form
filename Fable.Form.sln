@@ -20,6 +20,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form.Simple", "packag
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form.Simple.Bulma", "packages\Fable.Form.Simple.Bulma\Fable.Form.Simple.Bulma.fsproj", "{70F625ED-572C-4340-9893-FA0F965026AA}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EasyBuild", "build\EasyBuild.fsproj", "{59A9132A-CA53-4336-A93D-8832E0375871}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,18 @@ Global
 		{70F625ED-572C-4340-9893-FA0F965026AA}.Release|x64.Build.0 = Release|Any CPU
 		{70F625ED-572C-4340-9893-FA0F965026AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{70F625ED-572C-4340-9893-FA0F965026AA}.Release|x86.Build.0 = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|x64.Build.0 = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Debug|x86.Build.0 = Debug|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|x64.ActiveCfg = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|x64.Build.0 = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|x86.ActiveCfg = Release|Any CPU
+		{59A9132A-CA53-4336-A93D-8832E0375871}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C33B6B2C-DC08-4E64-A2DD-730083F80416} = {6F603F5E-09A3-4027-AA00-644CBCDA876D}

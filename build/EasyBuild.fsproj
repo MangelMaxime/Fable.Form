@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ManagePackageVersionsCentrally>False</ManagePackageVersionsCentrally>
+    <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Workspace.fs" />
+    <Compile Include="Utils/Nuget.fs" />
+    <Compile Include="Utils/Pnpm.fs" />
+    <Compile Include="Utils/Npm.fs" />
+    <Compile Include="Utils/ChangelogParser.fs" />
+    <Compile Include="Utils/Changelog.fs" />
+    <Compile Include="Utils/DirectoryInfo.fs" />
+    <Compile Include="Commands/Lint.fs" />
+    <Compile Include="Commands/Format.fs" />
+    <Compile Include="Commands/Test.fs" />
+    <Compile Include="Commands/Example.fs" />
+    <Compile Include="Commands/Docs.fs" />
+    <Compile Include="Commands/Release.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BlackFox.CommandLine" Version="1.0.0" />
+    <PackageReference Include="EasyBuild.CommitParser" Version="1.0.0" />
+    <PackageReference Include="EasyBuild.FileSystemProvider" Version="0.3.0" />
+    <PackageReference Include="FSharp.Core" Version="8.0.101" />
+    <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
+    <PackageReference Include="Semver" Version="2.3.0" />
+    <PackageReference Include="SimpleExec" Version="12.0.0" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
+    <PackageReference Include="Thoth.Json.Newtonsoft" Version="0.2.0" />
+  </ItemGroup>
+</Project>

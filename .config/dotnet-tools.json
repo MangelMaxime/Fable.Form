@@ -3,15 +3,9 @@
   "isRoot": true,
   "tools": {
     "fable": {
-      "version": "4.1.4",
+      "version": "4.19.3",
       "commands": [
         "fable"
-      ]
-    },
-    "paket": {
-      "version": "6.2.1",
-      "commands": [
-        "paket"
       ]
     },
     "easybuild.commitlinter": {
