@@ -8,13 +8,9 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Extensions.fsi" />
         <Compile Include="Extensions.fs" />
-        <Compile Include="Error.fsi" />
         <Compile Include="Error.fs" />
-        <Compile Include="Field.fsi" />
         <Compile Include="Field.fs" />
-        <Compile Include="Base.fsi" />
         <Compile Include="Base.fs" />
     </ItemGroup>
     <ItemGroup>
