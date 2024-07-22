@@ -48,6 +48,10 @@ describe
 
                 { Password = "1234567" }
                 |> Base.fill form
-                |> fun form -> Assert.deepStrictEqual (form.Result, Error(Error.ValidationFailed passwordError, []))
+                |> fun form ->
+                    Assert.deepStrictEqual (
+                        form.Result,
+                        Error(Error.ValidationFailed passwordError, [])
+                    )
             )
     )

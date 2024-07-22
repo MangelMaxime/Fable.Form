@@ -229,7 +229,13 @@ let private renderFilledView (name: string) (books: Book list) dispatch =
                         [
                             Html.thead
                                 [
-                                    Html.tr [ Html.th "#"; Html.th "Title"; Html.th "Author"; Html.th "Description" ]
+                                    Html.tr
+                                        [
+                                            Html.th "#"
+                                            Html.th "Title"
+                                            Html.th "Author"
+                                            Html.th "Description"
+                                        ]
                                 ]
 
                             Html.tableBody (List.mapi renderBook books)

@@ -53,7 +53,8 @@ let update (msg: Msg) (model: Model) =
 
     // Form has been submitted
     // Here, we have access to the value submitted from the from
-    | SendFiles files -> files |> Array.map (fun file -> file.name) |> Array.toList |> FileUploaded, Cmd.none
+    | SendFiles files ->
+        files |> Array.map (fun file -> file.name) |> Array.toList |> FileUploaded, Cmd.none
 
     // Reset the demo
     | ResetDemo -> init ()
@@ -102,7 +103,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                             [
                                 Bulma.messageBody
                                     [
-                                        Html.text "Files are not uploaded to the server, we are faking it for the demo"
+                                        Html.text
+                                            "Files are not uploaded to the server, we are faking it for the demo"
                                     ]
                             ]
                     ]
@@ -121,7 +123,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
     | FileUploaded files ->
         Bulma.content
             [
-                Bulma.text.div [ size.isSize6; text.hasTextWeightBold; prop.text "List of files uploaded" ]
+                Bulma.text.div
+                    [ size.isSize6; text.hasTextWeightBold; prop.text "List of files uploaded" ]
 
                 Html.div [ Html.ul (files |> List.map (fun file -> Html.li [ Html.text file ])) ]
 

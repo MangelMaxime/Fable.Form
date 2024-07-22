@@ -42,11 +42,7 @@ type ExampleCommand() =
                 )
                 |> Async.AwaitTask
 
-                Command.RunAsync(
-                    "npx",
-                    "vite serve",
-                    workingDirectory = Workspace.examples.``.``
-                )
+                Command.RunAsync("npx", "vite serve", workingDirectory = Workspace.examples.``.``)
                 |> Async.AwaitTask
             ]
             |> Async.Parallel

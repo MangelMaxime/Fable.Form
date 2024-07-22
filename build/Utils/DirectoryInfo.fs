@@ -1,6 +1,7 @@
 namespace EasyBuild.Utils
 
 open System.IO
+
 [<AutoOpen>]
 module Extensions =
 
@@ -9,4 +10,5 @@ module Extensions =
         member this.ReCreate() =
             if this.Exists then
                 this.Delete(true)
+
             this.Create()

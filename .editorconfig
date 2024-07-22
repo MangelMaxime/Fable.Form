@@ -7,7 +7,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.{fs,fsx}]
+[*.{fs,fsx,fsi}]
 max_line_length = 100
 fsharp_alternative_long_member_definitions = true
 fsharp_multi_line_lambda_closing_newline = true

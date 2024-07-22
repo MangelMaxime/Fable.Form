@@ -58,7 +58,8 @@ module Form =
     /// <summary>
     /// Represents a form using Fable.Form.Simple representation
     /// </summary>
-    type Form<'Values, 'Output, 'Attributes> = Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
+    type Form<'Values, 'Output, 'Attributes> =
+        Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
 
     /// <summary>
     /// Create a form that always succeeds when filled.
@@ -111,7 +112,6 @@ module Form =
         newForm: Form<'Values, 'A, 'Attributes> ->
         currentForm: Form<'Values, ('A -> 'B), 'Attributes> ->
             Form<'Values, 'B, 'Attributes>
-
 
     /// <summary>
     /// Fill a form <c>andThen</c> fill another one.
@@ -418,7 +418,8 @@ module Form =
     /// </param>
     /// <returns>Returns a form representing a file field</returns>
     val fileField:
-        config: Base.FieldConfig<Field.FileField.Attributes, Browser.Types.File array, 'Values, 'Output> ->
+        config:
+            Base.FieldConfig<Field.FileField.Attributes, Browser.Types.File array, 'Values, 'Output> ->
             Form<'Values, 'Output, 'Attributes>
 
     /// <summary>
@@ -446,7 +447,10 @@ module Form =
     /// <param name="title">The title to display on the section</param>
     /// <param name="form">The form to group</param>
     /// <returns>A form marked as a <c>Section</c> field</returns>
-    val section: title: string -> form: Form<'Values, 'Output, 'Attributes> -> Form<'Values, 'Output, 'Attributes>
+    val section:
+        title: string ->
+        form: Form<'Values, 'Output, 'Attributes> ->
+            Form<'Values, 'Output, 'Attributes>
 
     //type FilledForm<'Output, 'Field> =
     //    Base.FilledForm<'Output, FilledField<'Field>>
@@ -466,9 +470,11 @@ module Form =
     val fill:
         form: Form<'Values, 'Output, 'Attributes> ->
         values: 'Values ->
-            {| Fields: Base.FilledField<Field<'Values, 'Attributes>> list
-               IsEmpty: bool
-               Result: Result<'Output, (Error.Error * Error.Error list)> |}
+            {|
+                Fields: Base.FilledField<Field<'Values, 'Attributes>> list
+                IsEmpty: bool
+                Result: Result<'Output, (Error.Error * Error.Error list)>
+            |}
 
     /// <summary>
     /// Build a variable list of forms
@@ -558,12 +564,15 @@ module Form =
     ///     )
     /// </code>
     /// </example>
-    val meta: fn: ('Values -> Form<'Values, 'Output, 'Attributes>) -> Form<'Values, 'Output, 'Attributes>
+    val meta:
+        fn: ('Values -> Form<'Values, 'Output, 'Attributes>) -> Form<'Values, 'Output, 'Attributes>
 
     [<NoComparison; NoEquality>]
     type MapValuesConfig<'A, 'B> =
-        { Value: 'A -> 'B
-          Update: 'B -> 'A -> 'A }
+        {
+            Value: 'A -> 'B
+            Update: 'B -> 'A -> 'A
+        }
 
     /// <summary>
     /// Transform the values of a form.
@@ -580,7 +589,9 @@ module Form =
     /// A new form resulting of <c>fn >> fill form</c>
     /// </returns>
     val mapValues:
-        config: MapValuesConfig<'A, 'B> -> form: Form<'B, 'Output, 'Attributes> -> Form<'A, 'Output, 'Attributes>
+        config: MapValuesConfig<'A, 'B> ->
+        form: Form<'B, 'Output, 'Attributes> ->
+            Form<'A, 'Output, 'Attributes>
 
     module View =
         type State =
@@ -591,13 +602,17 @@ module Form =
 
         type ErrorTracking =
             | ErrorTracking of
-                {| ShowAllErrors: bool
-                   ShowFieldError: Set<string> |}
+                {|
+                    ShowAllErrors: bool
+                    ShowFieldError: Set<string>
+                |}
 
         type Model<'Values> =
-            { Values: 'Values
-              State: State
-              ErrorTracking: ErrorTracking }
+            {
+                Values: 'Values
+                State: State
+                ErrorTracking: ErrorTracking
+            }
 
         type Validation =
             | ValidateOnBlur
@@ -610,91 +625,113 @@ module Form =
 
         [<NoComparison; NoEquality>]
         type ViewConfig<'Values, 'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: Model<'Values> -> 'Msg
-              Action: Action<'Msg>
-              Validation: Validation }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: Model<'Values> -> 'Msg
+                Action: Action<'Msg>
+                Validation: Validation
+            }
 
         [<NoComparison; NoEquality>]
         type FormConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnSubmit: 'Msg option
-              State: State
-              Action: Action<'Msg>
-              Fields: Feliz.ReactElement list }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnSubmit: 'Msg option
+                State: State
+                Action: Action<'Msg>
+                Fields: Feliz.ReactElement list
+            }
 
         [<NoComparison; NoEquality>]
         type TextFieldConfig<'Msg, 'Attributes> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: string -> 'Msg
-              OnBlur: 'Msg option
-              Disabled: bool
-              Value: string
-              Error: Error.Error option
-              ShowError: bool
-              Attributes: Field.TextField.Attributes<'Attributes> }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: string -> 'Msg
+                OnBlur: 'Msg option
+                Disabled: bool
+                Value: string
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.TextField.Attributes<'Attributes>
+            }
 
         [<NoComparison; NoEquality>]
         type CheckboxFieldConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: bool -> 'Msg
-              OnBlur: 'Msg option
-              Disabled: bool
-              Value: bool
-              Error: Error.Error option
-              ShowError: bool
-              Attributes: Field.CheckboxField.Attributes }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: bool -> 'Msg
+                OnBlur: 'Msg option
+                Disabled: bool
+                Value: bool
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.CheckboxField.Attributes
+            }
 
         [<NoComparison; NoEquality>]
         type RadioFieldConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: string -> 'Msg
-              OnBlur: 'Msg option
-              Disabled: bool
-              Value: string
-              Error: Error.Error option
-              ShowError: bool
-              Attributes: Field.RadioField.Attributes }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: string -> 'Msg
+                OnBlur: 'Msg option
+                Disabled: bool
+                Value: string
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.RadioField.Attributes
+            }
 
         [<NoComparison; NoEquality>]
         type SelectFieldConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: string -> 'Msg
-              OnBlur: 'Msg option
-              Disabled: bool
-              Value: string
-              Error: Error.Error option
-              ShowError: bool
-              Attributes: Field.SelectField.Attributes }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: string -> 'Msg
+                OnBlur: 'Msg option
+                Disabled: bool
+                Value: string
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.SelectField.Attributes
+            }
 
         [<NoComparison; NoEquality>]
         type FileFieldConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              OnChange: Browser.Types.File array -> 'Msg
-              Disabled: bool
-              Value: Browser.Types.File array
-              Error: Error.Error option
-              ShowError: bool
-              Attributes: Field.FileField.Attributes }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                OnChange: Browser.Types.File array -> 'Msg
+                Disabled: bool
+                Value: Browser.Types.File array
+                Error: Error.Error option
+                ShowError: bool
+                Attributes: Field.FileField.Attributes
+            }
 
         [<NoComparison; NoEquality>]
         type FormListConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              Forms: Feliz.ReactElement list
-              Label: string
-              Add:
-                  {| Action: (unit -> 'Msg)
-                     Label: string |} option
-              Disabled: bool }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                Forms: Feliz.ReactElement list
+                Label: string
+                Add:
+                    {|
+                        Action: (unit -> 'Msg)
+                        Label: string
+                    |} option
+                Disabled: bool
+            }
 
         [<NoComparison; NoEquality>]
         type FormListItemConfig<'Msg> =
-            { Dispatch: Elmish.Dispatch<'Msg>
-              Fields: Feliz.ReactElement list
-              Delete:
-                  {| Action: (unit -> 'Msg)
-                     Label: string |} option
-              Disabled: bool }
+            {
+                Dispatch: Elmish.Dispatch<'Msg>
+                Fields: Feliz.ReactElement list
+                Delete:
+                    {|
+                        Action: (unit -> 'Msg)
+                        Label: string
+                    |} option
+                Disabled: bool
+            }
 
         val idle: values: 'Values -> Model<'Values>
 
@@ -702,33 +739,37 @@ module Form =
 
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
-            { Form: FormConfig<'Msg> -> ReactElement
-              TextField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              PasswordField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              EmailField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              ColorField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              DateField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              DateTimeLocalField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              NumberField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              SearchField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              TelField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              TimeField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              TextAreaField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
-              CheckboxField: CheckboxFieldConfig<'Msg> -> ReactElement
-              RadioField: RadioFieldConfig<'Msg> -> ReactElement
-              SelectField: SelectFieldConfig<'Msg> -> ReactElement
-              FileField: FileFieldConfig<'Msg> -> ReactElement
-              Group: ReactElement list -> ReactElement
-              Section: string -> ReactElement list -> ReactElement
-              FormList: FormListConfig<'Msg> -> ReactElement
-              FormListItem: FormListItemConfig<'Msg> -> ReactElement }
+            {
+                Form: FormConfig<'Msg> -> ReactElement
+                TextField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                PasswordField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                EmailField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                ColorField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                DateField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                DateTimeLocalField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                NumberField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                SearchField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TelField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TimeField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                TextAreaField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
+                CheckboxField: CheckboxFieldConfig<'Msg> -> ReactElement
+                RadioField: RadioFieldConfig<'Msg> -> ReactElement
+                SelectField: SelectFieldConfig<'Msg> -> ReactElement
+                FileField: FileFieldConfig<'Msg> -> ReactElement
+                Group: ReactElement list -> ReactElement
+                Section: string -> ReactElement list -> ReactElement
+                FormList: FormListConfig<'Msg> -> ReactElement
+                FormListItem: FormListItemConfig<'Msg> -> ReactElement
+            }
 
         [<NoComparison; NoEquality>]
         type FieldConfig<'Values, 'Msg> =
-            { OnChange: 'Values -> 'Msg
-              OnBlur: (string -> 'Msg) option
-              Disabled: bool
-              ShowError: string -> bool }
+            {
+                OnChange: 'Values -> 'Msg
+                OnBlur: (string -> 'Msg) option
+                Disabled: bool
+                ShowError: string -> bool
+            }
 
         type InputType =
             | Text

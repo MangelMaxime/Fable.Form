@@ -78,7 +78,11 @@ let private form: Form.Form<Values, Msg, _> =
                 Attributes =
                     {
                         Label = "Validation strategy"
-                        Options = [ "onSubmit", "Validate on form submit"; "onBlur", "Validate on field blur" ]
+                        Options =
+                            [
+                                "onSubmit", "Validate on form submit"
+                                "onBlur", "Validate on field blur"
+                            ]
                     }
 
             }
@@ -187,7 +191,8 @@ let information: DemoInformation.T =
 
                 prop.children
                     [
-                        Html.text "This feature depends on the view implementation, here it is offered by "
+                        Html.text
+                            "This feature depends on the view implementation, here it is offered by "
                         Html.b "Fable.Form.Simple"
                         Html.text " package"
                     ]

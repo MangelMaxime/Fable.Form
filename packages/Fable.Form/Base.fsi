@@ -4,9 +4,11 @@ module Fable.Form.Base
 /// Represents a filled field
 /// </summary>
 type FilledField<'Field> =
-    { State: 'Field
-      Error: Error.Error option
-      IsDisabled: bool }
+    {
+        State: 'Field
+        Error: Error.Error option
+        IsDisabled: bool
+    }
 
 /// <summary>
 /// Represents a filled form
@@ -14,9 +16,11 @@ type FilledField<'Field> =
 /// You can obtain this by using <see cref="fill"/>
 /// </summary>
 type FilledForm<'Output, 'Field> =
-    { Fields: FilledField<'Field> list
-      Result: Result<'Output, (Error.Error * Error.Error list)>
-      IsEmpty: bool }
+    {
+        Fields: FilledField<'Field> list
+        Result: Result<'Output, (Error.Error * Error.Error list)>
+        IsEmpty: bool
+    }
 
 /// <summary>
 /// A <see cref="T:Form"/> which can contain any type of 'field'
@@ -78,7 +82,6 @@ type CustomField<'Output, 'Field> =
         /// </summary>
         IsEmpty: bool
     }
-
 
 /// <summary>
 /// Create a form that always succeeds when filled.
@@ -156,7 +159,9 @@ val mapField: fn: ('A -> 'B) -> form: Form<'Values, 'Output, 'A> -> Form<'Values
 /// <param name="currentForm">Form to append to</param>
 /// <returns>A new form resulting in the combination of <c>newForm</c> and <c>currentForm</c></returns>
 val append:
-    newForm: Form<'Values, 'A, 'Field> -> currentForm: Form<'Values, ('A -> 'B), 'Field> -> Form<'Values, 'B, 'Field>
+    newForm: Form<'Values, 'A, 'Field> ->
+    currentForm: Form<'Values, ('A -> 'B), 'Field> ->
+        Form<'Values, 'B, 'Field>
 
 /// <summary>
 /// Disable a form
@@ -175,7 +180,10 @@ val disable: form: Form<'Values, 'Output, 'Field> -> Form<'Values, 'Output, 'Fie
 /// <param name="child">The child form</param>
 /// <param name="parent">The parent form which is filled first</param>
 /// <returns>A new form which is the result of filling the <c>parent</c> and then filling the <c>child</c> form</returns>
-val andThen: child: ('A -> Form<'Values, 'B, 'Field>) -> parent: Form<'Values, 'A, 'Field> -> Form<'Values, 'B, 'Field>
+val andThen:
+    child: ('A -> Form<'Values, 'B, 'Field>) ->
+    parent: Form<'Values, 'A, 'Field> ->
+        Form<'Values, 'B, 'Field>
 
 /// <summary>
 /// Transform the 'output' of a form

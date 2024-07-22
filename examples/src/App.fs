@@ -306,7 +306,8 @@ let private renderDemoPage
                 [
                     text.hasTextCentered
 
-                    prop.children [ Html.a [ prop.href sourceCodeUrl; prop.text "Full source code" ] ]
+                    prop.children
+                        [ Html.a [ prop.href sourceCodeUrl; prop.text "Full source code" ] ]
                 ]
 
             Html.hr []
@@ -373,16 +374,22 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
                     ]
             ]
 
-    | Page.SignUp subModel -> renderDemoPage SignUp.information (SignUp.view subModel (SignUpMsg >> dispatch))
+    | Page.SignUp subModel ->
+        renderDemoPage SignUp.information (SignUp.view subModel (SignUpMsg >> dispatch))
 
-    | Page.Login subModel -> renderDemoPage Login.information (Login.view subModel (LoginMsg >> dispatch))
+    | Page.Login subModel ->
+        renderDemoPage Login.information (Login.view subModel (LoginMsg >> dispatch))
 
-    | Page.File subModel -> renderDemoPage File.information (File.view subModel (FileMsg >> dispatch))
+    | Page.File subModel ->
+        renderDemoPage File.information (File.view subModel (FileMsg >> dispatch))
 
     | Page.DynamicForm subModel ->
-        renderDemoPage DynamicForm.information (DynamicForm.view subModel (DynamicFormMsg >> dispatch))
+        renderDemoPage
+            DynamicForm.information
+            (DynamicForm.view subModel (DynamicFormMsg >> dispatch))
 
-    | Page.FormList subModel -> renderDemoPage FormList.information (FormList.view subModel (FormListMsg >> dispatch))
+    | Page.FormList subModel ->
+        renderDemoPage FormList.information (FormList.view subModel (FormListMsg >> dispatch))
 
     | Page.ValidationStrategies subModel ->
         renderDemoPage
@@ -397,10 +404,14 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
     | Page.ComposabilityWithConfiguration subModel ->
         renderDemoPage
             ComposabilityWithConfiguration.information
-            (ComposabilityWithConfiguration.view subModel (ComposabilityWithConfigurationMsg >> dispatch))
+            (ComposabilityWithConfiguration.view
+                subModel
+                (ComposabilityWithConfigurationMsg >> dispatch))
 
     | Page.CustomAction subModel ->
-        renderDemoPage CustomAction.information (CustomAction.view subModel (CustomActionMsg >> dispatch))
+        renderDemoPage
+            CustomAction.information
+            (CustomAction.view subModel (CustomActionMsg >> dispatch))
 
     | Page.NotFound -> Html.text "Page not found"
 

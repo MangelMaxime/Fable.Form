@@ -277,9 +277,12 @@ module Form =
                                             [
                                                 prop.onInput (fun x ->
                                                     let files =
-                                                        (x.currentTarget :?> Browser.Types.HTMLInputElement).files
+                                                        (x.currentTarget
+                                                        :?> Browser.Types.HTMLInputElement)
+                                                            .files
 
-                                                    let files = Array.init files.length (fun i -> files[i])
+                                                    let files =
+                                                        Array.init files.length (fun i -> files[i])
 
                                                     files |> onChange |> dispatch
                                                 )
@@ -313,9 +316,11 @@ module Form =
                                                         ]
 
                                                 | FileField.FileIconClassName.Custom className ->
-                                                    Bulma.fileIcon [ Html.i [ prop.className className ] ]
+                                                    Bulma.fileIcon
+                                                        [ Html.i [ prop.className className ] ]
 
-                                                Bulma.fileLabel.span [ prop.text attributes.InputLabel ]
+                                                Bulma.fileLabel.span
+                                                    [ prop.text attributes.InputLabel ]
                                             ]
 
                                         if not (value |> Array.isEmpty) then
@@ -376,7 +381,8 @@ module Form =
                                         [
                                             icon.isSmall
 
-                                            prop.children [ Html.i [ prop.className "fas fa-plus" ] ]
+                                            prop.children
+                                                [ Html.i [ prop.className "fas fa-plus" ] ]
                                         ]
 
                                     Html.span add.Label
@@ -419,7 +425,8 @@ module Form =
                                         [
                                             icon.isSmall
 
-                                            prop.children [ Html.i [ prop.className "fas fa-times" ] ]
+                                            prop.children
+                                                [ Html.i [ prop.className "fas fa-times" ] ]
                                         ]
 
                                     if delete.Label <> "" then

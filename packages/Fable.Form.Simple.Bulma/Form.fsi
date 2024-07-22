@@ -18,10 +18,16 @@ module Form =
         val wrapInFieldContainer: children: ReactElement list -> ReactElement
 
         val withLabelAndError:
-            label: string -> showError: bool -> error: Error.Error option -> fieldAsHtml: ReactElement -> ReactElement
+            label: string ->
+            showError: bool ->
+            error: Error.Error option ->
+            fieldAsHtml: ReactElement ->
+                ReactElement
 
         val inputField:
-            typ: Form.View.InputType -> config: Form.View.TextFieldConfig<'Msg, IReactProperty> -> ReactElement
+            typ: Form.View.InputType ->
+            config: Form.View.TextFieldConfig<'Msg, IReactProperty> ->
+                ReactElement
 
         val textareaField: config: Form.View.TextFieldConfig<'Msg, IReactProperty> -> ReactElement
 
@@ -52,4 +58,6 @@ module Form =
 
         val asHtml:
             config: Form.View.ViewConfig<'Values, 'Msg> ->
-                (Form.Form<'Values, 'Msg, IReactProperty> -> Form.View.Model<'Values> -> ReactElement)
+                (Form.Form<'Values, 'Msg, IReactProperty>
+                    -> Form.View.Model<'Values>
+                    -> ReactElement)

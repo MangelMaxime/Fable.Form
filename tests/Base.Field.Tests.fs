@@ -94,12 +94,16 @@ describe
                     "builds the field with an update helper"
                     (fun () ->
                         fill "hello"
-                        |> withField (fun field -> field.Update "Hello world" |> Expect.strictEqual "Hello world")
+                        |> withField (fun field ->
+                            field.Update "Hello world" |> Expect.strictEqual "Hello world"
+                        )
                     )
 
                 it
                     "builds the field with its attributes"
-                    (fun () -> fill "" |> withField (getAttributes >> Expect.strictEqual attributes))
+                    (fun () ->
+                        fill "" |> withField (getAttributes >> Expect.strictEqual attributes)
+                    )
 
             )
 
@@ -107,7 +111,9 @@ describe
             "when filled with a valid value"
             (fun () ->
 
-                it "there is no field error" (fun () -> fill "hello" |> withFieldError (Expect.strictEqual None))
+                it
+                    "there is no field error"
+                    (fun () -> fill "hello" |> withFieldError (Expect.strictEqual None))
 
                 it
                     "result is the correct output"
@@ -127,7 +133,9 @@ describe
                     "field error is RequiredFieldIsEmpty"
                     (fun () ->
                         fill ""
-                        |> withFieldError (Expect.deepStrictEqual (Some Error.RequiredFieldIsEmpty))
+                        |> withFieldError (
+                            Expect.deepStrictEqual (Some Error.RequiredFieldIsEmpty)
+                        )
                     )
 
                 it
@@ -138,7 +146,11 @@ describe
                         |> Expect.equal (Error(Error.RequiredFieldIsEmpty, []))
                     )
 
-                it "form is empty" (fun () -> fill "" |> (fun filledForm -> filledForm.IsEmpty) |> Expect.equal true)
+                it
+                    "form is empty"
+                    (fun () ->
+                        fill "" |> (fun filledForm -> filledForm.IsEmpty) |> Expect.equal true
+                    )
 
             )
 
@@ -150,7 +162,9 @@ describe
                     "field error is ValidationFailed"
                     (fun () ->
                         fill invalidString
-                        |> withFieldError (Expect.equal (Some(Error.ValidationFailed "invalid input")))
+                        |> withFieldError (
+                            Expect.equal (Some(Error.ValidationFailed "invalid input"))
+                        )
                     )
 
                 it

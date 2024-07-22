@@ -142,7 +142,11 @@ let append
                 }
     )
 
-let andThen (child: 'A -> Form<'Values, 'B, 'Field>) (parent: Form<'Values, 'A, 'Field>) : Form<'Values, 'B, 'Field> =
+let andThen
+    (child: 'A -> Form<'Values, 'B, 'Field>)
+    (parent: Form<'Values, 'A, 'Field>)
+    : Form<'Values, 'B, 'Field>
+    =
 
     Form(fun values ->
         let filled = fill parent values

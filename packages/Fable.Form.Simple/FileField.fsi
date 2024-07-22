@@ -13,11 +13,13 @@ module FileField =
         | Custom of string
 
     type Attributes =
-        { Label: string
-          InputLabel: string
-          Accept: FileType
-          FileIconClassName: FileIconClassName
-          Multiple: bool }
+        {
+            Label: string
+            InputLabel: string
+            Accept: FileType
+            FileIconClassName: FileIconClassName
+            Multiple: bool
+        }
 
     type FileField<'Values> = Field.Field<Attributes, Browser.Types.File array, 'Values>
 

@@ -90,9 +90,14 @@ let update (msg: Msg) (model: Model) =
         match model with
         | FillingForm formModel ->
             let signUp () =
-                User.signUp formResult.Email formResult.Name formResult.Password formResult.MakePublic
+                User.signUp
+                    formResult.Email
+                    formResult.Name
+                    formResult.Password
+                    formResult.MakePublic
 
-            formModel |> Form.View.setLoading |> FillingForm, Cmd.OfPromise.perform signUp () SignupAttempted
+            formModel |> Form.View.setLoading |> FillingForm,
+            Cmd.OfPromise.perform signUp () SignupAttempted
 
         | _ -> model, Cmd.none
 
@@ -263,7 +268,8 @@ let private renderSignedUpView (user: User.T) dispatch =
 
                     prop.children
                         [
-                            Bulma.messageBody [ prop.text "User signed up with the following informations" ]
+                            Bulma.messageBody
+                                [ prop.text "User signed up with the following informations" ]
                         ]
                 ]
 

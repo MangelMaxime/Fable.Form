@@ -95,13 +95,16 @@ module FormList =
                     match current with
                     | Ok _ -> Error(head, errors)
 
-                    | Error(currentHead, currentErrors) -> Error(head, errors @ (currentHead :: currentErrors))
+                    | Error(currentHead, currentErrors) ->
+                        Error(head, errors @ (currentHead :: currentErrors))
 
             let result = List.foldBack gatherResults filledElements (Ok [])
 
             let isEmpty =
                 List.fold
-                    (fun state (element: Base.FilledForm<'Output, 'Field>) -> element.IsEmpty && state)
+                    (fun state (element: Base.FilledForm<'Output, 'Field>) ->
+                        element.IsEmpty && state
+                    )
                     false
                     filledElements
 
@@ -110,7 +113,11 @@ module FormList =
                     tagger
                         {
                             Forms = List.mapi toForm filledElements
-                            Add = fun _ -> formConfig.Update (listOfElementValues @ [ formConfig.Default ]) values
+                            Add =
+                                fun _ ->
+                                    formConfig.Update
+                                        (listOfElementValues @ [ formConfig.Default ])
+                                        values
                             Attributes = formConfig.Attributes
                         }
                 Result = result

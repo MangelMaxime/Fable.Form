@@ -47,7 +47,8 @@ module Form =
 
     and FilledField<'Values, 'Attributes> = Base.FilledField<Field<'Values, 'Attributes>>
 
-    type Form<'Values, 'Output, 'Attributes> = Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
+    type Form<'Values, 'Output, 'Attributes> =
+        Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
 
     // Redefined some function from the Base module so the user can access them transparently and they are also specifically type for the Fable.Form.Simple absttraction
 
@@ -178,7 +179,11 @@ module Form =
             }
         )
 
-    let section (title: string) (form: Form<'Values, 'Output, 'Attributes>) : Form<'Values, 'Output, 'Attributes> =
+    let section
+        (title: string)
+        (form: Form<'Values, 'Output, 'Attributes>)
+        : Form<'Values, 'Output, 'Attributes>
+        =
         Base.custom (fun values ->
             let res = Base.fill form values
 
@@ -210,7 +215,8 @@ module Form =
         let newUpdate oldValues = update oldValues values
 
         match field with
-        | Field.Text(textType, textField) -> Field.Text(textType, Field.mapValues newUpdate textField)
+        | Field.Text(textType, textField) ->
+            Field.Text(textType, Field.mapValues newUpdate textField)
 
         | Field.Radio radioField -> Field.Radio(Field.mapValues newUpdate radioField)
 
@@ -255,9 +261,15 @@ module Form =
                                 {
                                     Fields =
                                         List.map
-                                            (fun (filledField: Base.FilledField<Field<'A, 'Attributes>>) ->
+                                            (fun
+                                                (filledField:
+                                                    Base.FilledField<Field<'A, 'Attributes>>) ->
                                                 {
-                                                    State = mapFieldValues update values filledField.State
+                                                    State =
+                                                        mapFieldValues
+                                                            update
+                                                            values
+                                                            filledField.State
                                                     Error = filledField.Error
                                                     IsDisabled = filledField.IsDisabled
                                                 }
@@ -289,7 +301,11 @@ module Form =
                     filledElement.Fields
                     |> List.map (fun filledField ->
                         {
-                            State = mapFieldValues elementState.Update elementState.Values filledField.State
+                            State =
+                                mapFieldValues
+                                    elementState.Update
+                                    elementState.Values
+                                    filledField.State
                             Error = filledField.Error
                             IsDisabled = filledField.IsDisabled
                         }
@@ -302,7 +318,10 @@ module Form =
 
         FormList.form tagger config fillElement
 
-    let meta (fn: 'Values -> Form<'Values, 'Output, 'Attributes>) : Form<'Values, 'Output, 'Attributes> =
+    let meta
+        (fn: 'Values -> Form<'Values, 'Output, 'Attributes>)
+        : Form<'Values, 'Output, 'Attributes>
+        =
 
         Base.meta fn
 
@@ -319,7 +338,9 @@ module Form =
         : Form<'A, 'Output, 'Attributes>
         =
 
-        Base.meta (fun values -> form |> Base.mapValues value |> Base.mapField (mapFieldValues update values))
+        Base.meta (fun values ->
+            form |> Base.mapValues value |> Base.mapField (mapFieldValues update values)
+        )
 
     module View =
 
@@ -693,7 +714,10 @@ module Form =
                                 customConfig.FormListItem
                                     {
                                         Dispatch = dispatch
-                                        Fields = List.map (renderField dispatch customConfig fieldConfig) fields
+                                        Fields =
+                                            List.map
+                                                (renderField dispatch customConfig fieldConfig)
+                                                fields
                                         Delete =
                                             attributes.Delete
                                             |> Option.map (fun deleteLabel ->
@@ -766,7 +790,8 @@ module Form =
                                 ErrorTracking =
                                     ErrorTracking
                                         {| errorTracking with
-                                            ShowFieldError = Set.add label errorTracking.ShowFieldError
+                                            ShowFieldError =
+                                                Set.add label errorTracking.ShowFieldError
                                         |}
                             }
                     )

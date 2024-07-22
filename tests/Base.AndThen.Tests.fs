@@ -157,7 +157,10 @@ describe
 
                                 Assert.deepStrictEqual (
                                     filledForm.Result,
-                                    Error(Error.RequiredFieldIsEmpty, [ Error.RequiredFieldIsEmpty ])
+                                    Error(
+                                        Error.RequiredFieldIsEmpty,
+                                        [ Error.RequiredFieldIsEmpty ]
+                                    )
                                 )
                             )
 

@@ -136,7 +136,8 @@ let private renderLoggedInUpView (formResult: FormResult) dispatch =
 
                     prop.children
                         [
-                            Bulma.messageBody [ prop.text "User logged in with the following informations" ]
+                            Bulma.messageBody
+                                [ prop.text "User logged in with the following informations" ]
                         ]
                 ]
 
@@ -151,7 +152,9 @@ let private renderLoggedInUpView (formResult: FormResult) dispatch =
                             Html.tableBody
                                 [
                                     renderRow "Email" (EmailAddress.toString formResult.Email)
-                                    renderRow "Password" (User.Password.toString formResult.Password)
+                                    renderRow
+                                        "Password"
+                                        (User.Password.toString formResult.Password)
                                 ]
                         ]
 

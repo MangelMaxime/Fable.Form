@@ -3,7 +3,9 @@ namespace Fable.Form.Extensions
 module Result =
 
     val andThen:
-        callback: ('ValueA -> Result<'ValueB, 'Error>) -> result: Result<'ValueA, 'Error> -> Result<'ValueB, 'Error>
+        callback: ('ValueA -> Result<'ValueB, 'Error>) ->
+        result: Result<'ValueA, 'Error> ->
+            Result<'ValueB, 'Error>
 
 module List =
 

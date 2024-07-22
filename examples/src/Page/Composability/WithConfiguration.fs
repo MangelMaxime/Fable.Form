@@ -119,7 +119,9 @@ let private renderSubmittedView (name: User.Name.T) (address: Address.T) dispatc
                                     renderRow "Name" (User.Name.toString name)
                                     renderRow "Country" (Address.Country.toString address.Country)
                                     renderRow "City" (Address.City.toString address.City)
-                                    renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
+                                    renderRow
+                                        "Postal code"
+                                        (Address.PostalCode.toString address.PostalCode)
                                 ]
                         ]
 

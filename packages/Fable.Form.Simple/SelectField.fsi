@@ -5,9 +5,11 @@ module SelectField =
     open Fable.Form
 
     type Attributes =
-        { Label: string
-          Placeholder: string
-          Options: (string * string) list }
+        {
+            Label: string
+            Placeholder: string
+            Options: (string * string) list
+        }
 
     type SelectField<'Values> = Field.Field<Attributes, string, 'Values>
 

@@ -72,7 +72,10 @@ describe
                         Result =
                             Error(
                                 Error.ValidationFailed "Error #1",
-                                [ Error.ValidationFailed "Error #2"; Error.ValidationFailed "Error #3" ]
+                                [
+                                    Error.ValidationFailed "Error #2"
+                                    Error.ValidationFailed "Error #3"
+                                ]
                             )
                         IsEmpty = false
                     }

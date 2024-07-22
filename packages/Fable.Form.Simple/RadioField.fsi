@@ -5,8 +5,10 @@ module RadioField =
     open Fable.Form
 
     type Attributes =
-        { Label: string
-          Options: (string * string) list }
+        {
+            Label: string
+            Options: (string * string) list
+        }
 
     type RadioField<'Values> = Field.Field<Attributes, string, 'Values>
 

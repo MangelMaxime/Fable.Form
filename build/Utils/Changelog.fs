@@ -6,8 +6,7 @@ let tryGetLastVersion (changelogPath: string) =
     let content = File.ReadAllText changelogPath
 
     match ChangelogParser.parse content with
-    | Ok changelog ->
-        changelog.Versions |> List.tryFind (fun v -> v.Title <> "Unreleased")
+    | Ok changelog -> changelog.Versions |> List.tryFind (fun v -> v.Title <> "Unreleased")
 
     | Error msg ->
         failwithf

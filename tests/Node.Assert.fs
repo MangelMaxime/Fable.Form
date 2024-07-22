@@ -16,7 +16,11 @@ type IExports =
 
     [<Obsolete("since v10.0.0 - use fail([message]) or other assert functions instead.")>]
     abstract fail:
-        actual: obj * expected: obj option * ?message: U2<string, Error> * ?operator: string * ?stackStartFn: Function ->
+        actual: obj *
+        expected: obj option *
+        ?message: U2<string, Error> *
+        ?operator: string *
+        ?stackStartFn: Function ->
             unit
 
     abstract ok: value: obj * ?message: U2<string, Error> -> unit
@@ -36,20 +40,28 @@ type IExports =
     abstract strictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
     abstract notStrictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
     abstract deepStrictEqual: actual: 'T * expected: 'T * ?message: U2<string, Error> -> unit
-    abstract notDeepStrictEqual: actual: 'T * expected: 'T option * ?message: U2<string, Error> -> unit
+
+    abstract notDeepStrictEqual:
+        actual: 'T * expected: 'T option * ?message: U2<string, Error> -> unit
+
     abstract throws: block: (unit -> 'T) * ?message: string -> unit
     abstract throws: block: (unit -> obj) * ?message: Error -> unit
     abstract throws: block: (unit -> obj) -> unit
-    abstract throws: block: (unit -> obj option) * error: AssertPredicate * ?message: U2<string, Error> -> unit
+
+    abstract throws:
+        block: (unit -> obj option) * error: AssertPredicate * ?message: U2<string, Error> -> unit
+
     abstract doesNotThrow: block: (unit -> obj option) * ?message: U2<string, Error> -> unit
 
     abstract doesNotThrow:
-        block: (unit -> obj option) * error: U2<RegExp, Function> * ?message: U2<string, Error> -> unit
+        block: (unit -> obj option) * error: U2<RegExp, Function> * ?message: U2<string, Error> ->
+            unit
 
     abstract ifError: value: obj option -> bool
 
     abstract rejects:
-        block: U2<(unit -> Promise<obj option>), Promise<obj option>> * ?message: U2<string, Error> -> Promise<unit>
+        block: U2<(unit -> Promise<obj option>), Promise<obj option>> * ?message: U2<string, Error> ->
+            Promise<unit>
 
     abstract rejects:
         block: U2<(unit -> Promise<obj option>), Promise<obj option>> *
@@ -58,7 +70,8 @@ type IExports =
             Promise<unit>
 
     abstract doesNotReject:
-        block: U2<(unit -> Promise<obj option>), Promise<obj option>> * ?message: U2<string, Error> -> Promise<unit>
+        block: U2<(unit -> Promise<obj option>), Promise<obj option>> * ?message: U2<string, Error> ->
+            Promise<unit>
 
     abstract doesNotReject:
         block: U2<(unit -> Promise<obj option>), Promise<obj option>> *

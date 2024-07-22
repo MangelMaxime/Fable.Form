@@ -9,12 +9,14 @@
                 "${staged}"
             ],
             "include": [
-                "src/**/*.fs",
-                "src/**/*.fsx",
-                "src/**/*.fsi",
-                "test/**/*.fs",
-                "test/**/*.fsx",
-                "test/**/*.fsi"
+                "**/*.fs",
+                "**/*.fsx",
+                "**/*.fsi"
+            ],
+            "exclude": [
+                "**/node_modules/**",
+                "**/bin/**",
+                "**/obj/**"
             ]
         },
         {

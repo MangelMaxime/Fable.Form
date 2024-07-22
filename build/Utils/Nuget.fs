@@ -6,9 +6,7 @@ open BlackFox.CommandLine
 
 type Nuget =
 
-    static member push
-        (nupkgPath: string, nugetKey: string, ?skipDuplicate: bool)
-        =
+    static member push(nupkgPath: string, nugetKey: string, ?skipDuplicate: bool) =
         let skipDuplicate = defaultArg skipDuplicate false
 
         Command.Run(
@@ -25,19 +23,12 @@ type Nuget =
 
 let pack (projectDir: string) =
     let struct (standardOutput, _) =
-        Command.ReadAsync(
-            "dotnet",
-            "pack -c Release",
-            workingDirectory = projectDir
-        )
+        Command.ReadAsync("dotnet", "pack -c Release", workingDirectory = projectDir)
         |> Async.AwaitTask
         |> Async.RunSynchronously
 
     let m =
-        Regex.Match(
-            standardOutput,
-            "Successfully created package '(?'nupkgPath'.*\.nupkg)'"
-        )
+        Regex.Match(standardOutput, "Successfully created package '(?'nupkgPath'.*\.nupkg)'")
 
     if m.Success then
         m.Groups.["nupkgPath"].Value

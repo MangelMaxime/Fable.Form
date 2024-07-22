@@ -91,7 +91,8 @@ describe
                     (fun () ->
                         let filledForm = fill emptyValues
 
-                        let fieldErrors = filledForm.Fields |> List.map (fun field -> field.Error)
+                        let fieldErrors =
+                            filledForm.Fields |> List.map (fun field -> field.Error)
 
                         Assert.deepStrictEqual (fieldErrors, [ None; None ])
                     )
@@ -115,7 +116,8 @@ describe
                     (fun () ->
                         let filledForm = fill validValues
 
-                        let fieldErrors = filledForm.Fields |> List.map (fun field -> field.Error)
+                        let fieldErrors =
+                            filledForm.Fields |> List.map (fun field -> field.Error)
 
                         Assert.deepStrictEqual (fieldErrors, [ None; None ])
                     )
@@ -125,7 +127,10 @@ describe
                     (fun () ->
                         let filledForm = fill validValues
 
-                        Assert.deepStrictEqual (filledForm.Result, Ok(Some("test@mail.com", "123456789")))
+                        Assert.deepStrictEqual (
+                            filledForm.Result,
+                            Ok(Some("test@mail.com", "123456789"))
+                        )
                     )
 
             )
@@ -139,7 +144,10 @@ describe
                     (fun () ->
                         let filledForm = fill partiallyValidValues
 
-                        Assert.deepStrictEqual (filledForm.Result, Error(Error.RequiredFieldIsEmpty, []))
+                        Assert.deepStrictEqual (
+                            filledForm.Result,
+                            Error(Error.RequiredFieldIsEmpty, [])
+                        )
                     )
 
             )
@@ -153,7 +161,8 @@ describe
                     (fun () ->
                         let filledForm = fill invalidValues
 
-                        let fieldErrors = filledForm.Fields |> List.map (fun field -> field.Error)
+                        let fieldErrors =
+                            filledForm.Fields |> List.map (fun field -> field.Error)
 
                         Assert.deepStrictEqual (
                             fieldErrors,
@@ -171,7 +180,10 @@ describe
 
                         Assert.deepStrictEqual (
                             filledForm.Result,
-                            Error(Error.ValidationFailed emailError, [ Error.ValidationFailed passwordError ])
+                            Error(
+                                Error.ValidationFailed emailError,
+                                [ Error.ValidationFailed passwordError ]
+                            )
                         )
                     )
 
