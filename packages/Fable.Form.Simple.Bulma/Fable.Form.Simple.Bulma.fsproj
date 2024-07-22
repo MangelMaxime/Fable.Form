@@ -8,7 +8,6 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Form.fsi" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
