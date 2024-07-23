@@ -1,6 +1,8 @@
 namespace Fable.Form.Simple
 
 open Fable.Form
+open Fable.Form.Simple
+open Fable.Form.Simple.View
 open Fable.Form.Simple.Field
 
 [<RequireQualifiedAccess>]
@@ -514,7 +516,10 @@ module Form =
             }
         )
 
-    let rec private mapFieldValues
+    // TODO: Module to an internal or advanced module
+    // We need to expose the function so user can use it when creating their own field
+    // and re-using the field from this module
+    let rec mapFieldValues
         (update: 'A -> 'B -> 'B)
         (values: 'B)
         (field: Field<'A, 'Attributes>)
@@ -648,7 +653,7 @@ module Form =
             : Base.FilledForm<'Output, Field<'Values, 'Attributes>>
             =
             let filledElement =
-                Logic.Form.fill (elementForIndex elementState.Index) elementState.ElementValues
+                Base.fill (elementForIndex elementState.Index) elementState.ElementValues
 
             {
                 Fields =
@@ -894,7 +899,7 @@ module Form =
         let rec renderField
             (customConfig: CustomConfig<'Msg, 'Attributes>)
             (dispatch: Dispatch<'Msg>)
-            (fieldConfig: Logic.Form.View.FieldConfig<'Values, 'Msg>)
+            (fieldConfig: Form.View.FieldConfig<'Values, 'Msg>)
             (field: FilledField<'Values, 'Attributes>)
             : ReactElement
             =

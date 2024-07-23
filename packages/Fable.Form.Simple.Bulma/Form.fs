@@ -12,7 +12,7 @@ module Form =
         open Fable.Form
         open Fable.Form.Simple
         open Fable.Form.Simple.Form.View
-        open Fable.Form.Simple.Logic.Form.View
+        open Fable.Form.Simple.View.Form.View
 
         let fieldLabel (label: string) = Bulma.label [ prop.text label ]
 

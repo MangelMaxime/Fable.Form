@@ -29,6 +29,7 @@ type Route =
     | Composability of ComposabilityRoute
     | ValidationStrategies
     | CustomAction
+    | CustomField
     | NotFound
 
 let private toHash page =
@@ -44,6 +45,7 @@ let private toHash page =
         | Route.ValidationStrategies -> "validation-strategies"
         | Route.CustomAction -> "custom-actions"
         | Route.FormList -> "form-list"
+        | Route.CustomField -> "custom-field"
 
     "#" + segmentsPart
 
@@ -58,6 +60,7 @@ let routeParser: Parser<Route -> Route, Route> =
             map Route.FormList (s "form-list")
             map Route.ValidationStrategies (s "validation-strategies")
             map Route.CustomAction (s "custom-actions")
+            map Route.CustomField (s "custom-field")
             map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
             map
                 (Route.Composability ComposabilityRoute.WithConfiguration)

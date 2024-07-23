@@ -1,35 +1,9 @@
-namespace Fable.Form.Simple.Logic
+namespace Fable.Form.Simple.View
 
 open Fable.Form
 
 [<RequireQualifiedAccess>]
 module Form =
-
-    // type FilledForm<'Output, 'Field, 'Attributes> =
-    //    Base.FilledForm<'Output, FilledField<'Field, 'Attributes>>
-
-    /// <summary>
-    /// Fill a form with some <c>'Values</c>
-    /// </summary>
-    /// <param name="form">The form to fill</param>
-    /// <param name="values">The values to give to the form</param>
-    /// <returns>
-    /// - A list of the fields of the form, with their errors
-    /// - The result of the filled form which can be:
-    ///     - The correct <c>'Output</c>
-    ///     - A non-empty list of validation errors
-    /// - Whether the form is empty or not
-    /// </returns>
-    let fill (form: Base.Form<'Values, 'Output, 'Field>) (values: 'Values) =
-        // Work around type system complaining about the 'Field behind forced to a type
-        // Revisit? Good enough?
-        let filledForm = Base.fill form values
-
-        {|
-            Fields = filledForm.Fields
-            Result = filledForm.Result
-            IsEmpty = filledForm.IsEmpty
-        |}
 
     module View =
 
@@ -128,7 +102,7 @@ module Form =
             =
 
             let (fields, result) =
-                let res = fill form model.Values
+                let res = Base.fill form model.Values
 
                 res.Fields, res.Result
 

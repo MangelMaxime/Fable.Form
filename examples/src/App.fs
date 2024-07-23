@@ -21,6 +21,7 @@ module ValidationStrategies = Page.ValidationStrategies.Component
 module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
 module CustomAction = Page.CustomAction.Component
+module CustomField = Page.CustomField.Component
 
 [<RequireQualifiedAccess>]
 [<NoComparison>]
@@ -35,6 +36,7 @@ type Page =
     | ComposabilitySimple of ComposabilitySimple.Model
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
     | CustomAction of CustomAction.Model
+    | CustomField of CustomField.Model
     | NotFound
 
 [<NoComparison>]
@@ -49,6 +51,7 @@ type Msg =
     | ComposabilitySimpleMsg of ComposabilitySimple.Msg
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
+    | CustomFieldMsg of CustomField.Msg
 
 [<NoComparison>]
 type Model =
@@ -140,6 +143,14 @@ let private setRoute (optRoute: Router.Route option) (model: Model) =
                 ActivePage = Page.CustomAction subModel
             },
             Cmd.map CustomActionMsg subCmd
+
+        | Router.Route.CustomField ->
+            let (subModel, subCmd) = CustomField.init ()
+
+            { model with
+                ActivePage = Page.CustomField subModel
+            },
+            Cmd.map CustomFieldMsg subCmd
 
         | Router.Route.Home -> { model with ActivePage = Page.Home }, Cmd.none
 
@@ -240,6 +251,16 @@ let private update (msg: Msg) (model: Model) =
             |> Tuple.mapFirst Page.CustomAction
             |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
             |> Tuple.mapSecond (Cmd.map CustomActionMsg)
+
+        | _ -> model, Cmd.none
+
+    | CustomFieldMsg subMsg ->
+        match model.ActivePage with
+        | Page.CustomField subModel ->
+            CustomField.update subMsg subModel
+            |> Tuple.mapFirst Page.CustomField
+            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapSecond (Cmd.map CustomFieldMsg)
 
         | _ -> model, Cmd.none
 
@@ -371,6 +392,7 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
                     [
                         renderLink ValidationStrategies.information
                         renderLink CustomAction.information
+                        renderLink CustomField.information
                     ]
             ]
 
@@ -412,6 +434,11 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
         renderDemoPage
             CustomAction.information
             (CustomAction.view subModel (CustomActionMsg >> dispatch))
+
+    | Page.CustomField subModel ->
+        renderDemoPage
+            CustomField.information
+            (CustomField.view subModel (CustomFieldMsg >> dispatch))
 
     | Page.NotFound -> Html.text "Page not found"
 

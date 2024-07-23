@@ -1,20 +1,15 @@
-module Page.Login.Component
+module Page.CustomField.Component
 
 open Elmish
-open Fable.Form.Simple
 open Fable.Form.Simple.View
 open Fable.Form.Simple.Bulma
 open Feliz
+open MyForm
 
 /// <summary>
 /// Type used to represent the form values
 /// </summary>
-type Values =
-    {
-        Email: string
-        Password: string
-        RememberMe: bool
-    }
+type Values = { UserName: string; AcceptTerms: bool }
 
 /// <summary>
 /// Represents the model of your Elmish component
@@ -30,16 +25,10 @@ type Msg =
     // Used when a change occur in the form
     | FormChanged of Model
     // Used when the user submit the form
-    | LogIn of EmailAddress.T * string * bool
+    | Enter of string * bool
 
 let init () =
-    {
-        Email = ""
-        Password = ""
-        RememberMe = false
-    }
-    |> Form.View.idle,
-    Cmd.none
+    { UserName = ""; AcceptTerms = false } |> Form.View.idle, Cmd.none
 
 let update (msg: Msg) (model: Model) =
     match msg with
@@ -48,10 +37,11 @@ let update (msg: Msg) (model: Model) =
 
     // Form has been submitted
     // Here, we have access to the value submitted from the from
-    | LogIn(_email, _password, _rememberMe) ->
+    | Enter(userName, acceptTerms) ->
+        printfn "User name: %s, Accept terms: %b" userName acceptTerms
         // For this example, we just set a message in the Form view
         { model with
-            State = Form.View.Success "You have been logged in successfully"
+            State = Form.View.Success "TODO"
         },
         Cmd.none
 
@@ -62,56 +52,40 @@ let update (msg: Msg) (model: Model) =
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
 let form: Form.Form<Values, Msg, _> =
-    let emailField =
+    let userNameField =
         Form.textField
             {
-                Parser = EmailAddress.tryParse
-                Value = fun values -> values.Email
-                Update = fun newValue values -> { values with Email = newValue }
+                Parser = Ok
+                Value = fun values -> values.UserName
+                Update = fun newValue values -> { values with UserName = newValue }
                 Error = fun _ -> None
                 Attributes =
                     {
-                        Label = "Email"
-                        Placeholder = "some@email.com"
+                        Label = "UserName"
+                        Placeholder = ""
                         HtmlAttributes = [ prop.autoComplete "email" ]
                     }
             }
 
-    let passwordField =
-        Form.passwordField
+    let acceptTermsField =
+        Form.toggleField
             {
                 Parser = Ok
-                Value = fun values -> values.Password
-                Update = fun newValue values -> { values with Password = newValue }
+                Value = fun values -> values.AcceptTerms
+                Update = fun newValue values -> { values with AcceptTerms = newValue }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        HtmlAttributes = [ prop.autoComplete "current-password" ]
-                    }
-            }
-
-    let rememberMe =
-        Form.checkboxField
-            {
-                Parser = Ok
-                Value = fun values -> values.RememberMe
-                Update = fun newValue values -> { values with RememberMe = newValue }
-                Error = fun _ -> None
-                Attributes = { Text = "Remember me" }
+                Attributes = { Label = "Accept the terms" }
             }
 
     /// <summary>
     /// Function used to map the form values into the message to send back to the update function
     /// </summary>
     /// <returns></returns>
-    let onSubmit = fun email password rememberMe -> LogIn(email, password, rememberMe)
+    let onSubmit = fun email rememberMe -> Enter(email, rememberMe)
 
     Form.succeed onSubmit
-    |> Form.append emailField
-    |> Form.append passwordField
-    |> Form.append rememberMe
+    |> Form.append userNameField
+    |> Form.append acceptTermsField
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     Form.View.asHtml
@@ -126,16 +100,14 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
 
 let information: DemoInformation.T =
     {
-        Title = "Login"
-        Route = Router.Route.Login
-        Description = "A simple login form with 3 fields"
+        Title = "Custom Field"
+        Route = Router.Route.CustomField
+        Description =
+            "This example shows how to create your own custom field if the default fields are not enough for your needs."
         Remark = None
         Code =
             """
-Form.succeed onSubmit
-|> Form.append emailField
-|> Form.append passwordField
-|> Form.append rememberMe
+Learn more by looking at the source code of the custom field component.
             """
         GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
     }

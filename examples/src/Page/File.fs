@@ -6,7 +6,7 @@ open Feliz
 open Feliz.Bulma
 
 open Fable.Form.Simple
-open Fable.Form.Simple.Logic
+open Fable.Form.Simple.View
 open Fable.Form.Simple.Field
 open Fable.Form.Simple.Bulma
 
