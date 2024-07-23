@@ -514,32 +514,6 @@ module Form =
             }
         )
 
-    // type FilledForm<'Output, 'Field, 'Attributes> =
-    //    Base.FilledForm<'Output, FilledField<'Field, 'Attributes>>
-
-    /// <summary>
-    /// Fill a form with some <c>'Values</c>
-    /// </summary>
-    /// <param name="form">The form to fill</param>
-    /// <param name="values">The values to give to the form</param>
-    /// <returns>
-    /// - A list of the fields of the form, with their errors
-    /// - The result of the filled form which can be:
-    ///     - The correct <c>'Output</c>
-    ///     - A non-empty list of validation errors
-    /// - Whether the form is empty or not
-    /// </returns>
-    let fill (form: Form<'Values, 'Output, 'Attributes>) (values: 'Values) =
-        // Work around type system complaining about the 'Field behind forced to a type
-        // Revisit? Good enough?
-        let filledForm = Base.fill form values
-
-        {|
-            Fields = filledForm.Fields
-            Result = filledForm.Result
-            IsEmpty = filledForm.IsEmpty
-        |}
-
     let rec private mapFieldValues
         (update: 'A -> 'B -> 'B)
         (values: 'B)
@@ -674,7 +648,7 @@ module Form =
             : Base.FilledForm<'Output, Field<'Values, 'Attributes>>
             =
             let filledElement =
-                fill (elementForIndex elementState.Index) elementState.ElementValues
+                Logic.Form.fill (elementForIndex elementState.Index) elementState.ElementValues
 
             {
                 Fields =
@@ -779,54 +753,6 @@ module Form =
         open Elmish
         open Feliz
 
-        type State =
-            | Idle
-            | Loading
-            | Error of string
-            | Success of string
-
-        type ErrorTracking =
-            | ErrorTracking of
-                {|
-                    ShowAllErrors: bool
-                    ShowFieldError: Set<string>
-                |}
-
-        type Model<'Values> =
-            {
-                Values: 'Values
-                State: State
-                ErrorTracking: ErrorTracking
-            }
-
-        type Validation =
-            | ValidateOnBlur
-            | ValidateOnSubmit
-
-        [<RequireQualifiedAccess; NoComparison; NoEquality>]
-        type Action<'Msg> =
-            | SubmitOnly of string
-            | Custom of (State -> Elmish.Dispatch<'Msg> -> ReactElement)
-
-        [<NoComparison; NoEquality>]
-        type ViewConfig<'Values, 'Msg> =
-            {
-                Dispatch: Dispatch<'Msg>
-                OnChange: Model<'Values> -> 'Msg
-                Action: Action<'Msg>
-                Validation: Validation
-            }
-
-        [<NoComparison; NoEquality>]
-        type FormConfig<'Msg> =
-            {
-                Dispatch: Dispatch<'Msg>
-                OnSubmit: 'Msg option
-                State: State
-                Action: Action<'Msg>
-                Fields: ReactElement list
-            }
-
         [<NoComparison; NoEquality>]
         type TextFieldConfig<'Msg, 'Attributes> =
             {
@@ -918,24 +844,9 @@ module Form =
                 Disabled: bool
             }
 
-        let idle (values: 'Values) =
-            {
-                Values = values
-                State = Idle
-                ErrorTracking =
-                    ErrorTracking
-                        {|
-                            ShowAllErrors = false
-                            ShowFieldError = Set.empty
-                        |}
-            }
-
-        let setLoading (formModel: Model<'Values>) = { formModel with State = Loading }
-
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
             {
-                Form: FormConfig<'Msg> -> ReactElement
                 TextField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
                 PasswordField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
                 EmailField: TextFieldConfig<'Msg, 'Attributes> -> ReactElement
@@ -957,15 +868,6 @@ module Form =
                 FormListItem: FormListItemConfig<'Msg> -> ReactElement
             }
 
-        [<NoComparison; NoEquality>]
-        type FieldConfig<'Values, 'Msg> =
-            {
-                OnChange: 'Values -> 'Msg
-                OnBlur: (string -> 'Msg) option
-                Disabled: bool
-                ShowError: string -> bool
-            }
-
         type InputType =
             | Text
             | Password
@@ -977,14 +879,6 @@ module Form =
             | Search
             | Tel
             | Time
-
-        let errorToString (error: Error.Error) =
-            match error with
-            | Error.RequiredFieldIsEmpty -> "This field is required"
-
-            | Error.ValidationFailed validationError -> validationError
-
-            | Error.External externalError -> externalError
 
         let ignoreChildError
             (parentError: Error.Error option)
@@ -998,9 +892,9 @@ module Form =
             | None -> { field with Error = None }
 
         let rec renderField
-            (dispatch: Dispatch<'Msg>)
             (customConfig: CustomConfig<'Msg, 'Attributes>)
-            (fieldConfig: FieldConfig<'Values, 'Msg>)
+            (dispatch: Dispatch<'Msg>)
+            (fieldConfig: Logic.Form.View.FieldConfig<'Values, 'Msg>)
             (field: FilledField<'Values, 'Attributes>)
             : ReactElement
             =
@@ -1109,8 +1003,8 @@ module Form =
                 |> List.map (fun field ->
                     (ignoreChildError field.Error
                      >> renderField
-                         dispatch
                          customConfig
+                         dispatch
                          { fieldConfig with
                              Disabled = field.IsDisabled || fieldConfig.Disabled
                          })
@@ -1123,8 +1017,8 @@ module Form =
                 |> List.map (fun field ->
                     (ignoreChildError field.Error
                      >> renderField
-                         dispatch
                          customConfig
+                         dispatch
                          { fieldConfig with
                              Disabled = field.IsDisabled || fieldConfig.Disabled
                          })
@@ -1148,7 +1042,7 @@ module Form =
                                         Dispatch = dispatch
                                         Fields =
                                             List.map
-                                                (renderField dispatch customConfig fieldConfig)
+                                                (renderField customConfig dispatch fieldConfig)
                                                 fields
                                         Delete =
                                             attributes.Delete
@@ -1172,81 +1066,3 @@ module Form =
                             )
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                     }
-
-        let custom
-            (config: CustomConfig<'Msg, 'Attributes>)
-            (viewConfig: ViewConfig<'Values, 'Msg>)
-            (form: Form<'Values, 'Msg, 'Attributes>)
-            (model: Model<'Values>)
-            =
-
-            let (fields, result) =
-                let res = fill form model.Values
-
-                res.Fields, res.Result
-
-            let (ErrorTracking errorTracking) = model.ErrorTracking
-
-            let onSubmit =
-                match result with
-                | Ok msg ->
-                    if model.State = Loading then
-                        None
-
-                    else
-                        Some msg
-
-                | Result.Error _ ->
-                    if errorTracking.ShowAllErrors then
-                        None
-
-                    else
-                        viewConfig.OnChange
-                            { model with
-                                ErrorTracking =
-                                    ErrorTracking
-                                        {| errorTracking with
-                                            ShowAllErrors = true
-                                        |}
-                            }
-                        |> Some
-
-            let onBlur =
-                match viewConfig.Validation with
-                | ValidateOnSubmit -> None
-
-                | ValidateOnBlur ->
-                    Some(fun label ->
-                        viewConfig.OnChange
-                            { model with
-                                ErrorTracking =
-                                    ErrorTracking
-                                        {| errorTracking with
-                                            ShowFieldError =
-                                                Set.add label errorTracking.ShowFieldError
-                                        |}
-                            }
-                    )
-
-            let showError (label: string) =
-                errorTracking.ShowAllErrors || Set.contains label errorTracking.ShowFieldError
-
-            let fieldToElement =
-                renderField
-                    viewConfig.Dispatch
-                    config
-                    {
-                        OnChange = fun values -> viewConfig.OnChange { model with Values = values }
-                        OnBlur = onBlur
-                        Disabled = model.State = Loading
-                        ShowError = showError
-                    }
-
-            config.Form
-                {
-                    Dispatch = viewConfig.Dispatch
-                    OnSubmit = onSubmit
-                    Action = viewConfig.Action
-                    State = model.State
-                    Fields = List.map fieldToElement fields
-                }

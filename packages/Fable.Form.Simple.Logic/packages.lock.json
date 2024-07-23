@@ -2,6 +2,16 @@
   "version": 2,
   "dependencies": {
     ".NETStandard,Version=v2.1": {
+      "Fable.Elmish": {
+        "type": "Direct",
+        "requested": "[4.2.0, )",
+        "resolved": "4.2.0",
+        "contentHash": "A8lDcHbz2AKcwFa6IlnK8I/21nbsxBcP5Vxq6Gp+jT8dU7Vjpnk8Pbry5+zQrlqjwt1XHU/S5Oo0KZqaGemPUA==",
+        "dependencies": {
+          "FSharp.Core": "4.7.2",
+          "Fable.Core": "3.7.1"
+        }
+      },
       "Fable.Package.SDK": {
         "type": "Direct",
         "requested": "[0.1.0, )",
@@ -17,16 +27,6 @@
           "FSharp.Core": "4.7.2",
           "Fable.ReactDom.Types": "18.2.0",
           "Feliz.CompilerPlugins": "2.2.0"
-        }
-      },
-      "Feliz.Bulma": {
-        "type": "Direct",
-        "requested": "[3.0.0, )",
-        "resolved": "3.0.0",
-        "contentHash": "EmHFhfZFddllyA7ZP6FHs0bAo/FjwZrkcAusfZGz2BQnMfQZ+zaNIKMZuvQgbfJ0vBJQTkaazVMWCA91Y2O3bQ==",
-        "dependencies": {
-          "FSharp.Core": "4.7.2",
-          "Feliz": "2.4.0"
         }
       },
       "FSharp.Core": {
@@ -117,25 +117,6 @@
           "Fable.Package.SDK": "[0.1.0, )"
         }
       },
-      "fable.form.simple": {
-        "type": "Project",
-        "dependencies": {
-          "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[2.0.0, )",
-          "Fable.Form.Simple.Logic": "[4.1.0, )",
-          "Fable.Package.SDK": "[0.1.0, )",
-          "Feliz": "[2.8.0, )"
-        }
-      },
-      "fable.form.simple.logic": {
-        "type": "Project",
-        "dependencies": {
-          "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[2.0.0, )",
-          "Fable.Package.SDK": "[0.1.0, )",
-          "Feliz": "[2.8.0, )"
-        }
-      },
       "Fable.Browser.Dom": {
         "type": "CentralTransitive",
         "requested": "[2.17.0, )",
@@ -147,16 +128,6 @@
           "Fable.Browser.Event": "1.4.4",
           "Fable.Browser.WebStorage": "1.0.4",
           "Fable.Core": "3.0.0"
-        }
-      },
-      "Fable.Elmish": {
-        "type": "CentralTransitive",
-        "requested": "[4.2.0, )",
-        "resolved": "4.2.0",
-        "contentHash": "A8lDcHbz2AKcwFa6IlnK8I/21nbsxBcP5Vxq6Gp+jT8dU7Vjpnk8Pbry5+zQrlqjwt1XHU/S5Oo0KZqaGemPUA==",
-        "dependencies": {
-          "FSharp.Core": "4.7.2",
-          "Fable.Core": "3.7.1"
         }
       }
     }

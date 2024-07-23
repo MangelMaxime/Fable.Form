@@ -12,6 +12,7 @@ module Form =
         open Fable.Form
         open Fable.Form.Simple
         open Fable.Form.Simple.Form.View
+        open Fable.Form.Simple.Logic.Form.View
 
         let fieldLabel (label: string) = Bulma.label [ prop.text label ]
 
@@ -527,7 +528,6 @@ module Form =
 
         let htmlViewConfig<'Msg> : CustomConfig<'Msg, IReactProperty> =
             {
-                Form = form
                 TextField = inputField Text
                 PasswordField = inputField Password
                 EmailField = inputField Email
@@ -549,4 +549,5 @@ module Form =
                 FormListItem = formListItem
             }
 
-        let asHtml (config: ViewConfig<'Values, 'Msg>) = custom htmlViewConfig config
+        let asHtml (config: ViewConfig<'Values, 'Msg>) =
+            custom config form (renderField htmlViewConfig)

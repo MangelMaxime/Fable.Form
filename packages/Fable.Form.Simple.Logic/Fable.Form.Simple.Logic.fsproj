@@ -8,17 +8,10 @@
         </Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="TextField.fs" />
-        <Compile Include="RadioField.fs" />
-        <Compile Include="CheckboxField.fs" />
-        <Compile Include="SelectField.fs" />
-        <Compile Include="FileField.fs" />
-        <Compile Include="FormList.fs" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
-        <ProjectReference Include="..\Fable.Form.Simple.Logic\Fable.Form.Simple.Logic.fsproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Fable.Elmish" />
