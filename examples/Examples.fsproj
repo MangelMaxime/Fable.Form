@@ -10,7 +10,7 @@
     <Compile Include="src/ConsoleTracer.fs" />
     <Compile Include="src/Tuple.fs" />
     <Compile Include="src/Cmd.fs" />
-    <Compile Include="src/MyForm/ToggleField.fs" />
+    <Compile Include="src/MyForm/SignatureField.fs" />
     <Compile Include="src/MyForm/MyForm.fs" />
     <Compile Include="src/MyForm/MyForm.View.fs" />
     <Compile Include="src/Router.fs" />
@@ -44,5 +44,6 @@
     <PackageReference Include="Fable.Promise" />
     <PackageReference Include="Feliz" />
     <PackageReference Include="Feliz.Bulma" />
+    <PackageReference Include="Glutinum.Feliz.ReactSignaturePadWrapper" />
   </ItemGroup>
 </Project>

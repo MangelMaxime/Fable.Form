@@ -2,7 +2,7 @@ namespace MyForm.Field
 
 open Fable.Form
 
-module ToggleField =
+module SignatureField =
 
     type Attributes =
         {
@@ -12,10 +12,10 @@ module ToggleField =
             Label: string
         }
 
-    type ToggleField<'Values> = Field.Field<Attributes, bool, 'Values>
+    type SignatureField<'Values> = Field.Field<Attributes, string, 'Values>
 
     let form<'Values, 'Field, 'Output>
-        : ((ToggleField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, bool, 'Values, 'Output>
+        : ((SignatureField<'Values> -> 'Field)
+              -> Base.FieldConfig<Attributes, string, 'Values, 'Output>
               -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field (fun _ -> false)
+        Base.field System.String.IsNullOrEmpty

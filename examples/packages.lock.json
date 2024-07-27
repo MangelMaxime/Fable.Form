@@ -96,6 +96,18 @@
         "resolved": "5.0.2",
         "contentHash": "DpcajqENgb3VXaHw1FKfVS+TWwEzck1PCajqLwBAVrtd1lfxd7T8JISVZBdV1mX9+2g48+tIgpNaVJWObdMrBw=="
       },
+      "Glutinum.Feliz.ReactSignaturePadWrapper": {
+        "type": "Direct",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "L72zPqpqteRmZAEtPGm5KLvFnfmmEW7RjMZflkBZjI4jEomL8dxJ+2kcQWK0N9D7FcEbSmahpoK0N6t9h7HISA==",
+        "dependencies": {
+          "Fable.Core": "4.3.0",
+          "Fable.Package.SDK": "0.1.0",
+          "Feliz": "2.8.0",
+          "Glutinum.SignaturePad": "0.1.0"
+        }
+      },
       "Fable.AST": {
         "type": "Transitive",
         "resolved": "4.2.1",
@@ -141,8 +153,8 @@
       },
       "Fable.Core": {
         "type": "Transitive",
-        "resolved": "3.7.1",
-        "contentHash": "IzcCfF96VRC+Rp4B2VtVdOad2TF+Vxi1aVKHZISIJOUW0aOfeiNHwfBaG85UnY5xjzVwtSYxVEuwHphP/41YnQ=="
+        "resolved": "4.3.0",
+        "contentHash": "sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA=="
       },
       "Fable.Elmish.UrlParser": {
         "type": "Transitive",
@@ -178,6 +190,17 @@
         "dependencies": {
           "FSharp.Core": "4.7.2",
           "Fable.AST": "4.2.1"
+        }
+      },
+      "Glutinum.SignaturePad": {
+        "type": "Transitive",
+        "resolved": "0.1.0",
+        "contentHash": "ZlOesN1Qozu5BKcu9gVdQJTb4YeHnkzY61BSSoa0sZGIHOtBtAzW+NSTGcEaTk87ylXuccEJbQqZI/lJ2Xnb1Q==",
+        "dependencies": {
+          "Fable.Browser.Dom": "2.17.0",
+          "Fable.Browser.Event": "1.6.0",
+          "Fable.Core": "4.3.0",
+          "Fable.Package.SDK": "0.1.0"
         }
       },
       "fable.form": {

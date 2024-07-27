@@ -1,64 +1,66 @@
 namespace MyForm
 
-open Fable.Form
 open Fable.Form.Simple
 open Fable.Form.Simple.View
-open Fable.Form.Simple.Field
-open MyForm.Field
 
-module Form =
+module View =
 
-    module View =
+    open Elmish
+    open Feliz
+    open Feliz.Bulma
 
-        open Elmish
-        open Feliz
-        open Feliz.Bulma
+    open System
+    open Fable.Core.JsInterop
+    open Glutinum.SignaturePad
+    open Glutinum.Feliz.ReactSignaturePadWrapper
 
-        let toggleField
-            ({
-                 Dispatch = dispatch
-                 OnChange = onChange
-                 OnBlur = onBlur
-                 Disabled = disabled
-                 Value = value
-                 Attributes = attributes
-             }: Form.View.ToggleFieldConfig<'Msg>)
-            =
+    open type Glutinum.Feliz.ReactSignaturePadWrapper.Exports
 
-            Bulma.control.div
-                [
-                    Bulma.input.labels.checkbox
-                        [
-                            prop.children
-                                [
-                                    Html.text "I am a toggle field (trust me 😉)"
+    [<ReactComponent>]
+    let ToggleField
+        ({
+             Dispatch = dispatch
+             OnChange = onChange
+             OnBlur = onBlur
+             Disabled = disabled
+             Value = value
+             Attributes = attributes
+         }: Form.View.ToggleFieldConfig<'Msg>)
+        =
+        let signaturePadRef = React.useRef<SignaturePad option> None
 
-                                    Bulma.input.checkbox
-                                        [
-                                            prop.onChange (onChange >> dispatch)
-                                            match onBlur with
-                                            | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+        React.useEffect (fun _ ->
+            let callback = fun _ -> printfn "SignaturePad stroke end"
 
-                                            | None -> ()
-                                            prop.disabled disabled
-                                            prop.isChecked value
-                                        ]
+            match signaturePadRef.current with
+            | Some signaturePad -> signaturePad.addEventListener ("endStroke", unbox callback)
+            | None -> ()
 
-                                    Html.text attributes.Label
-                                ]
-                        ]
-                ]
-            |> (fun x -> [ x ])
-            |> Bulma.Form.View.wrapInFieldContainer
-
-        let htmlViewConfig<'Msg> : MyForm.Form.View.CustomConfig<'Msg, IReactProperty> =
-            {
-                Default = Bulma.Form.View.htmlViewConfig
-                Toggle = toggleField
+            { new IDisposable with
+                member this.Dispose() =
+                    match signaturePadRef.current with
+                    | Some signaturePad ->
+                        signaturePad.removeEventListener ("endStroke", unbox callback)
+                    | None -> ()
             }
+        )
 
-        let asHtml (config: Fable.Form.Simple.View.Form.View.ViewConfig<'Values, 'Msg>) =
-            Fable.Form.Simple.View.Form.View.custom
-                config
-                Bulma.Form.View.form
-                (MyForm.Form.View.renderField htmlViewConfig)
+        Bulma.control.div
+            [
+                SignaturePad
+                    [
+                        // signaturePad.ref signaturePadRef
+                        signaturePad.redrawOnResize true
+                    ]
+            ]
+        |> List.singleton
+        |> Bulma.Form.View.wrapInFieldContainer
+
+    let htmlViewConfig<'Msg> : MyForm.Form.View.CustomConfig<'Msg, IReactProperty> =
+        {
+            Standard = Bulma.Form.View.htmlViewConfig
+            Toggle = ToggleField
+        }
+
+    let asHtml (config: Form.View.ViewConfig<'Values, 'Msg>) =
+        Form.View.custom config Bulma.Form.View.form (MyForm.Form.View.renderField htmlViewConfig)

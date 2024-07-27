@@ -5,11 +5,12 @@ open Fable.Form.Simple.View
 open Fable.Form.Simple.Bulma
 open Feliz
 open MyForm
+// open Fable.Form.Simple
 
 /// <summary>
 /// Type used to represent the form values
 /// </summary>
-type Values = { UserName: string; AcceptTerms: bool }
+type Values = { UserName: string; Signature: string }
 
 /// <summary>
 /// Represents the model of your Elmish component
@@ -25,10 +26,10 @@ type Msg =
     // Used when a change occur in the form
     | FormChanged of Model
     // Used when the user submit the form
-    | Enter of string * bool
+    | Enter of string * string
 
 let init () =
-    { UserName = ""; AcceptTerms = false } |> Form.View.idle, Cmd.none
+    { UserName = ""; Signature = "" } |> Form.View.idle, Cmd.none
 
 let update (msg: Msg) (model: Model) =
     match msg with
@@ -37,8 +38,8 @@ let update (msg: Msg) (model: Model) =
 
     // Form has been submitted
     // Here, we have access to the value submitted from the from
-    | Enter(userName, acceptTerms) ->
-        printfn "User name: %s, Accept terms: %b" userName acceptTerms
+    | Enter(userName, signature) ->
+        printfn "User name: %s, Signature: %s" userName signature
         // For this example, we just set a message in the Form view
         { model with
             State = Form.View.Success "TODO"
@@ -56,7 +57,7 @@ let form: Form.Form<Values, Msg, _> =
         Form.textField
             {
                 Parser = Ok
-                Value = fun values -> values.UserName
+                Value = _.UserName
                 Update = fun newValue values -> { values with UserName = newValue }
                 Error = fun _ -> None
                 Attributes =
@@ -68,11 +69,11 @@ let form: Form.Form<Values, Msg, _> =
             }
 
     let acceptTermsField =
-        Form.toggleField
+        Form.signatureField
             {
                 Parser = Ok
-                Value = fun values -> values.AcceptTerms
-                Update = fun newValue values -> { values with AcceptTerms = newValue }
+                Value = _.Signature
+                Update = fun newValue values -> { values with Signature = newValue }
                 Error = fun _ -> None
                 Attributes = { Label = "Accept the terms" }
             }
@@ -88,7 +89,7 @@ let form: Form.Form<Values, Msg, _> =
     |> Form.append acceptTermsField
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
-    Form.View.asHtml
+    MyForm.View.asHtml
         {
             Dispatch = dispatch
             OnChange = FormChanged

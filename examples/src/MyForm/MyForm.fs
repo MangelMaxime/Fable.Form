@@ -6,22 +6,41 @@ open Fable.Form.Simple.View
 open Fable.Form.Simple.Field
 open MyForm.Field
 
+// Make an alias to the "default" form module so it is easier to reference
+module DefaultForm = Fable.Form.Simple.Form
+
 module Form =
 
-    type ToggleField<'Values> = ToggleField.ToggleField<'Values>
+    // Create our own Form domain defining the list of Field supported
+
+    type SignatureField<'Values> = SignatureField.SignatureField<'Values>
 
     [<RequireQualifiedAccess; NoComparison; NoEquality>]
     type Field<'Values, 'Attributes> =
-        | Default of Form.Field<'Values, 'Attributes>
-        | Toggle of ToggleField<'Values>
+        // We want to support the standard fields  defined by Fable.Form.Simple
+        | Standard of Form.Field<'Values, 'Attributes>
+        // Below are our custom fields
+        | Signature of SignatureField<'Values>
 
     type FilledField<'Values, 'Attributes> = Base.FilledField<Field<'Values, 'Attributes>>
 
     /// <summary>
-    /// Represents a form using Fable.Form.Simple representation
+    /// Represents our form type
     /// </summary>
     type Form<'Values, 'Output, 'Attributes> =
         Base.Form<'Values, 'Output, Field<'Values, 'Attributes>>
+
+    ///////////////////////////////////////
+    /// Start of combinators redefined ///
+    /////////////////////////////////////
+
+    // We redefined the main combinators specialized for our custom field type
+    // this will allows us to write `Form.succeed` instead of `Base.succeed`
+    // Plus `Form.succeed` is restricted to our Form type defined above
+
+    // Tips: In your own project, I encourage you to look at `Fable.Form.Simple` source code
+    // to copy/paste the functions with XML documentation
+    // Here they have been stripped to make the example more concise
 
     let succeed (output: 'Output) : Form<'Values, 'Output, 'Attributes> = Base.succeed output
 
@@ -30,26 +49,47 @@ module Form =
         (currentForm: Form<'Values, 'A -> 'B, 'Attributes>)
         : Form<'Values, 'B, 'Attributes>
         =
-
         Base.append newForm currentForm
 
-    let toggleField
-        (config: Base.FieldConfig<ToggleField.Attributes, bool, 'Values, 'Output>)
-        : Form<'Values, 'Output, 'Attributes>
+    let disable (form: Form<'Values, 'A, 'Attributes>) : Form<'Values, 'A, 'Attributes> =
+
+        Base.disable form
+
+    let andThen
+        (child: 'A -> Form<'Values, 'B, 'Attributes>)
+        (parent: Form<'Values, 'A, 'Attributes>)
+        : Form<'Values, 'B, 'Attributes>
         =
-        ToggleField.form Field.Toggle config
+
+        Base.andThen child parent
+
+    let optional (form: Form<'Values, 'A, 'Attributes>) : Form<'Values, 'A option, 'Attributes> =
+
+        Base.optional form
+
+    /////////////////////////////////////
+    /// End of combinators redefined ///
+    ///////////////////////////////////
+
+    // Redefined the default field functions, so we can wrap them with `Field.Default`
+    // Here only `textField` has been redefined, but in your own project you should
+    // redefine all the default fields
 
     let textField
         (config: Base.FieldConfig<TextField.Attributes<'Attributes>, string, 'Values, 'Output>)
         : Form<'Values, 'Output, 'Attributes>
         =
         TextField.form
-            (fun x ->
-                (Fable.Form.Simple.Form.TextType.TextRaw, x)
-                |> Fable.Form.Simple.Form.Field.Text
-                |> Field.Default
-            )
+            (fun x -> (Form.TextType.TextRaw, x) |> Form.Field.Text |> Field.Standard)
             config
+
+    // Define field functions for our own fields
+
+    let signatureField
+        (config: Base.FieldConfig<SignatureField.Attributes, string, 'Values, 'Output>)
+        : Form<'Values, 'Output, 'Attributes>
+        =
+        SignatureField.form Field.Signature config
 
     module View =
 
@@ -60,19 +100,21 @@ module Form =
         type ToggleFieldConfig<'Msg> =
             {
                 Dispatch: Dispatch<'Msg>
-                OnChange: bool -> 'Msg
+                OnChange: string -> 'Msg
                 OnBlur: 'Msg option
                 Disabled: bool
-                Value: bool
+                Value: string
                 Error: Error.Error option
                 ShowError: bool
-                Attributes: ToggleField.Attributes
+                Attributes: SignatureField.Attributes
             }
 
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
             {
-                Default: Form.View.CustomConfig<'Msg, 'Attributes>
+                // Custom configuration used by the Default form
+                Standard: Form.View.CustomConfig<'Msg, 'Attributes>
+                // Render function for our new fields
                 Toggle: ToggleFieldConfig<'Msg> -> ReactElement
             }
 
@@ -88,7 +130,8 @@ module Form =
                 Option.map (fun onBlurEvent -> onBlurEvent label) fieldConfig.OnBlur
 
             match field.State with
-            | Field.Default defaultField ->
+            // If we have a default field, we forward it to the default render function
+            | Field.Standard defaultField ->
                 let filledField: Form.FilledField<_, _> =
                     {
                         State = defaultField
@@ -96,9 +139,9 @@ module Form =
                         IsDisabled = field.IsDisabled
                     }
 
-                Form.View.renderField customConfig.Default dispatch fieldConfig filledField
+                Form.View.renderField customConfig.Standard dispatch fieldConfig filledField
 
-            | Field.Toggle info ->
+            | Field.Signature info ->
                 customConfig.Toggle
                     {
                         Dispatch = dispatch
