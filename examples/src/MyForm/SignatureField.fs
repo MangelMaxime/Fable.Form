@@ -12,10 +12,22 @@ module SignatureField =
             Label: string
         }
 
-    type SignatureField<'Values> = Field.Field<Attributes, string, 'Values>
+    type Value =
+        {
+            History: string list
+            CurrentSignature: string
+        }
+
+        static member Default =
+            {
+                History = []
+                CurrentSignature = ""
+            }
+
+    type SignatureField<'Values> = Field.Field<Attributes, Value, 'Values>
 
     let form<'Values, 'Field, 'Output>
         : ((SignatureField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, string, 'Values, 'Output>
+              -> Base.FieldConfig<Attributes, Value, 'Values, 'Output>
               -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field System.String.IsNullOrEmpty
+        Base.field (fun value -> System.String.IsNullOrEmpty value.CurrentSignature)

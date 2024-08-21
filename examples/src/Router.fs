@@ -30,6 +30,7 @@ type Route =
     | ValidationStrategies
     | CustomAction
     | CustomField
+    | WorkshopForm
     | NotFound
 
 let private toHash page =
@@ -46,27 +47,28 @@ let private toHash page =
         | Route.CustomAction -> "custom-actions"
         | Route.FormList -> "form-list"
         | Route.CustomField -> "custom-field"
+        | Route.WorkshopForm -> "workshop-form"
 
     "#" + segmentsPart
 
 let routeParser: Parser<Route -> Route, Route> =
-    oneOf
-        [
-            map Route.Home (s "home")
-            map Route.SignUp (s "sign-up")
-            map Route.Login (s "login")
-            map Route.File (s "file")
-            map Route.DynamicForm (s "dynamic-form")
-            map Route.FormList (s "form-list")
-            map Route.ValidationStrategies (s "validation-strategies")
-            map Route.CustomAction (s "custom-actions")
-            map Route.CustomField (s "custom-field")
-            map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
-            map
-                (Route.Composability ComposabilityRoute.WithConfiguration)
-                (s "composability" </> s "with-configuration")
-            map Route.Home top
-        ]
+    oneOf [
+        map Route.Home (s "home")
+        map Route.SignUp (s "sign-up")
+        map Route.Login (s "login")
+        map Route.File (s "file")
+        map Route.DynamicForm (s "dynamic-form")
+        map Route.FormList (s "form-list")
+        map Route.ValidationStrategies (s "validation-strategies")
+        map Route.CustomAction (s "custom-actions")
+        map Route.CustomField (s "custom-field")
+        map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
+        map
+            (Route.Composability ComposabilityRoute.WithConfiguration)
+            (s "composability" </> s "with-configuration")
+        map Route.WorkshopForm (s "workshop-form")
+        map Route.Home top
+    ]
 
 let href route = prop.href (toHash route)
 

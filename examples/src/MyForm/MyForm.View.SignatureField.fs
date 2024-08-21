@@ -24,7 +24,7 @@ let SignatureField
          Error = error
          ShowError = showError
          Attributes = attributes
-     }: Base.Form.View.ToggleFieldConfig<'Msg>)
+     }: Base.Form.View.SignatureFieldConfig<'Msg>)
     =
     let signaturePadRef = React.useRef<SignaturePad option> None
 
@@ -34,7 +34,13 @@ let SignatureField
             let callback =
                 fun _ ->
                     let signaturePad = signaturePadRef.current.Value
-                    signaturePad.toDataURL () |> onChange |> dispatch
+
+                    { value with
+                        CurrentSignature = signaturePad.toDataURL ()
+                        History = value.History @ [ value.CurrentSignature ]
+                    }
+                    |> onChange
+                    |> dispatch
 
             match signaturePadRef.current with
             | Some signaturePad ->
@@ -48,7 +54,10 @@ let SignatureField
                         signaturePad?signaturePad?removeEventListener ("endStroke", unbox callback)
                     | None -> ()
             }
-        , [| box signaturePadRef |]
+        , [|
+            box signaturePadRef
+            box dispatch
+        |]
     )
 
     // Set the signature data when the value change
@@ -58,10 +67,10 @@ let SignatureField
             match signaturePadRef.current with
             | Some signaturePad ->
                 signaturePad.clear ()
-                signaturePad.fromDataURL (value) |> ignore
+                signaturePad.fromDataURL (value.CurrentSignature) |> ignore
             | None -> ()
 
-        , [| box value |]
+        , [| box value.CurrentSignature |]
     )
 
     Bulma.control.div [
@@ -83,6 +92,36 @@ let SignatureField
             ]
             signaturePad.height 200
             signaturePad.width 600
+        ]
+
+        Bulma.button.a [
+            prop.text "Clear"
+            prop.onClick (fun _ -> signaturePadRef.current.Value.clear ()
+            // signaturePadRef.current.Value.toDataURL () |> onChange |> dispatch
+            )
+        ]
+
+        Bulma.buttons [
+            Bulma.button.span [
+                prop.text "Undo"
+                prop.onClick (fun _ ->
+                    let history = value.History
+
+                    match history with
+                    | [] -> ()
+                    | _ ->
+                        let last = List.last history
+                        let newHistory = List.take (List.length history - 1) history
+
+                        let newValue =
+                            { value with
+                                History = newHistory
+                                CurrentSignature = last
+                            }
+
+                        newValue |> onChange |> dispatch
+                )
+            ]
         ]
     ]
     |> Bulma.Form.View.withLabelAndError attributes.Label showError error

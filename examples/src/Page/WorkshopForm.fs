@@ -1,11 +1,11 @@
-module Page.CustomField.Component
+module Page.WorkshopForm.Component
 
 open Elmish
 // Load the API representing how a form should behave and be displayed
 open Fable.Form.Simple.View
 // Load the different modules coming from our custom implementation
-open Fable.Form.MyForm.Base // Give access to the Form composition API
-open Fable.Form.MyForm.View // Give access to the Form view API
+open Fable.Form.WorkshopForm.Base // Give access to the Form composition API
+open Fable.Form.WorkshopForm.View // Give access to the Form view API
 
 open Feliz
 open Feliz.Bulma
@@ -16,7 +16,7 @@ open Feliz.Bulma
 type Values =
     {
         UserName: string
-        Signature: Fable.Form.MyForm.Field.SignatureField.Value
+        Signature: string
     }
 
 /// <summary>
@@ -44,7 +44,7 @@ type Msg =
 let init () =
     {
         UserName = ""
-        Signature = Fable.Form.MyForm.Field.SignatureField.Value.Default
+        Signature = ""
     }
     |> Form.View.idle
     |> FillingForm,
@@ -54,9 +54,6 @@ let update (msg: Msg) (model: Model) =
     match msg with
     // Update our model to it's new state
     | FormChanged newModel ->
-        printfn "FormChanged Sign: %A" newModel.Values.Signature
-        printfn "FormChanged User: %A" newModel.Values.UserName
-
         match model with
         | FillingForm _ -> FillingForm newModel, Cmd.none
         | _ -> model, Cmd.none
@@ -78,7 +75,7 @@ let update (msg: Msg) (model: Model) =
 /// <returns>The form ready to be used in the view</returns>
 let form: Form.Form<Values, Msg, _> =
     let userNameField =
-        Form.textField
+        Form.myInputField
             {
                 Parser = Ok
                 Value = _.UserName
@@ -91,21 +88,16 @@ let form: Form.Form<Values, Msg, _> =
                 Attributes =
                     {
                         Label = "User name"
-                        Placeholder = "Example: john.doe"
-                        HtmlAttributes = []
                     }
             }
 
     let signatureField =
-        Form.signatureField
+        Form.textField
             {
-                Parser = fun value -> value.CurrentSignature |> Ok
+                Parser = Ok
                 Value = _.Signature
                 Update =
                     fun newValue values ->
-                        printfn "ddddd-Signature: %A" values.Signature
-                        printfn "ddddd-New Value: %A" values.UserName
-
                         { values with
                             Signature = newValue
                         }
@@ -113,6 +105,8 @@ let form: Form.Form<Values, Msg, _> =
                 Attributes =
                     {
                         Label = "Sign here"
+                        Placeholder = "Example: john.doe"
+                        HtmlAttributes = []
                     }
             }
 
@@ -185,8 +179,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
 
 let information: DemoInformation.T =
     {
-        Title = "Custom Field"
-        Route = Router.Route.CustomField
+        Title = "WorkshopForm Field"
+        Route = Router.Route.WorkshopForm
         Description =
             "This example shows how to create your own custom field if the default fields are not enough for your needs."
         Remark = None

@@ -14,6 +14,10 @@
     <Compile Include="src/MyForm/MyForm.fs" />
     <Compile Include="src/MyForm/MyForm.View.SignatureField.fs" />
     <Compile Include="src/MyForm/MyForm.View.fs" />
+    <Compile Include="src/WorkshopForm/MyInputField.fs" />
+    <Compile Include="src/WorkshopForm/WorkshopForm.fs" />
+    <Compile Include="src/WorkshopForm/WorkshopForm.View.MyInputField.fs" />
+    <Compile Include="src/WorkshopForm/WorkshopForm.View.fs" />
     <Compile Include="src/Router.fs" />
     <Compile Include="src/Types/EmailAddress.fs" />
     <Compile Include="src/Types/User.fs" />
@@ -25,6 +29,7 @@
     <Compile Include="src/Page/DynamicForm.fs" />
     <Compile Include="src/Page/FormList.fs" />
     <Compile Include="src/Page/ValidationStrategies.fs" />
+    <Compile Include="src/Page/WorkshopForm.fs" />
     <Compile Include="src/Page/CustomActions.fs" />
     <Compile Include="src/Page/CustomField.fs" />
     <Compile Include="src/Page/Composability/Simple/AddressForm.fs" />

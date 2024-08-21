@@ -1,6 +1,7 @@
 module Page.Login.Component
 
 open Elmish
+open Fable.Form
 open Fable.Form.Simple
 open Fable.Form.Simple.View
 open Fable.Form.Simple.Bulma
@@ -67,7 +68,11 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = EmailAddress.tryParse
                 Value = fun values -> values.Email
-                Update = fun newValue values -> { values with Email = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Email = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -82,7 +87,11 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.Password
-                Update = fun newValue values -> { values with Password = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Password = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -97,9 +106,16 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.RememberMe
-                Update = fun newValue values -> { values with RememberMe = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            RememberMe = newValue
+                        }
                 Error = fun _ -> None
-                Attributes = { Text = "Remember me" }
+                Attributes =
+                    {
+                        Text = "Remember me"
+                    }
             }
 
     /// <summary>

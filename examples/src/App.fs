@@ -22,6 +22,7 @@ module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
 module CustomAction = Page.CustomAction.Component
 module CustomField = Page.CustomField.Component
+module WorkshopForm = Page.WorkshopForm.Component
 
 [<RequireQualifiedAccess>]
 [<NoComparison>]
@@ -37,6 +38,7 @@ type Page =
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
     | CustomAction of CustomAction.Model
     | CustomField of CustomField.Model
+    | WorkshopForm of WorkshopForm.Model
     | NotFound
 
 [<NoComparison>]
@@ -52,6 +54,7 @@ type Msg =
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
     | CustomFieldMsg of CustomField.Msg
+    | WorkshopFormMsg of WorkshopForm.Msg
 
 [<NoComparison>]
 type Model =
@@ -61,7 +64,10 @@ type Model =
     }
 
 let private setRoute (optRoute: Router.Route option) (model: Model) =
-    let model = { model with CurrentRoute = optRoute }
+    let model =
+        { model with
+            CurrentRoute = optRoute
+        }
 
     match optRoute with
     | None ->
@@ -152,13 +158,25 @@ let private setRoute (optRoute: Router.Route option) (model: Model) =
             },
             Cmd.map CustomFieldMsg subCmd
 
-        | Router.Route.Home -> { model with ActivePage = Page.Home }, Cmd.none
+        | Router.Route.Home ->
+            { model with
+                ActivePage = Page.Home
+            },
+            Cmd.none
 
         | Router.Route.NotFound ->
             { model with
                 ActivePage = Page.NotFound
             },
             Cmd.none
+
+        | Router.Route.WorkshopForm ->
+            let (subModel, subCmd) = WorkshopForm.init ()
+
+            { model with
+                ActivePage = Page.WorkshopForm subModel
+            },
+            Cmd.map WorkshopFormMsg subCmd
 
 let private update (msg: Msg) (model: Model) =
     match msg with
@@ -169,7 +187,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.SignUp subModel ->
             SignUp.update subMsg subModel
             |> Tuple.mapFirst Page.SignUp
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map SignUpMsg)
 
         | _ -> model, Cmd.none
@@ -179,7 +201,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.Login subModel ->
             Login.update subMsg subModel
             |> Tuple.mapFirst Page.Login
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map LoginMsg)
 
         | _ -> model, Cmd.none
@@ -189,7 +215,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.File subModel ->
             File.update subMsg subModel
             |> Tuple.mapFirst Page.File
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map FileMsg)
 
         | _ -> model, Cmd.none
@@ -199,7 +229,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.DynamicForm subModel ->
             DynamicForm.update subMsg subModel
             |> Tuple.mapFirst Page.DynamicForm
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map DynamicFormMsg)
 
         | _ -> model, Cmd.none
@@ -209,7 +243,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.FormList subModel ->
             FormList.update subMsg subModel
             |> Tuple.mapFirst Page.FormList
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map FormListMsg)
 
         | _ -> model, Cmd.none
@@ -219,8 +257,26 @@ let private update (msg: Msg) (model: Model) =
         | Page.ComposabilitySimple subModel ->
             ComposabilitySimple.update subMsg subModel
             |> Tuple.mapFirst Page.ComposabilitySimple
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map ComposabilitySimpleMsg)
+
+        | _ -> model, Cmd.none
+
+    | WorkshopFormMsg subMsg ->
+        match model.ActivePage with
+        | Page.WorkshopForm subModel ->
+            WorkshopForm.update subMsg subModel
+            |> Tuple.mapFirst Page.WorkshopForm
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
+            |> Tuple.mapSecond (Cmd.map WorkshopFormMsg)
 
         | _ -> model, Cmd.none
 
@@ -229,7 +285,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.ComposabilityWithConfiguration subModel ->
             ComposabilityWithConfiguration.update subMsg subModel
             |> Tuple.mapFirst Page.ComposabilityWithConfiguration
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map ComposabilityWithConfigurationMsg)
 
         | _ -> model, Cmd.none
@@ -239,7 +299,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.ValidationStrategies subModel ->
             ValidationStrategies.update subMsg subModel
             |> Tuple.mapFirst Page.ValidationStrategies
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map ValidationStrategiesMsg)
 
         | _ -> model, Cmd.none
@@ -249,7 +313,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.CustomAction subModel ->
             CustomAction.update subMsg subModel
             |> Tuple.mapFirst Page.CustomAction
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map CustomActionMsg)
 
         | _ -> model, Cmd.none
@@ -259,7 +327,11 @@ let private update (msg: Msg) (model: Model) =
         | Page.CustomField subModel ->
             CustomField.update subMsg subModel
             |> Tuple.mapFirst Page.CustomField
-            |> Tuple.mapFirst (fun page -> { model with ActivePage = page })
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
             |> Tuple.mapSecond (Cmd.map CustomFieldMsg)
 
         | _ -> model, Cmd.none
@@ -279,13 +351,15 @@ let private renderLink
          Route = route
      }: DemoInformation.T)
     =
-    Html.li
-        [
-            Html.a [ Router.href route; prop.text titleText ]
-
-            Bulma.content [ prop.text description ]
-
+    Html.li [
+        Html.a [
+            Router.href route
+            prop.text titleText
         ]
+
+        Bulma.content [ prop.text description ]
+
+    ]
 
 let private renderDemoPage
     ({
@@ -297,104 +371,114 @@ let private renderDemoPage
     (content: ReactElement)
     =
 
-    Html.div
-        [
-            Html.br []
+    Html.div [
+        Html.br []
 
-            Bulma.content
-                [
-                    text.hasTextCentered
+        Bulma.content [
+            text.hasTextCentered
 
-                    prop.children [ Bulma.title.h5 [ title.is5; prop.text titleText ] ]
+            prop.children [
+                Bulma.title.h5 [
+                    title.is5
+                    prop.text titleText
                 ]
+            ]
+        ]
 
-            match optRemark with
-            | Some remark -> remark
+        match optRemark with
+        | Some remark -> remark
 
-            | None -> Html.none
+        | None -> Html.none
 
-            Html.hr []
+        Html.hr []
 
-            Html.pre
-                [
-                    prop.className "code-preview"
+        Html.pre [
+            prop.className "code-preview"
 
-                    prop.children [ Html.code [ prop.text (codeText.Trim()) ] ]
-
-                ]
-
-            Bulma.text.div
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [ Html.a [ prop.href sourceCodeUrl; prop.text "Full source code" ] ]
-                ]
-
-            Html.hr []
-
-            content
+            prop.children [ Html.code [ prop.text (codeText.Trim()) ] ]
 
         ]
+
+        Bulma.text.div [
+            text.hasTextCentered
+
+            prop.children [
+                Html.a [
+                    prop.href sourceCodeUrl
+                    prop.text "Full source code"
+                ]
+            ]
+        ]
+
+        Html.hr []
+
+        content
+
+    ]
 
 let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
     match page with
     | Page.Home ->
-        Bulma.content
-            [
-                Html.br []
+        Bulma.content [
+            Html.br []
 
-                Bulma.content
-                    [
-                        text.hasTextCentered
+            Bulma.content [
+                text.hasTextCentered
 
-                        prop.children [ Bulma.title.h5 [ title.is5; prop.text "List of examples" ] ]
+                prop.children [
+                    Bulma.title.h5 [
+                        title.is5
+                        prop.text "List of examples"
                     ]
-
-                Html.hr []
-
-                Bulma.content
-                    [
-                        Bulma.subtitle.p [ title.is5; prop.text "Basic" ]
-
-                        Html.p
-                            [
-                                Html.text
-                                    "The features demonstrated in this section are available for all the library based on "
-                                Html.b "Fable.Form"
-                            ]
-                    ]
-
-                Html.ul
-                    [
-                        renderLink Login.information
-                        renderLink SignUp.information
-                        renderLink File.information
-                        renderLink DynamicForm.information
-                        renderLink FormList.information
-                        renderLink ComposabilitySimple.information
-                        renderLink ComposabilityWithConfiguration.information
-                    ]
-
-                Bulma.content
-                    [
-                        Bulma.subtitle.p [ title.is5; prop.text "Advanced" ]
-
-                        Html.p
-                            "The features demonstrated in this section depends on the library which provides the view implementation"
-
-                        Html.p
-                            "The goal here is to demonstrate advanced usage that you could need when implementing your own view"
-
-                    ]
-
-                Html.ul
-                    [
-                        renderLink ValidationStrategies.information
-                        renderLink CustomAction.information
-                        renderLink CustomField.information
-                    ]
+                ]
             ]
+
+            Html.hr []
+
+            Bulma.content [
+                Bulma.subtitle.p [
+                    title.is5
+                    prop.text "Basic"
+                ]
+
+                Html.p [
+                    Html.text
+                        "The features demonstrated in this section are available for all the library based on "
+                    Html.b "Fable.Form"
+                ]
+            ]
+
+            Html.ul [
+                renderLink Login.information
+                renderLink SignUp.information
+                renderLink File.information
+                renderLink DynamicForm.information
+                renderLink FormList.information
+                renderLink ComposabilitySimple.information
+                renderLink ComposabilityWithConfiguration.information
+            ]
+
+            Bulma.content [
+                Bulma.subtitle.p [
+                    title.is5
+                    prop.text "Advanced"
+                ]
+
+                Html.p
+                    "The features demonstrated in this section depends on the library which provides the view implementation"
+
+                Html.p
+                    "The goal here is to demonstrate advanced usage that you could need when implementing your own view"
+
+            ]
+
+            Html.ul [
+                renderLink ValidationStrategies.information
+                renderLink CustomAction.information
+                renderLink CustomField.information
+                renderLink WorkshopForm.information
+            ]
+        ]
 
     | Page.SignUp subModel ->
         renderDemoPage SignUp.information (SignUp.view subModel (SignUpMsg >> dispatch))
@@ -442,17 +526,20 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
 
     | Page.NotFound -> Html.text "Page not found"
 
-let private view (model: Model) (dispatch: Dispatch<Msg>) =
-    Bulma.columns
-        [
-            Bulma.column
-                [
-                    column.is8
-                    column.isOffset2
+    | Page.WorkshopForm subModel ->
+        renderDemoPage
+            WorkshopForm.information
+            (WorkshopForm.view subModel (WorkshopFormMsg >> dispatch))
 
-                    prop.children (contentFromPage model.ActivePage dispatch)
-                ]
+let private view (model: Model) (dispatch: Dispatch<Msg>) =
+    Bulma.columns [
+        Bulma.column [
+            column.is8
+            column.isOffset2
+
+            prop.children (contentFromPage model.ActivePage dispatch)
         ]
+    ]
 
 open Elmish.React
 open Elmish.UrlParser
