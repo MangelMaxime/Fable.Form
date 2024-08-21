@@ -8,11 +8,13 @@ open EasyBuild.Commands.Docs
 open EasyBuild.Commands.Lint
 open EasyBuild.Commands.Format
 open Spectre.Console.Cli
+open EasyBuild.Utils
 
 [<EntryPoint>]
 let main args =
 
     Command.Run("dotnet", "husky install")
+    Npm.install ()
 
     let app = CommandApp()
 

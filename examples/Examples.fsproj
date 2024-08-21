@@ -12,6 +12,7 @@
     <Compile Include="src/Cmd.fs" />
     <Compile Include="src/MyForm/SignatureField.fs" />
     <Compile Include="src/MyForm/MyForm.fs" />
+    <Compile Include="src/MyForm/MyForm.View.SignatureField.fs" />
     <Compile Include="src/MyForm/MyForm.View.fs" />
     <Compile Include="src/Router.fs" />
     <Compile Include="src/Types/EmailAddress.fs" />

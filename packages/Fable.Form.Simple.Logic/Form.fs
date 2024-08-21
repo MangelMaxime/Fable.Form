@@ -1,4 +1,4 @@
-namespace Fable.Form.Simple.View
+module Fable.Form.Simple.View
 
 open Fable.Form
 
@@ -70,7 +70,10 @@ module Form =
                         |}
             }
 
-        let setLoading (formModel: Model<'Values>) = { formModel with State = Loading }
+        let setLoading (formModel: Model<'Values>) =
+            { formModel with
+                State = Loading
+            }
 
         [<NoComparison; NoEquality>]
         type FieldConfig<'Values, 'Msg> =
@@ -156,7 +159,12 @@ module Form =
                 renderField
                     viewConfig.Dispatch
                     {
-                        OnChange = fun values -> viewConfig.OnChange { model with Values = values }
+                        OnChange =
+                            fun values ->
+                                viewConfig.OnChange
+                                    { model with
+                                        Values = values
+                                    }
                         OnBlur = onBlur
                         Disabled = model.State = Loading
                         ShowError = showError

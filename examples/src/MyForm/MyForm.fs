@@ -1,13 +1,15 @@
-namespace MyForm
+module Fable.Form.MyForm.Base
+
+// Make an alias to the "standard" form module so it is easier to reference
+// and make it easier to distinguish between the standard and our own API
+module Standard = Fable.Form.Simple.Form
 
 open Fable.Form
-open Fable.Form.Simple
 open Fable.Form.Simple.View
 open Fable.Form.Simple.Field
-open MyForm.Field
 
-// Make an alias to the "default" form module so it is easier to reference
-module DefaultForm = Fable.Form.Simple.Form
+// Make our field module available
+open Fable.Form.MyForm.Field
 
 module Form =
 
@@ -18,7 +20,7 @@ module Form =
     [<RequireQualifiedAccess; NoComparison; NoEquality>]
     type Field<'Values, 'Attributes> =
         // We want to support the standard fields  defined by Fable.Form.Simple
-        | Standard of Form.Field<'Values, 'Attributes>
+        | Standard of Standard.Field<'Values, 'Attributes>
         // Below are our custom fields
         | Signature of SignatureField<'Values>
 
@@ -80,7 +82,7 @@ module Form =
         : Form<'Values, 'Output, 'Attributes>
         =
         TextField.form
-            (fun x -> (Form.TextType.TextRaw, x) |> Form.Field.Text |> Field.Standard)
+            (fun x -> (Standard.TextType.TextRaw, x) |> Standard.Field.Text |> Field.Standard)
             config
 
     // Define field functions for our own fields
@@ -109,13 +111,19 @@ module Form =
                 Attributes: SignatureField.Attributes
             }
 
+        // To stay consistent with how the standard API is defined,
+        // we define a custom configuration record allowing people to easily customize
+        // the rendering of our fields
+        // If you don't need this flexibility in your project, you can omit this record
+        // and directly call your render function for your different fields
+
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
             {
                 // Custom configuration used by the Default form
-                Standard: Form.View.CustomConfig<'Msg, 'Attributes>
+                Standard: Standard.View.CustomConfig<'Msg, 'Attributes>
                 // Render function for our new fields
-                Toggle: ToggleFieldConfig<'Msg> -> ReactElement
+                SignatureField: ToggleFieldConfig<'Msg> -> ReactElement
             }
 
         let renderField
@@ -131,23 +139,23 @@ module Form =
 
             match field.State with
             // If we have a default field, we forward it to the default render function
-            | Field.Standard defaultField ->
-                let filledField: Form.FilledField<_, _> =
+            | Field.Standard standardField ->
+                let filledField: Standard.FilledField<_, _> =
                     {
-                        State = defaultField
+                        State = standardField
                         Error = field.Error
                         IsDisabled = field.IsDisabled
                     }
 
-                Form.View.renderField customConfig.Standard dispatch fieldConfig filledField
+                Standard.View.renderField customConfig.Standard dispatch fieldConfig filledField
 
             | Field.Signature info ->
-                customConfig.Toggle
+                customConfig.SignatureField
                     {
                         Dispatch = dispatch
                         OnChange = info.Update >> fieldConfig.OnChange
                         OnBlur = blur info.Attributes.Label
-                        Disabled = fieldConfig.Disabled
+                        Disabled = field.IsDisabled || fieldConfig.Disabled
                         Value = info.Value
                         Error = field.Error
                         ShowError = fieldConfig.ShowError info.Attributes.Label

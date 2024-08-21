@@ -1,29 +1,27 @@
-namespace Fable.Form.Simple.Field
+module Fable.Form.Simple.Field.TextField
 
 open Fable.Form
 
-module TextField =
+type Attributes<'Attributes> =
+    {
+        /// <summary>
+        /// Label to display
+        /// </summary>
+        Label: string
+        /// <summary>
+        /// Placeholder to display when the field is empty
+        /// </summary>
+        Placeholder: string
+        /// <summary>
+        /// A list of HTML attributes to add to the generated field
+        /// </summary>
+        HtmlAttributes: 'Attributes list
+    }
 
-    type Attributes<'Attributes> =
-        {
-            /// <summary>
-            /// Label to display
-            /// </summary>
-            Label: string
-            /// <summary>
-            /// Placeholder to display when the field is empty
-            /// </summary>
-            Placeholder: string
-            /// <summary>
-            /// A list of HTML attributes to add to the generated field
-            /// </summary>
-            HtmlAttributes: 'Attributes list
-        }
+type TextField<'Values, 'Attributes> = Field.Field<Attributes<'Attributes>, string, 'Values>
 
-    type TextField<'Values, 'Attributes> = Field.Field<Attributes<'Attributes>, string, 'Values>
-
-    let form<'Values, 'Attributes, 'Field, 'Output>
-        : ((TextField<'Values, 'Attributes> -> 'Field)
-              -> Base.FieldConfig<Attributes<'Attributes>, string, 'Values, 'Output>
-              -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field System.String.IsNullOrEmpty
+let form<'Values, 'Attributes, 'Field, 'Output>
+    : ((TextField<'Values, 'Attributes> -> 'Field)
+          -> Base.FieldConfig<Attributes<'Attributes>, string, 'Values, 'Output>
+          -> Base.Form<'Values, 'Output, 'Field>) =
+    Base.field System.String.IsNullOrEmpty

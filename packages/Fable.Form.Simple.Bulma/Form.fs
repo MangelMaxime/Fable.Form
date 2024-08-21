@@ -1,4 +1,4 @@
-namespace Fable.Form.Simple.Bulma
+module Fable.Form.Simple.Bulma
 
 open Fable.Form.Simple.Field
 
@@ -17,7 +17,10 @@ module Form =
         let fieldLabel (label: string) = Bulma.label [ prop.text label ]
 
         let errorMessage (message: string) =
-            Bulma.help [ color.isDanger; prop.text message ]
+            Bulma.help [
+                color.isDanger
+                prop.text message
+            ]
 
         let errorMessageAsHtml (showError: bool) (error: Error.Error option) =
             match error with
@@ -86,23 +89,22 @@ module Form =
 
                 | Time -> Bulma.input.time
 
-            inputFunc
-                [
-                    prop.onChange (onChange >> dispatch)
+            inputFunc [
+                prop.onChange (onChange >> dispatch)
 
-                    match onBlur with
-                    | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+                match onBlur with
+                | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
 
-                    | None -> ()
+                | None -> ()
 
-                    prop.disabled disabled
-                    prop.value value
-                    prop.placeholder attributes.Placeholder
-                    if showError && error.IsSome then
-                        color.isDanger
+                prop.disabled disabled
+                prop.value value
+                prop.placeholder attributes.Placeholder
+                if showError && error.IsSome then
+                    color.isDanger
 
-                    yield! attributes.HtmlAttributes
-                ]
+                yield! attributes.HtmlAttributes
+            ]
             |> withLabelAndError attributes.Label showError error
 
         let textareaField
@@ -118,23 +120,22 @@ module Form =
              }: TextFieldConfig<'Msg, IReactProperty>)
             =
 
-            Bulma.textarea
-                [
-                    prop.onChange (onChange >> dispatch)
+            Bulma.textarea [
+                prop.onChange (onChange >> dispatch)
 
-                    match onBlur with
-                    | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+                match onBlur with
+                | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
 
-                    | None -> ()
+                | None -> ()
 
-                    prop.disabled disabled
-                    prop.value value
-                    prop.placeholder attributes.Placeholder
-                    if showError && error.IsSome then
-                        color.isDanger
+                prop.disabled disabled
+                prop.value value
+                prop.placeholder attributes.Placeholder
+                if showError && error.IsSome then
+                    color.isDanger
 
-                    yield! attributes.HtmlAttributes
-                ]
+                yield! attributes.HtmlAttributes
+            ]
             |> withLabelAndError attributes.Label showError error
 
         let checkboxField
@@ -148,27 +149,23 @@ module Form =
              }: CheckboxFieldConfig<'Msg>)
             =
 
-            Bulma.control.div
-                [
-                    Bulma.input.labels.checkbox
-                        [
-                            prop.children
-                                [
-                                    Bulma.input.checkbox
-                                        [
-                                            prop.onChange (onChange >> dispatch)
-                                            match onBlur with
-                                            | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+            Bulma.control.div [
+                Bulma.input.labels.checkbox [
+                    prop.children [
+                        Bulma.input.checkbox [
+                            prop.onChange (onChange >> dispatch)
+                            match onBlur with
+                            | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
 
-                                            | None -> ()
-                                            prop.disabled disabled
-                                            prop.isChecked value
-                                        ]
-
-                                    Html.text attributes.Text
-                                ]
+                            | None -> ()
+                            prop.disabled disabled
+                            prop.isChecked value
                         ]
+
+                        Html.text attributes.Text
+                    ]
                 ]
+            ]
             |> (fun x -> [ x ])
             |> wrapInFieldContainer
 
@@ -186,22 +183,20 @@ module Form =
             =
 
             let radio (key: string, label: string) =
-                Bulma.input.labels.radio
-                    [
-                        Bulma.input.radio
-                            [
-                                prop.name attributes.Label
-                                prop.isChecked (key = value: bool)
-                                prop.disabled disabled
-                                prop.onChange (fun (_: bool) -> onChange key |> dispatch)
-                                match onBlur with
-                                | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+                Bulma.input.labels.radio [
+                    Bulma.input.radio [
+                        prop.name attributes.Label
+                        prop.isChecked (key = value: bool)
+                        prop.disabled disabled
+                        prop.onChange (fun (_: bool) -> onChange key |> dispatch)
+                        match onBlur with
+                        | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
 
-                                | None -> ()
-                            ]
-
-                        Html.text label
+                        | None -> ()
                     ]
+
+                    Html.text label
+                ]
 
             Bulma.control.div [ attributes.Options |> List.map radio |> prop.children ]
             |> withLabelAndError attributes.Label showError error
@@ -220,36 +215,36 @@ module Form =
             =
 
             let toOption (key: string, label: string) =
-                Html.option [ prop.value key; prop.text label ]
+                Html.option [
+                    prop.value key
+                    prop.text label
+                ]
 
             let placeholderOption =
-                Html.option
-                    [
-                        prop.disabled true
-                        prop.value ""
+                Html.option [
+                    prop.disabled true
+                    prop.value ""
 
-                        prop.text ("-- " + attributes.Placeholder + " --")
-                    ]
-
-            Bulma.select
-                [
-                    prop.disabled disabled
-                    prop.onChange (onChange >> dispatch)
-
-                    match onBlur with
-                    | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
-
-                    | None -> ()
-
-                    prop.value value
-
-                    prop.children
-                        [
-                            placeholderOption
-
-                            yield! attributes.Options |> List.map toOption
-                        ]
+                    prop.text ("-- " + attributes.Placeholder + " --")
                 ]
+
+            Bulma.select [
+                prop.disabled disabled
+                prop.onChange (onChange >> dispatch)
+
+                match onBlur with
+                | Some onBlur -> prop.onBlur (fun _ -> dispatch onBlur)
+
+                | None -> ()
+
+                prop.value value
+
+                prop.children [
+                    placeholderOption
+
+                    yield! attributes.Options |> List.map toOption
+                ]
+            ]
             |> withLabelAndError attributes.Label showError error
 
         let fileField
@@ -265,46 +260,37 @@ module Form =
             =
 
             let fileInput =
-                Bulma.file
-                    [
-                        if not (value |> Array.isEmpty) then
-                            Bulma.file.hasName
+                Bulma.file [
+                    if not (value |> Array.isEmpty) then
+                        Bulma.file.hasName
 
-                        prop.children
-                            [
-                                Bulma.fileLabel.label
-                                    [
-                                        Bulma.fileInput
-                                            [
-                                                prop.onInput (fun x ->
-                                                    let files =
-                                                        (x.currentTarget
-                                                        :?> Browser.Types.HTMLInputElement)
-                                                            .files
+                    prop.children [
+                        Bulma.fileLabel.label [
+                            Bulma.fileInput [
+                                prop.onInput (fun x ->
+                                    let files =
+                                        (x.currentTarget :?> Browser.Types.HTMLInputElement).files
 
-                                                    let files =
-                                                        Array.init files.length (fun i -> files[i])
+                                    let files = Array.init files.length (fun i -> files[i])
 
-                                                    files |> onChange |> dispatch
-                                                )
+                                    files |> onChange |> dispatch
+                                )
 
-                                                prop.multiple attributes.Multiple
+                                prop.multiple attributes.Multiple
 
-                                                match attributes.Accept with
-                                                | FileField.FileType.Any -> ()
-                                                | FileField.FileType.Specific fileTypes ->
-                                                    prop.accept (fileTypes |> String.concat ",")
+                                match attributes.Accept with
+                                | FileField.FileType.Any -> ()
+                                | FileField.FileType.Specific fileTypes ->
+                                    prop.accept (fileTypes |> String.concat ",")
 
-                                                prop.disabled disabled
-                                            ]
-                                        Bulma.fileCta
-                                            [
-                                                match attributes.FileIconClassName with
-                                                | FileField.FileIconClassName.Default ->
-                                                    Bulma.fileIcon
-                                                        [
-                                                            prop.innerHtml
-                                                                """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload">
+                                prop.disabled disabled
+                            ]
+                            Bulma.fileCta [
+                                match attributes.FileIconClassName with
+                                | FileField.FileIconClassName.Default ->
+                                    Bulma.fileIcon [
+                                        prop.innerHtml
+                                            """<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
     <polyline points="17 8 12 3 7 8"/>
     <line x1="12" x2="12" y1="3" y2="15"/>
@@ -314,21 +300,19 @@ module Form =
 
     See: https://lucide.dev/license
 -->"""
-                                                        ]
-
-                                                | FileField.FileIconClassName.Custom className ->
-                                                    Bulma.fileIcon
-                                                        [ Html.i [ prop.className className ] ]
-
-                                                Bulma.fileLabel.span
-                                                    [ prop.text attributes.InputLabel ]
-                                            ]
-
-                                        if not (value |> Array.isEmpty) then
-                                            Bulma.fileName [ prop.text (value |> Array.head).name ]
                                     ]
+
+                                | FileField.FileIconClassName.Custom className ->
+                                    Bulma.fileIcon [ Html.i [ prop.className className ] ]
+
+                                Bulma.fileLabel.span [ prop.text attributes.InputLabel ]
                             ]
+
+                            if not (value |> Array.isEmpty) then
+                                Bulma.fileName [ prop.text (value |> Array.head).name ]
+                        ]
                     ]
+                ]
 
             fileInput |> withLabelAndError attributes.Label showError error
 
@@ -336,17 +320,15 @@ module Form =
             Bulma.field.div [ Bulma.columns [ fields |> List.map Bulma.column |> prop.children ] ]
 
         let section (title: string) (fields: ReactElement list) =
-            Html.fieldSet
-                [
-                    prop.className "fieldset"
+            Html.fieldSet [
+                prop.className "fieldset"
 
-                    prop.children
-                        [
-                            Html.legend [ prop.text title ]
+                prop.children [
+                    Html.legend [ prop.text title ]
 
-                            yield! fields
-                        ]
+                    yield! fields
                 ]
+            ]
 
         let ignoreChildError
             (parentError: Error.Error option)
@@ -357,7 +339,10 @@ module Form =
             match parentError with
             | Some _ -> field
 
-            | None -> { field with Error = None }
+            | None ->
+                { field with
+                    Error = None
+                }
 
         let formList
             ({
@@ -372,37 +357,31 @@ module Form =
             let addButton =
                 match disabled, add with
                 | (false, Some add) ->
-                    Bulma.button.a
-                        [
-                            prop.onClick (fun _ -> add.Action() |> dispatch)
+                    Bulma.button.a [
+                        prop.onClick (fun _ -> add.Action() |> dispatch)
 
-                            prop.children
-                                [
-                                    Bulma.icon
-                                        [
-                                            icon.isSmall
+                        prop.children [
+                            Bulma.icon [
+                                icon.isSmall
 
-                                            prop.children
-                                                [ Html.i [ prop.className "fas fa-plus" ] ]
-                                        ]
+                                prop.children [ Html.i [ prop.className "fas fa-plus" ] ]
+                            ]
 
-                                    Html.span add.Label
-                                ]
+                            Html.span add.Label
                         ]
+                    ]
 
                 | _ -> Html.none
 
-            Bulma.field.div
-                [
-                    Bulma.control.div
-                        [
-                            fieldLabel label
+            Bulma.field.div [
+                Bulma.control.div [
+                    fieldLabel label
 
-                            yield! forms
+                    yield! forms
 
-                            addButton
-                        ]
+                    addButton
                 ]
+            ]
 
         let formListItem
             ({
@@ -416,44 +395,37 @@ module Form =
             let removeButton =
                 match disabled, delete with
                 | (false, Some delete) ->
-                    Bulma.button.a
-                        [
-                            prop.onClick (fun _ -> delete.Action() |> dispatch)
+                    Bulma.button.a [
+                        prop.onClick (fun _ -> delete.Action() |> dispatch)
 
-                            prop.children
-                                [
-                                    Bulma.icon
-                                        [
-                                            icon.isSmall
+                        prop.children [
+                            Bulma.icon [
+                                icon.isSmall
 
-                                            prop.children
-                                                [ Html.i [ prop.className "fas fa-times" ] ]
-                                        ]
+                                prop.children [ Html.i [ prop.className "fas fa-times" ] ]
+                            ]
 
-                                    if delete.Label <> "" then
-                                        Html.span delete.Label
-                                ]
+                            if delete.Label <> "" then
+                                Html.span delete.Label
                         ]
+                    ]
 
                 | _ -> Html.none
 
-            Html.div
-                [
-                    prop.className "form-list"
+            Html.div [
+                prop.className "form-list"
 
-                    prop.children
-                        [
-                            yield! fields
+                prop.children [
+                    yield! fields
 
-                            Bulma.field.div
-                                [
-                                    field.isGrouped
-                                    field.isGroupedRight
+                    Bulma.field.div [
+                        field.isGrouped
+                        field.isGroupedRight
 
-                                    prop.children [ Bulma.control.div [ removeButton ] ]
-                                ]
-                        ]
+                        prop.children [ Bulma.control.div [ removeButton ] ]
+                    ]
                 ]
+            ]
 
         let form
             ({
@@ -465,66 +437,58 @@ module Form =
              }: FormConfig<'Msg>)
             =
 
-            Html.form
-                [
-                    prop.onSubmit (fun ev ->
-                        ev.stopPropagation ()
-                        ev.preventDefault ()
+            Html.form [
+                prop.onSubmit (fun ev ->
+                    ev.stopPropagation ()
+                    ev.preventDefault ()
 
-                        onSubmit |> Option.map dispatch |> Option.defaultWith ignore
-                    )
+                    onSubmit |> Option.map dispatch |> Option.defaultWith ignore
+                )
 
-                    prop.children
-                        [
-                            yield! fields
+                prop.children [
+                    yield! fields
 
-                            match state with
-                            | Error error -> errorMessage error
+                    match state with
+                    | Error error -> errorMessage error
 
-                            | Success success ->
-                                Bulma.field.div
-                                    [
-                                        Bulma.control.div
-                                            [
-                                                text.hasTextCentered
-                                                color.hasTextSuccess
-                                                text.hasTextWeightBold
+                    | Success success ->
+                        Bulma.field.div [
+                            Bulma.control.div [
+                                text.hasTextCentered
+                                color.hasTextSuccess
+                                text.hasTextWeightBold
 
-                                                prop.text success
-                                            ]
-                                    ]
-
-                            | Loading
-                            | Idle -> Html.none
-
-                            match action with
-                            | Action.SubmitOnly submitLabel ->
-                                Bulma.field.div
-                                    [
-                                        field.isGrouped
-                                        field.isGroupedRight
-
-                                        prop.children
-                                            [
-                                                Bulma.control.div
-                                                    [
-                                                        Bulma.button.button
-                                                            [
-                                                                prop.type'.submit
-                                                                color.isPrimary
-                                                                prop.text submitLabel
-                                                                // If the form is loading animate the submit button with the loading animation
-                                                                if state = Loading then
-                                                                    button.isLoading
-                                                            ]
-                                                    ]
-
-                                            ]
-                                    ]
-
-                            | Action.Custom func -> func state dispatch
+                                prop.text success
+                            ]
                         ]
+
+                    | Loading
+                    | Idle -> Html.none
+
+                    match action with
+                    | Action.SubmitOnly submitLabel ->
+                        Bulma.field.div [
+                            field.isGrouped
+                            field.isGroupedRight
+
+                            prop.children [
+                                Bulma.control.div [
+                                    Bulma.button.button [
+                                        prop.type'.submit
+                                        color.isPrimary
+                                        prop.text submitLabel
+                                        // If the form is loading animate the submit button with the loading animation
+                                        if state = Loading then
+                                            button.isLoading
+                                    ]
+                                ]
+
+                            ]
+                        ]
+
+                    | Action.Custom func -> func state dispatch
                 ]
+            ]
 
         let htmlViewConfig<'Msg> : CustomConfig<'Msg, IReactProperty> =
             {

@@ -1,4 +1,4 @@
-namespace MyForm.Field
+namespace Fable.Form.MyForm.Field
 
 open Fable.Form
 
