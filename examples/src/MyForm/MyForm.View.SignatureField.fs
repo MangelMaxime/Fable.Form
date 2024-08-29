@@ -48,7 +48,10 @@ let SignatureField
                         signaturePad?signaturePad?removeEventListener ("endStroke", unbox callback)
                     | None -> ()
             }
-        , [| box signaturePadRef |]
+        , [|
+            box signaturePadRef
+            box dispatch
+        |]
     )
 
     // Set the signature data when the value change
