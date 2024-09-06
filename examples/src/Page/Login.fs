@@ -3,6 +3,7 @@ module Page.Login.Component
 open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
 open Feliz
 
 /// <summary>
@@ -61,7 +62,7 @@ let update (msg: Msg) (model: Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form: Form.Form<Values, Msg, _> =
+let form: Form<Values, Msg> =
     let emailField =
         Form.textField
             {
@@ -75,6 +76,7 @@ let form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "email"
                         Label = "Email"
                         Placeholder = "some@email.com"
                         HtmlAttributes =
@@ -97,6 +99,7 @@ let form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "password"
                         Label = "Password"
                         Placeholder = "Your password"
                         HtmlAttributes =
@@ -119,6 +122,7 @@ let form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "remember-me"
                         Text = "Remember me"
                     }
             }

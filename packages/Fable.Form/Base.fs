@@ -121,9 +121,10 @@ let succeed (output: 'Output) : Form<'Values, 'Output, 'Field> =
 /// </returns>
 let fill<'Values, 'Output, 'Field>
     (Form form: Form<'Values, 'Output, 'Field>)
-    : 'Values -> FilledForm<'Output, 'Field>
+    (values: 'Values)
+    : FilledForm<'Output, 'Field>
     =
-    form
+    form values
 
 /// <summary>
 /// Create a custom field

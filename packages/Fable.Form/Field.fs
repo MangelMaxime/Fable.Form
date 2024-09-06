@@ -1,7 +1,10 @@
 module Fable.Form.Field
 
+type IAttributes =
+    abstract GetFieldId: unit -> string
+
 [<NoComparison; NoEquality>]
-type Field<'Attributes, 'Value, 'Values> =
+type Field<'Attributes, 'Value, 'Values when 'Attributes :> IAttributes> =
     {
         Value: 'Value
         Update: 'Value -> 'Values

@@ -1,8 +1,8 @@
 module Page.Composability.WithConfiguration.AddressForm
 
-open Fable.Form.Simple
+open Fable.Form.Simple.Bulma
 
-type AddressForm<'Values, 'Attributes> = Form.Form<'Values, Address.T, 'Attributes>
+type AddressForm<'Values> = Form<'Values, Address.T>
 
 type Values =
     {
@@ -30,7 +30,7 @@ let form
          Value = getValue
          Update = update
      }: Config<'A>)
-    : AddressForm<'A, 'Attributes>
+    : AddressForm<'A>
     =
 
     let updateField fn newValue values =
@@ -52,6 +52,7 @@ let form
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "country"
                         Label = "Country"
                         Placeholder = ""
                         HtmlAttributes = []
@@ -74,6 +75,7 @@ let form
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "city"
                         Label = "City"
                         Placeholder = ""
                         HtmlAttributes = []
@@ -94,6 +96,7 @@ let form
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "postalCode"
                         Label = "PostalCode"
                         Placeholder = ""
                         HtmlAttributes = []

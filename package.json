@@ -31,6 +31,7 @@
         "nodemon": "^2.0.15",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-signature-pad-wrapper": "^4.0.3",
         "remark-github": "^11.2.2",
         "shelljs": "^0.8.5",
         "shx": "^0.3.4",

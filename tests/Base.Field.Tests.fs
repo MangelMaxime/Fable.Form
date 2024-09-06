@@ -6,9 +6,14 @@ open Fable.Form.Simple
 
 type Attributes =
     {
+        FieldId: string
         A: int
         B: string
     }
+
+    interface Field.IAttributes with
+
+        member this.GetFieldId() = this.FieldId
 
 let customField = Base.field System.String.IsNullOrEmpty id
 
@@ -18,6 +23,7 @@ let externalErrorString = "external_error"
 
 let attributes =
     {
+        FieldId = "field_id"
         A = 1
         B = "Some attributes"
     }

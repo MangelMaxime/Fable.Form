@@ -94,7 +94,7 @@ let private convertMakePublicOptionToBool (makePublic: string) =
     | "option-no"
     | _ -> false
 
-let private form: Form.Form<Values, Msg, _> =
+let private form: Form<Values, Msg> =
     let emailField =
         Form.textField
             {
@@ -108,6 +108,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "email"
                         Label = "Email"
                         Placeholder = "some@email.com"
                         HtmlAttributes =
@@ -130,6 +131,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "password"
                         Label = "Password"
                         Placeholder = "Your password"
                         HtmlAttributes =

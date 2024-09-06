@@ -2,7 +2,7 @@
 
 open Mocha
 open Fable.Form
-open Fable.Form.Simple
+open Fable.Form.Simple.Bulma
 
 type Values =
     {
@@ -30,6 +30,7 @@ let emailField =
             Error = always None
             Attributes =
                 {
+                    FieldId = "email"
                     Label = "Email"
                     Placeholder = "Type your email"
                     HtmlAttributes = []
@@ -38,7 +39,7 @@ let emailField =
 
 let passwordError = "The password should have at least 8 characters"
 
-let passwordField: Form.Form<Values, string, obj> =
+let passwordField: Form<Values, string> =
     Form.passwordField
         {
             Parser =
@@ -56,6 +57,7 @@ let passwordField: Form.Form<Values, string, obj> =
             Error = always None
             Attributes =
                 {
+                    FieldId = "password"
                     Label = "Password"
                     Placeholder = "Type your password"
                     HtmlAttributes = []

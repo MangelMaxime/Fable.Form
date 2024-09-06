@@ -3,6 +3,7 @@
 open Mocha
 open Fable.Form
 open Fable.Form.Simple
+open Fable.Form.Simple.Bulma
 open Node
 
 type ContentAction =
@@ -20,7 +21,7 @@ type Values =
         ContentType: string
     }
 
-let titleField: Form.Form<Values, string, obj> =
+let titleField: Form<Values, string> =
     Form.textField
         {
             Parser = Ok
@@ -33,6 +34,7 @@ let titleField: Form.Form<Values, string, obj> =
             Error = always None
             Attributes =
                 {
+                    FieldId = "title"
                     Label = "Title"
                     Placeholder = "Write a title"
                     HtmlAttributes = []
@@ -52,6 +54,7 @@ let bodyField =
             Error = always None
             Attributes =
                 {
+                    FieldId = "body"
                     Label = "Body"
                     Placeholder = "Write a body"
                     HtmlAttributes = []
@@ -77,6 +80,7 @@ let contentTypeField =
             Error = always None
             Attributes =
                 {
+                    FieldId = "content-type"
                     Label = "Body"
                     Placeholder = "Write a body"
                     Options =

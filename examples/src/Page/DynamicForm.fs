@@ -98,6 +98,7 @@ let private studentForm =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "student-name"
                         Label = "Name"
                         Placeholder = "Student name"
                         HtmlAttributes = []
@@ -120,6 +121,7 @@ let private teacherForm =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "teacher-name"
                         Label = "Name"
                         Placeholder = "Teacher name"
                         HtmlAttributes = []
@@ -139,6 +141,7 @@ let private teacherForm =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "teacher-subject"
                         Label = "Subject"
                         Placeholder = "Taught subject"
                         HtmlAttributes = []
@@ -158,7 +161,7 @@ let private teacherForm =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form: Form.Form<Values, Msg, _> =
+let private form: Form<Values, Msg> =
     let userTypeField =
         Form.selectField
             {
@@ -172,6 +175,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "user-type"
                         Label = "Type of user"
                         Placeholder = "Choose a user type"
                         Options =

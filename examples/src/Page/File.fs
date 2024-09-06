@@ -6,8 +6,8 @@ open Feliz
 open Feliz.Bulma
 
 open Fable.Form.Simple
-open Fable.Form.Simple.Field
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
 
 /// <summary>
 /// Type used to represent the form values
@@ -73,7 +73,7 @@ let update (msg: Msg) (model: Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form: Form.Form<Values, Msg, _> =
+let form: Form<Values, Msg> =
     let fileField =
         Form.fileField
             {
@@ -87,13 +87,14 @@ let form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "invoices"
                         Label = "Invoices"
                         InputLabel = "Choose one or more PDF files"
                         Accept =
                             FileField.FileType.Specific [
                                 ".pdf"
                             ]
-                        FileIconClassName = FileField.FileIconClassName.Default
+                        FileIconClassName = FileField.DefaultIcon
                         Multiple = true
                     }
             }

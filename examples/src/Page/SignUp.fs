@@ -148,7 +148,7 @@ let private convertMakePublicOptionToBool (makePublic: string) =
     | "option-no"
     | _ -> false
 
-let private form: Form.Form<Values, Msg, _> =
+let private form: Form<Values, Msg> =
     let emailField =
         Form.textField
             {
@@ -180,6 +180,7 @@ let private form: Form.Form<Values, Msg, _> =
                         | None -> None
                 Attributes =
                     {
+                        FieldId = "email"
                         Label = "Email"
                         Placeholder = "some@email.com"
                         HtmlAttributes = []
@@ -199,6 +200,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "name"
                         Label = "Name"
                         Placeholder = "Your name"
                         HtmlAttributes = []
@@ -218,6 +220,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "password"
                         Label = "Password"
                         Placeholder = "Your password"
                         HtmlAttributes = []
@@ -244,6 +247,7 @@ let private form: Form.Form<Values, Msg, _> =
                     Error = fun _ -> None
                     Attributes =
                         {
+                            FieldId = "repeat-password"
                             Label = "Repeat password"
                             Placeholder = "Your password again..."
                             HtmlAttributes = []
@@ -264,6 +268,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "make-public"
                         Label = "Make your profile public ?"
                         Options =
                             [

@@ -63,7 +63,7 @@ let update (msg: Msg) (model: Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let private form: Form.Form<Values, Msg, _> =
+let private form: Form<Values, Msg> =
     let validationStrategiesField =
         Form.radioField
             {
@@ -77,6 +77,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = always None
                 Attributes =
                     {
+                        FieldId = "validation-strategy"
                         Label = "Validation strategy"
                         Options =
                             [
@@ -100,6 +101,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "email"
                         Label = "Email"
                         Placeholder = "some@email.com"
                         HtmlAttributes = []
@@ -119,6 +121,7 @@ let private form: Form.Form<Values, Msg, _> =
                 Error = fun _ -> None
                 Attributes =
                     {
+                        FieldId = "password"
                         Label = "Password"
                         Placeholder = "Your password"
                         HtmlAttributes = []
