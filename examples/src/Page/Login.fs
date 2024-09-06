@@ -67,13 +67,20 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = EmailAddress.tryParse
                 Value = fun values -> values.Email
-                Update = fun newValue values -> { values with Email = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Email = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
-                        HtmlAttributes = [ prop.autoComplete "email" ]
+                        HtmlAttributes =
+                            [
+                                prop.autoComplete "email"
+                            ]
                     }
             }
 
@@ -82,13 +89,20 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.Password
-                Update = fun newValue values -> { values with Password = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Password = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
-                        HtmlAttributes = [ prop.autoComplete "current-password" ]
+                        HtmlAttributes =
+                            [
+                                prop.autoComplete "current-password"
+                            ]
                     }
             }
 
@@ -97,9 +111,16 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.RememberMe
-                Update = fun newValue values -> { values with RememberMe = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            RememberMe = newValue
+                        }
                 Error = fun _ -> None
-                Attributes = { Text = "Remember me" }
+                Attributes =
+                    {
+                        Text = "Remember me"
+                    }
             }
 
     /// <summary>

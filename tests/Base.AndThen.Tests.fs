@@ -25,7 +25,11 @@ let titleField: Form.Form<Values, string, obj> =
         {
             Parser = Ok
             Value = fun values -> values.Title
-            Update = fun newValue values -> { values with Title = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        Title = newValue
+                    }
             Error = always None
             Attributes =
                 {
@@ -40,7 +44,11 @@ let bodyField =
         {
             Parser = Ok
             Value = fun values -> values.Body
-            Update = fun newValue values -> { values with Body = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        Body = newValue
+                    }
             Error = always None
             Attributes =
                 {
@@ -61,13 +69,21 @@ let contentTypeField =
                 | "question" -> Ok Question
                 | _ -> Error contentTypeError
             Value = fun values -> values.ContentType
-            Update = fun newValue values -> { values with ContentType = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        ContentType = newValue
+                    }
             Error = always None
             Attributes =
                 {
                     Label = "Body"
                     Placeholder = "Write a body"
-                    Options = [ "post", "Post"; "question", "Question" ]
+                    Options =
+                        [
+                            "post", "Post"
+                            "question", "Question"
+                        ]
                 }
         }
 
@@ -159,7 +175,9 @@ describe
                                     filledForm.Result,
                                     Error(
                                         Error.RequiredFieldIsEmpty,
-                                        [ Error.RequiredFieldIsEmpty ]
+                                        [
+                                            Error.RequiredFieldIsEmpty
+                                        ]
                                     )
                                 )
                             )

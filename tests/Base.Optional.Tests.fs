@@ -4,7 +4,11 @@ open Mocha
 open Fable.Form
 open Fable.Form.Simple
 
-type Values = { Email: string; Password: string }
+type Values =
+    {
+        Email: string
+        Password: string
+    }
 
 let emailError = "Email should contains the '@' symbol"
 
@@ -18,7 +22,11 @@ let emailField =
                     else
                         Error emailError
             Value = fun values -> values.Email
-            Update = fun newValue values -> { values with Email = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        Email = newValue
+                    }
             Error = always None
             Attributes =
                 {
@@ -40,7 +48,11 @@ let passwordField: Form.Form<Values, string, obj> =
                     else
                         Error passwordError
             Value = fun values -> values.Password
-            Update = fun newValue values -> { values with Password = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        Password = newValue
+                    }
             Error = always None
             Attributes =
                 {
@@ -76,7 +88,11 @@ let invalidValues =
         Password = "1234"
     }
 
-let emptyValues = { Email = ""; Password = "" }
+let emptyValues =
+    {
+        Email = ""
+        Password = ""
+    }
 
 describe
     "Base.optional"
@@ -94,7 +110,13 @@ describe
                         let fieldErrors =
                             filledForm.Fields |> List.map (fun field -> field.Error)
 
-                        Assert.deepStrictEqual (fieldErrors, [ None; None ])
+                        Assert.deepStrictEqual (
+                            fieldErrors,
+                            [
+                                None
+                                None
+                            ]
+                        )
                     )
 
                 it
@@ -119,7 +141,13 @@ describe
                         let fieldErrors =
                             filledForm.Fields |> List.map (fun field -> field.Error)
 
-                        Assert.deepStrictEqual (fieldErrors, [ None; None ])
+                        Assert.deepStrictEqual (
+                            fieldErrors,
+                            [
+                                None
+                                None
+                            ]
+                        )
                     )
 
                 it
@@ -182,7 +210,9 @@ describe
                             filledForm.Result,
                             Error(
                                 Error.ValidationFailed emailError,
-                                [ Error.ValidationFailed passwordError ]
+                                [
+                                    Error.ValidationFailed passwordError
+                                ]
                             )
                         )
                     )

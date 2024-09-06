@@ -52,7 +52,11 @@ let invalidValues =
         RepeatPassword = "456"
     }
 
-let emptyValues = { Password = ""; RepeatPassword = "" }
+let emptyValues =
+    {
+        Password = ""
+        RepeatPassword = ""
+    }
 
 describe
     "Base.meta"

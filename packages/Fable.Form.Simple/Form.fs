@@ -765,7 +765,10 @@ module Form =
     /// A new form resulting of <c>fn >> fill form</c>
     /// </returns>
     let mapValues
-        ({ Value = value; Update = update }: MapValuesConfig<'A, 'B>)
+        ({
+             Value = value
+             Update = update
+         }: MapValuesConfig<'A, 'B>)
         (form: Form<'B, 'Output, 'Attributes>)
         : Form<'A, 'Output, 'Attributes>
         =
@@ -930,7 +933,10 @@ module Form =
                         |}
             }
 
-        let setLoading (formModel: Model<'Values>) = { formModel with State = Loading }
+        let setLoading (formModel: Model<'Values>) =
+            { formModel with
+                State = Loading
+            }
 
         [<NoComparison; NoEquality>]
         type CustomConfig<'Msg, 'Attributes> =
@@ -995,7 +1001,10 @@ module Form =
             match parentError with
             | Some _ -> field
 
-            | None -> { field with Error = None }
+            | None ->
+                { field with
+                    Error = None
+                }
 
         let rec renderField
             (dispatch: Dispatch<'Msg>)
@@ -1142,7 +1151,11 @@ module Form =
                         Dispatch = dispatch
                         Forms =
                             forms
-                            |> List.map (fun { Fields = fields; Delete = delete } ->
+                            |> List.map (fun
+                                             {
+                                                 Fields = fields
+                                                 Delete = delete
+                                             } ->
                                 customConfig.FormListItem
                                     {
                                         Dispatch = dispatch
@@ -1236,7 +1249,12 @@ module Form =
                     viewConfig.Dispatch
                     config
                     {
-                        OnChange = fun values -> viewConfig.OnChange { model with Values = values }
+                        OnChange =
+                            fun values ->
+                                viewConfig.OnChange
+                                    { model with
+                                        Values = values
+                                    }
                         OnBlur = onBlur
                         Disabled = model.State = Loading
                         ShowError = showError

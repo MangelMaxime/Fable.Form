@@ -48,22 +48,21 @@ let private toHash page =
     "#" + segmentsPart
 
 let routeParser: Parser<Route -> Route, Route> =
-    oneOf
-        [
-            map Route.Home (s "home")
-            map Route.SignUp (s "sign-up")
-            map Route.Login (s "login")
-            map Route.File (s "file")
-            map Route.DynamicForm (s "dynamic-form")
-            map Route.FormList (s "form-list")
-            map Route.ValidationStrategies (s "validation-strategies")
-            map Route.CustomAction (s "custom-actions")
-            map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
-            map
-                (Route.Composability ComposabilityRoute.WithConfiguration)
-                (s "composability" </> s "with-configuration")
-            map Route.Home top
-        ]
+    oneOf [
+        map Route.Home (s "home")
+        map Route.SignUp (s "sign-up")
+        map Route.Login (s "login")
+        map Route.File (s "file")
+        map Route.DynamicForm (s "dynamic-form")
+        map Route.FormList (s "form-list")
+        map Route.ValidationStrategies (s "validation-strategies")
+        map Route.CustomAction (s "custom-actions")
+        map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
+        map
+            (Route.Composability ComposabilityRoute.WithConfiguration)
+            (s "composability" </> s "with-configuration")
+        map Route.Home top
+    ]
 
 let href route = prop.href (toHash route)
 

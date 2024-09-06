@@ -65,7 +65,11 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = User.Name.tryParse
                 Value = fun values -> values.Name
-                Update = fun newValue values -> { values with Name = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Name = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -83,65 +87,71 @@ let private form: Form.Form<Values, Msg, _> =
         Form.mapValues
             {
                 Value = fun values -> values.Address
-                Update = fun newValue values -> { values with Address = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Address = newValue
+                        }
             }
             AddressForm.form
     )
 
 // Function used to render a row in the submitted table
 let private renderRow (leftValue: string) (rightValue: string) =
-    Html.tr [ Html.td leftValue; Html.td rightValue ]
+    Html.tr [
+        Html.td leftValue
+        Html.td rightValue
+    ]
 
 // Function used to render the view when the form has been submitted
 let private renderSubmittedView (name: User.Name.T) (address: Address.T) dispatch =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isSuccess
+        Bulma.message [
+            color.isSuccess
 
-                    prop.children [ Bulma.messageBody [ prop.text "Entry has been created" ] ]
+            prop.children [
+                Bulma.messageBody [
+                    prop.text "Entry has been created"
+                ]
+            ]
+        ]
+
+        Bulma.table [
+            table.isStriped
+
+            prop.children [
+                Html.thead [
+                    Html.tr [
+                        Html.th "Field"
+                        Html.th "Value"
+                    ]
                 ]
 
-            Bulma.table
-                [
-                    table.isStriped
-
-                    prop.children
-                        [
-                            Html.thead [ Html.tr [ Html.th "Field"; Html.th "Value" ] ]
-
-                            Html.tableBody
-                                [
-                                    renderRow "Name" (User.Name.toString name)
-                                    renderRow "Country" (Address.Country.toString address.Country)
-                                    renderRow "City" (Address.City.toString address.City)
-                                    renderRow
-                                        "Postal code"
-                                        (Address.PostalCode.toString address.PostalCode)
-                                ]
-                        ]
-
+                Html.tableBody [
+                    renderRow "Name" (User.Name.toString name)
+                    renderRow "Country" (Address.Country.toString address.Country)
+                    renderRow "City" (Address.City.toString address.City)
+                    renderRow "Postal code" (Address.PostalCode.toString address.PostalCode)
                 ]
-
-            Bulma.text.p
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.onClick (fun _ -> dispatch ResetDemo)
-                                    color.isPrimary
-
-                                    prop.text "Reset the demo"
-                                ]
-                        ]
-                ]
+            ]
 
         ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with

@@ -151,7 +151,12 @@ module Transform =
         match symbols with
         | Symbols.ListItem item :: tail ->
 
-            parseCategoryBody tail (sectionContent @ [ CategoryBody.ListItem item ])
+            parseCategoryBody
+                tail
+                (sectionContent
+                 @ [
+                     CategoryBody.ListItem item
+                 ])
         // If this is the beginning of a text block
         | Symbols.RawText _ :: _ ->
             // Capture all the lines of the text block
@@ -187,10 +192,20 @@ module Transform =
             if String.IsNullOrEmpty content then
                 parseCategoryBody rest sectionContent
             else
-                parseCategoryBody rest (sectionContent @ [ CategoryBody.Text content ])
+                parseCategoryBody
+                    rest
+                    (sectionContent
+                     @ [
+                         CategoryBody.Text content
+                     ])
 
         | Symbols.SubSubSection tag :: tail ->
-            parseCategoryBody tail (sectionContent @ [ CategoryBody.Section tag ])
+            parseCategoryBody
+                tail
+                (sectionContent
+                 @ [
+                     CategoryBody.Section tag
+                 ])
 
         // End of the Section, return the built content
         | _ -> symbols, sectionContent
@@ -236,7 +251,9 @@ module Transform =
         match symbols with
         | Symbols.Title title :: tail ->
             if String.IsNullOrEmpty changelog.Title then
-                { changelog with Title = title }
+                { changelog with
+                    Title = title
+                }
             else
                 changelog
             |> parse tail
@@ -323,7 +340,11 @@ module Transform =
                     }
                     :: otherVersions
 
-                parse unparsedSymbols { changelog with Versions = versions }
+                parse
+                    unparsedSymbols
+                    { changelog with
+                        Versions = versions
+                    }
             | _ -> Error "A category should always be under a version"
 
         | Symbols.RawText _ :: _ ->
@@ -349,22 +370,38 @@ module Transform =
             // Remove already handle symbols
             let rest = symbols |> List.skip textLines.Length
 
-            parse rest { changelog with Description = content }
+            parse
+                rest
+                { changelog with
+                    Description = content
+                }
 
         | Symbols.ListItem text :: tail ->
             match changelog.Versions with
             | currentVersion :: otherVersions ->
                 let (unparsedSymbols, textBody) = tryEatRawText tail
 
-                let otherItemItem = { ListItem = text; TextBody = textBody }
+                let otherItemItem =
+                    {
+                        ListItem = text
+                        TextBody = textBody
+                    }
 
                 let versions =
                     { currentVersion with
-                        OtherItems = currentVersion.OtherItems @ [ otherItemItem ]
+                        OtherItems =
+                            currentVersion.OtherItems
+                            @ [
+                                otherItemItem
+                            ]
                     }
                     :: otherVersions
 
-                parse unparsedSymbols { changelog with Versions = versions }
+                parse
+                    unparsedSymbols
+                    { changelog with
+                        Versions = versions
+                    }
             | _ ->
 
                 sprintf
@@ -381,7 +418,12 @@ module Transform =
     let fromSymbols (symbols: Symbols list) = parse symbols Changelog.Empty
 
 let parse (changelogContent: string) =
-    changelogContent.Split([| '\r'; '\n' |])
+    changelogContent.Split(
+        [|
+            '\r'
+            '\n'
+        |]
+    )
     |> Array.toList
     |> Lexer.toSymbols
     |> Transform.fromSymbols

@@ -4,7 +4,11 @@ open Mocha
 open Fable.Form
 open Fable.Form.Simple
 
-type Attributes = { A: int; B: string }
+type Attributes =
+    {
+        A: int
+        B: string
+    }
 
 let customField = Base.field System.String.IsNullOrEmpty id
 
@@ -12,7 +16,11 @@ let invalidString = "invalid"
 
 let externalErrorString = "external_error"
 
-let attributes = { A = 1; B = "Some attributes" }
+let attributes =
+    {
+        A = 1
+        B = "Some attributes"
+    }
 
 let form =
     customField

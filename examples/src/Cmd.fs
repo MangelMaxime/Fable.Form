@@ -9,4 +9,6 @@ module OfPromise =
         let bind dispatch =
             func.``then``(ofSuccess >> dispatch).catch (ofError >> dispatch) |> ignore
 
-        [ bind ]
+        [
+            bind
+        ]

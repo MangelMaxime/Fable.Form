@@ -25,7 +25,11 @@ let form: Form.Form<Values, Address.T, IReactProperty> =
                 // as the email field is represented using a string in the Form
                 Parser = Address.Country.tryParse
                 Value = fun values -> values.Country
-                Update = fun newValue values -> { values with Country = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Country = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -42,7 +46,11 @@ let form: Form.Form<Values, Address.T, IReactProperty> =
                 // as the email field is represented using a string in the Form
                 Parser = Address.City.tryParse
                 Value = fun values -> values.City
-                Update = fun newValue values -> { values with City = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            City = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -57,7 +65,11 @@ let form: Form.Form<Values, Address.T, IReactProperty> =
             {
                 Parser = Address.PostalCode.tryParse
                 Value = fun values -> values.PostalCode
-                Update = fun newValue values -> { values with PostalCode = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            PostalCode = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {

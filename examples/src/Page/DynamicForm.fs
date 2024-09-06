@@ -90,7 +90,11 @@ let private studentForm =
             {
                 Parser = Ok
                 Value = fun values -> values.Name
-                Update = fun newValue values -> { values with Name = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Name = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -108,7 +112,11 @@ let private teacherForm =
             {
                 Parser = Ok
                 Value = fun values -> values.Name
-                Update = fun newValue values -> { values with Name = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Name = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -123,7 +131,11 @@ let private teacherForm =
             {
                 Parser = Ok
                 Value = fun values -> values.Subject
-                Update = fun newValue values -> { values with Subject = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Subject = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -152,13 +164,21 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = UserType.tryParse
                 Value = fun values -> values.UserType
-                Update = fun newValue values -> { values with UserType = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            UserType = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Type of user"
                         Placeholder = "Choose a user type"
-                        Options = [ "student", "Student"; "teacher", "Teacher" ]
+                        Options =
+                            [
+                                "student", "Student"
+                                "teacher", "Teacher"
+                            ]
                     }
             }
 
@@ -172,61 +192,56 @@ let private form: Form.Form<Values, Msg, _> =
 
 // Function used to render the result of the form (when submitted)
 let private renderResultView (messageBody: ReactElement) dispatch =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isSuccess
+        Bulma.message [
+            color.isSuccess
 
-                    prop.children [ messageBody ]
-
-                ]
-
-            Bulma.text.p
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.onClick (fun _ -> dispatch ResetDemo)
-                                    color.isPrimary
-
-                                    prop.text "Reset the demo"
-                                ]
-                        ]
-                ]
+            prop.children [
+                messageBody
+            ]
 
         ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
 
 // Function used to render the view when a student has been created
 let private renderStudentView (name: string) dispatch =
     let messageBody =
-        Bulma.messageBody
-            [
-                Html.text "A new student has been created"
-                Html.br []
-                Html.text "His name is: "
-                Html.b name
-            ]
+        Bulma.messageBody [
+            Html.text "A new student has been created"
+            Html.br []
+            Html.text "His name is: "
+            Html.b name
+        ]
 
     renderResultView messageBody dispatch
 
 // Function used to render the view when a teacher has been created
 let private renderTeacherView (name: string) (subject: string) dispatch =
     let messageBody =
-        Bulma.messageBody
-            [
-                Html.text "A new teacher has been created"
-                Html.br []
-                Html.text "His name is: "
-                Html.b name
-                Html.br []
-                Html.text "He is teaching: "
-                Html.b subject
-            ]
+        Bulma.messageBody [
+            Html.text "A new teacher has been created"
+            Html.br []
+            Html.text "His name is: "
+            Html.b name
+            Html.br []
+            Html.text "He is teaching: "
+            Html.b subject
+        ]
 
     renderResultView messageBody dispatch
 

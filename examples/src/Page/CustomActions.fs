@@ -20,7 +20,11 @@ type FormResult =
 /// <summary>
 /// Represents the value of the form, it also have an <c>Errors</c> field to store the external errors
 /// </summary>
-type Values = { Email: string; Password: string }
+type Values =
+    {
+        Email: string
+        Password: string
+    }
 
 type Model =
     // Used when the form is being filled
@@ -43,7 +47,10 @@ type Msg =
     | TickResetDelay
 
 let init () =
-    { Email = ""; Password = "" }
+    {
+        Email = ""
+        Password = ""
+    }
     |> Form.View.idle // By default, set the form in idle mode
     |> FillingForm,
     Cmd.none
@@ -93,13 +100,20 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = EmailAddress.tryParse
                 Value = fun values -> values.Email
-                Update = fun newValue values -> { values with Email = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Email = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Email"
                         Placeholder = "some@email.com"
-                        HtmlAttributes = [ prop.autoComplete "email" ]
+                        HtmlAttributes =
+                            [
+                                prop.autoComplete "email"
+                            ]
                     }
             }
 
@@ -108,130 +122,135 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = User.Password.tryParse
                 Value = fun values -> values.Password
-                Update = fun newValue values -> { values with Password = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Password = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Password"
                         Placeholder = "Your password"
-                        HtmlAttributes = [ prop.autoComplete "current-password" ]
+                        HtmlAttributes =
+                            [
+                                prop.autoComplete "current-password"
+                            ]
                     }
             }
 
     let onSubmit email password =
-        LogIn { Email = email; Password = password }
+        LogIn
+            {
+                Email = email
+                Password = password
+            }
 
     Form.succeed onSubmit |> Form.append emailField |> Form.append passwordField
 
 let private renderRow (leftValue: string) (rightValue: string) =
-    Html.tr [ Html.td leftValue; Html.td rightValue ]
+    Html.tr [
+        Html.td leftValue
+        Html.td rightValue
+    ]
 
 let private renderLoggedInUpView (formResult: FormResult) dispatch =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isSuccess
+        Bulma.message [
+            color.isSuccess
 
-                    prop.children
-                        [
-                            Bulma.messageBody
-                                [ prop.text "User logged in with the following informations" ]
-                        ]
+            prop.children [
+                Bulma.messageBody [
+                    prop.text "User logged in with the following informations"
+                ]
+            ]
+        ]
+
+        Bulma.table [
+            table.isStriped
+
+            prop.children [
+                Html.thead [
+                    Html.tr [
+                        Html.th "Field"
+                        Html.th "Value"
+                    ]
                 ]
 
-            Bulma.table
-                [
-                    table.isStriped
-
-                    prop.children
-                        [
-                            Html.thead [ Html.tr [ Html.th "Field"; Html.th "Value" ] ]
-
-                            Html.tableBody
-                                [
-                                    renderRow "Email" (EmailAddress.toString formResult.Email)
-                                    renderRow
-                                        "Password"
-                                        (User.Password.toString formResult.Password)
-                                ]
-                        ]
-
+                Html.tableBody [
+                    renderRow "Email" (EmailAddress.toString formResult.Email)
+                    renderRow "Password" (User.Password.toString formResult.Password)
                 ]
-
-            Bulma.text.p
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.onClick (fun _ -> dispatch ResetTheDemo)
-                                    color.isPrimary
-
-                                    prop.text "Reset the demo"
-                                ]
-                        ]
-                ]
+            ]
 
         ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetTheDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
 
 let private renderCancelledView (resetDelay: int) =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isInfo
+        Bulma.message [
+            color.isInfo
 
-                    let message =
-                        sprintf "You cancelled the form, it will be reset in %i seconds" resetDelay
+            let message =
+                sprintf "You cancelled the form, it will be reset in %i seconds" resetDelay
 
-                    prop.children [ Bulma.messageBody [ prop.text message ] ]
+            prop.children [
+                Bulma.messageBody [
+                    prop.text message
                 ]
-
+            ]
         ]
+
+    ]
 
 let private formAction (state: Form.View.State) (dispatch: Dispatch<Msg>) =
 
-    Bulma.field.div
-        [
-            field.isGrouped
-            field.isGroupedCentered
+    Bulma.field.div [
+        field.isGrouped
+        field.isGroupedCentered
 
-            prop.children
-                [
-                    // Default submit button
-                    Bulma.control.div
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.type'.submit
-                                    color.isPrimary
-                                    prop.text "Sign up"
-                                    // If the form is loading animate the button with the loading animation
-                                    if state = Form.View.Loading then
-                                        button.isLoading
-                                ]
-                        ]
-
-                    // Custom button to cancel the form
-                    Bulma.control.div
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.text "Cancel"
-                                    // If the form is loading animate the button with the loading animation
-                                    if state = Form.View.Loading then
-                                        button.isLoading
-
-                                    prop.onClick (fun _ -> dispatch CancelTheForm)
-                                ]
-                        ]
+        prop.children [
+            // Default submit button
+            Bulma.control.div [
+                Bulma.button.button [
+                    prop.type'.submit
+                    color.isPrimary
+                    prop.text "Sign up"
+                    // If the form is loading animate the button with the loading animation
+                    if state = Form.View.Loading then
+                        button.isLoading
                 ]
+            ]
+
+            // Custom button to cancel the form
+            Bulma.control.div [
+                Bulma.button.button [
+                    prop.text "Cancel"
+                    // If the form is loading animate the button with the loading animation
+                    if state = Form.View.Loading then
+                        button.isLoading
+
+                    prop.onClick (fun _ -> dispatch CancelTheForm)
+                ]
+            ]
         ]
+    ]
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with

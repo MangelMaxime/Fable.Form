@@ -4,7 +4,10 @@ open Fable.Form
 
 module CheckboxField =
 
-    type Attributes = { Text: string }
+    type Attributes =
+        {
+            Text: string
+        }
 
     type CheckboxField<'Values> = Field.Field<Attributes, bool, 'Values>
 

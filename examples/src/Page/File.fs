@@ -13,7 +13,10 @@ open Fable.Form.Simple.Bulma
 /// Type used to represent the form values
 /// </summary>
 [<NoComparison>]
-type Values = { Files: Browser.Types.File array }
+type Values =
+    {
+        Files: Browser.Types.File array
+    }
 
 /// <summary>
 /// Represents the model of your Elmish component
@@ -40,7 +43,12 @@ type Msg =
     | ResetDemo
 
 let init () =
-    { Files = Array.empty } |> Form.View.idle |> FillingForm, Cmd.none
+    {
+        Files = Array.empty
+    }
+    |> Form.View.idle
+    |> FillingForm,
+    Cmd.none
 
 let update (msg: Msg) (model: Model) =
     match msg with
@@ -71,13 +79,20 @@ let form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.Files
-                Update = fun newValue values -> { values with Files = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Files = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
                         Label = "Invoices"
                         InputLabel = "Choose one or more PDF files"
-                        Accept = FileField.FileType.Specific [ ".pdf" ]
+                        Accept =
+                            FileField.FileType.Specific [
+                                ".pdf"
+                            ]
                         FileIconClassName = FileField.FileIconClassName.Default
                         Multiple = true
                     }
@@ -94,58 +109,62 @@ let form: Form.Form<Values, Msg, _> =
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm formModel ->
-        Html.div
-            [
-                Bulma.message
-                    [
-                        color.isInfo
-                        prop.children
-                            [
-                                Bulma.messageBody
-                                    [
-                                        Html.text
-                                            "Files are not uploaded to the server, we are faking it for the demo"
-                                    ]
-                            ]
+        Html.div [
+            Bulma.message [
+                color.isInfo
+                prop.children [
+                    Bulma.messageBody [
+                        Html.text
+                            "Files are not uploaded to the server, we are faking it for the demo"
                     ]
-
-                Form.View.asHtml
-                    {
-                        Dispatch = dispatch
-                        OnChange = FormChanged
-                        Action = Form.View.Action.SubmitOnly "Send"
-                        Validation = Form.View.ValidateOnSubmit
-                    }
-                    form
-                    formModel
+                ]
             ]
+
+            Form.View.asHtml
+                {
+                    Dispatch = dispatch
+                    OnChange = FormChanged
+                    Action = Form.View.Action.SubmitOnly "Send"
+                    Validation = Form.View.ValidateOnSubmit
+                }
+                form
+                formModel
+        ]
 
     | FileUploaded files ->
-        Bulma.content
-            [
-                Bulma.text.div
-                    [ size.isSize6; text.hasTextWeightBold; prop.text "List of files uploaded" ]
-
-                Html.div [ Html.ul (files |> List.map (fun file -> Html.li [ Html.text file ])) ]
-
-                Html.br []
-
-                Bulma.text.p
-                    [
-                        text.hasTextCentered
-
-                        prop.children
-                            [
-                                Bulma.button.button
-                                    [
-                                        prop.onClick (fun _ -> dispatch ResetDemo)
-                                        color.isPrimary
-
-                                        prop.text "Reset the demo"
-                                    ]
-                            ]
-                    ]
+        Bulma.content [
+            Bulma.text.div [
+                size.isSize6
+                text.hasTextWeightBold
+                prop.text "List of files uploaded"
             ]
+
+            Html.div [
+                Html.ul (
+                    files
+                    |> List.map (fun file ->
+                        Html.li [
+                            Html.text file
+                        ]
+                    )
+                )
+            ]
+
+            Html.br []
+
+            Bulma.text.p [
+                text.hasTextCentered
+
+                prop.children [
+                    Bulma.button.button [
+                        prop.onClick (fun _ -> dispatch ResetDemo)
+                        color.isPrimary
+
+                        prop.text "Reset the demo"
+                    ]
+                ]
+            ]
+        ]
 
 let information: DemoInformation.T =
     {

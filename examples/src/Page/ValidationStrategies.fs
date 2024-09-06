@@ -92,7 +92,11 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = EmailAddress.tryParse
                 Value = fun values -> values.Email
-                Update = fun newValue values -> { values with Email = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Email = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -107,7 +111,11 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = User.Password.tryParse
                 Value = fun values -> values.Password
-                Update = fun newValue values -> { values with Password = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Password = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -126,43 +134,36 @@ let private form: Form.Form<Values, Msg, _> =
 
 // Function used to render the filled view (when the form has been submitted)
 let private renderFilledView (email: EmailAddress.T) (password: User.Password.T) dispatch =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isSuccess
+        Bulma.message [
+            color.isSuccess
 
-                    prop.children
-                        [
-                            Bulma.messageBody
-                                [
-                                    Html.text "You, "
-                                    Html.b (EmailAddress.toString email)
-                                    Html.text ", have been signed in using the following password "
-                                    Html.b (User.Password.toString password)
-                                ]
-                        ]
-
+            prop.children [
+                Bulma.messageBody [
+                    Html.text "You, "
+                    Html.b (EmailAddress.toString email)
+                    Html.text ", have been signed in using the following password "
+                    Html.b (User.Password.toString password)
                 ]
-
-            Bulma.text.p
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.onClick (fun _ -> dispatch ResetDemo)
-                                    color.isPrimary
-
-                                    prop.text "Reset the demo"
-                                ]
-                        ]
-                ]
+            ]
 
         ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
@@ -185,18 +186,15 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
 
 let information: DemoInformation.T =
     let remark =
-        Bulma.content
-            [
-                text.hasTextCentered
+        Bulma.content [
+            text.hasTextCentered
 
-                prop.children
-                    [
-                        Html.text
-                            "This feature depends on the view implementation, here it is offered by "
-                        Html.b "Fable.Form.Simple"
-                        Html.text " package"
-                    ]
+            prop.children [
+                Html.text "This feature depends on the view implementation, here it is offered by "
+                Html.b "Fable.Form.Simple"
+                Html.text " package"
             ]
+        ]
         |> Some
 
     {

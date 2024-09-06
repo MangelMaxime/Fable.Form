@@ -4,7 +4,10 @@ open Mocha
 open Fable.Form
 open Fable.Form.Simple
 
-type Values = { Password: string }
+type Values =
+    {
+        Password: string
+    }
 
 let passwordError = "The password should have at least 8 characters"
 
@@ -18,7 +21,11 @@ let passwordField: Form.Form<Values, string, obj> =
                     else
                         Error passwordError
             Value = fun values -> values.Password
-            Update = fun newValue values -> { values with Password = newValue }
+            Update =
+                fun newValue values ->
+                    { values with
+                        Password = newValue
+                    }
             Error = always None
             Attributes =
                 {
@@ -36,7 +43,9 @@ describe
             (fun () ->
                 let form = Base.map String.length passwordField
 
-                { Password = "12345678" }
+                {
+                    Password = "12345678"
+                }
                 |> Base.fill form
                 |> fun form -> Assert.deepStrictEqual (form.Result, Ok 8)
             )
@@ -46,7 +55,9 @@ describe
             (fun () ->
                 let form = Base.map String.length passwordField
 
-                { Password = "1234567" }
+                {
+                    Password = "1234567"
+                }
                 |> Base.fill form
                 |> fun form ->
                     Assert.deepStrictEqual (

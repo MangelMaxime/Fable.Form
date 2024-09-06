@@ -25,7 +25,13 @@ type Config<'A> =
         Update: Values -> 'A -> 'A
     }
 
-let form ({ Value = getValue; Update = update }: Config<'A>) : AddressForm<'A, 'Attributes> =
+let form
+    ({
+         Value = getValue
+         Update = update
+     }: Config<'A>)
+    : AddressForm<'A, 'Attributes>
+    =
 
     let updateField fn newValue values =
         update (fn newValue (getValue values)) values
@@ -37,7 +43,12 @@ let form ({ Value = getValue; Update = update }: Config<'A>) : AddressForm<'A, '
                 // as the email field is represented using a string in the Form
                 Parser = Address.Country.tryParse
                 Value = getValue >> fun values -> values.Country
-                Update = updateField (fun newValue values -> { values with Country = newValue })
+                Update =
+                    updateField (fun newValue values ->
+                        { values with
+                            Country = newValue
+                        }
+                    )
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -54,7 +65,12 @@ let form ({ Value = getValue; Update = update }: Config<'A>) : AddressForm<'A, '
                 // as the email field is represented using a string in the Form
                 Parser = Address.City.tryParse
                 Value = getValue >> fun values -> values.City
-                Update = updateField (fun newValue values -> { values with City = newValue })
+                Update =
+                    updateField (fun newValue values ->
+                        { values with
+                            City = newValue
+                        }
+                    )
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -69,7 +85,12 @@ let form ({ Value = getValue; Update = update }: Config<'A>) : AddressForm<'A, '
             {
                 Parser = Address.PostalCode.tryParse
                 Value = getValue >> fun values -> values.PostalCode
-                Update = updateField (fun newValue values -> { values with PostalCode = newValue })
+                Update =
+                    updateField (fun newValue values ->
+                        { values with
+                            PostalCode = newValue
+                        }
+                    )
                 Error = fun _ -> None
                 Attributes =
                     {

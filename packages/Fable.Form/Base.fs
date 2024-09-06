@@ -303,7 +303,11 @@ let disable (form: Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Fie
         {
             Fields =
                 filled.Fields
-                |> List.map (fun filledField -> { filledField with IsDisabled = true })
+                |> List.map (fun filledField ->
+                    { filledField with
+                        IsDisabled = true
+                    }
+                )
             Result = filled.Result
             IsEmpty = filled.IsEmpty
         }
@@ -423,7 +427,13 @@ let optional (form: Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output opti
         | Error(firstError, otherErrors) ->
             if filled.IsEmpty then
                 {
-                    Fields = filled.Fields |> List.map (fun field -> { field with Error = None })
+                    Fields =
+                        filled.Fields
+                        |> List.map (fun field ->
+                            { field with
+                                Error = None
+                            }
+                        )
                     Result = Ok None
                     IsEmpty = filled.IsEmpty
                 }

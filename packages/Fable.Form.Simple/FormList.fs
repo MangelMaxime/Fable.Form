@@ -116,7 +116,10 @@ module FormList =
                             Add =
                                 fun _ ->
                                     formConfig.Update
-                                        (listOfElementValues @ [ formConfig.Default ])
+                                        (listOfElementValues
+                                         @ [
+                                             formConfig.Default
+                                         ])
                                         values
                             Attributes = formConfig.Attributes
                         }

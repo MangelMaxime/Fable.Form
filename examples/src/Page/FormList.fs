@@ -31,7 +31,10 @@ type BookValues =
 /// Type used to represent the form values
 /// </summary>
 type Values =
-    { Name: string; Books: BookValues list }
+    {
+        Name: string
+        Books: BookValues list
+    }
 
 type Model =
     // Used when the form is being filled
@@ -87,7 +90,11 @@ let private bookForm (index: int) =
             {
                 Parser = Ok
                 Value = fun values -> values.Title
-                Update = fun newValue values -> { values with Title = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Title = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -102,7 +109,11 @@ let private bookForm (index: int) =
             {
                 Parser = Ok
                 Value = fun values -> values.Author
-                Update = fun newValue values -> { values with Author = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Author = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -117,7 +128,11 @@ let private bookForm (index: int) =
             {
                 Parser = Ok
                 Value = fun values -> values.Summary
-                Update = fun newValue values -> { values with Summary = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Summary = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -152,7 +167,11 @@ let private form: Form.Form<Values, Msg, _> =
             {
                 Parser = Ok
                 Value = fun values -> values.Name
-                Update = fun newValue values -> { values with Name = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Name = newValue
+                        }
                 Error = fun _ -> None
                 Attributes =
                     {
@@ -176,7 +195,11 @@ let private form: Form.Form<Values, Msg, _> =
                         Summary = ""
                     }
                 Value = fun values -> values.Books
-                Update = fun newValue values -> { values with Books = newValue }
+                Update =
+                    fun newValue values ->
+                        { values with
+                            Books = newValue
+                        }
                 Attributes =
                     {
                         Label = "Books"
@@ -189,76 +212,66 @@ let private form: Form.Form<Values, Msg, _> =
 
 // Function used to render a book when the form has been submitted
 let private renderBook (rank: int) (book: Book) =
-    Html.tr
-        [
-            Html.td [ Html.b (string (rank + 1)) ]
-            Html.td book.Title
-            Html.td book.Author
-            Html.td book.Summary
+    Html.tr [
+        Html.td [
+            Html.b (string (rank + 1))
         ]
+        Html.td book.Title
+        Html.td book.Author
+        Html.td book.Summary
+    ]
 
 // Function used to render the filled view (when the form has been submitted)
 let private renderFilledView (name: string) (books: Book list) dispatch =
-    Bulma.content
-        [
+    Bulma.content [
 
-            Bulma.message
-                [
-                    color.isSuccess
+        Bulma.message [
+            color.isSuccess
 
-                    prop.children
-                        [
-                            Bulma.messageBody
-                                [
-                                    Html.text "Thank you "
-                                    Html.b name
-                                    Html.text " for creating those "
-                                    Html.b (string (List.length books))
-                                    Html.text " book(s)"
-                                ]
-                        ]
-
+            prop.children [
+                Bulma.messageBody [
+                    Html.text "Thank you "
+                    Html.b name
+                    Html.text " for creating those "
+                    Html.b (string (List.length books))
+                    Html.text " book(s)"
                 ]
-
-            Bulma.table
-                [
-                    table.isStriped
-                    prop.className "is-vcentered-cells"
-
-                    prop.children
-                        [
-                            Html.thead
-                                [
-                                    Html.tr
-                                        [
-                                            Html.th "#"
-                                            Html.th "Title"
-                                            Html.th "Author"
-                                            Html.th "Description"
-                                        ]
-                                ]
-
-                            Html.tableBody (List.mapi renderBook books)
-                        ]
-                ]
-
-            Bulma.text.p
-                [
-                    text.hasTextCentered
-
-                    prop.children
-                        [
-                            Bulma.button.button
-                                [
-                                    prop.onClick (fun _ -> dispatch ResetDemo)
-                                    color.isPrimary
-
-                                    prop.text "Reset the demo"
-                                ]
-                        ]
-                ]
+            ]
 
         ]
+
+        Bulma.table [
+            table.isStriped
+            prop.className "is-vcentered-cells"
+
+            prop.children [
+                Html.thead [
+                    Html.tr [
+                        Html.th "#"
+                        Html.th "Title"
+                        Html.th "Author"
+                        Html.th "Description"
+                    ]
+                ]
+
+                Html.tableBody (List.mapi renderBook books)
+            ]
+        ]
+
+        Bulma.text.p [
+            text.hasTextCentered
+
+            prop.children [
+                Bulma.button.button [
+                    prop.onClick (fun _ -> dispatch ResetDemo)
+                    color.isPrimary
+
+                    prop.text "Reset the demo"
+                ]
+            ]
+        ]
+
+    ]
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
