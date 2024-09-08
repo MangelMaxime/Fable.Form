@@ -8,7 +8,7 @@
     <PackageVersion Include="Fable.Elmish.Browser" Version="4.0.3" />
     <PackageVersion Include="Fable.Elmish.HMR" Version="7.0.0" />
     <PackageVersion Include="Fable.Elmish.React" Version="4.0.0" />
-    <PackageVersion Include="Fable.Package.SDK" Version="0.1.0" />
+    <PackageVersion Include="Fable.Package.SDK" Version="1.0.0" />
     <PackageVersion Include="Fable.Promise" Version="3.2.0" />
     <PackageVersion Include="Feliz" Version="2.8.0" />
     <PackageVersion Include="Feliz.Bulma" Version="3.0.0" />
