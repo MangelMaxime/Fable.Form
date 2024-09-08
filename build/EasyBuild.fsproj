@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BlackFox.CommandLine" Version="1.0.0" />
-    <PackageReference Include="EasyBuild.CommitParser" Version="1.0.0" />
+    <PackageReference Include="EasyBuild.CommitParser" Version="1.1.1" />
     <PackageReference Include="EasyBuild.FileSystemProvider" Version="0.3.0" />
     <PackageReference Include="FSharp.Core" Version="8.0.101" />
     <PackageReference Include="LibGit2Sharp" Version="0.30.0" />

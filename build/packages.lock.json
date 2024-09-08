@@ -13,12 +13,11 @@
       },
       "EasyBuild.CommitParser": {
         "type": "Direct",
-        "requested": "[1.0.0, )",
-        "resolved": "1.0.0",
-        "contentHash": "PSsqV5/9YXJUBNRtc+H6NgZ68UrRFAuKpUUFP41eg0YI7z//NGbwAz7D6kI4mlzY1Xd6JD2brb3gzlyR4qFuMA==",
+        "requested": "[1.1.1, )",
+        "resolved": "1.1.1",
+        "contentHash": "svofHaMlKl0PPGNKh1Z+2pobUo9x2V7sjVqO96Us42L5Uoy/C6+b0+Y3PlCgFvCaM7xxDbuhN/9iq/s6/EAvrg==",
         "dependencies": {
-          "FSharp.Core": "8.0.101",
-          "FsToolkit.ErrorHandling": "4.15.1",
+          "FSharp.Core": "5.0.2",
           "Thoth.Json.Newtonsoft": "0.1.0"
         }
       },
@@ -86,14 +85,6 @@
         "type": "Transitive",
         "resolved": "0.1.0",
         "contentHash": "wrEcGovUimN0PRGgVHlX/gsqCm5d/p9eOG74iaHoteX2dsFZQ9P7d066LRAl5Gj7GUHy7azLyDE41KFvZx1v9A=="
-      },
-      "FsToolkit.ErrorHandling": {
-        "type": "Transitive",
-        "resolved": "4.15.1",
-        "contentHash": "zf8o4N954UWhkVQd2tc1u65sjSxZJ8WGprZJcfh1Hmp4OfXcTEnKX0DjMY2yET+BzvsLKembgGq9HBChFYeTlQ==",
-        "dependencies": {
-          "FSharp.Core": "7.0.300"
-        }
       },
       "LibGit2Sharp.NativeBinaries": {
         "type": "Transitive",
