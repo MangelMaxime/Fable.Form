@@ -5,7 +5,54 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
+<!-- last_commit_released: b4c90120754bc99cd66712e9e240013751f9eff5 -->
 <!-- EasyBuild: END -->
+
+## 5.0.0-beta-001
+
+### 🚀 Features
+
+* Make it easier to add custom fields ([533c062](https://github.com/glutinum-org/cli/commit/533c0626ab634267a3d5b3187410d4b4eaf68fd2))
+
+    It is now easy to create custom form fields.
+
+    The drawback right now is that customising only the view requires a little more work than before. But I think the trade-off is worth it.
+
+    Before, people needed to fork `Fable.Form.Simple` and `Fable.Form.Simple.Bulma` to add custom fields. Now, they just need to implements `IField` API and it is done.
+
+    * Define how fields are represented thanks to the `IField`, `StandardRenderFieldConfig`, `IStandardField`, `IGenericField` and more.
+    * Add `FieldId` to most of field attributes because using only the label to detect field error don't guarantee a unique result.
+
+        For example, you can have two fields with a label "FirstName". Thanks to the field id you do "firstname-student" and "firstname-teacher"
+
+    * Export removed `Form.xxx` functions from `Fable.Form.Simple` making transition to 2.0 easy
+        * `Form.succeed`
+        * `Form.append`
+        * `Form.disable`
+        * `Form.andThen`
+        * `Form.optional`
+        * `Form.textField`
+        * `Form.passwordField`
+        * `Form.colorField`
+        * `Form.dateField`
+        * `Form.dateTimeLocalField`
+        * `Form.numberField`
+        * `Form.searchField`
+        * `Form.telField`
+        * `Form.timeField`
+        * `Form.emailField`
+        * `Form.textareaField`
+        * `Form.checkboxField`
+        * `Form.radioField`
+        * `Form.selectField`
+        * `Form.fileField`
+        * `Form.group`
+        * `Form.section`
+        * `Form.fill`
+        * `Form.rec mapFieldValues`
+        * `Form.list`
+        * `Form.meta`
+        * `Form.mapValues`
 
 ## 4.1.0 - 2024-02-03
 

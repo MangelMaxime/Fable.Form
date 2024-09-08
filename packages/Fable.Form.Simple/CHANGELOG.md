@@ -5,7 +5,46 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
+<!-- last_commit_released: b4c90120754bc99cd66712e9e240013751f9eff5 -->
 <!-- EasyBuild: END -->
+
+## 5.0.0-beta-001
+
+### 🚀 Features
+
+* Make it easier to add custom fields ([e4b8ea8](https://github.com/glutinum-org/cli/commit/e4b8ea8bb4b814c932a9ad3996cd0f554435373c))
+
+    `Fable.Form.Simple` is now field agnostic. It only contains logic on how a Form should be represented and how it behaves.
+
+    * Change `Form.View.custom` to take an additional `renderForm` and `renderField` functions
+    * Remove all `Form.xxx` functions (they moved to Fable.Form.Simple.Bulma)
+        * `Form.succeed`
+        * `Form.append`
+        * `Form.disable`
+        * `Form.andThen`
+        * `Form.optional`
+        * `Form.textField`
+        * `Form.passwordField`
+        * `Form.colorField`
+        * `Form.dateField`
+        * `Form.dateTimeLocalField`
+        * `Form.numberField`
+        * `Form.searchField`
+        * `Form.telField`
+        * `Form.timeField`
+        * `Form.emailField`
+        * `Form.textareaField`
+        * `Form.checkboxField`
+        * `Form.radioField`
+        * `Form.selectField`
+        * `Form.fileField`
+        * `Form.group`
+        * `Form.section`
+        * `Form.fill`
+        * `Form.rec mapFieldValues`
+        * `Form.list`
+        * `Form.meta`
+        * `Form.mapValues`
 
 ## 4.1.0 - 2024-02-03
 
