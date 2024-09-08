@@ -73,6 +73,17 @@ If not specified, all projects will be released.
     """)>]
     member val Project = Project.All with get, set
 
+    [<CommandOption("--allow-dirty")>]
+    [<Description("Allow to run in a dirty repository (having not commit changes in your reporitory)")>]
+    member val AllowDirty: bool = false with get, set
+
+    [<CommandOption("--allow-branch <VALUES>")>]
+    [<Description("List of branches that are allowed to be used to generate the changelog. Default is 'main'")>]
+    member val AllowBranch: string array =
+        [|
+            "main"
+        |] with get, set
+
 [<NoComparison>]
 type ReleaseContext =
     {
@@ -428,10 +439,10 @@ type ReleaseCommand() =
         // It also doesn't support SSH
         use repository = new Repository(Workspace.``.``)
 
-        if repository.Head.FriendlyName <> "main" then
-            failwith "You must be on the main branch to publish"
+        if not (Array.contains repository.Head.FriendlyName settings.AllowBranch) then
+            failwith $"Branch '{repository.Head.FriendlyName}' is not allowed to make a release"
 
-        if repository.RetrieveStatus().IsDirty then
+        if repository.RetrieveStatus().IsDirty && not settings.AllowDirty then
             failwith "You must commit your changes before publishing"
 
         match settings.Project with
