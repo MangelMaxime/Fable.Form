@@ -5,8 +5,38 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: b4c90120754bc99cd66712e9e240013751f9eff5 -->
+<!-- last_commit_released: 02e31e6fa32f3722da8868ae0b18d34fa1ea68f7 -->
 <!-- EasyBuild: END -->
+
+## 3.0.0-beta-002
+
+### 🚀 Features
+
+* Add support for `ReadOnly` form/field ([02e31e6](https://github.com/glutinum-org/cli/commit/02e31e6fa32f3722da8868ae0b18d34fa1ea68f7))
+
+    1. Set it at the field level
+
+        ```fsharp
+        Form.textField
+            // ...
+            |> Form.readOnly
+
+        // or
+
+        Form.textField
+            // ...
+            |> Form.readOnlyIf myCondition
+        ```
+
+    2. Set it at the form level
+
+        ```fsharp
+        let formValue : Form.View.Model<Values> = // ...
+
+        { formValue with State = Form.View.State.Loading }
+        ```
+
+* Add `Form.disableIf` ([28337d9](https://github.com/glutinum-org/cli/commit/28337d90c3cd7b686f210db5ab5bde79b371bb66))
 
 ## 3.0.0-beta-001
 
