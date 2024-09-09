@@ -44,7 +44,13 @@ module RadioField =
                         prop.name config.Attributes.Label
                         prop.isChecked (key = config.Value: bool)
                         prop.disabled config.Disabled
-                        prop.onChange (fun (_: bool) -> config.OnChange key |> config.Dispatch)
+
+                        // RadioField can't really be set to readonly in HTML
+                        // So we need to not listen to the onChange event
+                        prop.readOnly config.IsReadOnly
+                        if not config.IsReadOnly then
+                            prop.onChange (fun (_: bool) -> config.OnChange key |> config.Dispatch)
+
                         match config.OnBlur with
                         | Some onBlur -> prop.onBlur (fun _ -> config.Dispatch onBlur)
 

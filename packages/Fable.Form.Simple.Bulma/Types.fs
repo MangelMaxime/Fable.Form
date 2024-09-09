@@ -27,6 +27,7 @@ type StandardRenderFieldConfig<'Msg, 'Value, 'Attributes> =
         OnChange: 'Value -> 'Msg
         OnBlur: 'Msg option
         Disabled: bool
+        IsReadOnly: bool
         Value: 'Value
         Error: Error.Error option
         ShowError: bool

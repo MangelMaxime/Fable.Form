@@ -22,6 +22,7 @@ module Group =
                         State = filledField.State.MapFieldValues update
                         Error = filledField.Error
                         IsDisabled = filledField.IsDisabled
+                        IsReadOnly = filledField.IsReadOnly
                     }
                     : FilledField<'NewValues>
                 )

@@ -93,6 +93,7 @@ module View =
                         ]
 
                     | Loading
+                    | ReadOnly
                     | Idle -> Html.none
 
                     match action with
@@ -217,6 +218,7 @@ module View =
                             fieldConfig.OnBlur
                             |> Option.map (fun onBlurEvent -> onBlurEvent (attributes.GetFieldId()))
                         Disabled = field.IsDisabled || fieldConfig.Disabled
+                        IsReadOnly = field.IsReadOnly || fieldConfig.IsReadOnly
                         Value = standardField.InnerField.Value
                         Error = field.Error
                         ShowError = fieldConfig.ShowError(attributes.GetFieldId())

@@ -41,12 +41,20 @@ module SelectField =
 
             let toOption (key: string, label: string) =
                 Html.option [
+                    if config.IsReadOnly then
+                        prop.style [
+                            style.display.none
+                        ]
                     prop.value key
                     prop.text label
                 ]
 
             let placeholderOption =
                 Html.option [
+                    if config.IsReadOnly then
+                        prop.style [
+                            style.display.none
+                        ]
                     prop.disabled true
                     prop.value ""
 

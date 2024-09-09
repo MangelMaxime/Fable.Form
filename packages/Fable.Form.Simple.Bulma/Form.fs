@@ -82,12 +82,34 @@ module Form =
 
     /// <summary>
     /// Disable a form based on a condition
+    ///
+    /// You can combine this with meta to disable parts of a form based on its own values.
     /// </summary>
     /// <param name="condition">The condition to check</param>
     /// <param name="form">The form to disable</param>
     /// <returns>A new form which has been marked as disabled if the condition is <c>true</c></returns>
     let disableIf (condition: bool) (form: Form<'Values, 'A>) : Form<'Values, 'A> =
         Base.disableIf condition form
+
+    /// <summary>
+    /// Make a form read-only
+    ///
+    /// You can combine this with meta to make parts of a form read-only based on its own values.
+    /// </summary>
+    /// <param name="form">The form to make read-only</param>
+    /// <returns>A new form which has been marked as read-only</returns>
+    let readOnly (form: Form<'Values, 'A>) : Form<'Values, 'A> = Base.readOnly form
+
+    /// <summary>
+    /// Make a form read-only based on a condition
+    ///
+    /// You can combine this with meta to make parts of a form read-only based on its own values.
+    /// </summary>
+    /// <param name="condition">The condition to check</param>
+    /// <param name="form">The form to make read-only</param>
+    /// <returns>A new form which has been marked as read-only if the condition is <c>true</c></returns>
+    let readOnlyIf (condition: bool) (form: Form<'Values, 'A>) : Form<'Values, 'A> =
+        Base.readOnlyIf condition form
 
     /// <summary>
     /// Fill a form <c>andThen</c> fill another one.
@@ -448,6 +470,7 @@ module Form =
                                 )
                             Error = filledField.Error
                             IsDisabled = filledField.IsDisabled
+                            IsReadOnly = filledField.IsReadOnly
                         }
                     )
                 Result = filledElement.Result

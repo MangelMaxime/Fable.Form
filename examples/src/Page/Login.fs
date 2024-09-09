@@ -3,7 +3,6 @@ module Page.Login.Component
 open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
-open Fable.Form.Simple.Bulma.Fields
 open Feliz
 
 /// <summary>

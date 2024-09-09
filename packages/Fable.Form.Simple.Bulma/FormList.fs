@@ -280,6 +280,7 @@ module FormList =
                                                                 update
                                                         Error = filledField.Error
                                                         IsDisabled = filledField.IsDisabled
+                                                        IsReadOnly = filledField.IsReadOnly
                                                     }
                                                 )
                                                 form.Fields

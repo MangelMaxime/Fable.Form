@@ -24,6 +24,7 @@
     <Compile Include="src/Page/ValidationStrategies.fs" />
     <Compile Include="src/Page/CustomActions.fs" />
     <Compile Include="src/Page/CustomField.fs" />
+    <Compile Include="src/Page/Disable.fs" />
     <Compile Include="src/Page/Composability/Simple/AddressForm.fs" />
     <Compile Include="src/Page/Composability/WithConfiguration/AddressForm.fs" />
     <Compile Include="src/Page/Composability/Simple.fs" />

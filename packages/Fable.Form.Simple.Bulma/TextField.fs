@@ -107,6 +107,7 @@ module TextField =
                 | None -> ()
 
                 prop.disabled config.Disabled
+                prop.readOnly config.IsReadOnly
                 prop.value config.Value
                 prop.placeholder config.Attributes.Placeholder
                 if config.ShowError && config.Error.IsSome then

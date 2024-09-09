@@ -13,6 +13,7 @@ module Form =
         type State =
             | Idle
             | Loading
+            | ReadOnly
             | Error of string
             | Success of string
 
@@ -81,6 +82,7 @@ module Form =
                 OnChange: 'Values -> 'Msg
                 OnBlur: (string -> 'Msg) option
                 Disabled: bool
+                IsReadOnly: bool
                 ShowError: string -> bool
             }
 
@@ -167,6 +169,7 @@ module Form =
                                     }
                         OnBlur = onBlur
                         Disabled = model.State = Loading
+                        IsReadOnly = model.State = ReadOnly
                         ShowError = showError
                     }
 

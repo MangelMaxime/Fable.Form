@@ -95,7 +95,7 @@ module SignatureField =
                         style.border (1, borderStyle.solid, "hsl(0, 0%, 86%)")
                         // If the field is disabled, we can disable pointer events to
                         // make the canvas not interactable
-                        if config.Disabled then
+                        if config.Disabled || config.IsReadOnly then
                             style.backgroundColor "hsl(0, 0%, 96%)"
                             style.pointerEvents.none
                     ]

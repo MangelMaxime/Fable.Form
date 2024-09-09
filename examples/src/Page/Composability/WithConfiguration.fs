@@ -6,9 +6,6 @@ open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
 
-// Student
-// Teacher
-
 /// <summary>
 /// Represent the form values
 /// </summary>
