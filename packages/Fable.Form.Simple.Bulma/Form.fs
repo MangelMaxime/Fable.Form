@@ -81,6 +81,15 @@ module Form =
         Base.disable form
 
     /// <summary>
+    /// Disable a form based on a condition
+    /// </summary>
+    /// <param name="condition">The condition to check</param>
+    /// <param name="form">The form to disable</param>
+    /// <returns>A new form which has been marked as disabled if the condition is <c>true</c></returns>
+    let disableIf (condition: bool) (form: Form<'Values, 'A>) : Form<'Values, 'A> =
+        Base.disableIf condition form
+
+    /// <summary>
     /// Fill a form <c>andThen</c> fill another one.
     ///
     /// This type of form is useful when some part of your form can dynamically change based on the value of another field.

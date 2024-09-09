@@ -315,6 +315,22 @@ let disable (form: Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Fie
     )
 
 /// <summary>
+/// Disable a form based on a condition
+/// </summary>
+/// <param name="condition">The condition to check</param>
+/// <param name="form">The form to disable</param>
+/// <returns>A new form which has been marked as disabled if the condition is <c>true</c></returns>
+let disableIf
+    (condition: bool)
+    (form: Form<'Values, 'Output, 'Field>)
+    : Form<'Values, 'Output, 'Field>
+    =
+    if condition then
+        disable form
+    else
+        form
+
+/// <summary>
 /// Transform the 'output' of a form
 ///
 /// You can use it to keep your forms decoupled from your specific view messages:
