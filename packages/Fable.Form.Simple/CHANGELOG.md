@@ -8,7 +8,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <!-- last_commit_released: 02e31e6fa32f3722da8868ae0b18d34fa1ea68f7 -->
 <!-- EasyBuild: END -->
 
-## 5.0.0-beta-002
+## 5.0.0-beta-003 - 2024-09-09
+
+### 🐞 Bug Fixes
+
+* Fix `Fable.Form` dependency version
+
+## 5.0.0-beta-002 - 2024-09-09
 
 ### 🚀 Features
 
@@ -36,7 +42,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
         { formValue with State = Form.View.State.Loading }
         ```
 
-## 5.0.0-beta-001
+## 5.0.0-beta-001 - 2024-09-08
 
 ### 🚀 Features
 

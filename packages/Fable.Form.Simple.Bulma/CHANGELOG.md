@@ -8,7 +8,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <!-- last_commit_released: 02e31e6fa32f3722da8868ae0b18d34fa1ea68f7 -->
 <!-- EasyBuild: END -->
 
-## 5.0.0-beta-002
+## 5.0.0-beta-003 - 2024-09-09
+
+### 🐞 Bug Fixes
+
+* Fix `Fable.Form` dependency version
+
+## 5.0.0-beta-002 - 2024-09-09
 
 ### 🚀 Features
 
@@ -38,7 +44,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 * Add `Form.disableIf` ([28337d9](https://github.com/glutinum-org/cli/commit/28337d90c3cd7b686f210db5ab5bde79b371bb66))
 
-## 5.0.0-beta-001
+## 5.0.0-beta-001 - 2024-09-08
 
 ### 🚀 Features
 

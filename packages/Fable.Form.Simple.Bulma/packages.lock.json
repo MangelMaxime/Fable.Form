@@ -121,7 +121,7 @@
         "type": "Project",
         "dependencies": {
           "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[2.0.0, )",
+          "Fable.Form": "[3.0.0-beta-002, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )"
         }
