@@ -9,7 +9,7 @@ module SectionField =
 
     type InnerField<'Values> = string * FilledField<'Values> list
 
-    type Field<'Values, 'Output, 'Value>(title: string, fields: FilledField<'Values> list) =
+    type Field<'Values>(title: string, fields: FilledField<'Values> list) =
 
         inherit IGenericField<'Values>()
 

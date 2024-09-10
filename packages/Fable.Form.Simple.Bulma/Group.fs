@@ -8,7 +8,7 @@ open Fable.Form.Simple.Bulma
 
 module Group =
 
-    type Field<'Values, 'Output, 'Value>(fields: FilledField<'Values> list) =
+    type Field<'Values>(fields: FilledField<'Values> list) =
 
         inherit IGenericField<'Values>()
 

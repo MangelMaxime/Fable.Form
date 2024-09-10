@@ -106,7 +106,7 @@ module SignatureField =
         ]
         |> Html.View.withLabelAndError config.Attributes.Label config.ShowError config.Error
 
-    type Field<'Values, 'Output, 'Value>(innerField: InnerField<'Values>) =
+    type Field<'Values>(innerField: InnerField<'Values>) =
 
         inherit IStandardField<'Values, string, Attributes>(innerField)
 

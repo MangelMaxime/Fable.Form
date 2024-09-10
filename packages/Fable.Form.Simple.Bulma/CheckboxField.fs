@@ -25,7 +25,7 @@ module CheckboxField =
               -> Base.Form<'Values, 'Output, 'Field>) =
         Base.field (fun _ -> false)
 
-    type Field<'Values, 'Output, 'Value>(innerField: InnerField<'Values>) =
+    type Field<'Values>(innerField: InnerField<'Values>) =
 
         inherit IStandardField<'Values, bool, Attributes>(innerField)
 

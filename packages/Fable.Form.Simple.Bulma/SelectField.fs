@@ -27,7 +27,7 @@ module SelectField =
               -> Base.Form<'Values, 'Output, 'Field>) =
         Base.field System.String.IsNullOrEmpty
 
-    type Field<'Values, 'Output, 'Value>(innerField: InnerField<'Values>) =
+    type Field<'Values>(innerField: InnerField<'Values>) =
 
         inherit IStandardField<'Values, string, Attributes>(innerField)
 

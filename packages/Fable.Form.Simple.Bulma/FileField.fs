@@ -38,7 +38,7 @@ module FileField =
               -> Base.Form<'Values, 'Output, 'Field>) =
         Base.field Array.isEmpty
 
-    type Field<'Values, 'Output, 'Value>(innerField: InnerField<'Values>) =
+    type Field<'Values>(innerField: InnerField<'Values>) =
 
         inherit IStandardField<'Values, Browser.Types.File array, Attributes>(innerField)
 
