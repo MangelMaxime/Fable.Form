@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>2.0.0</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
             Extensible core library used to build forms
@@ -16,6 +15,10 @@
         <Compile Include="Base.fs" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="Fable.Package.SDK" />
     </ItemGroup>
 </Project>

@@ -174,7 +174,7 @@ let private getReleaseContext
             | None -> false
         )
 
-    let lastChangelogVersion = Changelog.tryGetLastVersion changelogPath
+    let lastChangelogVersion = Changelog.tryFindLastVersion changelogPath
 
     let shouldBumpMajor =
         settings.BumpMajor
@@ -191,8 +191,9 @@ let private getReleaseContext
 
     let refVersion =
         match lastChangelogVersion with
-        | Some version -> version.Version
-        | None -> SemVersion(0, 0, 0)
+        | Ok version -> version.Version
+        | Error Changelog.NoVersionFound -> SemVersion(0, 0, 0)
+        | Error error -> error.ToText() |> failwith
 
     let newVersion =
         match settings.Version with
@@ -239,7 +240,7 @@ let private tryFindAdditionalChangelogContent (text: string) =
 
     apply [] lines false
 
-let private updateChangelog (releaseContext: ReleaseContext) (changelogPath: string) : string =
+let private updateChangelog (releaseContext: ReleaseContext) (changelogPath: string) =
     let newVersionLines = ResizeArray<string>()
 
     let appendLine (line: string) = newVersionLines.Add(line)
@@ -342,14 +343,7 @@ let private updateChangelog (releaseContext: ReleaseContext) (changelogPath: str
 
     File.WriteAllText(changelogPath, newChangelogContent)
 
-    newChangelogContent
-
-let private releasNuGet (projectFile: string) (version: SemVersion) (releaseNote: string) =
-
-    let escapedPackageReleasesNotes =
-        releaseNote
-        // Escape quotes and commas
-        |> fun text -> text.Replace("\"", "\\\\\\\"").Replace(",", "%2c")
+let private releaseNuGet (projectFile: string) =
 
     let struct (standardOutput, _) =
         Command.ReadAsync(
@@ -358,8 +352,6 @@ let private releasNuGet (projectFile: string) (version: SemVersion) (releaseNote
             |> CmdLine.appendRaw "pack"
             |> CmdLine.appendRaw projectFile
             |> CmdLine.appendRaw "-c Release"
-            |> CmdLine.appendRaw $"-p:PackageVersion=\"%s{version.ToString()}\""
-            |> CmdLine.appendRaw $"-p:PackageReleaseNotes=\"%s{escapedPackageReleasesNotes}\""
             |> CmdLine.toString
         )
         |> Async.AwaitTask
@@ -378,7 +370,7 @@ let private releasNuGet (projectFile: string) (version: SemVersion) (releaseNote
 
     printfn $"""Relase: $A{m.Groups.["nupkgPath"].Value}"""
 
-    Nuget.push (m.Groups.["nupkgPath"].Value, Environment.GetEnvironmentVariable("NUGET_KEY"))
+// Nuget.push (m.Groups.["nupkgPath"].Value, Environment.GetEnvironmentVariable("NUGET_KEY"))
 
 let private releaseProject
     (repository: Repository)
@@ -393,9 +385,9 @@ let private releaseProject
         printfn $"No commits to release for project %A{settings.Project}"
 
     else
-        let releaseChangelog = updateChangelog releaseContext changelogPath
+        updateChangelog releaseContext changelogPath
 
-        releasNuGet projectFile releaseContext.NewVersion releaseChangelog
+        releaseNuGet projectFile
 
         printfn $"Changelog updated to version %A{releaseContext.NewVersion}"
 

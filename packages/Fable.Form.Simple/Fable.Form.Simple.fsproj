@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>4.1.0</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
 Contains the global logic of how a form should behave.
@@ -19,6 +18,10 @@ you can use Fable.Form.Simple.Bulma to have a ready to use fields made for Bulma
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="Fable.Elmish" />
       <PackageReference Include="Fable.Package.SDK" />
       <PackageReference Include="Feliz" />

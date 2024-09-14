@@ -21,10 +21,12 @@
         <PackageProjectUrl>https://mangelmaxime.gitbook.io/fable-form/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/MangelMaxime/Fable.Form</RepositoryUrl>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>Maxime Mangel</Authors>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="$(MSBuildThisFileDirectory)\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+        <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath="/" />
 	</ItemGroup>
     <!-- Packages common to all the projects
         Excepts Glutinum.Build which is isolated from the others -->

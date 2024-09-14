@@ -2,6 +2,12 @@
   "version": 2,
   "dependencies": {
     ".NETStandard,Version=v2.1": {
+      "EasyBuild.PackageReleaseNotes.Tasks": {
+        "type": "Direct",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "Fy/NaewrJUaUBIr2KTI7lTZsV5KLNL1YTGPM9pvglf7dYAlSWcvsmVWD2xr+FohuG9oEDbnxeYQNBZqOi4Is6g=="
+      },
       "Fable.Package.SDK": {
         "type": "Direct",
         "requested": "[1.0.0, )",
@@ -121,7 +127,7 @@
         "type": "Project",
         "dependencies": {
           "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[3.0.0-beta-002, )",
+          "Fable.Form": "[1.0.0, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )"
         }

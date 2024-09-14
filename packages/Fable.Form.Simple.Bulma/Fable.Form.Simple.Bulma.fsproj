@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>4.1.0</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
 Implementation of standard fields using Bulma CSS framework, to be used with Fable.Form.Simple.
@@ -27,6 +26,10 @@ Implementation of standard fields using Bulma CSS framework, to be used with Fab
         <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="Fable.Package.SDK" />
       <PackageReference Include="Feliz" />
       <PackageReference Include="Feliz.Bulma" />
