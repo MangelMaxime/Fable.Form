@@ -47,6 +47,7 @@ describe
                                     State = CustomField
                                     Error = None
                                     IsDisabled = false
+                                    IsReadOnly = false
                                 }
                             ]
                         Result = Ok "valid"
@@ -70,6 +71,7 @@ describe
                                     State = CustomField
                                     Error = Some(Error.ValidationFailed "Error #1")
                                     IsDisabled = false
+                                    IsReadOnly = false
                                 }
                             ]
                         Result =
