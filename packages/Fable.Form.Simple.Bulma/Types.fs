@@ -1,7 +1,6 @@
 namespace Fable.Form.Simple.Bulma
 
 open Feliz
-open Elmish
 open Fable.Form
 open Fable.Form.Simple
 
@@ -21,11 +20,10 @@ and FilledField<'Values> = Base.FilledField<IField<'Values>>
 type Form<'Values, 'Output> = Base.Form<'Values, 'Output, IField<'Values>>
 
 [<NoComparison; NoEquality>]
-type StandardRenderFieldConfig<'Msg, 'Value, 'Attributes> =
+type StandardRenderFieldConfig<'Value, 'Attributes> =
     {
-        Dispatch: Dispatch<'Msg>
-        OnChange: 'Value -> 'Msg
-        OnBlur: 'Msg option
+        OnChange: 'Value -> unit
+        OnBlur: (unit -> unit) option
         Disabled: bool
         IsReadOnly: bool
         Value: 'Value
@@ -134,7 +132,7 @@ type IStandardField<'Values, 'Value, 'Attributes when 'Attributes :> Field.IAttr
     =
     inherit IRendererField(FieldRendererType.Standard)
 
-    abstract RenderField: StandardRenderFieldConfig<'Msg, 'Value, 'Attributes> -> ReactElement
+    abstract RenderField: StandardRenderFieldConfig<'Value, 'Attributes> -> ReactElement
 
     member _.InnerField: Field.Field<'Attributes, 'Value, 'Values> = innerField
 
@@ -143,7 +141,4 @@ type IGenericField<'Values>() =
     inherit IRendererField(FieldRendererType.Generic)
 
     abstract RenderField:
-        Dispatch<'Msg> ->
-        Form.View.FieldConfig<'Values, 'Msg> ->
-        FilledField<'Values> ->
-            ReactElement
+        Form.View.FieldConfig<'Values, 'Msg> -> FilledField<'Values> -> ReactElement

@@ -37,7 +37,7 @@ module SelectField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<'Msg, string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
 
             let toOption (key: string, label: string) =
                 Html.option [
@@ -63,10 +63,10 @@ module SelectField =
 
             Bulma.select [
                 prop.disabled config.Disabled
-                prop.onChange (config.OnChange >> config.Dispatch)
+                prop.onChange config.OnChange
 
                 match config.OnBlur with
-                | Some onBlur -> prop.onBlur (fun _ -> config.Dispatch onBlur)
+                | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
 
                 | None -> ()
 

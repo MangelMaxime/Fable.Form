@@ -61,9 +61,7 @@ module TextField =
               -> Base.Form<'Values, 'Output, 'Field>) =
         Base.field System.String.IsNullOrEmpty
 
-    type Field<'Values, 'Output, 'Value, 'Attributes>
-        (inputType: TextType, innerField: InnerField<'Values>)
-        =
+    type Field<'Values>(inputType: TextType, innerField: InnerField<'Values>) =
         inherit IStandardField<'Values, string, Attributes>(innerField)
 
         interface IField<'Values> with
@@ -72,7 +70,7 @@ module TextField =
 
                 Field(inputType, Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<'Msg, string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
 
             let inputFunc =
                 match inputType with
@@ -99,11 +97,10 @@ module TextField =
                 | TextArea -> Bulma.textarea
 
             inputFunc [
-                prop.onChange (config.OnChange >> config.Dispatch)
+                prop.onChange config.OnChange
 
                 match config.OnBlur with
-                | Some onBlur -> prop.onBlur (fun _ -> config.Dispatch onBlur)
-
+                | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
                 | None -> ()
 
                 prop.disabled config.Disabled

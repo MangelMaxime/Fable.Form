@@ -7,8 +7,10 @@ module Form =
 
     module View =
 
-        open Elmish
         open Feliz
+
+        [<NoEquality; NoComparison>]
+        type OnSubmit = OnSubmit of (unit -> unit)
 
         type State =
             | Idle
@@ -36,26 +38,25 @@ module Form =
             | ValidateOnSubmit
 
         [<RequireQualifiedAccess; NoComparison; NoEquality>]
-        type Action<'Msg> =
+        type Action =
             | SubmitOnly of string
-            | Custom of (State -> Elmish.Dispatch<'Msg> -> ReactElement)
+            | Custom of (State -> ReactElement)
 
         [<NoComparison; NoEquality>]
-        type ViewConfig<'Values, 'Msg> =
+        type ViewConfig<'Values, 'Output> =
             {
-                Dispatch: Dispatch<'Msg>
-                OnChange: Model<'Values> -> 'Msg
-                Action: Action<'Msg>
+                OnChange: Model<'Values> -> unit
+                OnSubmit: 'Output -> unit
+                Action: Action
                 Validation: Validation
             }
 
         [<NoComparison; NoEquality>]
-        type FormConfig<'Msg> =
+        type FormConfig<'Output> =
             {
-                Dispatch: Dispatch<'Msg>
-                OnSubmit: 'Msg option
+                OnSubmit: OnSubmit option
                 State: State
-                Action: Action<'Msg>
+                Action: Action
                 Fields: ReactElement list
             }
 
@@ -77,10 +78,10 @@ module Form =
             }
 
         [<NoComparison; NoEquality>]
-        type FieldConfig<'Values, 'Msg> =
+        type FieldConfig<'Values, 'Value> =
             {
-                OnChange: 'Values -> 'Msg
-                OnBlur: (string -> 'Msg) option
+                OnChange: 'Values -> unit
+                OnBlur: (string -> unit) option
                 Disabled: bool
                 IsReadOnly: bool
                 ShowError: string -> bool
@@ -95,14 +96,10 @@ module Form =
             | Error.External externalError -> externalError
 
         let custom
-            (viewConfig: ViewConfig<'Values, 'Msg>)
-            (renderForm: FormConfig<'Msg> -> ReactElement)
-            (renderField:
-                Dispatch<'Msg>
-                    -> FieldConfig<'Values, 'Msg>
-                    -> Base.FilledField<'Field>
-                    -> ReactElement)
-            (form: Base.Form<'Values, 'Msg, 'Field>)
+            (viewConfig: ViewConfig<'Values, 'Output>)
+            (renderForm: FormConfig<'Output> -> ReactElement)
+            (renderField: FieldConfig<'Values, 'Output> -> Base.FilledField<'Field> -> ReactElement)
+            (form: Base.Form<'Values, 'Output, 'Field>)
             (model: Model<'Values>)
             =
 
@@ -120,21 +117,23 @@ module Form =
                         None
 
                     else
-                        Some msg
+                        (fun () -> viewConfig.OnSubmit msg) |> OnSubmit |> Some
 
                 | Result.Error _ ->
                     if errorTracking.ShowAllErrors then
                         None
 
                     else
-                        viewConfig.OnChange
-                            { model with
-                                ErrorTracking =
-                                    ErrorTracking
-                                        {| errorTracking with
-                                            ShowAllErrors = true
-                                        |}
-                            }
+                        fun () ->
+                            viewConfig.OnChange
+                                { model with
+                                    ErrorTracking =
+                                        ErrorTracking
+                                            {| errorTracking with
+                                                ShowAllErrors = true
+                                            |}
+                                }
+                        |> OnSubmit
                         |> Some
 
             let onBlur =
@@ -159,7 +158,6 @@ module Form =
 
             let fieldToElement =
                 renderField
-                    viewConfig.Dispatch
                     {
                         OnChange =
                             fun values ->
@@ -175,7 +173,6 @@ module Form =
 
             renderForm
                 {
-                    Dispatch = viewConfig.Dispatch
                     OnSubmit = onSubmit
                     Action = viewConfig.Action
                     State = model.State

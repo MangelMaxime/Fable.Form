@@ -2,7 +2,6 @@ namespace Fable.Form.Simple.Bulma.Html
 
 open Feliz
 open Feliz.Bulma
-open Elmish
 open Fable.Form
 open Fable.Form.Simple
 open Fable.Form.Simple.Form.View
@@ -58,12 +57,11 @@ module View =
 
     let form
         ({
-             Dispatch = dispatch
              OnSubmit = onSubmit
              State = state
              Action = action
              Fields = fields
-         }: FormConfig<'Msg>)
+         }: FormConfig<'Output>)
         =
 
         let innerForm =
@@ -72,7 +70,9 @@ module View =
                     ev.stopPropagation ()
                     ev.preventDefault ()
 
-                    onSubmit |> Option.map dispatch |> Option.defaultWith ignore
+                    match onSubmit with
+                    | None -> ()
+                    | Some(OnSubmit onSubmit) -> onSubmit ()
                 )
 
                 prop.children [
@@ -117,7 +117,7 @@ module View =
                             ]
                         ]
 
-                    | Action.Custom func -> func state dispatch
+                    | Action.Custom func -> func state
                 ]
             ]
 
@@ -132,9 +132,8 @@ module View =
             ]
         ]
 
-    let rec renderField<'Value, 'Attributes, 'Msg, 'Values when 'Attributes :> Field.IAttributes>
-        (dispatch: Dispatch<'Msg>)
-        (fieldConfig: Form.View.FieldConfig<'Values, 'Msg>)
+    let rec renderField<'Value, 'Attributes, 'Values when 'Attributes :> Field.IAttributes>
+        (fieldConfig: Form.View.FieldConfig<'Values, 'Value>)
         (field: FilledField<'Values>)
         : ReactElement
         =
@@ -212,11 +211,12 @@ module View =
 
                 let config =
                     {
-                        Dispatch = dispatch
                         OnChange = standardField.InnerField.Update >> fieldConfig.OnChange
                         OnBlur =
                             fieldConfig.OnBlur
-                            |> Option.map (fun onBlurEvent -> onBlurEvent (attributes.GetFieldId()))
+                            |> Option.map (fun onBlurEvent ->
+                                fun () -> onBlurEvent (attributes.GetFieldId())
+                            )
                         Disabled = field.IsDisabled || fieldConfig.Disabled
                         IsReadOnly = field.IsReadOnly || fieldConfig.IsReadOnly
                         Value = standardField.InnerField.Value
@@ -230,7 +230,7 @@ module View =
             | FieldRendererType.Generic ->
                 let genericField = field.State :?> IGenericField<'Values>
 
-                genericField.RenderField dispatch fieldConfig field
+                genericField.RenderField fieldConfig field
 
         with error ->
             Fable.Core.JS.console.error error

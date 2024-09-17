@@ -30,6 +30,7 @@ type Route =
     | ValidationStrategies
     | CustomAction
     | CustomField
+    | ReactOnly
     | Disable
     | NotFound
 
@@ -48,6 +49,7 @@ let private toHash page =
         | Route.CustomField -> "custom-field"
         | Route.Disable -> "disable"
         | Route.FormList -> "form-list"
+        | Route.ReactOnly -> "react-only"
 
     "#" + segmentsPart
 
@@ -67,6 +69,7 @@ let routeParser: Parser<Route -> Route, Route> =
             (s "composability" </> s "with-configuration")
         map Route.CustomField (s "custom-field")
         map Route.Disable (s "disable")
+        map Route.ReactOnly (s "react-only")
         map Route.Home top
     ]
 

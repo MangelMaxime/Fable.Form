@@ -221,7 +221,7 @@ let private renderCancelledView (resetDelay: int) =
 
     ]
 
-let private formAction (state: Form.View.State) (dispatch: Dispatch<Msg>) =
+let private formAction (dispatch: Dispatch<Msg>) (state: Form.View.State) =
 
     Bulma.field.div [
         field.isGrouped
@@ -259,9 +259,9 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
     | FillingForm values ->
         Form.View.asHtml
             {
-                Dispatch = dispatch
-                OnChange = FormChanged
-                Action = Form.View.Action.Custom formAction
+                OnChange = FormChanged >> dispatch
+                OnSubmit = dispatch
+                Action = Form.View.Action.Custom(formAction dispatch)
                 Validation = Form.View.ValidateOnSubmit
             }
             form

@@ -1,6 +1,5 @@
 namespace Fable.Form.Simple.Bulma.Fields
 
-open Elmish
 open Feliz
 open Feliz.Bulma
 open Fable.Form.Simple
@@ -30,7 +29,6 @@ module Group =
                 :> IField<'NewValues>
 
         override _.RenderField
-            (dispatch: Dispatch<'Msg>)
             (fieldConfig: Form.View.FieldConfig<'Values, 'Msg>)
             (_filledField: FilledField<'Values>)
             =
@@ -41,7 +39,6 @@ module Group =
                     let f1 = Html.View.ignoreChildError field.Error field
 
                     Html.View.renderField
-                        dispatch
                         { fieldConfig with
                             Disabled = field.IsDisabled || fieldConfig.Disabled
                         }

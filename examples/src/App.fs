@@ -22,7 +22,8 @@ module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
 module CustomAction = Page.CustomAction.Component
 module CustomField = Page.CustomField.Component
-module Disable = Page.Disable.Disable
+module Component = Page.Disable.Component
+module ReactOnly = Page.ReactOnly.Component
 
 [<RequireQualifiedAccess>]
 [<NoComparison>]
@@ -38,7 +39,8 @@ type Page =
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
     | CustomAction of CustomAction.Model
     | CustomField of CustomField.Model
-    | Disable of Disable.Model
+    | Disable of Component.Model
+    | ReactOnly
     | NotFound
 
 [<NoComparison>]
@@ -54,7 +56,7 @@ type Msg =
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
     | CustomFieldMsg of CustomField.Msg
-    | DisableMsg of Disable.Msg
+    | DisableMsg of Component.Msg
 
 [<NoComparison>]
 type Model =
@@ -159,12 +161,18 @@ let private setRoute (optRoute: Router.Route option) (model: Model) =
             Cmd.map CustomFieldMsg subCmd
 
         | Router.Route.Disable ->
-            let (subModel, subCmd) = Disable.init ()
+            let (subModel, subCmd) = Component.init ()
 
             { model with
                 ActivePage = Page.Disable subModel
             },
             Cmd.map DisableMsg subCmd
+
+        | Router.Route.ReactOnly ->
+            { model with
+                ActivePage = Page.ReactOnly
+            },
+            Cmd.none
 
         | Router.Route.Home ->
             { model with
@@ -325,7 +333,7 @@ let private update (msg: Msg) (model: Model) =
     | DisableMsg subMsg ->
         match model.ActivePage with
         | Page.Disable subModel ->
-            Disable.update subMsg subModel
+            Component.update subMsg subModel
             |> Tuple.mapFirst Page.Disable
             |> Tuple.mapFirst (fun page ->
                 { model with
@@ -462,7 +470,8 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
                 renderLink FormList.information
                 renderLink ComposabilitySimple.information
                 renderLink ComposabilityWithConfiguration.information
-                renderLink Disable.information
+                renderLink Component.information
+                renderLink ReactOnly.information
             ]
 
             Bulma.content [
@@ -530,8 +539,10 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
             CustomField.information
             (CustomField.view subModel (CustomFieldMsg >> dispatch))
 
+    | Page.ReactOnly -> renderDemoPage ReactOnly.information (ReactOnly.View())
+
     | Page.Disable subModel ->
-        renderDemoPage Disable.information (Disable.view subModel (DisableMsg >> dispatch))
+        renderDemoPage Component.information (Component.view subModel (DisableMsg >> dispatch))
 
     | Page.NotFound -> Html.text "Page not found"
 

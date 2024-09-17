@@ -282,8 +282,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
     | FillingForm values ->
         Form.View.asHtml
             {
-                Dispatch = dispatch
-                OnChange = FormChanged
+                OnChange = FormChanged >> dispatch
+                OnSubmit = dispatch
                 Action = Form.View.Action.SubmitOnly "Submit"
                 Validation = Form.View.ValidateOnSubmit
             }

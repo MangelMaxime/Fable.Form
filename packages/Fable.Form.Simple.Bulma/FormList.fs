@@ -1,7 +1,6 @@
 namespace Fable.Form.Simple.Bulma.Fields
 
 open Fable.Form
-open Elmish
 open Feliz
 open Feliz.Bulma
 open Fable.Form.Simple
@@ -136,27 +135,25 @@ module FormList =
     module View =
 
         [<NoComparison; NoEquality>]
-        type FormListConfig<'Msg> =
+        type FormListConfig =
             {
-                Dispatch: Dispatch<'Msg>
                 Forms: ReactElement list
                 Label: string
                 Add:
                     {|
-                        Action: unit -> 'Msg
+                        Action: unit -> unit
                         Label: string
                     |} option
                 Disabled: bool
             }
 
         [<NoComparison; NoEquality>]
-        type FormListItemConfig<'Msg> =
+        type FormListItemConfig =
             {
-                Dispatch: Dispatch<'Msg>
                 Fields: ReactElement list
                 Delete:
                     {|
-                        Action: unit -> 'Msg
+                        Action: unit -> unit
                         Label: string
                     |} option
                 Disabled: bool
@@ -164,19 +161,18 @@ module FormList =
 
         let formList
             ({
-                 Dispatch = dispatch
                  Forms = forms
                  Label = label
                  Add = add
                  Disabled = disabled
-             }: FormListConfig<'Msg>)
+             }: FormListConfig)
             =
 
             let addButton =
                 match disabled, add with
                 | (false, Some add) ->
                     Bulma.button.a [
-                        prop.onClick (fun _ -> add.Action() |> dispatch)
+                        prop.onClick (fun _ -> add.Action())
 
                         prop.children [
                             Bulma.icon [
@@ -207,18 +203,17 @@ module FormList =
 
         let formListItem
             ({
-                 Dispatch = dispatch
                  Fields = fields
                  Delete = delete
                  Disabled = disabled
-             }: FormListItemConfig<'Msg>)
+             }: FormListItemConfig)
             =
 
             let removeButton =
                 match disabled, delete with
                 | (false, Some delete) ->
                     Bulma.button.a [
-                        prop.onClick (fun _ -> delete.Action() |> dispatch)
+                        prop.onClick (fun _ -> delete.Action())
 
                         prop.children [
                             Bulma.icon [
@@ -293,13 +288,11 @@ module FormList =
                     }
 
         override _.RenderField
-            (dispatch: Dispatch<'Msg>)
             (fieldConfig: Form.View.FieldConfig<'Values, 'Msg>)
             (filledField: FilledField<'Values>)
             =
             View.formList
                 {
-                    Dispatch = dispatch
                     Forms =
                         innerField.Forms
                         |> List.map (fun
@@ -309,11 +302,7 @@ module FormList =
                                          } ->
                             View.formListItem
                                 {
-                                    Dispatch = dispatch
-                                    Fields =
-                                        List.map
-                                            (Html.View.renderField dispatch fieldConfig)
-                                            fields
+                                    Fields = List.map (Html.View.renderField fieldConfig) fields
                                     Delete =
                                         innerField.Attributes.Delete
                                         |> Option.map (fun deleteLabel ->

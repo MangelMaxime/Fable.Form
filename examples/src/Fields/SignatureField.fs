@@ -32,7 +32,7 @@ module SignatureField =
         Base.field String.IsNullOrEmpty
 
     [<ReactComponent>]
-    let SignatureFieldComponent (config: StandardRenderFieldConfig<'Msg, string, Attributes>) =
+    let SignatureFieldComponent (config: StandardRenderFieldConfig<string, Attributes>) =
         let signaturePadRef = React.useRef<SignaturePad option> None
 
         // Register event listener to send back the signature data when the user finish drawing
@@ -41,7 +41,7 @@ module SignatureField =
                 let callback =
                     fun _ ->
                         let signaturePad = signaturePadRef.current.Value
-                        signaturePad.toDataURL () |> config.OnChange |> config.Dispatch
+                        signaturePad.toDataURL () |> config.OnChange
 
                 match signaturePadRef.current with
                 | Some signaturePad ->
@@ -60,10 +60,9 @@ module SignatureField =
                 }
             , [|
                 box signaturePadRef
-                // We need to re-register the event listener when onChange or dispatch change
+                // We need to re-register the event listener when `onChange` change
                 // otherwise, we will have a closure on the old values and will lose some state
                 // when updating the signature value
-                box config.Dispatch
                 box config.OnChange
             |]
         )
@@ -75,7 +74,7 @@ module SignatureField =
                 match signaturePadRef.current with
                 | Some signaturePad ->
                     signaturePad.clear ()
-                    signaturePad.fromDataURL (config.Value) |> ignore
+                    signaturePad.fromDataURL config.Value |> ignore
                 | None -> ()
 
             , [|
@@ -116,7 +115,7 @@ module SignatureField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<'Msg, string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
             // We need to create a "real" React component to be able to use hooks
             // But if in your case you don't need hooks, you can directly render your HTML here
             // This is how it is done for the standard fields Fable.Form.Simple.Bulma

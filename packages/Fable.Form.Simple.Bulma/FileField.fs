@@ -49,7 +49,7 @@ module FileField =
                 Field(Field.mapValues update innerField)
 
         override _.RenderField
-            (config: StandardRenderFieldConfig<'Msg, Browser.Types.File array, Attributes>)
+            (config: StandardRenderFieldConfig<Browser.Types.File array, Attributes>)
             =
 
             let fileInput =
@@ -73,7 +73,7 @@ module FileField =
 
                                         let files = Array.init files.length (fun i -> files[i])
 
-                                        files |> config.OnChange |> config.Dispatch
+                                        files |> config.OnChange
                                     )
 
                                     prop.multiple config.Attributes.Multiple

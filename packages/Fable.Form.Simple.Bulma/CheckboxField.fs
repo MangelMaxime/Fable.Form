@@ -35,7 +35,7 @@ module CheckboxField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<'Msg, bool, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<bool, Attributes>) =
 
             Bulma.control.div [
                 Bulma.input.labels.checkbox [
@@ -45,10 +45,10 @@ module CheckboxField =
                             // So we need to not listen to the onChange event
                             prop.readOnly config.IsReadOnly
                             if not config.IsReadOnly then
-                                prop.onChange (config.OnChange >> config.Dispatch)
+                                prop.onChange config.OnChange
 
                             match config.OnBlur with
-                            | Some onBlur -> prop.onBlur (fun _ -> config.Dispatch onBlur)
+                            | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
 
                             | None -> ()
                             prop.disabled config.Disabled

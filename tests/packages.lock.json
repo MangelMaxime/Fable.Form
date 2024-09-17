@@ -53,8 +53,11 @@
       },
       "Fable.Core": {
         "type": "Transitive",
-        "resolved": "3.7.1",
-        "contentHash": "IzcCfF96VRC+Rp4B2VtVdOad2TF+Vxi1aVKHZISIJOUW0aOfeiNHwfBaG85UnY5xjzVwtSYxVEuwHphP/41YnQ=="
+        "resolved": "3.2.7",
+        "contentHash": "XYvisWEqzYap+9USQGRyI4F9DmZY5EE3STMiwnvlSrwoqHmZRPHyQR3Rp2oGv/mpzNy7PViKdgCiKC/eviG2Ng==",
+        "dependencies": {
+          "FSharp.Core": "4.7.2"
+        }
       },
       "Fable.React.Types": {
         "type": "Transitive",
@@ -93,8 +96,7 @@
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
-          "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[2.0.0, )",
+          "Fable.Form": "[1.0.0, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )"
         }
@@ -102,8 +104,8 @@
       "fable.form.simple.bulma": {
         "type": "Project",
         "dependencies": {
-          "Fable.Form": "[2.0.0, )",
-          "Fable.Form.Simple": "[4.1.0, )",
+          "Fable.Form": "[1.0.0, )",
+          "Fable.Form.Simple": "[1.0.0, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )",
           "Feliz.Bulma": "[3.0.0, )"
@@ -120,16 +122,6 @@
           "Fable.Browser.Event": "1.4.4",
           "Fable.Browser.WebStorage": "1.0.4",
           "Fable.Core": "3.0.0"
-        }
-      },
-      "Fable.Elmish": {
-        "type": "CentralTransitive",
-        "requested": "[4.2.0, )",
-        "resolved": "4.2.0",
-        "contentHash": "A8lDcHbz2AKcwFa6IlnK8I/21nbsxBcP5Vxq6Gp+jT8dU7Vjpnk8Pbry5+zQrlqjwt1XHU/S5Oo0KZqaGemPUA==",
-        "dependencies": {
-          "FSharp.Core": "4.7.2",
-          "Fable.Core": "3.7.1"
         }
       },
       "Fable.Package.SDK": {

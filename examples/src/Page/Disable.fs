@@ -1,4 +1,4 @@
-module Page.Disable.Disable
+module Page.Disable.Component
 
 open Elmish
 open Fable.Form.Simple
@@ -224,8 +224,8 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
 
             Form.View.asHtml
                 {
-                    Dispatch = dispatch
-                    OnChange = FormChanged
+                    OnChange = FormChanged >> dispatch
+                    OnSubmit = dispatch
                     Action = Form.View.Action.SubmitOnly "Sign in"
                     Validation = Form.View.ValidateOnSubmit
                 }

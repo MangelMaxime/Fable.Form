@@ -11,8 +11,8 @@ module Form =
         open Fable.Form.Simple
 
         let asHtml
-            (config: Form.View.ViewConfig<'Values, 'Msg>)
-            : Form<'Values, 'Msg> -> Form.View.Model<'Values> -> Feliz.ReactElement
+            (config: Form.View.ViewConfig<'Values, 'Output>)
+            : Form<'Values, 'Output> -> Form.View.Model<'Values> -> Feliz.ReactElement
             =
             Form.View.custom config Html.View.form Html.View.renderField
 

@@ -36,7 +36,7 @@ module RadioField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<'Msg, string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
 
             let radio (key: string, label: string) =
                 Bulma.input.labels.radio [
@@ -49,10 +49,10 @@ module RadioField =
                         // So we need to not listen to the onChange event
                         prop.readOnly config.IsReadOnly
                         if not config.IsReadOnly then
-                            prop.onChange (fun (_: bool) -> config.OnChange key |> config.Dispatch)
+                            prop.onChange (fun (_: bool) -> config.OnChange key)
 
                         match config.OnBlur with
-                        | Some onBlur -> prop.onBlur (fun _ -> config.Dispatch onBlur)
+                        | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
 
                         | None -> ()
                     ]

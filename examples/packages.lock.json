@@ -212,8 +212,7 @@
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
-          "Fable.Elmish": "[4.2.0, )",
-          "Fable.Form": "[2.0.0, )",
+          "Fable.Form": "[1.0.0, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )"
         }
@@ -221,8 +220,8 @@
       "fable.form.simple.bulma": {
         "type": "Project",
         "dependencies": {
-          "Fable.Form": "[2.0.0, )",
-          "Fable.Form.Simple": "[4.1.0, )",
+          "Fable.Form": "[1.0.0, )",
+          "Fable.Form.Simple": "[1.0.0, )",
           "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )",
           "Feliz.Bulma": "[3.0.0, )"

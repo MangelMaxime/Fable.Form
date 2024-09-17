@@ -1,9 +1,15 @@
-module Page.Login.Component
+module Page.ReactOnly.Component
 
-open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
 open Feliz
+
+type FormResult =
+    {
+        Email: EmailAddress.T
+        Password: string
+        RememberMe: bool
+    }
 
 /// <summary>
 /// Type used to represent the form values
@@ -16,52 +22,12 @@ type Values =
     }
 
 /// <summary>
-/// Represents the model of your Elmish component
-///
-/// In the case of the Login example, we just need to keep track of the Form model state
-/// </summary>
-type Model = Form.View.Model<Values>
-
-/// <summary>
-/// Represents the different messages that your application can react too
-/// </summary>
-type Msg =
-    // Used when a change occur in the form
-    | FormChanged of Model
-    // Used when the user submit the form
-    | LogIn of EmailAddress.T * string * bool
-
-let init () =
-    {
-        Email = ""
-        Password = ""
-        RememberMe = false
-    }
-    |> Form.View.idle,
-    Cmd.none
-
-let update (msg: Msg) (model: Model) =
-    match msg with
-    // Update our model to it's new state
-    | FormChanged newModel -> newModel, Cmd.none
-
-    // Form has been submitted
-    // Here, we have access to the value submitted from the from
-    | LogIn(_email, _password, _rememberMe) ->
-        printfn "%A" _password
-        // For this example, we just set a message in the Form view
-        { model with
-            State = Form.View.Success "You have been logged in successfully"
-        },
-        Cmd.none
-
-/// <summary>
 /// Define the form logic
 ///
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form: Form<Values, Msg> =
+let form: Form<Values, _> =
     let emailField =
         Form.textField
             {
@@ -130,29 +96,53 @@ let form: Form<Values, Msg> =
     /// Function used to map the form values into the message to send back to the update function
     /// </summary>
     /// <returns></returns>
-    let onSubmit = fun email password rememberMe -> LogIn(email, password, rememberMe)
+    let onSubmit =
+        fun email password rememberMe ->
+            {
+                Email = email
+                Password = password
+                RememberMe = rememberMe
+            }
+            : FormResult
 
     Form.succeed onSubmit
     |> Form.append emailField
     |> Form.append passwordField
     |> Form.append rememberMe
 
-let view (model: Model) (dispatch: Dispatch<Msg>) =
+[<ReactComponent>]
+let View () =
+    let formState, setFormState =
+        {
+            Email = ""
+            Password = ""
+            RememberMe = false
+        }
+        |> Form.View.idle
+        |> React.useState
+
+    let onSubmit =
+        fun (_formResult: FormResult) ->
+            { formState with
+                State = Form.View.Success "You have been logged in successfully"
+            }
+            |> setFormState
+
     Form.View.asHtml
         {
-            OnChange = FormChanged >> dispatch
-            OnSubmit = dispatch
+            OnChange = setFormState
+            OnSubmit = onSubmit
             Action = Form.View.Action.SubmitOnly "Sign in"
             Validation = Form.View.ValidateOnSubmit
         }
         form
-        model
+        formState
 
 let information: DemoInformation.T =
     {
-        Title = "Login"
-        Route = Router.Route.Login
-        Description = "A simple login form with 3 fields"
+        Title = "React only (no Elmish)"
+        Route = Router.Route.ReactOnly
+        Description = "Demonstrates how to use the form component using React only via hooks"
         Remark = None
         Code =
             """

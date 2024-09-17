@@ -1,6 +1,5 @@
 namespace Fable.Form.Simple.Bulma.Fields
 
-open Elmish
 open Feliz
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
@@ -32,7 +31,6 @@ module SectionField =
                 Field(title, newFields)
 
         override _.RenderField
-            (dispatch: Dispatch<'Msg>)
             (fieldConfig: Form.View.FieldConfig<'Values, 'Msg>)
             (_filledField: FilledField<'Values>)
             =
@@ -43,7 +41,6 @@ module SectionField =
                     let f1 = Html.View.ignoreChildError field.Error field
 
                     Html.View.renderField
-                        dispatch
                         { fieldConfig with
                             Disabled = field.IsDisabled || fieldConfig.Disabled
                         }
