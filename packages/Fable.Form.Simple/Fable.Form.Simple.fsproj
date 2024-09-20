@@ -22,7 +22,8 @@ you can use Fable.Form.Simple.Bulma to have a ready to use fields made for Bulma
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Fable.Package.SDK" />
+      <PackageReference Include="Fable.Package.SDK" PrivateAssets="all" />
       <PackageReference Include="Feliz" />
+      <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>

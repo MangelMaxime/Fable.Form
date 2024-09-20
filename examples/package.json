@@ -9,7 +9,8 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "bulma": "^0.9.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-signature-pad-wrapper": "^4.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.1",

@@ -204,17 +204,12 @@
         }
       },
       "fable.form": {
-        "type": "Project",
-        "dependencies": {
-          "Fable.Package.SDK": "[1.0.0, )"
-        }
+        "type": "Project"
       },
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
-          "Fable.Form": "[1.0.0, )",
-          "Fable.Package.SDK": "[1.0.0, )",
-          "Feliz": "[2.8.0, )"
+          "Fable.Form": "[1.0.0, )"
         }
       },
       "fable.form.simple.bulma": {
@@ -222,7 +217,6 @@
         "dependencies": {
           "Fable.Form": "[1.0.0, )",
           "Fable.Form.Simple": "[1.0.0, )",
-          "Fable.Package.SDK": "[1.0.0, )",
           "Feliz": "[2.8.0, )",
           "Feliz.Bulma": "[3.0.0, )"
         }

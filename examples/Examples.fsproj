@@ -44,6 +44,7 @@
     <PackageReference Include="Fable.Promise" />
     <PackageReference Include="Feliz" />
     <PackageReference Include="Feliz.Bulma" />
+    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Glutinum.Feliz.ReactSignaturePadWrapper" />
   </ItemGroup>
 </Project>

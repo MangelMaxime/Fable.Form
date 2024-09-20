@@ -10,9 +10,6 @@
     "license": "MIT",
     "devDependencies": {
         "bulma": "^0.9.3",
-        "chalk": "^5.0.1",
-        "changelog-parser": "^2.8.1",
-        "concurrently": "^7.0.0",
         "gatsby-remark-vscode": "^3.3.1",
         "gh-pages": "^3.2.3",
         "mocha": "^9.2.2",
@@ -21,10 +18,7 @@
         "nodemon": "^2.0.15",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-signature-pad-wrapper": "^4.0.3",
         "remark-github": "^11.2.2",
-        "shelljs": "^0.8.5",
-        "shx": "^0.3.4",
         "vscode-theme-onelight": "github:akamud/vscode-theme-onelight"
     }
 }
