@@ -9,7 +9,7 @@ open Fable.Core.JsInterop
 // Only import the style if we are in DEBUG mode
 // otherwise the style will be included by Nacara directly
 #if DEBUG
-importSideEffects "./../../docs/style.scss"
+importSideEffects "./../../../docs/style.scss"
 #endif
 
 module SignUp = Page.SignUp.Component
@@ -558,6 +558,7 @@ let private view (model: Model) (dispatch: Dispatch<Msg>) =
 
 open Elmish.UrlParser
 open Elmish.Navigation
+open Elmish.React
 
 #if DEBUG
 open Elmish.HMR

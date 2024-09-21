@@ -21,7 +21,7 @@ type DocsCommand() =
         if settings.IsWatch then
             Command.Run("npx", "nacara watch")
         else
-            ExampleCommand().Execute(context, ExampleSettings()) |> ignore
+            // ExampleCommand().Execute(context, ExampleSettings()) |> ignore
             Command.Run("npx", "nacara")
 
         0

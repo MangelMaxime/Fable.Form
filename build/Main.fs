@@ -22,7 +22,13 @@ let main args =
         config.AddCommand<TestCommand>("test").WithDescription("Run the tests")
         |> ignore
 
-        config.AddCommand<ExampleCommand>("example") |> ignore
+        config.AddBranch(
+            "example",
+            fun (example: IConfigurator<ExampleSettings>) ->
+                example.AddCommand<ReactExampleCommand>("react") |> ignore
+                example.AddCommand<SutilExampleCommand>("sutil") |> ignore
+        )
+        |> ignore
 
         config.AddCommand<DocsCommand>("docs") |> ignore
 

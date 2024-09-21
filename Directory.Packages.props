@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageVersion Include="EasyBuild.PackageReleaseNotes.Tasks" Version="1.2.0" />
     <PackageVersion Include="Fable.Browser.Dom" Version="2.17.0" />
+    <PackageVersion Include="Fable.Core" Version="4.3.0" />
     <PackageVersion Include="Fable.Elmish" Version="4.2.0" />
     <PackageVersion Include="Fable.Elmish.Browser" Version="4.0.3" />
     <PackageVersion Include="Fable.Elmish.HMR" Version="7.0.0" />
@@ -15,5 +16,6 @@
     <PackageVersion Include="Feliz.Bulma" Version="3.0.0" />
     <PackageVersion Include="FSharp.Core" Version="[5.0.2,)" />
     <PackageVersion Include="Glutinum.Feliz.ReactSignaturePadWrapper" Version="1.0.2" />
+    <PackageVersion Include="Sutil" Version="2.0.13" />
   </ItemGroup>
 </Project>

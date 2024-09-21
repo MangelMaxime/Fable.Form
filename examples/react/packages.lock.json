@@ -151,11 +151,6 @@
           "Fable.Core": "3.2.8"
         }
       },
-      "Fable.Core": {
-        "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA=="
-      },
       "Fable.Elmish.UrlParser": {
         "type": "Transitive",
         "resolved": "1.0.2",
@@ -204,22 +199,33 @@
         }
       },
       "fable.form": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "FSharp.Core": "[5.0.2, )"
+        }
       },
       "fable.form.simple": {
         "type": "Project",
         "dependencies": {
+          "FSharp.Core": "[5.0.2, )",
           "Fable.Form": "[1.0.0, )"
         }
       },
       "fable.form.simple.bulma": {
         "type": "Project",
         "dependencies": {
+          "FSharp.Core": "[5.0.2, )",
           "Fable.Form": "[1.0.0, )",
           "Fable.Form.Simple": "[1.0.0, )",
           "Feliz": "[2.8.0, )",
           "Feliz.Bulma": "[3.0.0, )"
         }
+      },
+      "Fable.Core": {
+        "type": "CentralTransitive",
+        "requested": "[4.3.0, )",
+        "resolved": "4.3.0",
+        "contentHash": "sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA=="
       },
       "Fable.Package.SDK": {
         "type": "CentralTransitive",

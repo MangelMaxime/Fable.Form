@@ -7,8 +7,6 @@ module Form =
 
     module View =
 
-        open Feliz
-
         [<NoEquality; NoComparison>]
         type OnSubmit = OnSubmit of (unit -> unit)
 
@@ -38,26 +36,26 @@ module Form =
             | ValidateOnSubmit
 
         [<RequireQualifiedAccess; NoComparison; NoEquality>]
-        type Action =
+        type Action<'ViewNode> =
             | SubmitOnly of string
-            | Custom of (State -> ReactElement)
+            | Custom of (State -> 'ViewNode)
 
         [<NoComparison; NoEquality>]
-        type ViewConfig<'Values, 'Output> =
+        type ViewConfig<'Values, 'Output, 'ViewNode> =
             {
                 OnChange: Model<'Values> -> unit
                 OnSubmit: 'Output -> unit
-                Action: Action
+                Action: Action<'ViewNode>
                 Validation: Validation
             }
 
         [<NoComparison; NoEquality>]
-        type FormConfig<'Output> =
+        type FormConfig<'Output, 'ViewNode> =
             {
                 OnSubmit: OnSubmit option
                 State: State
-                Action: Action
-                Fields: ReactElement list
+                Action: Action<'ViewNode>
+                Fields: 'ViewNode list
             }
 
         let idle (values: 'Values) =
@@ -96,9 +94,9 @@ module Form =
             | Error.External externalError -> externalError
 
         let custom
-            (viewConfig: ViewConfig<'Values, 'Output>)
-            (renderForm: FormConfig<'Output> -> ReactElement)
-            (renderField: FieldConfig<'Values, 'Output> -> Base.FilledField<'Field> -> ReactElement)
+            (viewConfig: ViewConfig<'Values, 'Output, 'ViewNode>)
+            (renderForm: FormConfig<'Output, 'ViewNode> -> 'ViewNode)
+            (renderField: FieldConfig<'Values, 'Output> -> Base.FilledField<'Field> -> 'ViewNode)
             (form: Base.Form<'Values, 'Output, 'Field>)
             (model: Model<'Values>)
             =

@@ -33,7 +33,7 @@
     <Compile Include="src/App.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../packages/Fable.Form.Simple.Bulma/Fable.Form.Simple.Bulma.fsproj" />
+    <ProjectReference Include="../../packages/Fable.Form.Simple.Bulma/Fable.Form.Simple.Bulma.fsproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Browser.Dom" />

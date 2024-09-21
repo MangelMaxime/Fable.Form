@@ -1,7 +1,8 @@
-namespace Fable.Form.Simple.Bulma
+namespace Fable.Form.Simple.Sutil.Bulma
 
+open Sutil.Core
 open Fable.Form
-open Fable.Form.Simple.Bulma.Fields
+open Fable.Form.Simple.Sutil.Bulma.Fields
 
 [<RequireQualifiedAccess>]
 module Form =
@@ -11,10 +12,10 @@ module Form =
         open Fable.Form.Simple
 
         let asHtml
-            (config: Form.View.ViewConfig<'Values, 'Output, Feliz.ReactElement>)
-            : Form<'Values, 'Output> -> Form.View.Model<'Values> -> Feliz.ReactElement
+            (config: Form.View.ViewConfig<'Values, 'Output, SutilElement>)
+            : Form<'Values, 'Output> -> Form.View.Model<'Values> -> SutilElement
             =
-            Form.View.custom config Html.View.form Html.View.renderField
+            Form.View.custom config Helpers.View.form Helpers.View.renderField
 
     (*
         Combinators functions are used to combine multiple forms together to create a more complex form.

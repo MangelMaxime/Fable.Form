@@ -1,21 +1,22 @@
-namespace Fable.Form.Simple.Bulma.Html
+namespace Fable.Form.Simple.Sutil.Bulma.Helpers
 
-open Feliz
-open Feliz.Bulma
+open Sutil
+open Sutil.Core
+open Sutil.Bulma
 open Fable.Form
 open Fable.Form.Simple
 open Fable.Form.Simple.Form.View
-open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Sutil.Bulma
 
 module View =
 
     let fieldLabel (label: string) =
-        Bulma.label [
+        bulma.label [
             prop.text label
         ]
 
     let errorMessage (message: string) =
-        Bulma.help [
+        bulma.help [
             color.isDanger
             prop.text message
         ]
@@ -29,26 +30,23 @@ module View =
                 error
                 |> Option.map errorToString
                 |> Option.map errorMessage
-                |> Option.defaultValue (Bulma.help [])
+                |> Option.defaultValue (bulma.help [])
 
             else
-                Bulma.help []
+                bulma.help []
 
-    let wrapInFieldContainer (children: ReactElement list) =
-        Bulma.field.div [
-            prop.children children
-        ]
+    let wrapInFieldContainer (children: SutilElement list) = bulma.field.div children
 
     let withLabelAndError
         (label: string)
         (showError: bool)
         (error: Error.Error option)
-        (fieldAsHtml: ReactElement)
-        : ReactElement
+        (fieldAsHtml: SutilElement)
+        : SutilElement
         =
         [
             fieldLabel label
-            Bulma.control.div [
+            bulma.control.div [
                 fieldAsHtml
             ]
             errorMessageAsHtml showError error
@@ -61,12 +59,12 @@ module View =
              State = state
              Action = action
              Fields = fields
-         }: FormConfig<'Output, ReactElement>)
+         }: FormConfig<'Output, SutilElement>)
         =
 
         let innerForm =
             Html.form [
-                prop.onSubmit (fun ev ->
+                Ev.onSubmit (fun ev ->
                     ev.stopPropagation ()
                     ev.preventDefault ()
 
@@ -75,67 +73,62 @@ module View =
                     | Some(OnSubmit onSubmit) -> onSubmit ()
                 )
 
-                prop.children [
-                    yield! fields
+                yield! fields
 
-                    match state with
-                    | Error error -> errorMessage error
+                match state with
+                | Error error -> errorMessage error
 
-                    | Success success ->
-                        Bulma.field.div [
-                            Bulma.control.div [
-                                text.hasTextCentered
-                                color.hasTextSuccess
-                                text.hasTextWeightBold
+                | Success success ->
+                    bulma.field.div [
+                        bulma.control.div [
+                            text.hasTextCentered
+                            color.hasTextSuccess
+                            text.hasTextWeightBold
 
-                                prop.text success
+                            prop.text success
+                        ]
+                    ]
+
+                | Loading
+                | ReadOnly
+                | Idle -> Html.none
+
+                match action with
+                | Action.SubmitOnly submitLabel ->
+                    bulma.field.div [
+                        field.isGrouped
+                        field.isGroupedRight
+
+                        bulma.control.div [
+                            bulma.button.button [
+                                prop.typeSubmit
+                                color.isPrimary
+                                prop.text submitLabel
+                                // If the form is loading animate the submit button with the loading animation
+                                if state = Loading then
+                                    button.isLoading
                             ]
                         ]
 
-                    | Loading
-                    | ReadOnly
-                    | Idle -> Html.none
+                    ]
 
-                    match action with
-                    | Action.SubmitOnly submitLabel ->
-                        Bulma.field.div [
-                            field.isGrouped
-                            field.isGroupedRight
-
-                            prop.children [
-                                Bulma.control.div [
-                                    Bulma.button.button [
-                                        prop.type'.submit
-                                        color.isPrimary
-                                        prop.text submitLabel
-                                        // If the form is loading animate the submit button with the loading animation
-                                        if state = Loading then
-                                            button.isLoading
-                                    ]
-                                ]
-
-                            ]
-                        ]
-
-                    | Action.Custom func -> func state
-                ]
+                | Action.Custom func -> func state
             ]
 
         Html.div [
             prop.className "form-designer"
-            prop.children [
-                innerForm
 
-                Html.div [
-                    prop.id "field-properties-portal"
-                ]
+            innerForm
+
+            Html.div [
+                prop.id "field-properties-portal"
             ]
         ]
 
     let rec renderField<'Value, 'Attributes, 'Values when 'Attributes :> Field.IAttributes>
         (fieldConfig: Form.View.FieldConfig<'Values, 'Value>)
         (field: FilledField<'Values>)
-        : ReactElement
+        : SutilElement
         =
 
         (***

@@ -28,7 +28,7 @@ type TestCommand() =
 
     override _.Execute(context, settings) =
 
-        let destination = DirectoryInfo(VirtualWorkspace.tests.fableBuild)
+        let destination = DirectoryInfo(VirtualWorkspace.tests.fableBuild.``.``)
 
         destination.ReCreate()
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <!-- Warn on ununsed variables -->
+    <OtherFlags>--warnon:1182</OtherFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src/App.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../packages/Fable.Form.Simple.Sutil.Bulma/Fable.Form.Simple.Sutil.Bulma.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" VersionOverride="8.0.301" />
+  </ItemGroup>
+</Project>
