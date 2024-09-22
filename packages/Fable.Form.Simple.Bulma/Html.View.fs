@@ -64,71 +64,59 @@ module View =
          }: FormConfig<'Output, ReactElement>)
         =
 
-        let innerForm =
-            Html.form [
-                prop.onSubmit (fun ev ->
-                    ev.stopPropagation ()
-                    ev.preventDefault ()
+        Html.form [
+            prop.onSubmit (fun ev ->
+                ev.stopPropagation ()
+                ev.preventDefault ()
 
-                    match onSubmit with
-                    | None -> ()
-                    | Some(OnSubmit onSubmit) -> onSubmit ()
-                )
+                match onSubmit with
+                | None -> ()
+                | Some(OnSubmit onSubmit) -> onSubmit ()
+            )
 
-                prop.children [
-                    yield! fields
-
-                    match state with
-                    | Error error -> errorMessage error
-
-                    | Success success ->
-                        Bulma.field.div [
-                            Bulma.control.div [
-                                text.hasTextCentered
-                                color.hasTextSuccess
-                                text.hasTextWeightBold
-
-                                prop.text success
-                            ]
-                        ]
-
-                    | Loading
-                    | ReadOnly
-                    | Idle -> Html.none
-
-                    match action with
-                    | Action.SubmitOnly submitLabel ->
-                        Bulma.field.div [
-                            field.isGrouped
-                            field.isGroupedRight
-
-                            prop.children [
-                                Bulma.control.div [
-                                    Bulma.button.button [
-                                        prop.type'.submit
-                                        color.isPrimary
-                                        prop.text submitLabel
-                                        // If the form is loading animate the submit button with the loading animation
-                                        if state = Loading then
-                                            button.isLoading
-                                    ]
-                                ]
-
-                            ]
-                        ]
-
-                    | Action.Custom func -> func state
-                ]
-            ]
-
-        Html.div [
-            prop.className "form-designer"
             prop.children [
-                innerForm
+                yield! fields
 
-                Html.div [
-                    prop.id "field-properties-portal"
-                ]
+                match state with
+                | Error error -> errorMessage error
+
+                | Success success ->
+                    Bulma.field.div [
+                        Bulma.control.div [
+                            text.hasTextCentered
+                            color.hasTextSuccess
+                            text.hasTextWeightBold
+
+                            prop.text success
+                        ]
+                    ]
+
+                | Loading
+                | ReadOnly
+                | Idle -> Html.none
+
+                match action with
+                | Action.SubmitOnly submitLabel ->
+                    Bulma.field.div [
+                        field.isGrouped
+                        field.isGroupedRight
+
+                        prop.children [
+                            Bulma.control.div [
+                                Bulma.button.button [
+                                    prop.type'.submit
+                                    color.isPrimary
+                                    prop.text submitLabel
+                                    // If the form is loading animate the submit button with the loading animation
+                                    if state = Loading then
+                                        button.isLoading
+                                ]
+                            ]
+
+                        ]
+                    ]
+
+                | Action.Custom func -> func state
             ]
         ]
 

@@ -16,6 +16,8 @@ examples/
         fableBuild/
     sutil/
         fableBuild/
+    lit/
+        fableBuild/
 tests/
     fableBuild/
 """

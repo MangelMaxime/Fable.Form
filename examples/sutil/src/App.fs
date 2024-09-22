@@ -7,6 +7,8 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Form.Simple
 open Fable.Form.Simple.Sutil.Bulma
+open Browser
+open Browser.Types
 
 // Only import the style if we are in DEBUG mode
 // otherwise the style will be included by Nacara directly
@@ -122,11 +124,20 @@ let app () =
         |> State.Filling
         |> Store.make
 
-    let inputStore = Store.make ""
-    let mappedInputStore = Store.map (fun x -> x + " mapped") inputStore
+    let stateStore2 =
+        {
+            Email = ""
+            Password = ""
+            RememberMe = false
+        }
+        |> Store.make
+
+    let emailValue = Store.mapDistinct (fun state -> state.Email) stateStore2
+
+    // let inputStore = Store.make ""
+    // let mappedInputStore = Store.map (fun x -> x + " mapped") inputStore
 
     bulma.section [
-
         Bind.el (
             stateStore,
             fun state ->
@@ -161,23 +172,84 @@ let app () =
                         form
                         formValues
         )
-
-        Html.div [
-            // Html.div [
-            //     prop.text $"Input value: %s{input}"
-            // ]
-
-            Html.input [
-                // Ev.onInput (fun ev ->
-                //     let value: string = ev.target?value
-                //     Store.set inputStore value
-                // )
-                // prop.value input
-                Bind.attr ("value", mappedInputStore)
-            ]
-        ]
-
     ]
+
+//     // Html.div [
+//     //     // Html.div [
+//     //     //     prop.text $"Input value: %s{input}"
+//     //     // ]
+
+//     //     Html.input [
+//     //         // Ev.onInput (fun ev ->
+//     //         //     let value: string = ev.target?value
+//     //         //     Store.set inputStore value
+//     //         // )
+//     //         // prop.value input
+//     //         Bind.attr ("value", mappedInputStore)
+//     //     ]
+//     // ]
+
+//     Bind.el (
+//         inputStore,
+//         fun input ->
+//             Html.div [
+//                 Html.div [
+//                     prop.text $"Input value: %s{input}"
+//                 ]
+
+//                 Html.input [
+//                     Ev.onInput (fun ev ->
+//                         let value: string = ev.target?value
+//                         Store.set inputStore value
+//                     )
+//                     prop.value input
+//                 ]
+
+//                 Html.div [
+//                     onUnmount (fun ev ->
+//                         let input = (ev.target :?> HTMLInputElement)
+
+//                         printfn "onUnmount"
+
+//                         if document.activeElement = input then
+//                             printfn "Focused"
+//                     ) [
+//                         // CoreElements.EventModifier.Once
+//                     ]
+//                 ]
+//             ]
+//     )
+
+// ]
+// let inputStore = Store.make ""
+
+// Bind.el (inputStore, fun input ->
+//     Html.div [
+//         onMount (fun _ ->
+//             printfn "Mounted"
+//         ) []
+
+//         onUnmount (fun _ ->
+//             printfn "Unmounted"
+//         ) []
+
+//         unsubscribeOnUnmount ([
+//             fun () -> printfn "Unsubscribed"
+//         ])
+
+//         Html.div [
+//             prop.text $"Input value: %s{input}"
+//         ]
+
+//         Html.input [
+//             Ev.onInput (fun ev ->
+//                 let value: string = ev.target?value
+//                 Store.set inputStore value
+//             )
+//             prop.value input
+//         ]
+//     ]
+// )
 
 let hello () =
     Program.mount ("root", app ()) |> ignore

@@ -67,3 +67,7 @@ type SutilExampleCommand() =
             VirtualWorkspace.examples.sutil.fableBuild.``.``,
             Workspace.examples.sutil.``.``
         )
+
+type LitExampleCommand() =
+    inherit
+        ExampleCommand(VirtualWorkspace.examples.lit.fableBuild.``.``, Workspace.examples.lit.``.``)

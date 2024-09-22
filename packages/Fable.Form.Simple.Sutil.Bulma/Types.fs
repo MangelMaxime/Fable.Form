@@ -10,7 +10,6 @@ open Fable.Form.Simple
 type IField<'Values> =
 
     abstract MapFieldValues: update: ('Values -> 'NewValues) -> IField<'NewValues>
-// update: ('Values -> 'NewValues -> 'NewValues) -> values: 'NewValues -> IField<'NewValues>
 
 and FilledField<'Values> = Base.FilledField<IField<'Values>>
 

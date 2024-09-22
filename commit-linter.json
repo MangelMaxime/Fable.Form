@@ -13,6 +13,7 @@
         "Fable.Form",
         "Fable.Form.Simple",
         "Fable.Form.Simple.Bulma",
+        "Fable.Form.Simple.Sutil.Bulma",
         "fable-form-simple-bulma"
     ]
 }

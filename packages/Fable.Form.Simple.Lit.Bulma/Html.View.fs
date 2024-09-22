@@ -1,27 +1,32 @@
-namespace Fable.Form.Simple.Sutil.Bulma.Helpers
+namespace Fable.Form.Simple.Lit.Bulma.Html
 
-open Sutil
-open Sutil.Core
-open Sutil.Bulma
+open Lit
 open Fable.Form
 open Fable.Form.Simple
 open Fable.Form.Simple.Form.View
-open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Lit.Bulma
 
 module View =
 
     let fieldLabel (label: string) =
-        bulma.label [
-            prop.text label
-        ]
+        html
+            $"""
+            <label class="label">
+                {label}
+            </label>
+        """
 
     let errorMessage (message: string) =
-        bulma.help [
-            color.isDanger
-            prop.text message
-        ]
+        html
+            $"""
+            <p class="help is-danger">
+                {message}
+            </p>
+        """
 
     let errorMessageAsHtml (showError: bool) (error: Error.Error option) =
+        let empty = html $"""<p class="help"></p>"""
+
         match error with
         | Some(Error.External externalError) -> errorMessage externalError
 
@@ -30,25 +35,34 @@ module View =
                 error
                 |> Option.map errorToString
                 |> Option.map errorMessage
-                |> Option.defaultValue (bulma.help [])
+                |> Option.defaultValue empty
 
             else
-                bulma.help []
+                empty
 
-    let wrapInFieldContainer (children: SutilElement list) = bulma.field.div children
+    let wrapInFieldContainer (children: TemplateResult list) =
+        html
+            $"""
+            <div class="field">
+                {children}
+            </div>
+        """
 
     let withLabelAndError
         (label: string)
         (showError: bool)
         (error: Error.Error option)
-        (fieldAsHtml: SutilElement)
-        : SutilElement
+        (fieldAsHtml: TemplateResult)
+        : TemplateResult
         =
         [
             fieldLabel label
-            bulma.control.div [
-                fieldAsHtml
-            ]
+            html
+                $"""
+                <div class="control">
+                    {fieldAsHtml}
+                </div>
+            """
             errorMessageAsHtml showError error
         ]
         |> wrapInFieldContainer
@@ -59,65 +73,74 @@ module View =
              State = state
              Action = action
              Fields = fields
-         }: FormConfig<'Output, SutilElement>)
+         }: FormConfig<'Output, TemplateResult>)
         =
 
-        Html.form [
-            Ev.onSubmit (fun ev ->
-                ev.stopPropagation ()
-                ev.preventDefault ()
-
-                match onSubmit with
-                | None -> ()
-                | Some(OnSubmit onSubmit) -> onSubmit ()
-            )
-
-            yield! fields
-
+        let stateElement =
             match state with
             | Error error -> errorMessage error
 
             | Success success ->
-                bulma.field.div [
-                    bulma.control.div [
-                        text.hasTextCentered
-                        color.hasTextSuccess
-                        text.hasTextWeightBold
-
-                        prop.text success
-                    ]
-                ]
+                html
+                    $"""
+                    <div class="field">
+                        <div class="control has-text-centered has-text-weight-bold has-text-success">
+                            {success}
+                        </div>
+                    </div>
+                """
 
             | Loading
             | ReadOnly
-            | Idle -> Html.none
+            | Idle -> html $""" """
 
+        let actionElement =
             match action with
             | Action.SubmitOnly submitLabel ->
-                bulma.field.div [
-                    field.isGrouped
-                    field.isGroupedRight
-
-                    bulma.control.div [
-                        bulma.button.button [
-                            prop.typeSubmit
-                            color.isPrimary
-                            prop.text submitLabel
-                            // If the form is loading animate the submit button with the loading animation
-                            if state = Loading then
-                                button.isLoading
-                        ]
+                let buttonCls =
+                    [
+                        "button"
+                        "is-primary"
+                        if state = Loading then
+                            "is-loading"
                     ]
+                    |> String.concat " "
 
-                ]
+                html
+                    $"""
+                    <div class="field is-grouped is-grouped-right">
+                        <div class="control">
+                            <button class="{buttonCls}" type="submit">
+                                {submitLabel}
+                            </button>
+                        </div>
+                    </div>
+                """
 
             | Action.Custom func -> func state
-        ]
+
+        html
+            $"""
+            <form
+                @submit={fun (ev: Browser.Types.Event) ->
+                             ev.stopPropagation ()
+                             ev.preventDefault ()
+
+                             match onSubmit with
+                             | None -> ()
+                             | Some(OnSubmit onSubmit) -> onSubmit ()}
+            >
+
+                {fields}
+                {stateElement}
+                {actionElement}
+            </form>
+        """
 
     let rec renderField<'Value, 'Attributes, 'Values when 'Attributes :> Field.IAttributes>
         (fieldConfig: Form.View.FieldConfig<'Values, 'Value>)
         (field: FilledField<'Values>)
-        : SutilElement
+        : TemplateResult
         =
 
         (***
@@ -217,12 +240,14 @@ module View =
         with error ->
             Fable.Core.JS.console.error error
 #if DEBUG
-            Html.div [
-                prop.text
-                    "Field not implemented, please implement the field `IStandardField<'Values>` or `IGenericField<'Values>`"
-            ]
+            html
+                $"""
+                <div>
+                    Field not implemented, please implement the field `IStandardField<'Values>` or `IGenericField<'Values>`
+                </div>
+            """
 #else
-            Html.none
+            html $""""""
 #endif
 
     let ignoreChildError

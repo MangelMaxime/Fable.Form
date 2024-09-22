@@ -1,6 +1,6 @@
-namespace Fable.Form.Simple.Bulma
+namespace Fable.Form.Simple.Lit.Bulma
 
-open Feliz
+open Lit
 open Fable.Form
 open Fable.Form.Simple
 
@@ -131,7 +131,7 @@ type IStandardField<'Values, 'Value, 'Attributes when 'Attributes :> Field.IAttr
     =
     inherit IRendererField(FieldRendererType.Standard)
 
-    abstract RenderField: StandardRenderFieldConfig<'Value, 'Attributes> -> ReactElement
+    abstract RenderField: StandardRenderFieldConfig<'Value, 'Attributes> -> TemplateResult
 
     member _.InnerField: Field.Field<'Attributes, 'Value, 'Values> = innerField
 
@@ -140,4 +140,4 @@ type IGenericField<'Values>() =
     inherit IRendererField(FieldRendererType.Generic)
 
     abstract RenderField:
-        Form.View.FieldConfig<'Values, 'Msg> -> FilledField<'Values> -> ReactElement
+        Form.View.FieldConfig<'Values, 'Msg> -> FilledField<'Values> -> TemplateResult

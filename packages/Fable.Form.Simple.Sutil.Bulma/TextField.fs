@@ -5,8 +5,19 @@ open Fable.Form
 open Sutil
 open Sutil.Bulma
 open Fable.Form.Simple.Sutil.Bulma
+open Browser
+open Browser.Types
 
 module TextField =
+
+    type FocusedInfo =
+        {
+            FieldId: string
+            IsFocused: bool
+            SelectionStart: int
+        }
+
+    let mutable focusedInfo: FocusedInfo option = None
 
     [<NoComparison>]
     type Attributes =
@@ -98,14 +109,53 @@ module TextField =
                 | TextArea -> bulma.textarea
 
             inputFunc [
+                CoreElements.onMount
+                    (fun ev ->
+                        let input = (ev.target :?> HTMLInputElement)
+
+                        match focusedInfo with
+                        | Some info when info.FieldId = config.Attributes.FieldId ->
+                            input.focus ()
+                            input.selectionStart <- info.SelectionStart
+                            focusedInfo <- None
+                        | _ -> ()
+                    )
+                    [
+                        CoreElements.EventModifier.Once
+                    ]
+
+                CoreElements.onUnmount
+                    (fun ev ->
+                        let input = (ev.target :?> HTMLInputElement)
+
+                        printfn "Unfocused"
+
+                        if document.activeElement = input then
+                            printfn "Focused"
+
+                            focusedInfo <-
+                                Some
+                                    {
+                                        FieldId = config.Attributes.FieldId
+                                        IsFocused = true
+                                        SelectionStart = input.selectionStart
+                                    }
+                    )
+                    [
+                        CoreElements.EventModifier.Once
+                    ]
+
+                prop.id config.Attributes.FieldId
+
                 // Note: Compared to React, we need to register to both onInput and onBlur events
                 // to mimic React onChange event
                 Ev.onInput (fun event ->
-                    printfn "OnInput"
                     let value: string = event.target?value
                     config.OnChange value
                 )
 
+                // TODO: Redo no need to call config.OnChange onBlur
+                // last input has already been sent
                 match config.OnBlur with
                 | Some onBlur ->
                     Ev.onBlur (fun event ->
