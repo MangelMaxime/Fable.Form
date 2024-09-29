@@ -7,17 +7,9 @@ open Sutil.Bulma
 open Fable.Form.Simple.Sutil.Bulma
 open Browser
 open Browser.Types
+open Helpers.Focus
 
 module TextField =
-
-    type FocusedInfo =
-        {
-            FieldId: string
-            IsFocused: bool
-            SelectionStart: int
-        }
-
-    let mutable focusedInfo: FocusedInfo option = None
 
     [<NoComparison>]
     type Attributes =
@@ -32,9 +24,9 @@ module TextField =
             /// </summary>
             Placeholder: string
             /// <summary>
-            /// A list of HTML attributes to add to the generated field
+            /// `auto-complete` attribute value
             /// </summary>
-            HtmlAttributes: Core.SutilElement list
+            AutoComplete: string option
         }
 
         interface Field.IAttributes with
@@ -83,6 +75,10 @@ module TextField =
                 Field(inputType, Field.mapValues update innerField)
 
         override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
+            let onBlur =
+                match config.OnBlur with
+                | Some onBlur -> fun _ -> onBlur ()
+                | None -> ignore
 
             let inputFunc: children: seq<Core.SutilElement> -> Core.SutilElement =
                 match inputType with
@@ -108,66 +104,45 @@ module TextField =
 
                 | TextArea -> bulma.textarea
 
+            let autoComplete =
+                match config.Attributes.AutoComplete with
+                | Some value -> value
+                | None -> "off"
+
             inputFunc [
-                CoreElements.onMount
-                    (fun ev ->
-                        let input = (ev.target :?> HTMLInputElement)
-
-                        match focusedInfo with
-                        | Some info when info.FieldId = config.Attributes.FieldId ->
-                            input.focus ()
-                            input.selectionStart <- info.SelectionStart
-                            focusedInfo <- None
-                        | _ -> ()
-                    )
-                    [
-                        CoreElements.EventModifier.Once
-                    ]
-
-                CoreElements.onUnmount
-                    (fun ev ->
-                        let input = (ev.target :?> HTMLInputElement)
-
-                        printfn "Unfocused"
-
-                        if document.activeElement = input then
-                            printfn "Focused"
-
-                            focusedInfo <-
-                                Some
-                                    {
-                                        FieldId = config.Attributes.FieldId
-                                        IsFocused = true
-                                        SelectionStart = input.selectionStart
-                                    }
-                    )
-                    [
-                        CoreElements.EventModifier.Once
-                    ]
-
                 prop.id config.Attributes.FieldId
 
-                // Note: Compared to React, we need to register to both onInput and onBlur events
-                // to mimic React onChange event
+                Ev.onMount (fun ev ->
+                    let input = (ev.target :?> HTMLInputElement)
+
+                    if FocusedField.Instance.fieldId = config.Attributes.FieldId then
+                        FocusedField.Instance.fieldId <- ""
+                        input.focus ()
+
+                        FocusedField.Instance.selection
+                        |> Option.iter (fun (selectionStart, selectionEnd) ->
+                            input.selectionStart <- selectionStart
+                            input.selectionEnd <- selectionEnd
+                        )
+                )
+
+                Ev.onUnmount (fun ev ->
+                    let input = (ev.target :?> HTMLInputElement)
+
+                    if document.activeElement = input then
+                        FocusedField.SaveFocused(
+                            config.Attributes.FieldId,
+                            input.selectionStart,
+                            input.selectionEnd
+                        )
+                )
+
                 Ev.onInput (fun event ->
                     let value: string = event.target?value
                     config.OnChange value
                 )
 
-                // TODO: Redo no need to call config.OnChange onBlur
-                // last input has already been sent
-                match config.OnBlur with
-                | Some onBlur ->
-                    Ev.onBlur (fun event ->
-                        let value: string = event.target?value
-                        config.OnChange value
-                        onBlur ()
-                    )
-                | None ->
-                    Ev.onBlur (fun event ->
-                        let value: string = event.target?value
-                        config.OnChange value
-                    )
+                Ev.onBlur onBlur
 
                 prop.disabled config.Disabled
 
@@ -179,6 +154,6 @@ module TextField =
                 if config.ShowError && config.Error.IsSome then
                     color.isDanger
 
-                yield! config.Attributes.HtmlAttributes
+                prop.autoComplete autoComplete
             ]
             |> Helpers.View.withLabelAndError config.Attributes.Label config.ShowError config.Error

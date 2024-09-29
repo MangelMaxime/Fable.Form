@@ -1,4 +1,4 @@
-module Examples.Shared.Forms.Login
+module Examples.Shared.Forms.ValidationStrategies
 
 open Fable.Form.Simple
 
@@ -63,24 +63,37 @@ type FormResult =
     {
         Email: EmailAddress
         Password: Password
-        RememberMe: bool
     }
 
 /// <summary>
-/// Type used to represent the form values
+/// Represent the form values
 /// </summary>
 type Values =
     {
+        ValidationStrategy: string
         Email: string
         Password: string
-        RememberMe: bool
     }
+
+type Model =
+    // Used when the form is being filled
+    | FillingForm of Form.View.Model<Values>
+    // User when the form has been submitted with success
+    | FormFilled of EmailAddress * Password
+
+type Msg =
+    // Used when a change occure in the form
+    | FormChanged of Form.View.Model<Values>
+    // Used when the user submit the form
+    | Submit of FormResult
+    // Message sent when the user ask to reset the demo
+    | ResetDemo
 
 let init =
     {
+        ValidationStrategy = "onBlur"
         Email = ""
         Password = ""
-        RememberMe = false
     }
     |> Form.View.idle
 
@@ -91,6 +104,30 @@ let init =
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
 let form: Form<Values, FormResult> =
+    let validationStrategiesField =
+        Form.radioField
+            {
+                Parser = Ok
+                Value = fun values -> values.ValidationStrategy
+                Update =
+                    fun newValue values ->
+                        { values with
+                            ValidationStrategy = newValue
+                        }
+                Error = fun _ -> None
+                Attributes =
+                    {
+                        FieldId = "validation-strategy"
+                        Label = "Validation strategy"
+                        Options =
+                            [
+                                "onSubmit", "Validate on form submit"
+                                "onBlur", "Validate on field blur"
+                            ]
+                    }
+
+            }
+
     let emailField =
         Form.textField
             {
@@ -131,54 +168,14 @@ let form: Form<Values, FormResult> =
                     }
             }
 
-    let rememberMe =
-        Form.checkboxField
-            {
-                Parser = Ok
-                Value = fun values -> values.RememberMe
-                Update =
-                    fun newValue values ->
-                        { values with
-                            RememberMe = newValue
-                        }
-                Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "remember-me"
-                        Text = "Remember me"
-                    }
-            }
+    let onSmubit _ email password =
+        {
+            Email = email
+            Password = password
+        }
+        : FormResult
 
-    /// <summary>
-    /// Function used to map the form values into the message to send back to the update function
-    /// </summary>
-    /// <returns></returns>
-    let onSubmit =
-        fun email password rememberMe ->
-            {
-                Email = email
-                Password = password
-                RememberMe = rememberMe
-            }
-            : FormResult
-
-    Form.succeed onSubmit
+    Form.succeed onSmubit
+    |> Form.append validationStrategiesField
     |> Form.append emailField
     |> Form.append passwordField
-    |> Form.append rememberMe
-
-let information<'FrameworkRoute> : DemoInformation<_> =
-    {
-        Title = "Login"
-        Route = SharedRouter.Route.Login
-        Description = "A simple login form with 3 fields"
-        Remark = None
-        Code =
-            """
-Form.succeed onSubmit
-|> Form.append emailField
-|> Form.append passwordField
-|> Form.append rememberMe
-            """
-        GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
-    }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Examples.Sutil", "sutil\Examples.Sutil.fsproj", "{3716DA69-B63A-4D7D-890A-7E1FBDF4E152}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Examples.Shared.Lit", "shared\Examples.Shared.Lit.fsproj", "{95B19B4D-8B7B-44F6-8B25-D3240934A5A5}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Examples.Shared.Sutil", "shared\Examples.Shared.Sutil.fsproj", "{95B19B4D-8B7B-44F6-8B25-D3240934A5A5}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.Form", "..\packages\Fable.Form\Fable.Form.fsproj", "{DF267841-D1B0-4983-A3EC-4090D61044C6}"
 EndProject

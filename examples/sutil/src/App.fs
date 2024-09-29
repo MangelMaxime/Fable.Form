@@ -2,6 +2,7 @@ module Examples
 
 open Sutil
 open Sutil.Bulma
+open Sutil.Router
 open Sutil.CoreElements
 open Fable.Core
 open Fable.Core.JsInterop
@@ -16,240 +17,94 @@ open Browser.Types
 importSideEffects "./../../../docs/style.scss"
 #endif
 
-/// <summary>
-/// Type used to represent the form values
-/// </summary>
-type Values =
-    {
-        Email: string
-        Password: string
-        RememberMe: bool
-    }
+let private renderDemoPage
+    ({
+         Title = titleText
+         Remark = optRemark
+         Code = codeText
+         GithubLink = sourceCodeUrl
+     }: DemoInformation<_>)
+    (content: Sutil.Core.SutilElement)
+    =
 
-/// <summary>
-/// Define the form logic
-///
-/// We need to define each field logic first and then define how the fields are wired together to make the form
-/// </summary>
-/// <returns>The form ready to be used in the view</returns>
-let form: Form<Values, _> =
-    let emailField =
-        Form.textField
-            {
-                Parser = Ok
-                Value = fun values -> values.Email
-                Update =
-                    fun newValue values ->
-                        { values with
-                            Email = newValue
-                        }
-                Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "email"
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        HtmlAttributes =
-                            [
-                                prop.autoComplete "email"
-                            ]
-                    }
-            }
+    Html.div [
+        Html.br []
 
-    let passwordField =
-        Form.passwordField
-            {
-                Parser = Ok
-                Value = fun values -> values.Password
-                Update =
-                    fun newValue values ->
-                        { values with
-                            Password = newValue
-                        }
-                Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "password"
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        HtmlAttributes =
-                            [
-                                prop.autoComplete "current-password"
-                            ]
-                    }
-            }
+        Html.div [
+            prop.className "content has-text-centered"
 
-    let rememberMe =
-        Form.checkboxField
-            {
-                Parser = Ok
-                Value = fun values -> values.RememberMe
-                Update =
-                    fun newValue values ->
-                        { values with
-                            RememberMe = newValue
-                        }
-                Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "remember-me"
-                        Text = "Remember me"
-                    }
-            }
+            bulma.title.h5 [
+                title.is5
+                prop.text titleText
+            ]
+        ]
 
-    /// <summary>
-    /// Function used to map the form values into the message to send back to the update function
-    /// </summary>
-    /// <returns></returns>
-    let onSubmit = fun email password rememberMe -> (email, password, rememberMe)
+        match optRemark with
+        | Some remark -> Html.parse remark
 
-    Form.succeed onSubmit
-    |> Form.append emailField
-    |> Form.append passwordField
-    |> Form.append rememberMe
+        | None -> Html.none
 
-[<RequireQualifiedAccess>]
-type State =
-    | Filling of Form.View.Model<Values>
-    | Filled of string * string * bool
+        Html.hr []
 
-let app () =
-    let stateStore =
-        {
-            Email = ""
-            Password = ""
-            RememberMe = false
-        }
-        |> Form.View.idle
-        |> State.Filling
-        |> Store.make
+        Html.pre [
+            prop.className "code-preview"
 
-    let stateStore2 =
-        {
-            Email = ""
-            Password = ""
-            RememberMe = false
-        }
-        |> Store.make
+            Html.code [
+                prop.text (codeText.Trim())
+            ]
+        ]
 
-    let emailValue = Store.mapDistinct (fun state -> state.Email) stateStore2
+        Html.div [
+            prop.className "has-text-centered"
 
-    // let inputStore = Store.make ""
-    // let mappedInputStore = Store.map (fun x -> x + " mapped") inputStore
+            Html.a [
+                prop.href sourceCodeUrl
+                prop.text "Full source code"
+            ]
+        ]
 
-    bulma.section [
-        Bind.el (
-            stateStore,
-            fun state ->
-                match state with
-                | State.Filled(email, password, rememberMe) ->
-                    Html.div [
-                        Html.h1 [
-                            prop.text "Form filled"
-                        ]
-                        Html.p [
-                            prop.text $"Email: %s{email}"
-                        ]
-                        Html.p [
-                            prop.text $"Password: %s{password}"
-                        ]
-                        Html.p [
-                            prop.text $"Remember me: %b{rememberMe}"
-                        ]
-                    ]
+        Html.hr []
 
-                | State.Filling formValues ->
-                    Form.View.asHtml
-                        {
-                            OnChange =
-                                fun values ->
-                                    printfn "Form values changed: %A" values
-                                    State.Filling values |> Store.set stateStore
-                            OnSubmit = fun result -> State.Filled result |> Store.set stateStore
-                            Action = Form.View.Action.SubmitOnly "Sign in"
-                            Validation = Form.View.ValidateOnSubmit
-                        }
-                        form
-                        formValues
-        )
+        Html.div [
+            content
+        ]
     ]
 
-//     // Html.div [
-//     //     // Html.div [
-//     //     //     prop.text $"Input value: %s{input}"
-//     //     // ]
+let app () =
+    let pageStore: IStore<Router.Route option> = Store.make None
 
-//     //     Html.input [
-//     //         // Ev.onInput (fun ev ->
-//     //         //     let value: string = ev.target?value
-//     //         //     Store.set inputStore value
-//     //         // )
-//     //         // prop.value input
-//     //         Bind.attr ("value", mappedInputStore)
-//     //     ]
-//     // ]
+    let routerSubscription =
+        Navigable.listenLocation (Parser.parseHash Router.routeParser, Store.set pageStore)
 
-//     Bind.el (
-//         inputStore,
-//         fun input ->
-//             Html.div [
-//                 Html.div [
-//                     prop.text $"Input value: %s{input}"
-//                 ]
+    bulma.columns [
+        unsubscribeOnUnmount [
+            routerSubscription
+        ]
 
-//                 Html.input [
-//                     Ev.onInput (fun ev ->
-//                         let value: string = ev.target?value
-//                         Store.set inputStore value
-//                     )
-//                     prop.value input
-//                 ]
+        bulma.column [
+            column.is8
+            column.isOffset2
 
-//                 Html.div [
-//                     onUnmount (fun ev ->
-//                         let input = (ev.target :?> HTMLInputElement)
+            Bind.fragment
+                pageStore
+                (fun page ->
+                    match page with
+                    | None -> Html.div "Not found"
+                    | Some page ->
+                        match page with
+                        | Router.Route.Home ->
+                            Html.div [
+                                Html.parse Examples.Shared.Pages.Home.htmlContent
+                            ]
+                        | Router.Route.Login ->
+                            renderDemoPage
+                                Examples.Shared.Forms.Login.information
+                                (Examples.Sutil.Pages.Login.Page())
 
-//                         printfn "onUnmount"
+                        | Router.Route.FormList -> Examples.Sutil.Pages.FormList.Page()
+                        | Router.Route.SignUp -> Examples.Sutil.Pages.SignUp.Page()
+                )
+        ]
+    ]
 
-//                         if document.activeElement = input then
-//                             printfn "Focused"
-//                     ) [
-//                         // CoreElements.EventModifier.Once
-//                     ]
-//                 ]
-//             ]
-//     )
-
-// ]
-// let inputStore = Store.make ""
-
-// Bind.el (inputStore, fun input ->
-//     Html.div [
-//         onMount (fun _ ->
-//             printfn "Mounted"
-//         ) []
-
-//         onUnmount (fun _ ->
-//             printfn "Unmounted"
-//         ) []
-
-//         unsubscribeOnUnmount ([
-//             fun () -> printfn "Unsubscribed"
-//         ])
-
-//         Html.div [
-//             prop.text $"Input value: %s{input}"
-//         ]
-
-//         Html.input [
-//             Ev.onInput (fun ev ->
-//                 let value: string = ev.target?value
-//                 Store.set inputStore value
-//             )
-//             prop.value input
-//         ]
-//     ]
-// )
-
-let hello () =
-    Program.mount ("root", app ()) |> ignore
+Program.mount ("root", app ()) |> ignore

@@ -98,7 +98,7 @@ module TextField =
                 | Some onBlur -> fun _ -> onBlur ()
                 | None -> ignore
 
-            let autoComp =
+            let autoComplete =
                 match config.Attributes.AutoComplete with
                 | Some value -> value
                 | None -> "off"
@@ -112,7 +112,7 @@ module TextField =
                     .value={config.Value}
                     .disabled={config.Disabled}
                     .readOnly={config.IsReadOnly}
-                    .autocomplete={autoComp}
+                    .autocomplete={autoComplete}
 
                     @input={fun (e: Browser.Types.KeyboardEvent) -> config.OnChange e.target?value}
                     @blur={onBlur}
