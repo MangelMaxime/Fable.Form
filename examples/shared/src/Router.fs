@@ -28,7 +28,7 @@ type Route<'FrameworkRoute when 'FrameworkRoute :> IRoute> =
     | FormList
     | Composability of ComposabilityRoute
     | ValidationStrategies
-    | CustomAction
+    | CustomActions
     | CustomField
     | FrameworkSpecific of 'FrameworkRoute
     | Disable
@@ -43,7 +43,7 @@ type Route<'FrameworkRoute when 'FrameworkRoute :> IRoute> =
         | DynamicForm -> "dynamic-form"
         | FormList -> "form-list"
         | ValidationStrategies -> "validation-strategies"
-        | CustomAction -> "custom-actions"
+        | CustomActions -> "custom-actions"
         | CustomField -> "custom-field"
         | Composability subRoute -> "composability/" + ComposabilityRoute.toSegment subRoute
         | FrameworkSpecific route -> route.Segments
@@ -64,7 +64,7 @@ let routeParser
         map Route.DynamicForm (s "dynamic-form")
         map Route.FormList (s "form-list")
         map Route.ValidationStrategies (s "validation-strategies")
-        map Route.CustomAction (s "custom-actions")
+        map Route.CustomActions (s "custom-actions")
         map (Route.Composability ComposabilityRoute.Simple) (s "composability" </> s "simple")
         map
             (Route.Composability ComposabilityRoute.WithConfiguration)

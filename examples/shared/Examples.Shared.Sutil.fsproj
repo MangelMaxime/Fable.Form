@@ -6,16 +6,7 @@
         <!-- Warn on ununsed variables -->
         <OtherFlags>--warnon:1182</OtherFlags>
     </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="src/Env.fs" />
-        <Compile Include="src/Router.fs" />
-        <Compile Include="src/Global.fs" />
-        <Compile Include="src/Forms/FormList.fs" />
-        <Compile Include="src/Forms/Login.fs" />
-        <Compile Include="src/Forms/SignUp.fs" />
-        <Compile Include="src/Forms/ValidationStrategies.fs" />
-        <Compile Include="src/Pages/Home.fs" />
-    </ItemGroup>
+    <Import Project="Examples.Shared.Common.props" />
     <ItemGroup>
         <ProjectReference Include="../../packages/Fable.Form.Simple.Sutil.Bulma/Fable.Form.Simple.Sutil.Bulma.fsproj" />
     </ItemGroup>

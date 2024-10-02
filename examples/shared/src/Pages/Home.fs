@@ -17,10 +17,11 @@ let renderLink
 </li>
     """
 
+// {renderLink Examples.Shared.Forms.ComposabilitySimple.information}
+//         {renderLink Examples.Shared.Forms.ComposabilityWithConfiguration.information}
+
 let htmlContent =
     $"""
-
-
 <div class="content">
     <br>
         <div class="has-text-centered">
@@ -35,6 +36,11 @@ let htmlContent =
 
     <ul>
         {renderLink Examples.Shared.Forms.Login.information}
+        {renderLink Examples.Shared.Forms.SignUp.information}
+        {renderLink Examples.Shared.Forms.File.information}
+        {renderLink Examples.Shared.Forms.DynamicForm.information}
+        {renderLink Examples.Shared.Forms.FormList.information}
+        {renderLink Examples.Shared.Forms.Disable.information}
     </ul>
 
     <p class="subtitle is-5">Advanced</p>
@@ -43,7 +49,8 @@ let htmlContent =
     <p>The goal here is to demonstrate advanced usage that you could need when implementing your own view</p>
 
     <ul>
-
+        {renderLink Examples.Shared.Forms.ValidationStrategies.information}
+        {renderLink Examples.Shared.Forms.CustomActions.information}
     </ul>
 </div>
     """

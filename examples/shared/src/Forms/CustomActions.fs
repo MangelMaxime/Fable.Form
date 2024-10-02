@@ -1,4 +1,4 @@
-module Examples.Shared.Forms.ValidationStrategies
+module Examples.Shared.Forms.CustomActions
 
 open Fable.Form.Simple
 
@@ -57,77 +57,32 @@ module Domain =
                 Error "The password must have at least 4 characters"
 
 /// <summary>
-/// Type used to represent the result of the form
+/// Type used to represents the result of the form. When the form is submitted this is what we are returned
 /// </summary>
 type FormResult =
     {
         Email: EmailAddress
         Password: Password
+
     }
 
 /// <summary>
-/// Represent the form values
+/// Represents the value of the form, it also have an <c>Errors</c> field to store the external errors
 /// </summary>
 type Values =
     {
-        ValidationStrategy: string
         Email: string
         Password: string
     }
 
-type Model =
-    // Used when the form is being filled
-    | FillingForm of Form.View.Model<Values>
-    // User when the form has been submitted with success
-    | FormFilled of EmailAddress * Password
-
-type Msg =
-    // Used when a change occure in the form
-    | FormChanged of Form.View.Model<Values>
-    // Used when the user submit the form
-    | Submit of FormResult
-    // Message sent when the user ask to reset the demo
-    | ResetDemo
-
 let init =
     {
-        ValidationStrategy = "onBlur"
         Email = ""
         Password = ""
     }
-    |> Form.View.idle
+    |> Form.View.idle // By default, set the form in idle mode
 
-/// <summary>
-/// Define the form logic
-///
-/// We need to define each field logic first and then define how the fields are wired together to make the form
-/// </summary>
-/// <returns>The form ready to be used in the view</returns>
 let form: Form<Values, FormResult> =
-    let validationStrategiesField =
-        Form.radioField
-            {
-                Parser = Ok
-                Value = fun values -> values.ValidationStrategy
-                Update =
-                    fun newValue values ->
-                        { values with
-                            ValidationStrategy = newValue
-                        }
-                Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "validation-strategy"
-                        Label = "Validation strategy"
-                        Options =
-                            [
-                                "onSubmit", "Validate on form submit"
-                                "onBlur", "Validate on field blur"
-                            ]
-                    }
-
-            }
-
     let emailField =
         Form.textField
             {
@@ -144,7 +99,7 @@ let form: Form<Values, FormResult> =
                         FieldId = "email"
                         Label = "Email"
                         Placeholder = "some@email.com"
-                        AutoComplete = Some "email"
+                        AutoComplete = None
                     }
             }
 
@@ -164,57 +119,48 @@ let form: Form<Values, FormResult> =
                         FieldId = "password"
                         Label = "Password"
                         Placeholder = "Your password"
-                        AutoComplete = Some "current-password"
+                        AutoComplete = None
                     }
             }
 
-    let onSmubit _ email password =
+    let onSubmit email password =
         {
             Email = email
             Password = password
         }
         : FormResult
 
-    Form.succeed onSmubit
-    |> Form.append validationStrategiesField
-    |> Form.append emailField
-    |> Form.append passwordField
+    Form.succeed onSubmit |> Form.append emailField |> Form.append passwordField
 
-let information<'FrameworkRoute> : DemoInformation<_> =
-    let remark =
-        $"""
-<div class="content has-text-centered">
-    This feature depends on the view implementation, here it is offered by <b>Fable.Form.Simple</b> package
-</div>
-        """
-        |> Some
-
+let information<'R> : DemoInformation<_> =
     {
-        Title = "Validation strategies"
-        Remark = remark
-        Route = SharedRouter.Route.ValidationStrategies
-        Description = "A form to demonstrate the 2 validation strategies: 'onSubmit' or 'onBlur'."
+        Title = "Custom actions"
+        Route = SharedRouter.Route.CustomActions
+        Description =
+            "A form demonstrating how you can customize the actions, can be used to add a cancel button for example."
+        Remark = None
         Code =
             """
 let form =
     Form.succeed onSubmit
         |> Form.append emailField
         |> Form.append passwordField
-        |> Form.append rememberMe
+
+let formAction
+    (onCancel: unit -> unit) // This is an example of passing an additional parameter
+    (dispatch : Dispatch<Msg>) =
+    // Definition of the custom action view
+    // ...
 
 Form.View.asHtml
     {
         Dispatch = dispatch
         OnChange = FormChanged
-        Action = Form.View.Action.SubmitOnly "Submit"
-        Validation =
-            if model.Values.ValidationStrategy = "onSubmit" then
-                Form.View.ValidateOnSubmit
-            else
-                Form.View.ValidateOnBlur
+        Action = Form.View.Action.Custom (formAction onCancel)
+        Validation = Form.View.ValidateOnSubmit
     }
     form
-    model
+    values
             """
         GithubLink = Env.generateGithubUrl __SOURCE_DIRECTORY__ __SOURCE_FILE__
     }

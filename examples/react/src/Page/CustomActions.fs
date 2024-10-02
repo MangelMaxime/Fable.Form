@@ -286,8 +286,8 @@ let form =
         |> Form.append passwordField
 
 let formAction
-    (state : Form.View.State)
-    (dispatch : Dispatch<Msg>) =
+    (onCancel: unit -> unit) // This is an example of passing an additional parameter to the custom action
+    (state : Form.View.State) =
     // Definition of the custom action view
     // ...
 
@@ -295,7 +295,7 @@ Form.View.asHtml
     {
         Dispatch = dispatch
         OnChange = FormChanged
-        Action = Form.View.Action.Custom formAction
+        Action = Form.View.Action.Custom (formAction onCancel)
         Validation = Form.View.ValidateOnSubmit
     }
     form

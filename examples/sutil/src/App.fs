@@ -4,12 +4,7 @@ open Sutil
 open Sutil.Bulma
 open Sutil.Router
 open Sutil.CoreElements
-open Fable.Core
 open Fable.Core.JsInterop
-open Fable.Form.Simple
-open Fable.Form.Simple.Sutil.Bulma
-open Browser
-open Browser.Types
 
 // Only import the style if we are in DEBUG mode
 // otherwise the style will be included by Nacara directly
@@ -24,7 +19,7 @@ let private renderDemoPage
          Code = codeText
          GithubLink = sourceCodeUrl
      }: DemoInformation<_>)
-    (content: Sutil.Core.SutilElement)
+    (content: Core.SutilElement)
     =
 
     Html.div [
@@ -40,7 +35,10 @@ let private renderDemoPage
         ]
 
         match optRemark with
-        | Some remark -> Html.parse remark
+        | Some remark ->
+            Html.div [
+                Html.parse remark
+            ]
 
         | None -> Html.none
 
@@ -96,13 +94,46 @@ let app () =
                             Html.div [
                                 Html.parse Examples.Shared.Pages.Home.htmlContent
                             ]
+
                         | Router.Route.Login ->
                             renderDemoPage
                                 Examples.Shared.Forms.Login.information
                                 (Examples.Sutil.Pages.Login.Page())
 
-                        | Router.Route.FormList -> Examples.Sutil.Pages.FormList.Page()
-                        | Router.Route.SignUp -> Examples.Sutil.Pages.SignUp.Page()
+                        | Router.Route.FormList ->
+                            renderDemoPage
+                                Examples.Shared.Forms.FormList.information
+                                (Examples.Sutil.Pages.FormList.Page())
+
+                        | Router.Route.SignUp ->
+                            renderDemoPage
+                                Examples.Shared.Forms.SignUp.information
+                                (Examples.Sutil.Pages.SignUp.Page())
+
+                        | Router.Route.ValidationStrategies ->
+                            renderDemoPage
+                                Examples.Shared.Forms.ValidationStrategies.information
+                                (Examples.Sutil.Pages.ValidationStrategies.Page())
+
+                        | Router.Route.Disable ->
+                            renderDemoPage
+                                Examples.Shared.Forms.Disable.information
+                                (Examples.Sutil.Pages.Disable.Page())
+
+                        | Router.Route.CustomActions ->
+                            renderDemoPage
+                                Examples.Shared.Forms.CustomActions.information
+                                (Examples.Sutil.Pages.CustomActions.Page())
+
+                        | Router.Route.DynamicForm ->
+                            renderDemoPage
+                                Examples.Shared.Forms.DynamicForm.information
+                                (Examples.Sutil.Pages.DynamicForm.Page())
+
+                        | Router.Route.File ->
+                            renderDemoPage
+                                Examples.Shared.Forms.File.information
+                                (Examples.Sutil.Pages.File.Page())
                 )
         ]
     ]

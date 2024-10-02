@@ -38,8 +38,9 @@ module SelectField =
                 Field(Field.mapValues update innerField)
 
         override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
+            let toOption (selectedKey: string) (key: string, label: string) =
+                let isSelected = (selectedKey = key)
 
-            let toOption (key: string, label: string) =
                 Html.option [
                     if config.IsReadOnly then
                         prop.style [
@@ -47,6 +48,8 @@ module SelectField =
                         ]
                     prop.value key
                     prop.text label
+                    if isSelected then
+                        prop.selected true
                 ]
 
             let placeholderOption =
@@ -56,7 +59,8 @@ module SelectField =
                             Css.displayNone
                         ]
                     prop.disabled true
-                    prop.value ""
+                    if config.Value = "" then
+                        prop.selected true
 
                     prop.text ("-- " + config.Attributes.Placeholder + " --")
                 ]
@@ -74,6 +78,6 @@ module SelectField =
 
                 placeholderOption
 
-                yield! config.Attributes.Options |> List.map toOption
+                yield! config.Attributes.Options |> List.map (toOption config.Value)
             ]
             |> Helpers.View.withLabelAndError config.Attributes.Label config.ShowError config.Error
