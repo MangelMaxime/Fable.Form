@@ -10,9 +10,9 @@
       },
       "Fable.Package.SDK": {
         "type": "Direct",
-        "requested": "[1.0.0, )",
-        "resolved": "1.0.0",
-        "contentHash": "TIXktcGpeqE3QOr2coV+w5erpLtfijpfBilhb0MNV2OSao/Y5Zg3r7StF+wZ4jSm4Pkid4HpjshZB/V9fUc/Ew=="
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "YEMSyiB/HCpBgDSZUr0LHaTa9vYH+xj8Fvd/AvzUAVbLQ3Bc2l9xHOI9g4+Bh1wGsLFrhMwFW+U39D7m5a6oOw=="
       },
       "Feliz": {
         "type": "Direct",

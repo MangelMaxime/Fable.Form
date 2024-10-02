@@ -31,7 +31,10 @@ Implementation of standard fields using Bulma CSS framework, to be used with Fab
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Fable.Lit" />
-      <PackageReference Include="Fable.Package.SDK" PrivateAssets="all" />
+      <PackageReference Include="Fable.Package.SDK">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>
