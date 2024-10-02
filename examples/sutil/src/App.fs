@@ -134,6 +134,16 @@ let app () =
                             renderDemoPage
                                 Examples.Shared.Forms.File.information
                                 (Examples.Sutil.Pages.File.Page())
+
+                        | Router.Route.Composability SharedRouter.ComposabilityRoute.Simple ->
+                            renderDemoPage
+                                Examples.Shared.Forms.Composability.Simple.information
+                                (Examples.Sutil.Pages.Composability.Simple.Page())
+
+                        | Router.Route.Composability SharedRouter.ComposabilityRoute.WithConfiguration ->
+                            renderDemoPage
+                                Examples.Shared.Forms.Composability.WithConfiguration.information
+                                (Examples.Sutil.Pages.Composability.WithConfiguration.Page())
                 )
         ]
     ]

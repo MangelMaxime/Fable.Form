@@ -16,6 +16,8 @@
         <Compile Include="src/Pages/CustomActions.fs" />
         <Compile Include="src/Pages/DynamicForm.fs" />
         <Compile Include="src/Pages/File.fs" />
+        <Compile Include="src/Pages/Composability/Simple.fs" />
+        <Compile Include="src/Pages/Composability/WithConfiguration.fs" />
         <Compile Include="src/App.fs" />
     </ItemGroup>
     <ItemGroup>

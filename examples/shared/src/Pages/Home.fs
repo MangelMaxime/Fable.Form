@@ -17,9 +17,6 @@ let renderLink
 </li>
     """
 
-// {renderLink Examples.Shared.Forms.ComposabilitySimple.information}
-//         {renderLink Examples.Shared.Forms.ComposabilityWithConfiguration.information}
-
 let htmlContent =
     $"""
 <div class="content">
@@ -41,6 +38,8 @@ let htmlContent =
         {renderLink Examples.Shared.Forms.DynamicForm.information}
         {renderLink Examples.Shared.Forms.FormList.information}
         {renderLink Examples.Shared.Forms.Disable.information}
+        {renderLink Examples.Shared.Forms.Composability.Simple.information}
+        {renderLink Examples.Shared.Forms.Composability.WithConfiguration.information}
     </ul>
 
     <p class="subtitle is-5">Advanced</p>

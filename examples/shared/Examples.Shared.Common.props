@@ -11,6 +11,11 @@
         <Compile Include="src/Forms/Login.fs" />
         <Compile Include="src/Forms/SignUp.fs" />
         <Compile Include="src/Forms/ValidationStrategies.fs" />
+        <Compile Include="src/Forms/Composability/Domain.fs" />
+        <Compile Include="src/Forms/Composability/Simple/AddressForm.fs" />
+        <Compile Include="src/Forms/Composability/Simple.fs" />
+        <Compile Include="src/Forms/Composability/WithConfiguration/AddressForm.fs" />
+        <Compile Include="src/Forms/Composability/WithConfiguration.fs" />
         <Compile Include="src/Pages/Home.fs" />
     </ItemGroup>
 </Project>
