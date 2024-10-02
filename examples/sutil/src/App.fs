@@ -92,7 +92,10 @@ let app () =
                         match page with
                         | Router.Route.Home ->
                             Html.div [
-                                Html.parse Examples.Shared.Pages.Home.htmlContent
+                                Html.parse (
+                                    Examples.Shared.Pages.Home.htmlContent
+                                        Examples.Sutil.Pages.CustomField.information
+                                )
                             ]
 
                         | Router.Route.Login ->
@@ -144,6 +147,11 @@ let app () =
                             renderDemoPage
                                 Examples.Shared.Forms.Composability.WithConfiguration.information
                                 (Examples.Sutil.Pages.Composability.WithConfiguration.Page())
+
+                        | Router.Route.CustomField ->
+                            renderDemoPage
+                                Examples.Sutil.Pages.CustomField.information
+                                (Examples.Sutil.Pages.CustomField.Page())
                 )
         ]
     ]

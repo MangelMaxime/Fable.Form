@@ -17,6 +17,18 @@
         "resolved": "8.0.301",
         "contentHash": "I94+2zfAhWMJwPzVDFSlsutZvjPkaRvLVipf8b2O4AyzxKUBmevDkUBzcJBqSQNB1Ikig8xdphswoeKrObqx7Q=="
       },
+      "Glutinum.SignaturePad": {
+        "type": "Direct",
+        "requested": "[0.1.0, )",
+        "resolved": "0.1.0",
+        "contentHash": "ZlOesN1Qozu5BKcu9gVdQJTb4YeHnkzY61BSSoa0sZGIHOtBtAzW+NSTGcEaTk87ylXuccEJbQqZI/lJ2Xnb1Q==",
+        "dependencies": {
+          "Fable.Browser.Dom": "2.17.0",
+          "Fable.Browser.Event": "1.6.0",
+          "Fable.Core": "4.3.0",
+          "Fable.Package.SDK": "0.1.0"
+        }
+      },
       "Fable.Browser.Blob": {
         "type": "Transitive",
         "resolved": "1.4.0",
@@ -160,8 +172,14 @@
       "Fable.Core": {
         "type": "CentralTransitive",
         "requested": "[4.3.0, )",
-        "resolved": "3.7.1",
-        "contentHash": "IzcCfF96VRC+Rp4B2VtVdOad2TF+Vxi1aVKHZISIJOUW0aOfeiNHwfBaG85UnY5xjzVwtSYxVEuwHphP/41YnQ=="
+        "resolved": "4.3.0",
+        "contentHash": "sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA=="
+      },
+      "Fable.Package.SDK": {
+        "type": "CentralTransitive",
+        "requested": "[1.1.0, )",
+        "resolved": "0.1.0",
+        "contentHash": "wrEcGovUimN0PRGgVHlX/gsqCm5d/p9eOG74iaHoteX2dsFZQ9P7d066LRAl5Gj7GUHy7azLyDE41KFvZx1v9A=="
       },
       "Fable.Promise": {
         "type": "CentralTransitive",

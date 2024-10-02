@@ -3,6 +3,7 @@ module Env
 
 [<Literal>]
 let private commitHash = "master"
+// let private commitHash = "feature/pluggable"
 
 let private githubBaseUrl =
     sprintf "https://github.com/MangelMaxime/Fable.Form/blob/%s/" commitHash

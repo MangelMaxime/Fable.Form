@@ -1,17 +1,16 @@
-module Page.CustomField.Component
+module Examples.Sutil.Pages.CustomField
 
-open Elmish
-open Feliz
-open Feliz.Bulma
-
+open Sutil
+open Sutil.Bulma
 open Fable.Form.Simple
-open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Sutil.Bulma
+open Feliz
 
 // Expose our custom field
 // If you have multiple custom fields, you probably want to create a module to expose all of them
 // at once instead of opening each field module
 // This is up to you to decide on how you want your consumers to use your library
-open Fable.Form.Simple.Bulma.Fields.SignatureField
+open Examples.Sutil.Fields.SignatureField
 
 /// <summary>
 /// Type used to represent the form values
@@ -24,53 +23,23 @@ type Values =
     }
 
 /// <summary>
-/// Represents the model of your Elmish component
+/// Represents the state of your the component
 ///
 /// In the case of the CustomField example, we just need to keep track of the Form model state
 /// </summary>
-[<NoComparison>]
-type Model =
+[<RequireQualifiedAccess; NoComparison>]
+type State =
     // The form is being filled
-    | FillingForm of Form.View.Model<Values>
+    | Filling of Form.View.Model<Values>
     // The form has been submitted and the files have been printed in the console
-    | FilledForm of string * string
+    | Filled of string * string
 
-/// <summary>
-/// Represents the different messages that your application can react too
-/// </summary>
-[<NoComparison>]
-type Msg =
-    // Used when a change occur in the form
-    | FormChanged of Form.View.Model<Values>
-    // Used when the user submit the form
-    | Register of string * string
-    // Sent when the user ask to reset the demo
-    | ResetDemo
-
-let init () =
+let init =
     {
         UserName = ""
         Signature = ""
     }
     |> Form.View.idle
-    |> FillingForm,
-    Cmd.none
-
-let update (msg: Msg) (model: Model) =
-    match msg with
-    // Update our model to it's new state
-    | FormChanged newModel ->
-        match model with
-        | FillingForm _ -> FillingForm newModel, Cmd.none
-
-        | FilledForm _ -> model, Cmd.none
-
-    // Form has been submitted
-    // Here, we have access to the value submitted from the from
-    | Register(userName, signature) -> FilledForm(userName, signature), Cmd.none
-
-    // Reset the demo
-    | ResetDemo -> init ()
 
 /// <summary>
 /// Define the form logic
@@ -78,7 +47,7 @@ let update (msg: Msg) (model: Model) =
 /// We need to define each field logic first and then define how the fields are wired together to make the form
 /// </summary>
 /// <returns>The form ready to be used in the view</returns>
-let form: Form<Values, Msg> =
+let private form: Form<Values, _> =
     let userNameField =
         Form.textField
             {
@@ -95,7 +64,7 @@ let form: Form<Values, Msg> =
                         FieldId = "username"
                         Label = "Username"
                         Placeholder = "Type your username"
-                        HtmlAttributes = []
+                        AutoComplete = None
                     }
             }
 
@@ -121,22 +90,20 @@ let form: Form<Values, Msg> =
     /// Function used to map the form values into the message to send back to the update function
     /// </summary>
     /// <returns></returns>
-    let onSubmit = fun userName signature -> Register(userName, signature)
+    let onSubmit = fun userName signature -> (userName, signature)
 
     Form.succeed onSubmit |> Form.append userNameField |> Form.append signatureField
 
-let private renderFilledView (userName: string) (signature: string) dispatch =
-    Bulma.content [
+let private renderFilledView (userName: string) (signature: string) (resetDemo: unit -> unit) =
+    bulma.content [
 
-        Bulma.message [
+        bulma.message [
             color.isSuccess
 
-            prop.children [
-                Bulma.messageBody [
-                    Html.text "Thank you "
-                    Html.strong userName
-                    Html.text " for submitting the form"
-                ]
+            bulma.messageBody [
+                Html.text "Thank you "
+                Html.strong userName
+                Html.text " for submitting the form"
             ]
         ]
 
@@ -148,45 +115,53 @@ let private renderFilledView (userName: string) (signature: string) dispatch =
             prop.src signature
             prop.alt "Signature"
             prop.style [
-                style.margin.auto
-                style.display.block
-                style.borderRadius (length.px 5)
-                style.border (1, borderStyle.solid, "hsl(0, 0%, 86%)")
+                Css.margin length.auto
+                Css.displayBlock
+                Css.borderRadius (length.px 5)
+                Css.border (length.px 1, borderStyle.solid, "hsl(0, 0%, 86%)")
             ]
         ]
 
-        Bulma.text.p [
+        bulma.text.p [
             text.hasTextCentered
             spacing.mt4
 
-            prop.children [
-                Bulma.button.button [
-                    prop.onClick (fun _ -> dispatch ResetDemo)
-                    color.isPrimary
+            bulma.button.button [
+                Ev.onClick (fun _ -> resetDemo ())
+                color.isPrimary
 
-                    prop.text "Reset the demo"
-                ]
+                prop.text "Reset the demo"
             ]
         ]
 
     ]
 
-let view (model: Model) (dispatch: Dispatch<Msg>) =
-    match model with
-    | FillingForm formModel ->
-        Form.View.asHtml
-            {
-                OnChange = FormChanged >> dispatch
-                OnSubmit = dispatch
-                Action = Form.View.Action.SubmitOnly "Send"
-                Validation = Form.View.ValidateOnSubmit
-            }
-            form
-            formModel
+let Page () =
+    let stateStore = init |> State.Filling |> Store.make
 
-    | FilledForm(userName, signature) -> renderFilledView userName signature dispatch
+    Bind.el (
+        stateStore,
+        fun state ->
+            match state with
+            | State.Filling formValues ->
+                Form.View.asHtml
+                    {
+                        OnChange = State.Filling >> Store.set stateStore
+                        OnSubmit = State.Filled >> Store.set stateStore
+                        Action = Form.View.Action.SubmitOnly "Send"
+                        Validation = Form.View.Validation.ValidateOnSubmit
+                    }
+                    form
+                    formValues
 
-let information: DemoInformation.T =
+            | State.Filled(userName, signature) ->
+                renderFilledView
+                    userName
+                    signature
+                    (fun () -> init |> State.Filling |> Store.set stateStore)
+    )
+
+let information<'FrameworkRoute> : DemoInformation<_> =
     {
         Title = "CustomField"
         Route = Router.Route.CustomField

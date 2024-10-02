@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="src/Sutil.Router.fs" />
         <Compile Include="src/Router.fs" />
+        <Compile Include="src/Fields/SignatureField.fs" />
         <Compile Include="src/Pages/Login.fs" />
         <Compile Include="src/Pages/Disable.fs" />
         <Compile Include="src/Pages/FormList.fs" />
@@ -18,6 +19,7 @@
         <Compile Include="src/Pages/File.fs" />
         <Compile Include="src/Pages/Composability/Simple.fs" />
         <Compile Include="src/Pages/Composability/WithConfiguration.fs" />
+        <Compile Include="src/Pages/CustomField.fs" />
         <Compile Include="src/App.fs" />
     </ItemGroup>
     <ItemGroup>
@@ -27,5 +29,6 @@
     <ItemGroup>
         <PackageReference Include="Fable.Elmish.UrlParser" />
         <PackageReference Include="FSharp.Core" VersionOverride="8.0.301" />
+        <PackageReference Include="Glutinum.SignaturePad" />
     </ItemGroup>
 </Project>

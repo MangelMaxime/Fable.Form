@@ -17,7 +17,7 @@ let renderLink
 </li>
     """
 
-let htmlContent =
+let htmlContent (customFieldInformation: DemoInformation<'R>) =
     $"""
 <div class="content">
     <br>
@@ -50,6 +50,7 @@ let htmlContent =
     <ul>
         {renderLink Examples.Shared.Forms.ValidationStrategies.information}
         {renderLink Examples.Shared.Forms.CustomActions.information}
+        {renderLink customFieldInformation}
     </ul>
 </div>
     """
