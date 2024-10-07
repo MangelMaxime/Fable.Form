@@ -1,4 +1,4 @@
-module Page.CustomField.Component
+module Page.CustomView.Component
 
 open Elmish
 open Feliz
@@ -11,7 +11,7 @@ open Fable.Form.Simple.Bulma
 // If you have multiple custom fields, you probably want to create a module to expose all of them
 // at once instead of opening each field module
 // This is up to you to decide on how you want your consumers to use your library
-open Fable.Form.Simple.Bulma.Fields.SignatureField
+open Fable.Form.Simple.Bulma.Fields.DaisyTextInput
 
 /// <summary>
 /// Type used to represent the form values
@@ -20,13 +20,13 @@ open Fable.Form.Simple.Bulma.Fields.SignatureField
 type Values =
     {
         UserName: string
-        Signature: string
+        Email: string
     }
 
 /// <summary>
 /// Represents the model of your Elmish component
 ///
-/// In the case of the CustomField example, we just need to keep track of the Form model state
+/// In the case of the CustomView example, we just need to keep track of the Form model state
 /// </summary>
 [<NoComparison>]
 type Model =
@@ -50,7 +50,7 @@ type Msg =
 let init () =
     {
         UserName = ""
-        Signature = ""
+        Email = ""
     }
     |> Form.View.idle
     |> FillingForm,
@@ -80,7 +80,7 @@ let update (msg: Msg) (model: Model) =
 /// <returns>The form ready to be used in the view</returns>
 let form: Form<Values, Msg> =
     let userNameField =
-        Form.textField
+        Form.daysiTextInputField
             {
                 Parser = Ok
                 Value = fun values -> values.UserName
@@ -100,20 +100,22 @@ let form: Form<Values, Msg> =
             }
 
     let signatureField =
-        Form.signatureField
+        Form.daysiTextInputField
             {
                 Parser = Ok
-                Value = fun values -> values.Signature
+                Value = fun values -> values.Email
                 Update =
                     fun newValue values ->
                         { values with
-                            Signature = newValue
+                            Email = newValue
                         }
                 Error = fun _ -> None
                 Attributes =
                     {
-                        FieldId = "signature"
-                        Label = "Signature"
+                        FieldId = "email"
+                        Label = "Email"
+                        Placeholder = "Type your email"
+                        AutoComplete = None
                     }
             }
 
@@ -133,25 +135,20 @@ let private renderFilledView (userName: string) (signature: string) dispatch =
 
             prop.children [
                 Bulma.messageBody [
-                    Html.text "Thank you "
-                    Html.strong userName
-                    Html.text " for submitting the form"
+                    Html.text "Thank you for submitting the form"
                 ]
             ]
         ]
 
-        Html.div "We well received your signature showing below:"
+        Html.ul [
+            Html.li [
+                Html.text "Username: "
+                Html.strong userName
+            ]
 
-        Html.br []
-
-        Html.img [
-            prop.src signature
-            prop.alt "Signature"
-            prop.style [
-                style.margin.auto
-                style.display.block
-                style.borderRadius (length.px 5)
-                style.border (1, borderStyle.solid, "hsl(0, 0%, 86%)")
+            Html.li [
+                Html.text "Email: "
+                Html.strong signature
             ]
         ]
 
@@ -172,26 +169,36 @@ let private renderFilledView (userName: string) (signature: string) dispatch =
     ]
 
 let view (model: Model) (dispatch: Dispatch<Msg>) =
-    match model with
-    | FillingForm formModel ->
-        Form.View.asHtml
-            {
-                OnChange = FormChanged >> dispatch
-                OnSubmit = dispatch
-                Action = Form.View.Action.SubmitOnly "Send"
-                Validation = Form.View.ValidateOnSubmit
-            }
-            form
-            formModel
+    Html.div [
+        // We need to load DaisyUI CSS for this example
+        Html.link [
+            prop.rel "stylesheet"
+            prop.type' "text/css"
+            prop.href "https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css"
+        ]
 
-    | FilledForm(userName, signature) -> renderFilledView userName signature dispatch
+        match model with
+        | FillingForm formModel ->
+            Form.View.asHtml
+                {
+                    OnChange = FormChanged >> dispatch
+                    OnSubmit = dispatch
+                    Action = Form.View.Action.SubmitOnly "Send"
+                    Validation = Form.View.ValidateOnSubmit
+                }
+                form
+                formModel
+
+        | FilledForm(userName, signature) -> renderFilledView userName signature dispatch
+
+    ]
 
 let information<'FrameworkRoute> : DemoInformation<_> =
     {
-        Title = "Custom Field"
-        Route = Router.Route.CustomField
+        Title = "Custom View"
+        Route = Router.Route.FrameworkSpecific Router.ReactRoute.CustomView
         Description =
-            "Show case how to create a custom field <b>from scratch</b> and use it in a form"
+            "Show case how to customize an existing field to use another CSS library (<b>logic stays the same</b>)"
         Remark = None
         Code =
             """

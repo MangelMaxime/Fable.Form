@@ -12,6 +12,7 @@
     <Compile Include="src/Cmd.fs" />
     <Compile Include="src/Router.fs" />
     <Compile Include="src/Fields/SignatureField.fs" />
+    <Compile Include="src/Fields/DaisyInput.fs" />
     <Compile Include="src/Pages/SignUp.fs" />
     <Compile Include="src/Pages/Login.fs" />
     <Compile Include="src/Pages/File.fs" />
@@ -20,6 +21,7 @@
     <Compile Include="src/Pages/ValidationStrategies.fs" />
     <Compile Include="src/Pages/CustomActions.fs" />
     <Compile Include="src/Pages/CustomField.fs" />
+    <Compile Include="src/Pages/CustomView.fs" />
     <Compile Include="src/Pages/Disable.fs" />
     <Compile Include="src/Pages/ReactOnly.fs" />
     <Compile Include="src/Pages/Composability/Simple.fs" />

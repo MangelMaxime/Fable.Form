@@ -22,8 +22,9 @@ module ComposabilitySimple = Page.Composability.Simple.Component
 module ComposabilityWithConfiguration = Page.Composability.WithConfiguration.Component
 module CustomAction = Page.CustomAction.Component
 module CustomField = Page.CustomField.Component
-module Component = Page.Disable.Component
+module Disable = Page.Disable.Component
 module ReactOnly = Page.ReactOnly.Component
+module CustomView = Page.CustomView.Component
 
 [<RequireQualifiedAccess>]
 [<NoComparison>]
@@ -39,8 +40,9 @@ type Page =
     | ComposabilityWithConfiguration of ComposabilityWithConfiguration.Model
     | CustomAction of CustomAction.Model
     | CustomField of CustomField.Model
-    | Disable of Component.Model
+    | Disable of Disable.Model
     | ReactOnly
+    | CustomView of CustomView.Model
     | NotFound
 
 [<NoComparison>]
@@ -56,7 +58,8 @@ type Msg =
     | ComposabilityWithConfigurationMsg of ComposabilityWithConfiguration.Msg
     | CustomActionMsg of CustomAction.Msg
     | CustomFieldMsg of CustomField.Msg
-    | DisableMsg of Component.Msg
+    | DisableMsg of Disable.Msg
+    | CustomViewMsg of CustomView.Msg
 
 [<NoComparison>]
 type Model =
@@ -161,7 +164,7 @@ let private setRoute (optRoute: Router.Route option) (model: Model) =
             Cmd.map CustomFieldMsg subCmd
 
         | Router.Route.Disable ->
-            let (subModel, subCmd) = Component.init ()
+            let (subModel, subCmd) = Disable.init ()
 
             { model with
                 ActivePage = Page.Disable subModel
@@ -173,6 +176,14 @@ let private setRoute (optRoute: Router.Route option) (model: Model) =
                 ActivePage = Page.ReactOnly
             },
             Cmd.none
+
+        | Router.Route.FrameworkSpecific Router.ReactRoute.CustomView ->
+            let (subModel, subCmd) = CustomView.init ()
+
+            { model with
+                ActivePage = Page.CustomView subModel
+            },
+            Cmd.map CustomViewMsg subCmd
 
         | Router.Route.Home ->
             { model with
@@ -333,7 +344,7 @@ let private update (msg: Msg) (model: Model) =
     | DisableMsg subMsg ->
         match model.ActivePage with
         | Page.Disable subModel ->
-            Component.update subMsg subModel
+            Disable.update subMsg subModel
             |> Tuple.mapFirst Page.Disable
             |> Tuple.mapFirst (fun page ->
                 { model with
@@ -341,6 +352,20 @@ let private update (msg: Msg) (model: Model) =
                 }
             )
             |> Tuple.mapSecond (Cmd.map DisableMsg)
+
+        | _ -> model, Cmd.none
+
+    | CustomViewMsg subMsg ->
+        match model.ActivePage with
+        | Page.CustomView subModel ->
+            CustomView.update subMsg subModel
+            |> Tuple.mapFirst Page.CustomView
+            |> Tuple.mapFirst (fun page ->
+                { model with
+                    ActivePage = page
+                }
+            )
+            |> Tuple.mapSecond (Cmd.map CustomViewMsg)
 
         | _ -> model, Cmd.none
 
@@ -424,6 +449,7 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
                         Page.ReactOnly.Component.information
                     ]
                     Page.CustomField.Component.information
+                    Page.CustomView.Component.information
             )
         ]
 
@@ -484,7 +510,10 @@ let private contentFromPage (page: Page) (dispatch: Dispatch<Msg>) =
     | Page.Disable subModel ->
         renderDemoPage
             Examples.Shared.Forms.Disable.information
-            (Component.view subModel (DisableMsg >> dispatch))
+            (Disable.view subModel (DisableMsg >> dispatch))
+
+    | Page.CustomView subModel ->
+        renderDemoPage CustomView.information (CustomView.view subModel (CustomViewMsg >> dispatch))
 
     | Page.NotFound -> Html.text "Page not found"
 

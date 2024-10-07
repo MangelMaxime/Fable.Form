@@ -9,17 +9,20 @@ open Browser.Dom
 [<RequireQualifiedAccess>]
 type ReactRoute =
     | ReactOnly
+    | CustomView
 
     interface SharedRouter.IRoute with
         member this.Segments =
             match this with
             | ReactOnly -> "react-only"
+            | CustomView -> "custom-view"
 
 type Route = SharedRouter.Route<ReactRoute>
 
 let routeParser: Parser<Route -> Route, Route> =
     oneOf [
         map (ReactRoute.ReactOnly) (s "react-only")
+        map (ReactRoute.CustomView) (s "custom-view")
     ]
     |> SharedRouter.routeParser
 
