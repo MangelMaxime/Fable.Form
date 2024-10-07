@@ -31,6 +31,7 @@ type ExampleCommand(destination: string, workingDirectory: string) =
             |> CmdLine.appendRaw "fable"
             |> CmdLine.appendIf settings.IsWatch "--watch"
             |> CmdLine.appendPrefix "--outDir" "fableBuild"
+            |> CmdLine.appendRaw "--test:MSBuildCracker"
             |> CmdLine.appendRaw "--verbose"
             |> CmdLine.toString
 
@@ -58,16 +59,16 @@ type ReactExampleCommand() =
     inherit
         ExampleCommand(
             VirtualWorkspace.examples.react.fableBuild.``.``,
-            Workspace.examples.react.``.``
+            Workspace.examples.React.``.``
         )
 
 type SutilExampleCommand() =
     inherit
         ExampleCommand(
             VirtualWorkspace.examples.sutil.fableBuild.``.``,
-            Workspace.examples.sutil.``.``
+            Workspace.examples.Sutil.``.``
         )
 
 type LitExampleCommand() =
     inherit
-        ExampleCommand(VirtualWorkspace.examples.lit.fableBuild.``.``, Workspace.examples.lit.``.``)
+        ExampleCommand(VirtualWorkspace.examples.lit.fableBuild.``.``, Workspace.examples.Lit.``.``)

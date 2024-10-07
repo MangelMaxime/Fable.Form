@@ -9,7 +9,7 @@ It can be used has a standalone library if you want to build your own fields or
 you can use Fable.Form.Simple.Bulma to have a ready to use fields made for Bulma CSS framework.
         </Description>
         <FablePackageType>library</FablePackageType>
-        <PackageTags>fable-javascript</PackageTags>
+        <PackageTags>ARC F# FSharp dotnet .Net bioinformatics biology fable-library datascience dataplant nfdi metadata;fable-javascript</PackageTags>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Form.fs" />
@@ -19,10 +19,6 @@ you can use Fable.Form.Simple.Bulma to have a ready to use fields made for Bulma
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
-      <PackageReference Include="Fable.Package.SDK">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>

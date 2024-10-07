@@ -19,7 +19,7 @@ module Form =
     (*
         Combinators functions are used to combine multiple forms together to create a more complex form.
 
-        Below, we redefine some functions from the Base module so the user can access them transparently
+        Below, we redefine some functions from the Base module so the user can access them transparently,
         and they are also specifically typed for the Fable.Form.Simple.Bulma abstraction
     *)
 

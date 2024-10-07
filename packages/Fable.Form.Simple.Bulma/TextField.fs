@@ -22,7 +22,7 @@ module TextField =
             /// <summary>
             /// A list of HTML attributes to add to the generated field
             /// </summary>
-            HtmlAttributes: IReactProperty list
+            AutoComplete: string option
         }
 
         interface Field.IAttributes with
@@ -96,6 +96,11 @@ module TextField =
 
                 | TextArea -> Bulma.textarea
 
+            let autoComplete =
+                match config.Attributes.AutoComplete with
+                | Some value -> value
+                | None -> "off"
+
             inputFunc [
                 prop.onChange config.OnChange
 
@@ -110,6 +115,6 @@ module TextField =
                 if config.ShowError && config.Error.IsSome then
                     color.isDanger
 
-                yield! config.Attributes.HtmlAttributes
+                prop.autoComplete autoComplete
             ]
             |> Html.View.withLabelAndError config.Attributes.Label config.ShowError config.Error

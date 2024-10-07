@@ -14,6 +14,7 @@
         "Fable.Form.Simple",
         "Fable.Form.Simple.Bulma",
         "Fable.Form.Simple.Sutil.Bulma",
+        "Fable.Form.Simple.Lit.Bulma",
         "fable-form-simple-bulma"
     ]
 }
