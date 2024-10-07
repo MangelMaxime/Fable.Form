@@ -8,6 +8,7 @@ open Fable.Form.Simple.Bulma
 open Examples.Shared.Forms
 open DynamicForm.Domain
 
+[<NoComparison>]
 type Model =
     // The form is being filled
     | FillingForm of Form.View.Model<DynamicForm.Values>
@@ -16,6 +17,7 @@ type Model =
     // The form has been submitted and a student has been created
     | CreatedAStudent of string
 
+[<NoComparison>]
 type Msg =
     // Used when a change occure in the form
     | FormChanged of Form.View.Model<DynamicForm.Values>
@@ -103,12 +105,14 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
     match model with
     | FillingForm values ->
         let actionText =
-            match UserType.tryParse values.Values.UserType with
-            | Ok Student -> "Create student"
+            match values.Values.UserType with
+            | None -> "Create"
 
-            | Ok Teacher -> "Create teacher"
+            | Some userType ->
+                match userType :?> UserType with
+                | UserType.Student -> "Create student"
 
-            | Error _ -> "Create"
+                | UserType.Teacher -> "Create teacher"
 
         Form.View.asHtml
             {

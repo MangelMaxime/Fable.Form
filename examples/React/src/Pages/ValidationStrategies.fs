@@ -8,12 +8,14 @@ open Fable.Form.Simple.Bulma
 open Examples.Shared.Forms
 open ValidationStrategies.Domain
 
+[<NoComparison>]
 type Model =
     // Used when the form is being filled
     | FillingForm of Form.View.Model<ValidationStrategies.Values>
     // User when the form has been submitted with success
     | FormFilled of ValidationStrategies.FormResult
 
+[<NoComparison>]
 type Msg =
     // Used when a change occure in the form
     | FormChanged of Form.View.Model<ValidationStrategies.Values>
@@ -84,10 +86,13 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                 OnSubmit = Submit >> dispatch
                 Action = Form.View.Action.SubmitOnly "Sign in"
                 Validation =
-                    if values.Values.ValidationStrategy = "onSubmit" then
-                        Form.View.ValidateOnSubmit
-                    else
-                        Form.View.ValidateOnBlur
+                    match values.Values.ValidationStrategy with
+                    | Some strategy ->
+                        match strategy :?> ValidationStrategies.ValidationStrategy with
+                        | ValidationStrategies.ValidationStrategy.OnSubmit ->
+                            Form.View.ValidateOnSubmit
+                        | ValidationStrategies.ValidationStrategy.OnBlur -> Form.View.ValidateOnBlur
+                    | None -> Form.View.ValidateOnBlur
             }
             ValidationStrategies.form
             values

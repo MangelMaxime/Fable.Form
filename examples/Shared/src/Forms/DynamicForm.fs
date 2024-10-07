@@ -6,6 +6,7 @@ open Fable.Form.Simple
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
 #endif
 
 #if EXAMPLE_LIT
@@ -30,19 +31,21 @@ open Fable.Form.Simple.Sutil.Bulma
 [<AutoOpen>]
 module Domain =
 
+    [<RequireQualifiedAccess>]
     type UserType =
         | Student
         | Teacher
 
-    module UserType =
+        interface SelectField.OptionItem with
+            member this.Key =
+                match this with
+                | Student -> "student"
+                | Teacher -> "teacher"
 
-        let tryParse (text: string) =
-            match text with
-            | "student" -> Ok Student
-
-            | "teacher" -> Ok Teacher
-
-            | _ -> Error "Invalid user type"
+            member this.Text =
+                match this with
+                | Student -> "Student"
+                | Teacher -> "Teacher"
 
 type FormResult =
     | NewStudent of name: string
@@ -51,16 +54,17 @@ type FormResult =
 /// <summary>
 /// Represent the form values
 /// </summary>
+[<NoComparison>]
 type Values =
     {
-        UserType: string
+        UserType: SelectField.OptionItem option
         Name: string
         Subject: string
     }
 
 let init =
     {
-        UserType = ""
+        UserType = None
         Name = ""
         Subject = ""
     }
@@ -147,7 +151,11 @@ let form: Form<Values, FormResult> =
     let userTypeField =
         Form.selectField
             {
-                Parser = UserType.tryParse
+                Parser =
+                    fun value ->
+                        match value with
+                        | None -> Error "User type is required"
+                        | Some value -> value :?> UserType |> Ok
                 Value = fun values -> values.UserType
                 Update =
                     fun newValue values ->
@@ -162,8 +170,8 @@ let form: Form<Values, FormResult> =
                         Placeholder = "Choose a user type"
                         Options =
                             [
-                                "student", "Student"
-                                "teacher", "Teacher"
+                                UserType.Student
+                                UserType.Teacher
                             ]
                     }
             }
@@ -171,9 +179,9 @@ let form: Form<Values, FormResult> =
     userTypeField
     |> Form.andThen (
         function
-        | Student -> studentForm
+        | UserType.Student -> studentForm
 
-        | Teacher -> teacherForm
+        | UserType.Teacher -> teacherForm
     )
 
 let information<'R> : DemoInformation<_> =

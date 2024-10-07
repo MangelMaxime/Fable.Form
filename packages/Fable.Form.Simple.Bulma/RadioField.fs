@@ -7,28 +7,33 @@ open Fable.Form.Simple.Bulma
 
 module RadioField =
 
+    type OptionItem =
+        abstract member Key: string
+        abstract member Text: string
+
+    [<NoComparison>]
     type Attributes =
         {
             FieldId: string
             Label: string
-            Options: (string * string) list
+            Options: OptionItem list
         }
 
         interface Field.IAttributes with
 
             member this.GetFieldId() = this.FieldId
 
-    type InnerField<'Values> = Field.Field<Attributes, string, 'Values>
+    type InnerField<'Values> = Field.Field<Attributes, OptionItem option, 'Values>
 
     let form<'Values, 'Field, 'Output>
         : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, string, 'Values, 'Output>
+              -> Base.FieldConfig<Attributes, OptionItem option, 'Values, 'Output>
               -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field System.String.IsNullOrEmpty
+        Base.field _.IsNone
 
     type Field<'Values>(innerField: InnerField<'Values>) =
 
-        inherit IStandardField<'Values, string, Attributes>(innerField)
+        inherit IStandardField<'Values, OptionItem option, Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -36,20 +41,20 @@ module RadioField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<OptionItem option, Attributes>) =
 
-            let radio (key: string, label: string) =
+            let radio (optionItem: OptionItem) =
                 Bulma.input.labels.radio [
                     Bulma.input.radio [
                         prop.name config.Attributes.Label
-                        prop.isChecked (key = config.Value: bool)
+                        prop.isChecked (Some optionItem = config.Value: bool)
                         prop.disabled config.Disabled
 
                         // RadioField can't really be set to readonly in HTML
                         // So we need to not listen to the onChange event
                         prop.readOnly config.IsReadOnly
                         if not config.IsReadOnly then
-                            prop.onChange (fun (_: bool) -> config.OnChange key)
+                            prop.onChange (fun (_: bool) -> config.OnChange(Some optionItem))
 
                         match config.OnBlur with
                         | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
@@ -57,7 +62,7 @@ module RadioField =
                         | None -> ()
                     ]
 
-                    Html.text label
+                    Html.text optionItem.Text
                 ]
 
             Bulma.control.div [

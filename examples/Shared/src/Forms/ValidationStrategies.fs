@@ -6,6 +6,7 @@ open Fable.Form.Simple
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
 #endif
 
 #if EXAMPLE_LIT
@@ -65,12 +66,28 @@ type FormResult =
         Password: Password
     }
 
+[<RequireQualifiedAccess>]
+type ValidationStrategy =
+    | OnSubmit
+    | OnBlur
+
+    interface RadioField.OptionItem with
+        member this.Key =
+            match this with
+            | OnSubmit -> "onSubmit"
+            | OnBlur -> "onBlur"
+
+        member this.Text =
+            match this with
+            | OnSubmit -> "Validate on form submit"
+            | OnBlur -> "Validate on field blur"
+
 /// <summary>
 /// Represent the form values
 /// </summary>
 type Values =
     {
-        ValidationStrategy: string
+        ValidationStrategy: RadioField.OptionItem option
         Email: string
         Password: string
     }
@@ -91,7 +108,7 @@ type Msg =
 
 let init =
     {
-        ValidationStrategy = "onBlur"
+        ValidationStrategy = Some ValidationStrategy.OnBlur
         Email = ""
         Password = ""
     }
@@ -107,7 +124,11 @@ let form: Form<Values, FormResult> =
     let validationStrategiesField =
         Form.radioField
             {
-                Parser = Ok
+                Parser =
+                    fun value ->
+                        match value with
+                        | None -> Error "Validation strategy is required"
+                        | Some value -> value :?> ValidationStrategy |> Ok
                 Value = fun values -> values.ValidationStrategy
                 Update =
                     fun newValue values ->
@@ -121,11 +142,10 @@ let form: Form<Values, FormResult> =
                         Label = "Validation strategy"
                         Options =
                             [
-                                "onSubmit", "Validate on form submit"
-                                "onBlur", "Validate on field blur"
+                                ValidationStrategy.OnSubmit
+                                ValidationStrategy.OnBlur
                             ]
                     }
-
             }
 
     let emailField =

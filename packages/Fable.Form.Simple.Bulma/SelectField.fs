@@ -7,29 +7,37 @@ open Fable.Form.Simple.Bulma
 
 module SelectField =
 
+    [<AllowNullLiteral>]
+    type OptionItem =
+        abstract member Key: string
+        abstract member Text: string
+
+    type Value = OptionItem option
+
+    [<NoComparison>]
     type Attributes =
         {
             FieldId: string
             Label: string
             Placeholder: string
-            Options: (string * string) list
+            Options: OptionItem list
         }
 
         interface Field.IAttributes with
 
             member this.GetFieldId() = this.FieldId
 
-    type InnerField<'Values> = Field.Field<Attributes, string, 'Values>
+    type InnerField<'Values> = Field.Field<Attributes, OptionItem option, 'Values>
 
     let form<'Values, 'Field, 'Output>
         : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, string, 'Values, 'Output>
+              -> Base.FieldConfig<Attributes, OptionItem option, 'Values, 'Output>
               -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field System.String.IsNullOrEmpty
+        Base.field _.IsNone
 
     type Field<'Values>(innerField: InnerField<'Values>) =
 
-        inherit IStandardField<'Values, string, Attributes>(innerField)
+        inherit IStandardField<'Values, OptionItem option, Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -37,16 +45,16 @@ module SelectField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<OptionItem option, Attributes>) =
 
-            let toOption (key: string, label: string) =
+            let toOption (optionItem: OptionItem) =
                 Html.option [
                     if config.IsReadOnly then
                         prop.style [
                             style.display.none
                         ]
-                    prop.value key
-                    prop.text label
+                    prop.value optionItem.Key
+                    prop.text optionItem.Text
                 ]
 
             let placeholderOption =
@@ -63,14 +71,22 @@ module SelectField =
 
             Bulma.select [
                 prop.disabled config.Disabled
-                prop.onChange config.OnChange
+                prop.onChange (fun value ->
+                    config.OnChange(
+                        config.Attributes.Options
+                        |> List.find (fun optionItem -> optionItem.Key = value)
+                        |> Some
+                    )
+                )
 
                 match config.OnBlur with
                 | Some onBlur -> prop.onBlur (fun _ -> onBlur ())
 
                 | None -> ()
 
-                prop.value config.Value
+                match config.Value with
+                | Some optionItem -> prop.value optionItem.Key
+                | None -> prop.value ""
 
                 prop.children [
                     placeholderOption

@@ -384,13 +384,15 @@ module Form =
         CheckboxField.form (fun field -> CheckboxField.Field field) config
 
     let radioField
-        (config: Base.FieldConfig<RadioField.Attributes, string, 'Values, 'Output>)
+        (config:
+            Base.FieldConfig<RadioField.Attributes, RadioField.OptionItem option, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
         RadioField.form (fun field -> RadioField.Field field) config
 
     let selectField
-        (config: Base.FieldConfig<SelectField.Attributes, string, 'Values, 'Output>)
+        (config:
+            Base.FieldConfig<SelectField.Attributes, SelectField.OptionItem option, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
         SelectField.form (fun field -> SelectField.Field field) config

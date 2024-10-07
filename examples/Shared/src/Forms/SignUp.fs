@@ -6,6 +6,7 @@ open Fable.Form.Simple
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
 #endif
 
 #if EXAMPLE_LIT
@@ -169,7 +170,7 @@ type Values =
         Password: string
         RepeatPassword: string
         Name: string
-        MakePublic: string
+        MakePublic: RadioField.OptionItem option
         Errors: FormErrors
     }
 
@@ -195,7 +196,7 @@ let init =
         Password = ""
         RepeatPassword = ""
         Name = ""
-        MakePublic = ""
+        MakePublic = None
         Errors =
             {
                 Email = None
@@ -319,7 +320,11 @@ let form: Form<Values, FormResult> =
     let makePublicField =
         Form.radioField
             {
-                Parser = Ok
+                Parser =
+                    fun value ->
+                        match value with
+                        | None -> Ok false
+                        | Some value -> convertMakePublicOptionToBool value.Key |> Ok
                 Value = fun values -> values.MakePublic
                 Update =
                     fun newValue values ->
@@ -333,8 +338,14 @@ let form: Form<Values, FormResult> =
                         Label = "Make your profile public ?"
                         Options =
                             [
-                                "option-yes", "Yes"
-                                "option-no", "No"
+                                { new RadioField.OptionItem with
+                                    member _.Text = "Yes"
+                                    member _.Key = "option-yes"
+                                }
+                                { new RadioField.OptionItem with
+                                    member _.Text = "No"
+                                    member _.Key = "option-no"
+                                }
                             ]
                     }
             }
@@ -344,7 +355,7 @@ let form: Form<Values, FormResult> =
             Email = email
             Password = password
             Name = name
-            MakePublic = convertMakePublicOptionToBool makePublic
+            MakePublic = makePublic
         }
 
     Form.succeed onSubmit

@@ -1,4 +1,8 @@
 <Project>
+    <PropertyGroup>
+        <!-- Warn on ununsed variables -->
+        <OtherFlags>--warnon:1182</OtherFlags>
+    </PropertyGroup>
     <ItemGroup>
         <Compile Include="src/Env.fs" />
         <Compile Include="src/Router.fs" />
