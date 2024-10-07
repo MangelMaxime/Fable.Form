@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <DefineConstants>EXAMPLE_LIT</DefineConstants>
+        <!-- Warn on ununsed variables -->
+        <OtherFlags>--warnon:1182</OtherFlags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="src/Forms/Login.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../../packages/Fable.Form.Simple.Lit.Bulma/Fable.Form.Simple.Lit.Bulma.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" />
+    </ItemGroup>
+</Project>

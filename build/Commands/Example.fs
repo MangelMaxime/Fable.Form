@@ -15,34 +15,32 @@ type ExampleSettings() =
     [<Description("Watch for changes and re-build the examples")>]
     member val IsWatch: bool = false with get, set
 
-type ExampleCommand() =
+type ExampleCommand(destination: string, workingDirectory: string) =
     inherit Command<ExampleSettings>()
+    interface ICommandLimiter<ExampleSettings>
 
     override _.Execute(context, settings) =
-        let destination = DirectoryInfo(VirtualWorkspace.examples.fableBuild)
+        let destination = DirectoryInfo(destination)
 
         destination.ReCreate()
 
-        Npm.install (workingDirectory = Workspace.examples.``.``)
+        Npm.install (workingDirectory = workingDirectory)
 
         let fableCommand =
             CmdLine.empty
             |> CmdLine.appendRaw "fable"
             |> CmdLine.appendIf settings.IsWatch "--watch"
             |> CmdLine.appendPrefix "--outDir" "fableBuild"
+            |> CmdLine.appendRaw "--test:MSBuildCracker"
             |> CmdLine.appendRaw "--verbose"
             |> CmdLine.toString
 
         if settings.IsWatch then
             [
-                Command.RunAsync(
-                    "dotnet",
-                    fableCommand,
-                    workingDirectory = Workspace.examples.``.``
-                )
+                Command.RunAsync("dotnet", fableCommand, workingDirectory = workingDirectory)
                 |> Async.AwaitTask
 
-                Command.RunAsync("npx", "vite serve", workingDirectory = Workspace.examples.``.``)
+                Command.RunAsync("npx", "vite serve", workingDirectory = workingDirectory)
                 |> Async.AwaitTask
             ]
             |> Async.Parallel
@@ -51,8 +49,26 @@ type ExampleCommand() =
 
         else
 
-            Command.Run("dotnet", fableCommand, workingDirectory = Workspace.examples.``.``)
+            Command.Run("dotnet", fableCommand, workingDirectory = workingDirectory)
 
-        Command.Run("npx", "vite build", workingDirectory = Workspace.examples.``.``)
+        Command.Run("npx", "vite build", workingDirectory = workingDirectory)
 
         0
+
+type ReactExampleCommand() =
+    inherit
+        ExampleCommand(
+            VirtualWorkspace.examples.react.fableBuild.``.``,
+            Workspace.examples.React.``.``
+        )
+
+type SutilExampleCommand() =
+    inherit
+        ExampleCommand(
+            VirtualWorkspace.examples.sutil.fableBuild.``.``,
+            Workspace.examples.Sutil.``.``
+        )
+
+type LitExampleCommand() =
+    inherit
+        ExampleCommand(VirtualWorkspace.examples.lit.fableBuild.``.``, Workspace.examples.Lit.``.``)

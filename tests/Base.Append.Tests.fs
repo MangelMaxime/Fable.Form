@@ -2,7 +2,7 @@
 
 open Mocha
 open Fable.Form
-open Fable.Form.Simple
+open Fable.Form.Simple.Bulma
 
 type Values =
     {
@@ -12,7 +12,7 @@ type Values =
 
 let emailError = "Email should contains the '@' symbol"
 
-let emailField: Form.Form<Values, string, obj> =
+let emailField: Form<Values, string> =
     Form.emailField
         {
             Parser =
@@ -30,6 +30,7 @@ let emailField: Form.Form<Values, string, obj> =
             Error = always None
             Attributes =
                 {
+                    FieldId = "email"
                     Label = "Email"
                     Placeholder = "Type your email"
                     HtmlAttributes = []
@@ -56,6 +57,7 @@ let passwordField =
             Error = always None
             Attributes =
                 {
+                    FieldId = "password"
                     Label = "Password"
                     Placeholder = "Type your password"
                     HtmlAttributes = []

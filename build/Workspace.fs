@@ -11,9 +11,14 @@ type VirtualWorkspace =
     VirtualFileSystem<
         root,
         """
-examples
-    fableBuild
-tests
-    fableBuild
+examples/
+    react/
+        fableBuild/
+    sutil/
+        fableBuild/
+    lit/
+        fableBuild/
+tests/
+    fableBuild/
 """
      >

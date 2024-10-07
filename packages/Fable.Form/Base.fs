@@ -10,6 +10,7 @@ type FilledField<'Field> =
         State: 'Field
         Error: Error.Error option
         IsDisabled: bool
+        IsReadOnly: bool
     }
 
 /// <summary>
@@ -121,9 +122,10 @@ let succeed (output: 'Output) : Form<'Values, 'Output, 'Field> =
 /// </returns>
 let fill<'Values, 'Output, 'Field>
     (Form form: Form<'Values, 'Output, 'Field>)
-    : 'Values -> FilledForm<'Output, 'Field>
+    (values: 'Values)
+    : FilledForm<'Output, 'Field>
     =
-    form
+    form values
 
 /// <summary>
 /// Create a custom field
@@ -151,6 +153,7 @@ let custom (fillField: 'Values -> CustomField<'Output, 'Field>) : Form<'Values, 
 
                                 | Error(firstError, _) -> Some firstError
                         IsDisabled = false
+                        IsReadOnly = false
                     }
                 ]
             Result = filled.Result
@@ -202,6 +205,7 @@ let mapField (fn: 'A -> 'B) (form: Form<'Values, 'Output, 'A>) : Form<'Values, '
                         State = fn filledField.State
                         Error = filledField.Error
                         IsDisabled = filledField.IsDisabled
+                        IsReadOnly = filledField.IsReadOnly
                     }
                 )
             Result = filled.Result
@@ -314,6 +318,66 @@ let disable (form: Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Fie
     )
 
 /// <summary>
+/// Disable a form based on a condition
+///
+/// You can combine this with meta to disable parts of a form based on its own values.
+/// </summary>
+/// <param name="condition">The condition to check</param>
+/// <param name="form">The form to disable</param>
+/// <returns>A new form which has been marked as disabled if the condition is <c>true</c></returns>
+let disableIf
+    (condition: bool)
+    (form: Form<'Values, 'Output, 'Field>)
+    : Form<'Values, 'Output, 'Field>
+    =
+    if condition then
+        disable form
+    else
+        form
+
+/// <summary>
+/// Make a form read-only
+///
+/// You can combine this with meta to make parts of a form read-only based on its own values.
+/// </summary>
+/// <param name="form">The form to make read-only</param>
+/// <returns>A new form which has been marked as read-only</returns>
+let readOnly (form: Form<'Values, 'Output, 'Field>) : Form<'Values, 'Output, 'Field> =
+    Form(fun values ->
+        let filled = fill form values
+
+        {
+            Fields =
+                filled.Fields
+                |> List.map (fun filledField ->
+                    { filledField with
+                        IsReadOnly = true
+                    }
+                )
+            Result = filled.Result
+            IsEmpty = filled.IsEmpty
+        }
+    )
+
+/// <summary>
+/// Make a form read-only based on a condition
+///
+/// You can combine this with meta to make parts of a form read-only based on its own values.
+/// </summary>
+/// <param name="condition">The condition to check</param>
+/// <param name="form">The form to make read-only</param>
+/// <returns>A new form which has been marked as read-only if the condition is <c>true</c></returns>
+let readOnlyIf
+    (condition: bool)
+    (form: Form<'Values, 'Output, 'Field>)
+    : Form<'Values, 'Output, 'Field>
+    =
+    if condition then
+        readOnly form
+    else
+        form
+
+/// <summary>
 /// Transform the 'output' of a form
 ///
 /// You can use it to keep your forms decoupled from your specific view messages:
@@ -395,6 +459,7 @@ let field
                         State = field_ values
                         Error = error
                         IsDisabled = false
+                        IsReadOnly = false
                     }
                 ]
             Result = result
