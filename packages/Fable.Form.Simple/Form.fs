@@ -933,6 +933,14 @@ module Form =
                         |}
             }
 
+        let initialize<'T when 'T : (new : unit -> 'T)> () : 'T =
+            let instance = new 'T()
+            let properties = typeof<'T>.GetProperties()
+            for prop in properties do
+                if prop.PropertyType = typeof<string> then
+                    prop.SetValue(instance, "")
+            instance
+
         let setLoading (formModel: Model<'Values>) =
             { formModel with
                 State = Loading
