@@ -1,4 +1,4 @@
-@import "./../../node_modules/bulma/sass/utilities/initial-variables";
+@import "./../node_modules/bulma/sass/utilities/initial-variables";
 
 $primary: #176663;
 $primary-light: lighten($primary, 8%);
@@ -48,6 +48,8 @@ $menu-item-hover-color: $primary;
 $menu-item-hover-background-color: transparent;
 $menu-label-font-size: $size-6;
 $menu-item-radius: $radius-large $radius-large;
+
+$tabs-toggle-link-active-background-color: $primary;
 
 $body-size: 15px;
 

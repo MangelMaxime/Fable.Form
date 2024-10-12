@@ -11,13 +11,13 @@
     "devDependencies": {
         "bulma": "^0.9.3",
         "gatsby-remark-vscode": "^3.3.1",
-        "gh-pages": "^3.2.3",
-        "mocha": "^9.2.2",
-        "nacara": "^1.6.1",
-        "nacara-layout-standard": "^1.7.0",
-        "nodemon": "^2.0.15",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
+        "gh-pages": "^6.2.0",
+        "mocha": "^10.7.3",
+        "nacara": "^1.8.0",
+        "nacara-layout-standard": "^1.8.0",
+        "nodemon": "^3.1.7",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "remark-github": "^11.2.2",
         "vscode-theme-onelight": "github:akamud/vscode-theme-onelight"
     }
