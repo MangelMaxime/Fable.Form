@@ -1,6 +1,7 @@
 module Page.ReactOnly.Component
 
 open Fable.Form.Simple
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 open Feliz
 
@@ -80,12 +81,9 @@ let form: Form<Values, _> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "email"
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        AutoComplete = None
-                    }
+                    TextField.create "email"
+                    |> TextField.withLabel "Email"
+                    |> TextField.withPlaceholder "some@email.com"
             }
 
     let passwordField =
@@ -99,13 +97,7 @@ let form: Form<Values, _> =
                             Password = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "password"
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        AutoComplete = None
-                    }
+                Attributes = PasswordField.create "password" |> PasswordField.withLabel "Password"
             }
 
     let rememberMe =

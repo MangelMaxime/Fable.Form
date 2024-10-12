@@ -5,6 +5,7 @@ open Feliz
 open Feliz.Bulma
 
 open Fable.Form.Simple
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 
 // Expose our custom field
@@ -91,12 +92,9 @@ let form: Form<Values, Msg> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "username"
-                        Label = "Username"
-                        Placeholder = "Type your username"
-                        AutoComplete = None
-                    }
+                    TextField.create "username"
+                    |> TextField.withLabel "Username"
+                    |> TextField.withPlaceholder "Type your username"
             }
 
     let signatureField =

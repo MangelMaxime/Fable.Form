@@ -4,36 +4,14 @@ open Fable.Form
 open Feliz
 open Feliz.Bulma
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Fields.Html
 
 module RadioField =
 
-    type OptionItem =
-        abstract member Key: string
-        abstract member Text: string
+    type Field<'Values>(innerField: RadioField.InnerField<'Values>) =
 
-    [<NoComparison>]
-    type Attributes =
-        {
-            FieldId: string
-            Label: string
-            Options: OptionItem list
-        }
-
-        interface Field.IAttributes with
-
-            member this.GetFieldId() = this.FieldId
-
-    type InnerField<'Values> = Field.Field<Attributes, OptionItem option, 'Values>
-
-    let form<'Values, 'Field, 'Output>
-        : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, OptionItem option, 'Values, 'Output>
-              -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field _.IsNone
-
-    type Field<'Values>(innerField: InnerField<'Values>) =
-
-        inherit IStandardField<'Values, OptionItem option, Attributes>(innerField)
+        inherit
+            IStandardField<'Values, RadioField.OptionItem option, RadioField.Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -41,9 +19,11 @@ module RadioField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<OptionItem option, Attributes>) =
+        override _.RenderField
+            (config: StandardRenderFieldConfig<RadioField.OptionItem option, RadioField.Attributes>)
+            =
 
-            let radio (optionItem: OptionItem) =
+            let radio (optionItem: RadioField.OptionItem) =
                 Bulma.input.labels.radio [
                     Bulma.input.radio [
                         prop.name config.Attributes.Label

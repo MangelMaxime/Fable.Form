@@ -6,6 +6,8 @@ open Fable.Form.Simple
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_LIT
@@ -61,7 +63,7 @@ let init =
     }
     |> Form.View.idle
 
-let private bookForm (index: int) =
+let private bookForm (context: FormList.ElementContext) =
     let titleField =
         Form.textField
             {
@@ -74,12 +76,9 @@ let private bookForm (index: int) =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = $"book-title-{index}"
-                        Label = "Name of book #" + string (index + 1)
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                    TextField.create $"{context.FieldIdPrefix}-title"
+                    |> TextField.withLabel $"Name of book #{context.Index + 1}"
+                    |> TextField.withPlaceholder ""
             }
 
     let authorField =
@@ -94,12 +93,8 @@ let private bookForm (index: int) =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = $"book-author-{index}"
-                        Label = "Author of book #" + string (index + 1)
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                    TextField.create $"{context.FieldIdPrefix}-author"
+                    |> TextField.withLabel $"Author of book #{context.Index + 1}"
             }
 
     let summary =
@@ -114,12 +109,8 @@ let private bookForm (index: int) =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = $"book-summary-{index}"
-                        Label = "Summary of book #" + string (index + 1)
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                    TextareaField.create $"{context.FieldIdPrefix}-summary"
+                    |> TextareaField.withLabel $"Summary of book #{context.Index + 1}"
             }
 
     let onSubmit title author summary =
@@ -154,12 +145,9 @@ let form: Form<Values, _> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "name"
-                        Label = "Name"
-                        Placeholder = "Your name"
-                        AutoComplete = None
-                    }
+                    TextField.create "name"
+                    |> TextField.withLabel "Name"
+                    |> TextField.withPlaceholder "Your name"
             }
 
     let onSubmit name books = (name, books)
@@ -182,11 +170,10 @@ let form: Form<Values, _> =
                             Books = newValue
                         }
                 Attributes =
-                    {
-                        Label = "Books"
-                        Add = Some "Add book"
-                        Delete = Some "Remove book"
-                    }
+                    FormList.create "books-list"
+                    |> FormList.withLabel "Books"
+                    |> FormList.withAdd "Add book"
+                    |> FormList.withDelete "Remove book"
             }
             bookForm
     )
@@ -199,6 +186,13 @@ let information<'FrameworkRoute> : DemoInformation<_> =
         Description = "A form where you can add and remove a list of forms"
         Code =
             """
+let private bookForm (context : FormList.ElementContext) =
+    // ...
+    Form.succeed onSubmit
+    |> Form.append titleField
+    |> Form.append authorField
+    |> Form.append summary
+
 Form.succeed onSubmit
     |> Form.append nameField
     |> Form.append (

@@ -6,6 +6,7 @@ open Feliz
 open Feliz.Bulma
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma.Fields
 
 module DaisyTextInput =
@@ -71,7 +72,7 @@ module DaisyTextInput =
 
     type Field<'Values>(innerField: TextField.InnerField<'Values>) =
         // For the demo, we only want to customize the rendering of raw text fields
-        inherit TextField.Field<'Values>(TextField.TextRaw, innerField)
+        inherit TextField.Field<'Values>(innerField)
 
         override _.RenderField(config: StandardRenderFieldConfig<string, TextField.Attributes>) =
             let autoComplete =
@@ -94,7 +95,10 @@ module DaisyTextInput =
                 prop.disabled config.Disabled
                 prop.readOnly config.IsReadOnly
                 prop.value config.Value
-                prop.placeholder config.Attributes.Placeholder
+
+                match config.Attributes.Placeholder with
+                | Some placeholder -> prop.placeholder placeholder
+                | None -> ()
 
                 prop.autoComplete autoComplete
             ]

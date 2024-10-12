@@ -5,6 +5,7 @@ open Fable.Form.Simple
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Bulma.Fields
 #endif
@@ -82,13 +83,7 @@ let private studentForm =
                             Name = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "student-name"
-                        Label = "Name"
-                        Placeholder = "Student name"
-                        AutoComplete = None
-                    }
+                Attributes = TextField.create "student-name" |> TextField.withLabel "Name"
             }
 
     Form.succeed NewStudent |> Form.append nameField |> Form.section "Student"
@@ -105,13 +100,7 @@ let private teacherForm =
                             Name = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "teacher-name"
-                        Label = "Name"
-                        Placeholder = "Teacher name"
-                        AutoComplete = None
-                    }
+                Attributes = TextField.create "teacher-name" |> TextField.withLabel "Name"
             }
 
     let subjectField =
@@ -126,12 +115,9 @@ let private teacherForm =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "teacher-subject"
-                        Label = "Subject"
-                        Placeholder = "Taught subject"
-                        AutoComplete = None
-                    }
+                    TextField.create "teacher-subject"
+                    |> TextField.withLabel "Subject"
+                    |> TextField.withPlaceholder "Taught subject"
             }
 
     let onSubmit name subject = NewTeacher(name, subject)
@@ -164,16 +150,13 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "user-type"
-                        Label = "Type of user"
-                        Placeholder = "Choose a user type"
-                        Options =
-                            [
-                                UserType.Student
-                                UserType.Teacher
-                            ]
-                    }
+                    SelectField.create "user-type"
+                    |> SelectField.withLabel "Type of user"
+                    |> SelectField.withPlaceholder "Choose a user type"
+                    |> SelectField.withOptions [
+                        UserType.Student
+                        UserType.Teacher
+                    ]
             }
 
     userTypeField

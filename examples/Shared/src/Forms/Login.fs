@@ -5,6 +5,7 @@ open Fable.Form.Simple
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 #endif
 
@@ -103,12 +104,10 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "email"
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        AutoComplete = Some "email"
-                    }
+                    TextField.create "email"
+                    |> TextField.withLabel "Email"
+                    |> TextField.withPlaceholder "some@email.com"
+                    |> TextField.withAutoComplete "email"
             }
 
     let passwordField =
@@ -123,12 +122,10 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "password"
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        AutoComplete = Some "current-password"
-                    }
+                    PasswordField.create "password"
+                    |> PasswordField.withLabel "Password"
+                    |> PasswordField.withPlaceholder "Your password"
+                    |> PasswordField.withAutoComplete "current-password"
             }
 
     let rememberMe =

@@ -12,6 +12,7 @@
     "tags": [
         "Fable.Form",
         "Fable.Form.Simple",
+        "Fable.Form.Simple.Fields.Html",
         "Fable.Form.Simple.Bulma",
         "Fable.Form.Simple.Sutil.Bulma",
         "Fable.Form.Simple.Lit.Bulma",

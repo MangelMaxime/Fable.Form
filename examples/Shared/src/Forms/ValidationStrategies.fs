@@ -5,6 +5,7 @@ open Fable.Form.Simple
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Bulma.Fields
 #endif
@@ -85,6 +86,7 @@ type ValidationStrategy =
 /// <summary>
 /// Represent the form values
 /// </summary>
+[<NoComparison>]
 type Values =
     {
         ValidationStrategy: RadioField.OptionItem option
@@ -92,12 +94,14 @@ type Values =
         Password: string
     }
 
+[<NoComparison>]
 type Model =
     // Used when the form is being filled
     | FillingForm of Form.View.Model<Values>
     // User when the form has been submitted with success
     | FormFilled of EmailAddress * Password
 
+[<NoComparison>]
 type Msg =
     // Used when a change occure in the form
     | FormChanged of Form.View.Model<Values>
@@ -137,15 +141,12 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "validation-strategy"
-                        Label = "Validation strategy"
-                        Options =
-                            [
-                                ValidationStrategy.OnSubmit
-                                ValidationStrategy.OnBlur
-                            ]
-                    }
+                    RadioField.create "validation-strategy"
+                    |> RadioField.withLabel "Validation strategy"
+                    |> RadioField.withOptions [
+                        ValidationStrategy.OnSubmit
+                        ValidationStrategy.OnBlur
+                    ]
             }
 
     let emailField =
@@ -160,12 +161,9 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "email"
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        AutoComplete = Some "email"
-                    }
+                    TextField.create "email"
+                    |> TextField.withLabel "Email"
+                    |> TextField.withPlaceholder "some@email.com"
             }
 
     let passwordField =
@@ -180,12 +178,9 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "password"
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        AutoComplete = Some "current-password"
-                    }
+                    PasswordField.create "password"
+                    |> PasswordField.withLabel "Password"
+                    |> PasswordField.withPlaceholder "Your password"
             }
 
     let onSmubit _ email password =

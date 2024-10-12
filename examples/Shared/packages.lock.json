@@ -117,8 +117,16 @@
           "FSharp.Core": "[5.0.2, )",
           "Fable.Form": "[1.0.0, )",
           "Fable.Form.Simple": "[1.0.0, )",
+          "Fable.Form.Simple.Fields.Html": "[1.0.0, )",
           "Feliz": "[2.8.0, )",
           "Feliz.Bulma": "[3.0.0, )"
+        }
+      },
+      "Fable.Form.Simple.Fields.Html": {
+        "type": "Project",
+        "dependencies": {
+          "FSharp.Core": "[5.0.2, )",
+          "Fable.Form": "[1.0.0, )"
         }
       },
       "Fable.Browser.Dom": {

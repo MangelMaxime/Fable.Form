@@ -3,51 +3,39 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
-Implementation of standard fields using Bulma CSS framework, to be used with Fable.Form.Simple.
+Contains shared API betweens Fable.Form.Simple libraries.
+
+It can be used has a standalone library if you want to build your own fields or
+you can use Fable.Form.Simple.Bulma, Fable.Form.Simple.Sutil.Bulma to have a ready to use libraries made for Bulma CSS framework.
         </Description>
         <FablePackageType>library</FablePackageType>
         <PackageTags>fable-javascript</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Types.fs" />
-        <Compile Include="Html.View.fs" />
-        <Compile Include="InputField.fs" />
-        <Compile Include="TextField.fs" />
+        <Compile Include="CheckboxField.fs" />
         <Compile Include="ColorField.fs" />
         <Compile Include="DateField.fs" />
         <Compile Include="DateTimeLocalField.fs" />
         <Compile Include="EmailField.fs" />
         <Compile Include="NumberField.fs" />
         <Compile Include="PasswordField.fs" />
-        <Compile Include="TextareaField.fs" />
-        <Compile Include="CheckboxField.fs" />
-        <Compile Include="SearchField.fs" />
         <Compile Include="RadioField.fs" />
+        <Compile Include="RangeField.fs" />
+        <Compile Include="SearchField.fs" />
         <Compile Include="SelectField.fs" />
         <Compile Include="TelField.fs" />
+        <Compile Include="TextareaField.fs" />
+        <Compile Include="TextField.fs" />
         <Compile Include="TimeField.fs" />
-        <Compile Include="FileField.fs" />
-        <Compile Include="FormList.fs" />
-        <Compile Include="Section.fs" />
-        <Compile Include="Group.fs" />
-        <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
-        <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
-        <ProjectReference Include="..\Fable.Form.Simple.Fields.Html\Fable.Form.Simple.Fields.Html.fsproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Fable.Package.SDK">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
-      <PackageReference Include="Feliz" />
-      <PackageReference Include="Feliz.Bulma" />
       <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>

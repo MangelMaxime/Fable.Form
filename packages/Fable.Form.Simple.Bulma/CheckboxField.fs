@@ -3,31 +3,14 @@
 open Fable.Form
 open Feliz
 open Feliz.Bulma
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 
 module CheckboxField =
 
-    type Attributes =
-        {
-            FieldId: string
-            Text: string
-        }
+    type Field<'Values>(innerField: CheckboxField.InnerField<'Values>) =
 
-        interface Field.IAttributes with
-
-            member this.GetFieldId() = this.FieldId
-
-    type InnerField<'Values> = Field.Field<Attributes, bool, 'Values>
-
-    let form<'Values, 'Field, 'Output>
-        : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, bool, 'Values, 'Output>
-              -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field (fun _ -> false)
-
-    type Field<'Values>(innerField: InnerField<'Values>) =
-
-        inherit IStandardField<'Values, bool, Attributes>(innerField)
+        inherit IStandardField<'Values, bool, CheckboxField.Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -35,7 +18,7 @@ module CheckboxField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<bool, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<bool, CheckboxField.Attributes>) =
 
             Bulma.control.div [
                 Bulma.input.labels.checkbox [

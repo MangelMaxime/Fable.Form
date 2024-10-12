@@ -6,6 +6,7 @@ open Fable.Form.Simple
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma.Fields
 #endif
 
@@ -164,6 +165,7 @@ type FormResult =
 /// <summary>
 /// Represents the value of the form, it also have an <c>Errors</c> field to store the external errors
 /// </summary>
+[<NoComparison>]
 type Values =
     {
         Email: string
@@ -174,12 +176,14 @@ type Values =
         Errors: FormErrors
     }
 
+[<NoComparison>]
 type Model =
     // Used when the form is being filled
     | FillingForm of Form.View.Model<Values>
     // Used when the form has been submitted with success
     | SignedUp of User.User
 
+[<NoComparison>]
 type Msg =
     // Message to react to form change
     | FormChanged of Form.View.Model<Values>
@@ -241,12 +245,9 @@ let form: Form<Values, FormResult> =
 
                         | None -> None
                 Attributes =
-                    {
-                        FieldId = "email"
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        AutoComplete = None
-                    }
+                    TextField.create "email"
+                    |> TextField.withLabel "Email"
+                    |> TextField.withPlaceholder "some@email.com"
             }
 
     let nameField =
@@ -261,12 +262,9 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "name"
-                        Label = "Name"
-                        Placeholder = "Your name"
-                        AutoComplete = None
-                    }
+                    TextField.create "name"
+                    |> TextField.withLabel "Name"
+                    |> TextField.withPlaceholder "Your name"
             }
 
     let passwordField =
@@ -281,12 +279,9 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "password"
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        AutoComplete = None
-                    }
+                    PasswordField.create "password"
+                    |> PasswordField.withLabel "Password"
+                    |> PasswordField.withPlaceholder "Your password"
             }
 
     let repeatPasswordField =
@@ -308,12 +303,9 @@ let form: Form<Values, FormResult> =
                             }
                     Error = fun _ -> None
                     Attributes =
-                        {
-                            FieldId = "repeat-password"
-                            Label = "Repeat password"
-                            Placeholder = "Your password again..."
-                            AutoComplete = None
-                        }
+                        PasswordField.create "repeat-password"
+                        |> PasswordField.withLabel "Repeat password"
+                        |> PasswordField.withPlaceholder "Your password again..."
                 }
         )
 
@@ -333,21 +325,12 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "make-public"
-                        Label = "Make your profile public ?"
-                        Options =
-                            [
-                                { new RadioField.OptionItem with
-                                    member _.Text = "Yes"
-                                    member _.Key = "option-yes"
-                                }
-                                { new RadioField.OptionItem with
-                                    member _.Text = "No"
-                                    member _.Key = "option-no"
-                                }
-                            ]
-                    }
+                    RadioField.create "make-public"
+                    |> RadioField.withLabel "Make your profile public ?"
+                    |> RadioField.withBasicsOptions [
+                        "option-yes", "Yes"
+                        "option-no", "No"
+                    ]
             }
 
     let onSubmit email name password makePublic =

@@ -8,12 +8,14 @@ open Fable.Form.Simple.Bulma
 open Examples.Shared.Forms
 open SignUp.Domain
 
+[<NoComparison>]
 type Model =
     // Used when the form is being filled
     | FillingForm of Form.View.Model<SignUp.Values>
     // Used when the form has been submitted with success
     | SignedUp of User.User
 
+[<NoComparison>]
 type Msg =
     // Message to react to form change
     | FormChanged of Form.View.Model<SignUp.Values>

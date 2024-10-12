@@ -5,6 +5,7 @@ open Examples.Shared.Forms.Composability.Domain
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 #endif
 
@@ -44,13 +45,7 @@ let form: Form<Values, Address> =
                             Country = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "country"
-                        Label = "Country"
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                Attributes = TextField.create "country" |> TextField.withLabel "Country"
             }
 
     let cityField =
@@ -64,13 +59,7 @@ let form: Form<Values, Address> =
                             City = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "city"
-                        Label = "City"
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                Attributes = TextField.create "city" |> TextField.withLabel "City"
             }
 
     let postalCodeField =
@@ -84,13 +73,7 @@ let form: Form<Values, Address> =
                             PostalCode = newValue
                         }
                 Error = fun _ -> None
-                Attributes =
-                    {
-                        FieldId = "postalCode"
-                        Label = "PostalCode"
-                        Placeholder = ""
-                        AutoComplete = None
-                    }
+                Attributes = TextField.create "postalCode" |> TextField.withLabel "PostalCode"
             }
 
     Form.succeed Address.Create

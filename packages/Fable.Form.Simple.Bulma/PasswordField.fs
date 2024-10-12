@@ -6,10 +6,10 @@ open Feliz.Bulma
 open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 
-module TextField =
+module PasswordField =
 
-    type Field<'Values>(innerField: TextField.InnerField<'Values>) =
-        inherit IStandardField<'Values, string, TextField.Attributes>(innerField)
+    type Field<'Values>(innerField: PasswordField.InnerField<'Values>) =
+        inherit IStandardField<'Values, string, PasswordField.Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -17,7 +17,9 @@ module TextField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<string, TextField.Attributes>) =
+        override _.RenderField
+            (config: StandardRenderFieldConfig<string, PasswordField.Attributes>)
+            =
             InputField.renderField
                 {
                     OnChange = config.OnChange
@@ -28,14 +30,9 @@ module TextField =
                     Error = config.Error
                     ShowError = config.ShowError
                     Label = config.Attributes.Label
-                    InputFunc = Bulma.input.text
+                    InputFunc = Bulma.input.password
                     ExtraInputProps =
                         [
-                            match config.Attributes.SpellCheck with
-                            | TextField.SpellCheck.Default -> ()
-                            | TextField.SpellCheck.True -> prop.spellcheck true
-                            | TextField.SpellCheck.False -> prop.spellcheck false
-
                             prop.autoFocus config.Attributes.AutoFocus
 
                             match config.Attributes.Placeholder with

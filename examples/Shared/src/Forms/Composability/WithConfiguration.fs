@@ -7,6 +7,7 @@ open Examples.Shared.Forms.Composability.AddressForm.WithConfiguration
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 #endif
 
@@ -53,12 +54,9 @@ let form: Form<Values, _> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "name"
-                        Label = "Name"
-                        Placeholder = "Your name"
-                        AutoComplete = None
-                    }
+                    TextField.create "name"
+                    |> TextField.withLabel "Name"
+                    |> TextField.withPlaceholder "Your name"
             }
 
     let onSubmit user address = (user, address)
