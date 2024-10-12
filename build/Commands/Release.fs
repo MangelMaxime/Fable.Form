@@ -23,6 +23,7 @@ let private capitalizeFirstLetter (text: string) =
 type Project =
     | FableForm
     | FableFormSimple
+    | FableFormSimpleFieldsHtml
     | FableFormSimpleBulma
     | FableFormSimpleBulmaNpm
     | All
@@ -36,13 +37,14 @@ type ProjectTypeConverter() =
             match text with
             | "Fable.Form" -> Project.FableForm
             | "Fable.Form.Simple" -> Project.FableFormSimple
+            | "Fable.Form.Simple.Fields.Html" -> Project.FableFormSimpleFieldsHtml
             | "Fable.Form.Simple.Bulma" -> Project.FableFormSimpleBulma
             | "fable-form-simple-bulma" -> Project.FableFormSimpleBulmaNpm
             | "all"
             | "All" -> Project.All
-            | _ -> raise <| System.InvalidOperationException("Invalid project name")
+            | _ -> raise <| InvalidOperationException("Invalid project name")
 
-        | _ -> raise <| System.InvalidOperationException("Invalid project name")
+        | _ -> raise <| InvalidOperationException("Invalid project name")
 
 type ReleaseSettings() =
     inherit CommandSettings()
@@ -66,6 +68,7 @@ type ReleaseSettings() =
 Possible values:
 - Fable.Form
 - Fable.Form.Simple
+- Fable.Form.Simple.Fields.Html
 - Fable.Form.Simple.Bulma
 - fable-form-simple-bulma
 
@@ -167,6 +170,8 @@ let private getReleaseContext
                 match settings.Project with
                 | Project.FableForm -> List.contains "Fable.Form" tags
                 | Project.FableFormSimple -> List.contains "Fable.Form.Simple" tags
+                | Project.FableFormSimpleFieldsHtml ->
+                    List.contains "Fable.Form.Simple.Fields.Html" tags
                 | Project.FableFormSimpleBulma -> List.contains "Fable.Form.Simple.Bulma" tags
                 | Project.FableFormSimpleBulmaNpm ->
                     List.contains "Fable.Form.Simple.Bulma.Npm" tags
@@ -405,6 +410,13 @@ let private releaseFableFormSimple (repository: Repository) (settings: ReleaseSe
         Workspace.packages.``Fable.Form.Simple``.``Fable.Form.Simple.fsproj``
         Workspace.packages.``Fable.Form.Simple``.``CHANGELOG.md``
 
+let private releaseFableFormSimpleFieldsHtml (repository: Repository) (settings: ReleaseSettings) =
+    releaseProject
+        repository
+        settings
+        Workspace.packages.``Fable.Form.Simple.Fields.Html``.``Fable.Form.Simple.Fields.Html.fsproj``
+        Workspace.packages.``Fable.Form.Simple.Fields.Html``.``CHANGELOG.md``
+
 let private releaseFableFormSimpleBulma (repository: Repository) (settings: ReleaseSettings) =
     releaseProject
         repository
@@ -441,10 +453,12 @@ type ReleaseCommand() =
         | Project.FableForm -> releaseFableForm repository settings
         | Project.FableFormSimple -> releaseFableFormSimple repository settings
         | Project.FableFormSimpleBulma -> releaseFableFormSimpleBulma repository settings
+        | Project.FableFormSimpleFieldsHtml -> releaseFableFormSimpleFieldsHtml repository settings
         | Project.FableFormSimpleBulmaNpm -> releaseFableFormSimpleBulmaNpm repository settings
         | Project.All ->
             releaseFableForm repository settings
             releaseFableFormSimple repository settings
+            releaseFableFormSimpleFieldsHtml repository settings
             releaseFableFormSimpleBulma repository settings
             releaseFableFormSimpleBulmaNpm repository settings
 
