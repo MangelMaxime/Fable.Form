@@ -87,6 +87,10 @@ If not specified, all projects will be released.
             "main"
         |] with get, set
 
+    [<CommandOption("--dry-run")>]
+    [<Description("Run the command without publishing the package. Allows to check the generated CHANGELOG.md (don't forget to revert the changes)")>]
+    member val IsDryRun = false with get, set
+
 [<NoComparison>]
 type ReleaseContext =
     {
@@ -392,9 +396,11 @@ let private releaseProject
     else
         updateChangelog releaseContext changelogPath
 
-        releaseNuGet projectFile
-
-        printfn $"Changelog updated to version %A{releaseContext.NewVersion}"
+        if settings.IsDryRun then
+            printfn $"Dry run completed for project %A{settings.Project}"
+            printfn "Please revert the changes after inspecting the generated CHANGELOG.md"
+        else
+            releaseNuGet projectFile
 
 let private releaseFableForm (repository: Repository) (settings: ReleaseSettings) =
     releaseProject
