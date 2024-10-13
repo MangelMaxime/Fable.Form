@@ -1,9 +1,7 @@
 namespace Fable.Form.Simple.Bulma.Fields.DaisyTextInput
 
-open System
 open Fable.Form
 open Sutil
-open Sutil.Bulma
 open Fable.Form.Simple
 open Fable.Form.Simple.Sutil.Bulma
 open Fable.Form.Simple.Fields.Html
@@ -47,14 +45,12 @@ module DaisyTextInput =
                     |> Option.defaultValue (
                         Html.div [
                             prop.className "tw-daisy-label"
-
                         ]
                     )
 
                 else
                     Html.div [
                         prop.className "tw-daisy-label"
-
                     ]
 
         let wrapInFieldContainer (children: Core.SutilElement list) =

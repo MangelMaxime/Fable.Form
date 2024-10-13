@@ -1,9 +1,7 @@
 namespace Fable.Form.Simple.Bulma.Fields.DaisyTextInput
 
-open System
 open Fable.Form
 open Feliz
-open Feliz.Bulma
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Fields.Html
@@ -16,10 +14,10 @@ module DaisyTextInput =
 
         let fieldLabel (label: string) =
             Html.div [
-                prop.className "label"
+                prop.className "tw-daisy-label"
                 prop.children [
                     Html.div [
-                        prop.className "label-text"
+                        prop.className "tw-daisy-label-text"
                         prop.text label
                     ]
                 ]
@@ -27,10 +25,10 @@ module DaisyTextInput =
 
         let errorMessage (message: string) =
             Html.div [
-                prop.className "label"
+                prop.className "tw-daisy-label"
                 prop.children [
                     Html.div [
-                        prop.className "label-text-alt !text-red-500"
+                        prop.className "tw-daisy-label-text-alt !tw-text-red-500"
                         prop.text message
                     ]
                 ]
@@ -45,14 +43,20 @@ module DaisyTextInput =
                     error
                     |> Option.map Form.View.errorToString
                     |> Option.map errorMessage
-                    |> Option.defaultValue (Bulma.help [])
+                    |> Option.defaultValue (
+                        Html.div [
+                            prop.className "tw-daisy-label"
+                        ]
+                    )
 
                 else
-                    Bulma.help []
+                    Html.div [
+                        prop.className "tw-daisy-label"
+                    ]
 
         let wrapInFieldContainer (children: ReactElement list) =
             Html.div [
-                prop.className "form-control w-full"
+                prop.className "tw-daisy-form-control tw-w-full"
                 prop.children children
             ]
 
@@ -82,9 +86,9 @@ module DaisyTextInput =
 
             Html.input [
                 prop.className [
-                    "input input-bordered w-full"
+                    "tw-daisy-input tw-daisy-input-bordered tw-w-full"
                     if config.ShowError && config.Error.IsSome then
-                        "input-error"
+                        "tw-daisy-input-error"
                 ]
                 prop.onChange config.OnChange
 

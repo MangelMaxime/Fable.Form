@@ -157,29 +157,46 @@ let private renderFilledView (userName: string) (signature: string) dispatch =
 
     ]
 
+let daisySubmit (state: Form.View.State) =
+    Html.div [
+        prop.className "tw-float-right"
+        prop.children [
+            Html.button [
+                prop.type' "submit"
+                prop.className "tw-daisy-btn tw-daisy-btn-primary"
+                prop.disabled (state = Form.View.Loading: bool)
+                prop.children [
+                    if state = Form.View.Loading then
+                        Html.span [
+                            prop.className "tw-daisy-loading tw-daisy-loading-spinner"
+                        ]
+
+                    Html.text "Submit"
+                ]
+            ]
+        ]
+    ]
+
 let view (model: Model) (dispatch: Dispatch<Msg>) =
     Html.div [
-        // We need to load DaisyUI CSS for this example
-        Html.link [
-            prop.rel "stylesheet"
-            prop.type' "text/css"
-            prop.href "https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css"
+        // Scope DaisyUI/Tailwind CSS to this component
+        prop.className "daisyui"
+
+        prop.children [
+            match model with
+            | FillingForm formModel ->
+                Form.View.asHtml
+                    {
+                        OnChange = FormChanged >> dispatch
+                        OnSubmit = dispatch
+                        Action = Form.View.Action.Custom daisySubmit
+                        Validation = Form.View.ValidateOnSubmit
+                    }
+                    form
+                    formModel
+
+            | FilledForm(userName, signature) -> renderFilledView userName signature dispatch
         ]
-
-        match model with
-        | FillingForm formModel ->
-            Form.View.asHtml
-                {
-                    OnChange = FormChanged >> dispatch
-                    OnSubmit = dispatch
-                    Action = Form.View.Action.SubmitOnly "Send"
-                    Validation = Form.View.ValidateOnSubmit
-                }
-                form
-                formModel
-
-        | FilledForm(userName, signature) -> renderFilledView userName signature dispatch
-
     ]
 
 let information<'FrameworkRoute> : DemoInformation<_> =
