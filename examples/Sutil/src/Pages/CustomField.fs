@@ -4,6 +4,7 @@ open Sutil
 open Sutil.Bulma
 open Fable.Form.Simple
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Fields.Html
 open Feliz
 
 // Expose our custom field
@@ -60,12 +61,9 @@ let private form: Form<Values, _> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "username"
-                        Label = "Username"
-                        Placeholder = "Type your username"
-                        AutoComplete = None
-                    }
+                    TextField.create "username"
+                    |> TextField.withLabel "Username"
+                    |> TextField.withPlaceholder "Type your username"
             }
 
     let signatureField =

@@ -125,7 +125,7 @@
           "Fable.Form": "[1.0.0, )"
         }
       },
-      "Fable.Form.Simple.Fields.Html": {
+      "fable.form.simple.fields.html": {
         "type": "Project",
         "dependencies": {
           "FSharp.Core": "[5.0.2, )",

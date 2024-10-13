@@ -12,7 +12,18 @@ Implementation of standard fields using Bulma CSS framework, to be used with Fab
         <Compile Include="Types.fs" />
         <Compile Include="Helpers.View.fs" />
         <Compile Include="Helpers.Focus.fs" />
+        <Compile Include="InputField.fs" />
         <Compile Include="TextField.fs" />
+        <Compile Include="ColorField.fs" />
+        <Compile Include="DateField.fs" />
+        <Compile Include="DateTimeLocalField.fs" />
+        <Compile Include="EmailField.fs" />
+        <Compile Include="NumberField.fs" />
+        <Compile Include="PasswordField.fs" />
+        <Compile Include="TextareaField.fs" />
+        <Compile Include="SearchField.fs" />
+        <Compile Include="TelField.fs" />
+        <Compile Include="TimeField.fs" />
         <Compile Include="CheckboxField.fs" />
         <Compile Include="RadioField.fs" />
         <Compile Include="SelectField.fs" />
@@ -25,6 +36,7 @@ Implementation of standard fields using Bulma CSS framework, to be used with Fab
     <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
         <ProjectReference Include="..\Fable.Form.Simple\Fable.Form.Simple.fsproj" />
+        <ProjectReference Include="..\Fable.Form.Simple.Fields.Html\Fable.Form.Simple.Fields.Html.fsproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">

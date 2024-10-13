@@ -12,13 +12,22 @@ type VirtualWorkspace =
         root,
         """
 examples/
-    react/
+    React/
         fableBuild/
-    sutil/
+        public/
+            daisyui.css
+    Sutil/
         fableBuild/
-    lit/
+        public/
+            daisyui.css
+    Lit/
         fableBuild/
+        public/
+            daisyui.css
 tests/
     fableBuild/
+docs_deploy/
+    examples/
+        daisyui.css
 """
      >

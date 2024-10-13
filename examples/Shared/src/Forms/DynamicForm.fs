@@ -5,17 +5,21 @@ open Fable.Form.Simple
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
-open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_LIT
 open Fable.Form.Simple.Lit.Bulma
+open Fable.Form.Simple.Lit.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Sutil.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 // Domain used by the current exemple, in a real application, this should be in a separate file

@@ -19,6 +19,7 @@ module FormList =
 
     type Attributes =
         {
+            FieldId: string
             Label: string
             Add: string option
             Delete: string option
@@ -41,9 +42,16 @@ module FormList =
             Attributes: Attributes
         }
 
+    type ElementContext =
+        {
+            FieldIdPrefix: string
+            Index: int
+        }
+
     [<NoComparison; NoEquality>]
     type ElementState<'Values, 'ElementValues> =
         {
+            FieldIdPrefix: string
             Index: int
             Update: 'ElementValues -> 'Values -> 'Values
             Values: 'Values
@@ -63,6 +71,7 @@ module FormList =
             let elementForIndex index elementValues =
                 buildElement
                     {
+                        FieldIdPrefix = formConfig.Attributes.FieldId + "-" + string index
                         Update =
                             fun newElementValues values ->
                                 let newList = List.setAt index newElementValues listOfElementValues
@@ -314,3 +323,28 @@ module FormList =
                         )
                     Disabled = filledField.IsDisabled || fieldConfig.Disabled
                 }
+
+type FormList =
+
+    static member create(fieldId: string) : FormList.Attributes =
+        {
+            FieldId = fieldId
+            Label = ""
+            Add = None
+            Delete = None
+        }
+
+    static member withLabel (label: string) (attributes: FormList.Attributes) =
+        { attributes with
+            Label = label
+        }
+
+    static member withAdd (add: string) (attributes: FormList.Attributes) =
+        { attributes with
+            Add = Some add
+        }
+
+    static member withDelete (delete: string) (attributes: FormList.Attributes) =
+        { attributes with
+            Delete = Some delete
+        }

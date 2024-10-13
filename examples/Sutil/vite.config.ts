@@ -11,7 +11,7 @@ export default defineConfig(({ mode}) => {
             rollupOptions: {
                 output: {
                     entryFileNames: "[name].js",
-                    dir: isProduction ? "../docs_deploy/examples/dist/" : "dist-dev",
+                    dir: isProduction ? "../../docs_deploy/examples/sutil/dist/" : "dist-dev",
                 }
             }
         },

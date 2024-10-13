@@ -30,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../packages/Fable.Form.Simple.Bulma/Fable.Form.Simple.Bulma.fsproj" />
-    <ProjectReference Include="../Shared/Examples.Shared.React.fsproj" />
+    <ProjectReference Include="../Shared/Projects/React/Examples.Shared.React.fsproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Browser.Dom" />

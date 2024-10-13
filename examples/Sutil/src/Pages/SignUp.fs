@@ -7,7 +7,7 @@ open Fable.Form.Simple.Sutil.Bulma
 open Examples.Shared.Forms
 open SignUp.Domain
 
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; NoComparison>]
 type State =
     // The user is currently filling the form
     | Filling of Form.View.Model<SignUp.Values>

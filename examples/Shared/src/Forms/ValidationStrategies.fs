@@ -1,11 +1,11 @@
 module Examples.Shared.Forms.ValidationStrategies
 
 open Fable.Form.Simple
+open Fable.Form.Simple.Fields.Html
 
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
-open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Bulma.Fields
 #endif

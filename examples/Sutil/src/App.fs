@@ -1,4 +1,4 @@
-module Examples
+module Examples.Sutil.App
 
 open Sutil
 open Sutil.Bulma
@@ -90,11 +90,14 @@ let app () =
                     | None -> Html.div "Not found"
                     | Some page ->
                         match page with
+                        | Router.Route.NotFound -> Html.div "Not found"
                         | Router.Route.Home ->
                             Html.div [
                                 Html.parse (
                                     Examples.Shared.Pages.Home.htmlContent
+                                        []
                                         Examples.Sutil.Pages.CustomField.information
+                                        Examples.Sutil.Pages.CustomView.information
                                 )
                             ]
 
@@ -152,6 +155,11 @@ let app () =
                             renderDemoPage
                                 Examples.Sutil.Pages.CustomField.information
                                 (Examples.Sutil.Pages.CustomField.Page())
+
+                        | Router.Route.FrameworkSpecific Router.SutilRoute.CustomView ->
+                            renderDemoPage
+                                Examples.Sutil.Pages.CustomView.information
+                                (Examples.Sutil.Pages.CustomView.Page())
                 )
         ]
     ]

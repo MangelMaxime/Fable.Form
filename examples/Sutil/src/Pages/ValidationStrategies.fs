@@ -7,7 +7,7 @@ open Fable.Form.Simple.Sutil.Bulma
 open Examples.Shared.Forms
 open ValidationStrategies.Domain
 
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; NoComparison>]
 type State =
     | Filling of Form.View.Model<ValidationStrategies.Values>
     | Filled of ValidationStrategies.FormResult
@@ -62,10 +62,14 @@ let Page () =
                             OnSubmit = State.Filled >> Store.set stateStore
                             Action = Form.View.Action.SubmitOnly "Sign in"
                             Validation =
-                                if formValues.Values.ValidationStrategy = "onSubmit" then
-                                    Form.View.ValidateOnSubmit
-                                else
-                                    Form.View.ValidateOnBlur
+                                match formValues.Values.ValidationStrategy with
+                                | Some strategy ->
+                                    match strategy :?> ValidationStrategies.ValidationStrategy with
+                                    | ValidationStrategies.ValidationStrategy.OnSubmit ->
+                                        Form.View.ValidateOnSubmit
+                                    | ValidationStrategies.ValidationStrategy.OnBlur ->
+                                        Form.View.ValidateOnBlur
+                                | None -> Form.View.ValidateOnBlur
                         }
                         ValidationStrategies.form
                         formValues

@@ -1,34 +1,16 @@
 ﻿namespace Fable.Form.Simple.Sutil.Bulma.Fields
 
 open Fable.Form
-open Fable.Core.JsInterop
 open Sutil
 open Sutil.Bulma
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Fields.Html
 
 module CheckboxField =
 
-    type Attributes =
-        {
-            FieldId: string
-            Text: string
-        }
+    type Field<'Values>(innerField: CheckboxField.InnerField<'Values>) =
 
-        interface Field.IAttributes with
-
-            member this.GetFieldId() = this.FieldId
-
-    type InnerField<'Values> = Field.Field<Attributes, bool, 'Values>
-
-    let form<'Values, 'Field, 'Output>
-        : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, bool, 'Values, 'Output>
-              -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field (fun _ -> false)
-
-    type Field<'Values>(innerField: InnerField<'Values>) =
-
-        inherit IStandardField<'Values, bool, Attributes>(innerField)
+        inherit IStandardField<'Values, bool, CheckboxField.Attributes>(innerField)
 
         interface IField<'Values> with
 
@@ -36,11 +18,10 @@ module CheckboxField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<bool, Attributes>) =
+        override _.RenderField(config: StandardRenderFieldConfig<bool, CheckboxField.Attributes>) =
 
             bulma.control.div [
                 bulma.inputLabels.checkbox [
-
                     bulma.input.checkbox [
                         // Checkbox can't really be set to readonly in HTML
                         // So we need to not listen to the onChange event

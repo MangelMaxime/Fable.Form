@@ -9,16 +9,21 @@
     "author": "Maxime Mangel",
     "license": "MIT",
     "devDependencies": {
+        "autoprefixer": "^10.4.20",
         "bulma": "^0.9.3",
+        "daisyui": "^4.12.13",
         "gatsby-remark-vscode": "^3.3.1",
         "gh-pages": "^6.2.0",
         "mocha": "^10.7.3",
         "nacara": "^1.8.0",
         "nacara-layout-standard": "^1.8.0",
         "nodemon": "^3.1.7",
+        "postcss": "^8.4.47",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "remark-github": "^11.2.2",
+        "tailwindcss": "^3.4.13",
+        "tailwindcss-scoped-preflight": "^3.4.5",
         "vscode-theme-onelight": "github:akamud/vscode-theme-onelight"
     }
 }

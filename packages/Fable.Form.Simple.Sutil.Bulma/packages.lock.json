@@ -148,6 +148,13 @@
           "Fable.Form": "[1.0.0, )"
         }
       },
+      "fable.form.simple.fields.html": {
+        "type": "Project",
+        "dependencies": {
+          "FSharp.Core": "[5.0.2, )",
+          "Fable.Form": "[1.0.0, )"
+        }
+      },
       "Fable.Browser.Dom": {
         "type": "CentralTransitive",
         "requested": "[2.17.0, )",

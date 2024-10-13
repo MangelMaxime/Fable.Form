@@ -26,4 +26,5 @@ If needed you can run <code>./build.sh example lit</code> after starting the doc
     </div>
 </div>
 
+<link rel="stylesheet" href="/Fable.Form/examples/daisyui.css">
 <script type="module" defer="defer" crossorigin src="dist/index.js"></script>

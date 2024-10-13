@@ -12,10 +12,14 @@ open Fable.Form.Simple.Fields.Html
 
 #if EXAMPLE_LIT
 open Fable.Form.Simple.Lit.Bulma
+open Fable.Form.Simple.Lit.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Sutil.Bulma.Fields
+open Fable.Form.Simple.Fields.Html
 #endif
 
 /// <summary>

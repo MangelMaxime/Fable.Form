@@ -127,12 +127,20 @@
           "Fable.Form": "[1.0.0, )"
         }
       },
+      "fable.form.simple.fields.html": {
+        "type": "Project",
+        "dependencies": {
+          "FSharp.Core": "[5.0.2, )",
+          "Fable.Form": "[1.0.0, )"
+        }
+      },
       "fable.form.simple.sutil.bulma": {
         "type": "Project",
         "dependencies": {
           "FSharp.Core": "[8.0.301, )",
           "Fable.Form": "[1.0.0, )",
           "Fable.Form.Simple": "[1.0.0, )",
+          "Fable.Form.Simple.Fields.Html": "[1.0.0, )",
           "Sutil": "[2.0.16, )"
         }
       },

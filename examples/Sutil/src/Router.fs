@@ -6,16 +6,16 @@ open Browser.Dom
 
 [<RequireQualifiedAccess>]
 type SutilRoute =
-    | None
+    | CustomView
 
     interface SharedRouter.IRoute with
-        member this.Segments = ""
+        member this.Segments = "custom-view"
 
 type Route = SharedRouter.Route<SutilRoute>
 
 let routeParser: Parser<Route -> Route, Route> =
     oneOf [
-        map SutilRoute.None (s "none")
+        map SutilRoute.CustomView (s "custom-view")
     ]
     |> SharedRouter.routeParser
 

@@ -2,17 +2,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <DefineConstants>EXAMPLE_LIT</DefineConstants>
+        <DefineConstants>EXAMPLE_REACT</DefineConstants>
         <!-- Warn on ununsed variables -->
         <OtherFlags>--warnon:1182</OtherFlags>
     </PropertyGroup>
+    <Import Project="../Examples.Shared.Common.props" />
     <ItemGroup>
-        <Compile Include="src/Forms/Login.fs" />
+        <ProjectReference Include="../../../../packages/Fable.Form.Simple.Bulma/Fable.Form.Simple.Bulma.fsproj" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="../../packages/Fable.Form.Simple.Lit.Bulma/Fable.Form.Simple.Lit.Bulma.fsproj" />
-    </ItemGroup>
-    <ItemGroup>
+        <PackageReference Include="Fable.Elmish.UrlParser" />
+        <PackageReference Include="Fable.Promise" />
         <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>

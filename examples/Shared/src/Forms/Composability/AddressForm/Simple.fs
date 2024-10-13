@@ -5,16 +5,18 @@ open Examples.Shared.Forms.Composability.Domain
 // In your application, you should remove the compiler directives
 // and use the appropriate module for your UI framework
 #if EXAMPLE_REACT
-open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_LIT
 open Fable.Form.Simple.Lit.Bulma
+open Fable.Form.Simple.Fields.Html
 #endif
 
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Fields.Html
 #endif
 
 type Values =

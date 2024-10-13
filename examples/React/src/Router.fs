@@ -21,8 +21,8 @@ type Route = SharedRouter.Route<ReactRoute>
 
 let routeParser: Parser<Route -> Route, Route> =
     oneOf [
-        map (ReactRoute.ReactOnly) (s "react-only")
-        map (ReactRoute.CustomView) (s "custom-view")
+        map ReactRoute.ReactOnly (s "react-only")
+        map ReactRoute.CustomView (s "custom-view")
     ]
     |> SharedRouter.routeParser
 

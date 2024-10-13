@@ -6,7 +6,7 @@ open Fable.Form.Simple
 open Fable.Form.Simple.Sutil.Bulma
 open Examples.Shared.Forms
 
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; NoComparison>]
 type State =
     | Filling of Form.View.Model<DynamicForm.Values>
     | Filled of DynamicForm.FormResult

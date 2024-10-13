@@ -4,32 +4,16 @@ open Fable.Form
 open Sutil
 open Sutil.Bulma
 open Fable.Form.Simple.Sutil.Bulma
+open Fable.Form.Simple.Fields.Html
 
 module SelectField =
 
-    type Attributes =
-        {
-            FieldId: string
-            Label: string
-            Placeholder: string
-            Options: (string * string) list
-        }
+    type Field<'Values>(innerField: SelectField.InnerField<'Values>) =
 
-        interface Field.IAttributes with
-
-            member this.GetFieldId() = this.FieldId
-
-    type InnerField<'Values> = Field.Field<Attributes, string, 'Values>
-
-    let form<'Values, 'Field, 'Output>
-        : ((InnerField<'Values> -> 'Field)
-              -> Base.FieldConfig<Attributes, string, 'Values, 'Output>
-              -> Base.Form<'Values, 'Output, 'Field>) =
-        Base.field System.String.IsNullOrEmpty
-
-    type Field<'Values>(innerField: InnerField<'Values>) =
-
-        inherit IStandardField<'Values, string, Attributes>(innerField)
+        inherit
+            IStandardField<'Values, SelectField.OptionItem option, SelectField.Attributes>(
+                innerField
+            )
 
         interface IField<'Values> with
 
@@ -37,47 +21,57 @@ module SelectField =
 
                 Field(Field.mapValues update innerField)
 
-        override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =
-            let toOption (selectedKey: string) (key: string, label: string) =
-                let isSelected = (selectedKey = key)
+        override _.RenderField
+            (config:
+                StandardRenderFieldConfig<SelectField.OptionItem option, SelectField.Attributes>)
+            =
 
+            let toOption (optionItem: SelectField.OptionItem) =
                 Html.option [
                     if config.IsReadOnly then
                         prop.style [
                             Css.displayNone
                         ]
-                    prop.value key
-                    prop.text label
-                    if isSelected then
-                        prop.selected true
+                    prop.value optionItem.Key
+                    prop.text optionItem.Text
                 ]
 
             let placeholderOption =
-                Html.option [
-                    if config.IsReadOnly then
-                        prop.style [
-                            Css.displayNone
-                        ]
-                    prop.disabled true
-                    if config.Value = "" then
-                        prop.selected true
+                match config.Attributes.Placeholder with
+                | Some placeholder ->
+                    Html.option [
+                        if config.IsReadOnly then
+                            prop.style [
+                                Css.displayNone
+                            ]
+                        prop.disabled true
+                        prop.value ""
 
-                    prop.text ("-- " + config.Attributes.Placeholder + " --")
-                ]
+                        prop.text placeholder
+                    ]
+                | None -> Html.none
 
             bulma.select [
                 prop.disabled config.Disabled
-                Ev.onChange config.OnChange
+                Ev.onChange (fun value ->
+                    config.OnChange(
+                        config.Attributes.Options
+                        |> List.find (fun optionItem -> optionItem.Key = value)
+                        |> Some
+                    )
+                )
 
                 match config.OnBlur with
                 | Some onBlur -> Ev.onBlur (fun _ -> onBlur ())
 
                 | None -> ()
 
-                prop.value config.Value
+                match config.Value with
+                | Some optionItem -> prop.value optionItem.Key
+                | None -> prop.value ""
 
                 placeholderOption
 
-                yield! config.Attributes.Options |> List.map (toOption config.Value)
+                yield! config.Attributes.Options |> List.map toOption
             ]
             |> Helpers.View.withLabelAndError config.Attributes.Label config.ShowError config.Error

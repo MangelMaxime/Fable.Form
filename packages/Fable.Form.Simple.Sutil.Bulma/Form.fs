@@ -2,6 +2,7 @@ namespace Fable.Form.Simple.Sutil.Bulma
 
 open Sutil.Core
 open Fable.Form
+open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Sutil.Bulma.Fields
 
 [<RequireQualifiedAccess>]
@@ -316,67 +317,67 @@ module Form =
         (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextRaw, field)) config
+        TextField.form (fun field -> TextField.Field field) config
 
     let colorField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<ColorField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextColor, field)) config
+        ColorField.form (fun field -> ColorField.Field field) config
 
     let dateField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<DateField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextDate, field)) config
+        DateField.form (fun field -> DateField.Field field) config
 
     let dateTimeLocalField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<DateTimeLocalField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextDateTimeLocal, field)) config
+        DateTimeLocalField.form (fun field -> DateTimeLocalField.Field field) config
 
     let emailField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<EmailField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextEmail, field)) config
+        EmailField.form (fun field -> EmailField.Field field) config
 
     let numberField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<NumberField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextNumber, field)) config
+        NumberField.form (fun field -> NumberField.Field field) config
 
     let passwordField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<PasswordField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextPassword, field)) config
+        PasswordField.form (fun field -> PasswordField.Field field) config
 
     let searchField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<SearchField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextSearch, field)) config
+        SearchField.form (fun field -> SearchField.Field field) config
 
     let telField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<TelField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextTel, field)) config
+        TelField.form (fun field -> TelField.Field field) config
 
     let timeField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<TimeField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextTime, field)) config
+        TimeField.form (fun field -> TimeField.Field field) config
 
     let textareaField
-        (config: Base.FieldConfig<TextField.Attributes, string, 'Values, 'Output>)
+        (config: Base.FieldConfig<TextareaField.Attributes, string, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
-        TextField.form (fun field -> TextField.Field(TextField.TextArea, field)) config
+        TextareaField.form (fun field -> TextareaField.Field field) config
 
     let checkboxField
         (config: Base.FieldConfig<CheckboxField.Attributes, bool, 'Values, 'Output>)
@@ -385,13 +386,15 @@ module Form =
         CheckboxField.form (fun field -> CheckboxField.Field field) config
 
     let radioField
-        (config: Base.FieldConfig<RadioField.Attributes, string, 'Values, 'Output>)
+        (config:
+            Base.FieldConfig<RadioField.Attributes, RadioField.OptionItem option, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
         RadioField.form (fun field -> RadioField.Field field) config
 
     let selectField
-        (config: Base.FieldConfig<SelectField.Attributes, string, 'Values, 'Output>)
+        (config:
+            Base.FieldConfig<SelectField.Attributes, SelectField.OptionItem option, 'Values, 'Output>)
         : Form<'Values, 'Output>
         =
         SelectField.form (fun field -> SelectField.Field field) config
@@ -449,7 +452,7 @@ module Form =
     /// </example>
     let list
         (config: FormList.Config<'Values, 'ElementValues>)
-        (elementForIndex: int -> Form<'ElementValues, 'Output>)
+        (elementForIndex: FormList.ElementContext -> Form<'ElementValues, 'Output>)
         : Form<'Values, 'Output list>
         =
 
@@ -458,7 +461,13 @@ module Form =
             : Base.FilledForm<'Output, IField<'Values>>
             =
             let filledElement =
-                Base.fill (elementForIndex elementState.Index) elementState.ElementValues
+                let context: FormList.ElementContext =
+                    {
+                        FieldIdPrefix = elementState.FieldIdPrefix
+                        Index = elementState.Index
+                    }
+
+                Base.fill (elementForIndex context) elementState.ElementValues
 
             {
                 Fields =
