@@ -35,9 +35,23 @@
                 ]
             },
             {
-                "section": "examples",
+                "pinned": true,
                 "label": "Examples",
-                "url": "/Fable.Form/examples/index.html"
+                "items": [
+                    {
+                        "section": "examples",
+                        "label": "React",
+                        "description": "Showcase with Fable.Form.Simple.Bulma",
+                        "url": "/Fable.Form/examples/react/index.html"
+                    },
+                    "divider",
+                    {
+                        "section": "examples",
+                        "label": "Sutil",
+                        "description": "Showcase with Fable.Form.Simple.Sutil.Bulma",
+                        "url": "/Fable.Form/examples/sutil/index.html"
+                    }
+                ]
             },
             {
                 "label": "Changelogs",
@@ -54,8 +68,18 @@
                     },
                     {
                         "section": "changelogs",
+                        "label": "Fable.Form.Simple.Fields.Html",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Fields.Html.html"
+                    },
+                    {
+                        "section": "changelogs",
                         "label": "Fable.Form.Simple.Bulma",
                         "url": "/Fable.Form/changelogs/Fable.Form.Simple.Bulma.html"
+                    },
+                    {
+                        "section": "changelogs",
+                        "label": "Fable.Form.Simple.Sutil.Bulma",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Sutil.Bulma.html"
                     },
                     {
                         "section": "changelogs",
@@ -65,13 +89,12 @@
                 ]
             },
             {
-                "url": "https://gitter.im/fable-compiler/Fable",
+                "url": "https://discord.com/servers/fsharp-196693847965696000",
                 "label": "Support"
             },
             {
-                "section": "sponsors",
                 "label": "Sponsors",
-                "url": "/Fable.Form/sponsors.html"
+                "url": "https://mangelmaxime.github.io/sponsors/"
             }
         ],
         "end": [

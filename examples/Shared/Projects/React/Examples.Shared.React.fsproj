@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <DefineConstants>EXAMPLE_REACT</DefineConstants>
+        <!-- Warn on ununsed variables -->
+        <OtherFlags>--warnon:1182</OtherFlags>
+    </PropertyGroup>
+    <Import Project="../Examples.Shared.Common.props" />
+    <ItemGroup>
+        <ProjectReference Include="../../../../packages/Fable.Form.Simple.Bulma/Fable.Form.Simple.Bulma.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fable.Elmish.UrlParser" />
+        <PackageReference Include="Fable.Promise" />
+        <PackageReference Include="FSharp.Core" />
+    </ItemGroup>
+</Project>

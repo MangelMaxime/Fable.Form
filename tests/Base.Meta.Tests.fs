@@ -2,7 +2,7 @@
 
 open Mocha
 open Fable.Form
-open Fable.Form.Simple
+open Fable.Form.Simple.Bulma
 
 type Values =
     {
@@ -12,7 +12,7 @@ type Values =
 
 let repeatPasswordError = "The password should have at least 8 characters"
 
-let repeatPasswordField: Base.Form<Values, unit, Form.Field<Values, obj>> =
+let repeatPasswordField: Base.Form<Values, unit, IField<Values>> =
     Base.meta (fun values ->
         Form.passwordField
             {
@@ -31,6 +31,7 @@ let repeatPasswordField: Base.Form<Values, unit, Form.Field<Values, obj>> =
                 Error = always None
                 Attributes =
                     {
+                        FieldId = "repeat-password"
                         Label = "Repeat password"
                         Placeholder = "Type your password again"
                         HtmlAttributes = []

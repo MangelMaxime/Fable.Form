@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <DefineConstants>EXAMPLE_SUTIL</DefineConstants>
+    </PropertyGroup>
+    <Import Project="../Examples.Shared.Common.props" />
+    <ItemGroup>
+        <ProjectReference Include="../../../../packages/Fable.Form.Simple.Sutil.Bulma/Fable.Form.Simple.Sutil.Bulma.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fable.Elmish.UrlParser" />
+        <PackageReference Include="FSharp.Core" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <!-- Warn on ununsed variables -->
+        <OtherFlags>--warnon:1182</OtherFlags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="src/Sutil.Router.fs" />
+        <Compile Include="src/Router.fs" />
+        <Compile Include="src/Fields/SignatureField.fs" />
+        <Compile Include="src/Fields/DaisyInput.fs" />
+        <Compile Include="src/Pages/Login.fs" />
+        <Compile Include="src/Pages/Disable.fs" />
+        <Compile Include="src/Pages/FormList.fs" />
+        <Compile Include="src/Pages/SignUp.fs" />
+        <Compile Include="src/Pages/ValidationStrategies.fs" />
+        <Compile Include="src/Pages/CustomActions.fs" />
+        <Compile Include="src/Pages/DynamicForm.fs" />
+        <Compile Include="src/Pages/File.fs" />
+        <Compile Include="src/Pages/Composability/Simple.fs" />
+        <Compile Include="src/Pages/Composability/WithConfiguration.fs" />
+        <Compile Include="src/Pages/CustomView.fs" />
+        <Compile Include="src/Pages/CustomField.fs" />
+        <Compile Include="src/App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../../packages/Fable.Form.Simple.Sutil.Bulma/Fable.Form.Simple.Sutil.Bulma.fsproj" />
+        <ProjectReference Include="../Shared/Projects/Sutil/Examples.Shared.Sutil.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fable.Elmish.UrlParser" />
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Glutinum.SignaturePad" />
+    </ItemGroup>
+</Project>
