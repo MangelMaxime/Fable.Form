@@ -9,10 +9,6 @@ open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Bulma
 #endif
 
-#if EXAMPLE_LIT
-open Fable.Form.Simple.Lit.Bulma
-#endif
-
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
 #endif
@@ -140,10 +136,7 @@ let form: Form<Values, FormResult> =
                         }
                 Error = fun _ -> None
                 Attributes =
-                    {
-                        FieldId = "remember-me"
-                        Text = "Remember me"
-                    }
+                    CheckboxField.create "remember-me" |> CheckboxField.withText "Remember me"
             }
 
     /// <summary>

@@ -11,11 +11,6 @@ open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Fields.Html
 #endif
 
-#if EXAMPLE_LIT
-open Fable.Form.Simple.Lit.Bulma
-open Fable.Form.Simple.Fields.Html
-#endif
-
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
 open Fable.Form.Simple.Fields.Html

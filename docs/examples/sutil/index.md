@@ -12,7 +12,6 @@ layout: navbar-only
                 <ul>
                     <li><a href="/Fable.Form/examples/react/index.html">React</a></li>
                     <li class="is-active"><a href="/Fable.Form/examples/sutil/index.html">Sutil</a></li>
-                    <li><a href="/Fable.Form/examples/lit/index.html">Fable.Lit</a></li>
                 </ul>
             </div>
             <div id="root">

@@ -27,7 +27,6 @@ let main args =
             fun (example: IConfigurator<ExampleSettings>) ->
                 example.AddCommand<ReactExampleCommand>("react") |> ignore
                 example.AddCommand<SutilExampleCommand>("sutil") |> ignore
-                example.AddCommand<LitExampleCommand>("lit") |> ignore
         )
         |> ignore
 

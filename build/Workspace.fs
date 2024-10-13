@@ -20,10 +20,6 @@ examples/
         fableBuild/
         public/
             daisyui.css
-    Lit/
-        fableBuild/
-        public/
-            daisyui.css
 tests/
     fableBuild/
 docs_deploy/

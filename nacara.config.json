@@ -50,13 +50,6 @@
                         "label": "Sutil",
                         "description": "Showcase with Fable.Form.Simple.Sutil.Bulma",
                         "url": "/Fable.Form/examples/sutil/index.html"
-                    },
-                    "divider",
-                    {
-                        "section": "examples",
-                        "label": "Fable.Lit",
-                        "description": "Showcase with Fable.Form.Simple.Lit.Bulma",
-                        "url": "/Fable.Form/examples/lit/index.html"
                     }
                 ]
             },
@@ -87,11 +80,6 @@
                         "section": "changelogs",
                         "label": "Fable.Form.Simple.Sutil.Bulma",
                         "url": "/Fable.Form/changelogs/Fable.Form.Simple.Sutil.Bulma.html"
-                    },
-                    {
-                        "section": "changelogs",
-                        "label": "Fable.Form.Simple.Lit.Bulma",
-                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Lit.Bulma.html"
                     },
                     {
                         "section": "changelogs",

@@ -98,11 +98,3 @@ type SutilExampleCommand() =
             Workspace.examples.Sutil.``.``,
             VirtualWorkspace.examples.Sutil.``public``.``daisyui.css``
         )
-
-type LitExampleCommand() =
-    inherit
-        ExampleCommand(
-            VirtualWorkspace.examples.Lit.fableBuild.``.``,
-            Workspace.examples.Lit.``.``,
-            VirtualWorkspace.examples.Lit.``public``.``daisyui.css``
-        )

@@ -24,7 +24,6 @@ type DocsCommand() =
             Command.Run("npx", "nacara")
 
             ReactExampleCommand().Execute(context, ExampleSettings()) |> ignore
-        // SutilExampleCommand().Execute(context, ExampleSettings()) |> ignore
-        // LitExampleCommand().Execute(context, ExampleSettings()) |> ignore
+            SutilExampleCommand().Execute(context, ExampleSettings()) |> ignore
 
         0

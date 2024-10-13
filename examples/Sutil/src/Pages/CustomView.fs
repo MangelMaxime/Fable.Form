@@ -8,10 +8,7 @@ open Fable.Form.Simple.Fields.Html
 open Fable.Form.Simple.Sutil.Bulma
 
 // Expose our custom field
-// If you have multiple custom fields, you probably want to create a module to expose all of them
-// at once instead of opening each field module
-// This is up to you to decide on how you want your consumers to use your library
-open Fable.Form.Simple.Bulma.Fields.DaisyTextInput
+open Fable.Form.Simple.Sutil.Bulma.Fields
 
 /// <summary>
 /// Type used to represent the form values

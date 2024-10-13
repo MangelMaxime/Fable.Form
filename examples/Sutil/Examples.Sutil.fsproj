@@ -30,7 +30,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fable.Elmish.UrlParser" />
-        <PackageReference Include="FSharp.Core" VersionOverride="8.0.301" />
+        <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Glutinum.SignaturePad" />
     </ItemGroup>
 </Project>

@@ -10,10 +10,6 @@ open Fable.Form.Simple.Bulma
 open Fable.Form.Simple.Bulma.Fields
 #endif
 
-#if EXAMPLE_LIT
-open Fable.Form.Simple.Lit.Bulma
-#endif
-
 #if EXAMPLE_SUTIL
 open Fable.Form.Simple.Sutil.Bulma
 #endif

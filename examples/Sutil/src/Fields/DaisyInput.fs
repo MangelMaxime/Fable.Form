@@ -1,4 +1,4 @@
-namespace Fable.Form.Simple.Bulma.Fields.DaisyTextInput
+namespace Fable.Form.Simple.Sutil.Bulma.Fields
 
 open Fable.Form
 open Sutil
