@@ -1,0 +1,25 @@
+<Project>
+    <PropertyGroup>
+        <!-- Warn on ununsed variables -->
+        <OtherFlags>--warnon:1182</OtherFlags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Env.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Router.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Global.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/CustomActions.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Disable.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/DynamicForm.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/File.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/FormList.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Login.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/SignUp.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/ValidationStrategies.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Composability/Domain.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Composability/AddressForm/Simple.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Composability/AddressForm/WithConfiguration.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Composability/Simple.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Forms/Composability/WithConfiguration.fs" />
+        <Compile Include="$(MSBuildThisFileDirectory)../src/Pages/Home.fs" />
+    </ItemGroup>
+</Project>

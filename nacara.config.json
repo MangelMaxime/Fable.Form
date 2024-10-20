@@ -16,28 +16,56 @@
                         "section": "Fable.Form",
                         "label": "Fable.Form",
                         "description": "Extensible core library used to build forms",
-                        "url": "/Fable.Form/Fable.Form/how_to_use.html"
+                        "url": "/Fable.Form/Fable.Form/introduction.html"
                     },
                     "divider",
                     {
                         "section": "Fable.Form.Simple",
                         "label": "Fable.Form.Simple",
-                        "description": "Simple form implementation, you can write your own view on top of it",
-                        "url": "/Fable.Form/Fable.Form.Simple/features.html"
+                        "description": "UI-agnostic library implementing form behaviors",
+                        "url": "/Fable.Form/Fable.Form.Simple/introduction.html"
                     },
                     "divider",
                     {
                         "section": "Fable.Form.Simple.Bulma",
                         "label": "Fable.Form.Simple.Bulma",
-                        "description": "View implementation for Fable.Form.Simple based on Bulma",
+                        "description": "React + Bulma view layer",
                         "url": "/Fable.Form/Fable.Form.Simple.Bulma/installation.html"
+                    },
+                    "divider",
+                    {
+                        "section": "Fable.Form.Simple.Sutil.Bulma",
+                        "label": "Fable.Form.Simple.Sutil.Bulma",
+                        "description": "Sutil + Bulma view layer",
+                        "url": "/Fable.Form/Fable.Form.Simple.Sutil.Bulma/installation.html"
+                    },
+                    "divider",
+                    {
+                        "section": "Fable.Form.Simple.Fields.Html",
+                        "label": "Fable.Form.Simple.Fields.Html",
+                        "description": "Shared fields definition for libraries targeting the browser",
+                        "url": "/Fable.Form/Fable.Form.Simple.Fields.Html/features.html"
                     }
                 ]
             },
             {
-                "section": "examples",
+                "pinned": true,
                 "label": "Examples",
-                "url": "/Fable.Form/examples/index.html"
+                "items": [
+                    {
+                        "section": "examples",
+                        "label": "React",
+                        "description": "Showcase with Fable.Form.Simple.Bulma",
+                        "url": "/Fable.Form/examples/react/index.html"
+                    },
+                    "divider",
+                    {
+                        "section": "examples",
+                        "label": "Sutil",
+                        "description": "Showcase with Fable.Form.Simple.Sutil.Bulma",
+                        "url": "/Fable.Form/examples/sutil/index.html"
+                    }
+                ]
             },
             {
                 "label": "Changelogs",
@@ -54,8 +82,18 @@
                     },
                     {
                         "section": "changelogs",
+                        "label": "Fable.Form.Simple.Fields.Html",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Fields.Html.html"
+                    },
+                    {
+                        "section": "changelogs",
                         "label": "Fable.Form.Simple.Bulma",
                         "url": "/Fable.Form/changelogs/Fable.Form.Simple.Bulma.html"
+                    },
+                    {
+                        "section": "changelogs",
+                        "label": "Fable.Form.Simple.Sutil.Bulma",
+                        "url": "/Fable.Form/changelogs/Fable.Form.Simple.Sutil.Bulma.html"
                     },
                     {
                         "section": "changelogs",
@@ -65,13 +103,25 @@
                 ]
             },
             {
-                "url": "https://gitter.im/fable-compiler/Fable",
+                "label": "Versions",
+                "items": [
+                    {
+                        "label": "Latest",
+                        "url": "/Fable.Form/"
+                    },
+                    {
+                        "label": "v4",
+                        "url": "/Fable.Form/versions/v4/index.html"
+                    }
+                ]
+            },
+            {
+                "url": "https://discord.com/servers/fsharp-196693847965696000",
                 "label": "Support"
             },
             {
-                "section": "sponsors",
                 "label": "Sponsors",
-                "url": "/Fable.Form/sponsors.html"
+                "url": "https://mangelmaxime.github.io/sponsors/"
             }
         ],
         "end": [

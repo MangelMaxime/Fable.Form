@@ -1,0 +1,17 @@
+{
+  "name": "examples",
+  "description": "",
+  "private": true,
+  "scripts": {},
+  "author": "Maxime Mangel <mangel.maxime@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "bulma": "^0.9.4",
+    "signature_pad": "^5.0.3"
+  },
+  "devDependencies": {
+    "sass": "^1.63.6",
+    "vite": "^4.3.9"
+  }
+}

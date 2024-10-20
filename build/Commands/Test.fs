@@ -28,7 +28,7 @@ type TestCommand() =
 
     override _.Execute(context, settings) =
 
-        let destination = DirectoryInfo(VirtualWorkspace.tests.fableBuild)
+        let destination = DirectoryInfo(VirtualWorkspace.tests.fableBuild.``.``)
 
         destination.ReCreate()
 
@@ -36,7 +36,7 @@ type TestCommand() =
             CmdLine.empty
             |> CmdLine.appendRaw "fable"
             |> CmdLine.appendIf settings.IsWatch "--watch"
-            // |> CmdLine.appendRaw "--test:MSBuildCracker"
+            |> CmdLine.appendRaw "--test:MSBuildCracker"
             |> CmdLine.appendPrefix "--outDir" "fableBuild"
             |> CmdLine.appendRaw "--verbose"
             |> CmdLine.toString

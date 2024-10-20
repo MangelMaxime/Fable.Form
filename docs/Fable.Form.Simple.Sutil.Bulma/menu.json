@@ -1,0 +1,18 @@
+[
+    "Fable.Form.Simple.Sutil.Bulma/installation",
+    {
+        "type": "section",
+        "label": "Usage",
+        "items": [
+            "Fable.Form.Simple.Sutil.Bulma/usage"
+        ]
+    },
+    {
+        "type": "section",
+        "label": "Advanced",
+        "items": [
+            "Fable.Form.Simple.Sutil.Bulma/advanced/custom-field",
+            "Fable.Form.Simple.Sutil.Bulma/advanced/custom-view"
+        ]
+    }
+]

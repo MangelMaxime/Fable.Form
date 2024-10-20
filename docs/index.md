@@ -14,6 +14,7 @@ Fable.Form allows you to build forms that are:
 - **Scalable:** you don't need a `Msg` for each field neither repeat your `view` code
 - **Terse:** your field logic is defined in a single place
 - **Modular:** you can create your own fields and customize how existing fields are rendered
+- **Works with any UI library:** you can use it with Elmish + React, React, Sutil, or any other library
 
 ```fsharp
 let form : Form.Form<Values, Msg, _> =

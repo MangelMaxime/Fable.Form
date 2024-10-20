@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>4.1.0</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
-            Fable bindings for npm https://github.com/chalk/chalk package
+Contains the global logic of how a form should behave.
+
+It can be used has a standalone library if you want to build your own fields or
+you can use Fable.Form.Simple.Bulma to have a ready to use fields made for Bulma CSS framework.
         </Description>
+        <FablePackageType>library</FablePackageType>
+        <PackageTags>fable-javascript</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="TextField.fs" />
-        <Compile Include="RadioField.fs" />
-        <Compile Include="CheckboxField.fs" />
-        <Compile Include="SelectField.fs" />
-        <Compile Include="FileField.fs" />
-        <Compile Include="FormList.fs" />
         <Compile Include="Form.fs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Fable.Form\Fable.Form.fsproj" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Fable.Elmish" />
-      <PackageReference Include="Fable.Package.SDK" />
-      <PackageReference Include="Feliz" />
+      <PackageReference Include="EasyBuild.PackageReleaseNotes.Tasks">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>

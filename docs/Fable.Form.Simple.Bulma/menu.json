@@ -2,10 +2,18 @@
     "Fable.Form.Simple.Bulma/installation",
     {
         "type": "section",
-        "label": "Components",
+        "label": "Usage",
         "items": [
-            "Fable.Form.Simple.Bulma/components/fieldset",
-            "Fable.Form.Simple.Bulma/components/form-list"
+            "Fable.Form.Simple.Bulma/usage-with-elmish",
+            "Fable.Form.Simple.Bulma/usage-with-react"
+        ]
+    },
+    {
+        "type": "section",
+        "label": "Advanced",
+        "items": [
+            "Fable.Form.Simple.Bulma/advanced/custom-field",
+            "Fable.Form.Simple.Bulma/advanced/custom-view"
         ]
     }
 ]

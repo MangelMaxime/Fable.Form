@@ -49,7 +49,9 @@ $menu-item-hover-background-color: transparent;
 $menu-label-font-size: $size-6;
 $menu-item-radius: $radius-large $radius-large;
 
-$body-size: 15px;
+$tabs-toggle-link-active-background-color: $primary;
+
+$body-size: 16px;
 
 @import "./../node_modules/bulma/bulma.sass";
 @import "./../node_modules/nacara-layout-standard/scss/nacara.scss";
