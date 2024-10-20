@@ -3,6 +3,10 @@ layout: standard
 title: Use what you need
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 Fable.Form has been designed with modularity/customisation in mind.
 
 It consist of 3 layers:
