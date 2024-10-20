@@ -467,6 +467,6 @@ type ReleaseCommand() =
             releaseFableFormSimpleFieldsHtml repository settings
             releaseFableFormSimpleBulma repository settings
             releaseFableFormSimpleSutilBulma repository settings
-            releaseFableFormSimpleBulmaNpm repository settings
+        // releaseFableFormSimpleBulmaNpm repository settings
 
         0
