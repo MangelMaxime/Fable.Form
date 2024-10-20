@@ -103,6 +103,19 @@
                 ]
             },
             {
+                "label": "Versions",
+                "items": [
+                    {
+                        "label": "Latest",
+                        "url": "/Fable.Form/"
+                    },
+                    {
+                        "label": "v4",
+                        "url": "/Fable.Form/versions/v4/index.html"
+                    }
+                ]
+            },
+            {
                 "url": "https://discord.com/servers/fsharp-196693847965696000",
                 "label": "Support"
             },
