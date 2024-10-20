@@ -1,93 +1,86 @@
+(**
 ---
 layout: standard
-title: How to use ?
+title: Elmish
 ---
+**)
 
-In this section, we are going to focus on the easiest way to use Fable.Form.
+(*** hide ***)
 
-We are going to create a login form similar to [this one](/Fable.Form/examples/index.html#login)
+#r "nuget: Elmish"
+#r "nuget: Feliz"
+#r "./../../packages/Fable.Form.Simple.Bulma/bin/Debug/netstandard2.1/Fable.Form.dll"
+#r "./../../packages/Fable.Form.Simple.Bulma/bin/Debug/netstandard2.1/Fable.Form.Simple.dll"
+#r "./../../packages/Fable.Form.Simple.Bulma/bin/Debug/netstandard2.1/Fable.Form.Simple.Fields.Html.dll"
+#r "./../../packages/Fable.Form.Simple.Bulma/bin/Debug/netstandard2.1/Fable.Form.Simple.Bulma.dll"
 
-:::info
-We are assuming that you already have an Elmish application set up with [Bulma](https://bulma.io/)
+(**
 
-If needed, you can use [Fulma minimal template](https://fulma.github.io/Fulma/#template) as a starting point
-
-Later, it will be explained how you can customise the view to fit your application style.
-:::
+This section will show you how to use `Fable.Form` with Elmish.
 
 <ul class="textual-steps">
 <li>
 
-Add **Fable.Form.Simple.Bulma** to your project
-
-```bash
-# .NET CLI
-dotnet add yourProject.fsproj package Fable.Form.Simple.Bulma
-
-# Paket CLI
-paket add Fable.Form.Simple.Bulma
-```
-
-</li>
-
-<li>
-
 Open the library modules
+*)
 
-```fsharp
+open Elmish
 open Fable.Form.Simple
 open Fable.Form.Simple.Bulma
-```
+open Fable.Form.Simple.Fields.Html
+
+(**
 
 </li>
-
 <li>
 
 Define a type `Values` which is used to represents the different fields we have in the form.
+*)
 
-```fsharp
 type Values =
     {
         Email : string
         Password : string
         RememberMe : bool
     }
-```
+
+(**
 
 </li>
-
 <li>
-Create your model
 
-```fsharp
+Create your model
+*)
+
 type Model =
     Form.View.Model<Values>
-```
+
+(**
 
 *To keep our example simple, we use a type alias but in a real application you will generaly host it inside a discriminated union or a record*
 
 </li>
-
 <li>
 
-Register 2 messages:
+Register 2 messages;
 
-```fsharp
+*)
+
 type Msg =
-    // Used when a change occure in the form
+    // Used when a change occurs in the form
     | FormChanged of Model
     // Used when the user submit the form
     | LogIn of string * string * bool
-```
 
+(**
 </li>
-
 <li>
 
 Initialize your `Model`, we set the default value of each fields. Then pass the values to the function `Form.View.idle` which will returns a `Form.View.Model`
 
-```fsharp
-let init () =
+*)
+
+let init : Model * Cmd<Msg> =
     {
         Email = ""
         Password = ""
@@ -95,15 +88,15 @@ let init () =
     }
     |> Form.View.idle
     , Cmd.none
-```
 
+(**
 </li>
-
 <li>
 
 Write the logic of the `update` function.
 
-```fsharp
+*)
+
 let update (msg : Msg) (model : Model) =
     match msg with
     // We received a new form model, store it
@@ -119,20 +112,20 @@ let update (msg : Msg) (model : Model) =
             State = Form.View.Success "You have been logged in successfully"
         }
         , Cmd.none
-```
 
+(**
 </li>
-
 <li>
 
 Create the form logic:
 
 1. First create each field
-2. Create an `onSubmit` function which maps the result of the form into a `Msg`
-3. Tie the fields and the `onSubmit` function together
+1. Create an `onSubmit` function which maps the result of the form into a `Msg`
+1. Tie the fields and the `onSubmit` function together
 
-```fsharp
-let form : Form.Form<Values, Msg, _> =
+*)
+
+let form : Form<Values, Msg> =
     let emailField =
         Form.textField
             {
@@ -150,11 +143,10 @@ let form : Form.Form<Values, Msg, _> =
                 Error =
                     fun _ -> None
                 Attributes =
-                    {
-                        Label = "Email"
-                        Placeholder = "some@email.com"
-                        HtmlAttributes = [ ]
-                    }
+                    TextField.create "email"
+                    |> TextField.withLabel "Email"
+                    |> TextField.withPlaceholder "some@email.com"
+                    |> TextField.withAutoFocus
             }
 
     let passwordField =
@@ -169,11 +161,8 @@ let form : Form.Form<Values, Msg, _> =
                 Error =
                     fun _ -> None
                 Attributes =
-                    {
-                        Label = "Password"
-                        Placeholder = "Your password"
-                        HtmlAttributes = [ ]
-                    }
+                    PasswordField.create "password"
+                    |> PasswordField.withLabel "Password"
             }
 
     let rememberMe =
@@ -188,9 +177,8 @@ let form : Form.Form<Values, Msg, _> =
                 Error =
                     fun _ -> None
                 Attributes =
-                    {
-                        Text = "Remember me"
-                    }
+                    CheckboxField.create "remember-me"
+                    |> CheckboxField.withText "Remember me"
             }
 
     let onSubmit =
@@ -201,37 +189,31 @@ let form : Form.Form<Values, Msg, _> =
         |> Form.append emailField
         |> Form.append passwordField
         |> Form.append rememberMe
-```
+
+(**
 
 </li>
-
 <li>
 
-Call `Form.View.asHtml` in the `view` function to render the form
+Call `Form.View.asHtml` in the view function to render the form
 
-```fsharp
+*)
+
 let view (model : Model) (dispatch : Dispatch<Msg>) =
     Form.View.asHtml
         {
-            Dispatch = dispatch
-            OnChange = FormChanged
+            OnChange = FormChanged >> dispatch
+            OnSubmit = dispatch
             Action = Form.View.Action.SubmitOnly "Sign in"
             Validation = Form.View.ValidateOnSubmit
         }
         form
         model
-```
 
+
+(**
 </li>
-
 </ul>
 
-Congratulations 🎉, you now know how to use `Fable.Form` in your application.
-
-You can now play more with it to make you use to it.
-
-:::info
-If you want, to play with the more advanced features like [Group](/Fable.Form/Fable.Form.Simple/features.html#Group), [Section](/Fable.Form/Fable.Form.Simple/features.html#Section), [List](/Fable.Form/Fable.Form.Simple/features.html#List-of-form), please read [Fable.Form.Simple.Bulma - Installation](/Fable.Form/Fable.Form.Simple.Bulma/installation.html)
-:::
-
-In the next section, you will learn how to customize `Fable.Form` to your needs.
+Congratulations 🎉, you now know how to use `Fable.Form` in your application with Elmish.
+*)
