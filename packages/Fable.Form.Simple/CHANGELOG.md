@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: beb30c0222a9fe45c5e6f69caa4851c895a949cc -->
+<!-- last_commit_released: 47b89f5296aaca039aa851647fcec3b4acee7f81 -->
 <!-- EasyBuild: END -->
+
+## 5.0.1
+
+### 🐞 Bug Fixes
+
+* Fix package to correctly include sources files ([18251a5](https://github.com/glutinum-org/cli/commit/18251a5286eda8b744d471b5722cc73ced158175))
 
 ## 5.0.0
 
