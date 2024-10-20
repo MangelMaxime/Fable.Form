@@ -36,6 +36,10 @@ you can use Fable.Form.Simple.Bulma, Fable.Form.Simple.Sutil.Bulma to have a rea
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
+      <PackageReference Include="Fable.Package.SDK">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="FSharp.Core" />
     </ItemGroup>
 </Project>

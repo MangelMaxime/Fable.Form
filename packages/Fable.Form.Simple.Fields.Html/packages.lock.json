@@ -8,6 +8,12 @@
         "resolved": "1.2.0",
         "contentHash": "Fy/NaewrJUaUBIr2KTI7lTZsV5KLNL1YTGPM9pvglf7dYAlSWcvsmVWD2xr+FohuG9oEDbnxeYQNBZqOi4Is6g=="
       },
+      "Fable.Package.SDK": {
+        "type": "Direct",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "fqok4uxO2D+79S+bzAXsN0U2ajfOlCuIqWM2icEL64bda8DmscQTUZyl7eh/zm0pi9fs5r22gMpR/6pD+1jPeg=="
+      },
       "FSharp.Core": {
         "type": "Direct",
         "requested": "[5.0.2, )",
