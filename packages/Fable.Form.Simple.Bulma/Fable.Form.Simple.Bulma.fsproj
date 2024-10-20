@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Description>
-Implementation of standard fields using Bulma CSS framework, to be used with Fable.Form.Simple.
+React implementation of standard fields using Bulma CSS framework, to be used with Fable.Form.Simple.
         </Description>
         <FablePackageType>library</FablePackageType>
         <PackageTags>fable-javascript</PackageTags>

@@ -236,7 +236,7 @@
       },
       "Fable.Package.SDK": {
         "type": "CentralTransitive",
-        "requested": "[1.1.0, )",
+        "requested": "[1.2.0, )",
         "resolved": "1.0.0",
         "contentHash": "TIXktcGpeqE3QOr2coV+w5erpLtfijpfBilhb0MNV2OSao/Y5Zg3r7StF+wZ4jSm4Pkid4HpjshZB/V9fUc/Ew=="
       },

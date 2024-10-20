@@ -25,6 +25,7 @@ type Project =
     | FableFormSimple
     | FableFormSimpleFieldsHtml
     | FableFormSimpleBulma
+    | FableFormSimpleSutilBulma
     | FableFormSimpleBulmaNpm
     | All
 
@@ -39,6 +40,7 @@ type ProjectTypeConverter() =
             | "Fable.Form.Simple" -> Project.FableFormSimple
             | "Fable.Form.Simple.Fields.Html" -> Project.FableFormSimpleFieldsHtml
             | "Fable.Form.Simple.Bulma" -> Project.FableFormSimpleBulma
+            | "Fable.Form.Simple.Sutil.Bulma" -> Project.FableFormSimpleSutilBulma
             | "fable-form-simple-bulma" -> Project.FableFormSimpleBulmaNpm
             | "all"
             | "All" -> Project.All
@@ -177,6 +179,8 @@ let private getReleaseContext
                 | Project.FableFormSimpleFieldsHtml ->
                     List.contains "Fable.Form.Simple.Fields.Html" tags
                 | Project.FableFormSimpleBulma -> List.contains "Fable.Form.Simple.Bulma" tags
+                | Project.FableFormSimpleSutilBulma ->
+                    List.contains "Fable.Form.Simple.Sutil.Bulma" tags
                 | Project.FableFormSimpleBulmaNpm ->
                     List.contains "Fable.Form.Simple.Bulma.Npm" tags
                 | Project.All -> true
@@ -353,33 +357,21 @@ let private updateChangelog (releaseContext: ReleaseContext) (changelogPath: str
     File.WriteAllText(changelogPath, newChangelogContent)
 
 let private releaseNuGet (projectFile: string) =
+    let projectFileInfo = FileInfo projectFile
 
-    let struct (standardOutput, _) =
-        Command.ReadAsync(
-            "dotnet",
-            CmdLine.empty
-            |> CmdLine.appendRaw "pack"
-            |> CmdLine.appendRaw projectFile
-            |> CmdLine.appendRaw "-c Release"
-            |> CmdLine.toString
-        )
-        |> Async.AwaitTask
-        |> Async.RunSynchronously
+    let binDir = projectFileInfo.DirectoryName + "/bin" |> DirectoryInfo
 
-    let m =
-        Regex.Match(standardOutput, "Successfully created package '(?'nupkgPath'.*\.nupkg)'")
+    if binDir.Exists then
+        binDir.Delete(true)
 
-    if not m.Success then
-        failwith $"Failed to find nupkg path in output:\n{standardOutput}"
+    let nupkgPath = Dotnet.pack projectFileInfo.DirectoryName
 
     let nugetKey = Environment.GetEnvironmentVariable("NUGET_KEY")
 
     if isNull nugetKey then
         failwith "NUGET_KEY environment variable is not set"
 
-    printfn $"""Relase: $A{m.Groups.["nupkgPath"].Value}"""
-
-// Nuget.push (m.Groups.["nupkgPath"].Value, Environment.GetEnvironmentVariable("NUGET_KEY"))
+    Nuget.push (nupkgPath, Environment.GetEnvironmentVariable("NUGET_KEY"))
 
 let private releaseProject
     (repository: Repository)
@@ -430,6 +422,13 @@ let private releaseFableFormSimpleBulma (repository: Repository) (settings: Rele
         Workspace.packages.``Fable.Form.Simple.Bulma``.``Fable.Form.Simple.Bulma.fsproj``
         Workspace.packages.``Fable.Form.Simple.Bulma``.``CHANGELOG.md``
 
+let private releaseFableFormSimpleSutilBulma (repository: Repository) (settings: ReleaseSettings) =
+    releaseProject
+        repository
+        settings
+        Workspace.packages.``Fable.Form.Simple.Sutil.Bulma``.``Fable.Form.Simple.Sutil.Bulma.fsproj``
+        Workspace.packages.``Fable.Form.Simple.Sutil.Bulma``.``CHANGELOG.md``
+
 let private releaseFableFormSimpleBulmaNpm (repository: Repository) (settings: ReleaseSettings) =
     failwith "Not implemented"
 // releaseProject
@@ -461,11 +460,13 @@ type ReleaseCommand() =
         | Project.FableFormSimpleBulma -> releaseFableFormSimpleBulma repository settings
         | Project.FableFormSimpleFieldsHtml -> releaseFableFormSimpleFieldsHtml repository settings
         | Project.FableFormSimpleBulmaNpm -> releaseFableFormSimpleBulmaNpm repository settings
+        | Project.FableFormSimpleSutilBulma -> releaseFableFormSimpleSutilBulma repository settings
         | Project.All ->
             releaseFableForm repository settings
             releaseFableFormSimple repository settings
             releaseFableFormSimpleFieldsHtml repository settings
             releaseFableFormSimpleBulma repository settings
+            releaseFableFormSimpleSutilBulma repository settings
             releaseFableFormSimpleBulmaNpm repository settings
 
         0

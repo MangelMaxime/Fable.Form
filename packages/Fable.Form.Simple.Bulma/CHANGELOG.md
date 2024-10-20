@@ -5,8 +5,21 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- EasyBuild: START -->
-<!-- last_commit_released: 02e31e6fa32f3722da8868ae0b18d34fa1ea68f7 -->
+<!-- last_commit_released: beb30c0222a9fe45c5e6f69caa4851c895a949cc -->
 <!-- EasyBuild: END -->
+
+## 5.0.0
+
+### 🚀 Features
+
+* Mutualise Field definition via `Fable.Form.Simple.Fields.Html` + Introduce pipeline builder API ([ef6c8fb](https://github.com/glutinum-org/cli/commit/ef6c8fb419b022961cfa608aadbdf9afdd44fddf))
+* Add supports for concrete type in Select/Radio fields ([08d3531](https://github.com/glutinum-org/cli/commit/08d3531e9808be9c574de1fb578311469657d14b))
+* Make Fable.Form.Simple renderer agnostic ([5431f94](https://github.com/glutinum-org/cli/commit/5431f9411ca130ee8e0f8f7c4d40b5d32b0bdbe5))
+* Remove Elmish dependency ([b9f869c](https://github.com/glutinum-org/cli/commit/b9f869cda9f384e2849ba401557a93aba286a4a0))
+
+### 🐞 Bug Fixes
+
+* Clean up non needed generics declared on Field classes ([e2c13b9](https://github.com/glutinum-org/cli/commit/e2c13b9ef6dbfc3d7e7c10ce9e520b2872079e1a))
 
 ## 5.0.0-beta-003 - 2024-09-09
 
