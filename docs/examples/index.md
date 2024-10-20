@@ -3,6 +3,10 @@ layout: navbar-only
 ---
 
 <div class="container">
+    <br/>
+    <div class="notification is-warning has-text-black">
+        This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+    </div>
     <div>
         <div class="container">
             <div id="root">

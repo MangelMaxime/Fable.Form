@@ -7,6 +7,10 @@ title: Introduction
     <div class="columns">
         <div class="column is-8-widescreen is-offset-2-widescreen">
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 Fable.Form allows you to build forms that are:
 
 - **Composable:** they can be extended and embedded into other forms

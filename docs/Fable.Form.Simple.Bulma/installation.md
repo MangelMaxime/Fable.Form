@@ -3,6 +3,10 @@ layout: standard
 title: Installation
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 [Fable.Form.Simple](/Fable.Form/Fable.Form.Simple/features.html) offers custom fields that are not supported by default by [Bulma](https://bulma.io/).
 
 In order, to support them, Fable.Form.Simple.Bulma comes with an npm package [fable-form-simple-bulma]() that you need to install.

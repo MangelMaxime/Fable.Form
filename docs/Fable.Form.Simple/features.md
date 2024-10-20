@@ -3,6 +3,10 @@ layout: standard
 title: Features
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 Here is a list of all the fields supported by `Fable.Form.Simple`:
 
 ## Standard HTML fields

@@ -3,6 +3,10 @@ layout: standard
 title: How to use ?
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 In this section, we are going to focus on the easiest way to use Fable.Form.
 
 We are going to create a login form similar to [this one](/Fable.Form/examples/index.html#login)

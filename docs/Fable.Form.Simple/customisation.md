@@ -3,6 +3,10 @@ layout: standard
 title: Custom view templates
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 `Fable.Form.Simple` allows you to adapt the view code to make your form match your application looks.
 
 If you are using [Bulma](https://bulma.io/) in your application you should use [Fable.Form.Simple.Bulma](/Fable.Form/Fable.Form.Simple.Bulma/installation.html).
@@ -31,7 +35,7 @@ module Form =
 
         // Contract that we need to implement to support
         // all the feature offered by Fable.Simple.Form
-        let htmlViewConfig<'Msg> : CustomConfig<'Msg, 'Attributes> = 
+        let htmlViewConfig<'Msg> : CustomConfig<'Msg, 'Attributes> =
             // 'Attributes needs to be replaced by the actual type that your
             // library use to represent HTML attributes.
             // For exampe, when using Feliz, you should replace it with IReactProperty

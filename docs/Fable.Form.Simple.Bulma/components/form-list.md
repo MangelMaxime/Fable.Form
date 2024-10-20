@@ -3,6 +3,10 @@ layout: standard
 title: Form list
 ---
 
+<div class="notification is-warning has-text-black">
+    This content is for v4. <a href="/Fable.Form/index.html">Click here to see the latest version</a>.
+</div>
+
 Wraps a list of fields inside of a box.
 
 ---
