@@ -2,6 +2,13 @@
     "Fable.Form.Simple.Bulma/installation",
     {
         "type": "section",
+        "label": "Migration",
+        "items": [
+            "Fable.Form.Simple.Bulma/migration/v4-v5"
+        ]
+    },
+    {
+        "type": "section",
         "label": "Usage",
         "items": [
             "Fable.Form.Simple.Bulma/usage-with-elmish",
