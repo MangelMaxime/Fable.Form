@@ -65,7 +65,7 @@ Create a new class which inherits from `TextField.Field<'Values>`, and override 
 :::info
 The example below is truncated for brevity.
 
-Make you sure than in your code you handle all the properties of the `config` parameter.
+Make you sure you handle all the properties of the `config` parameter in your implementation.
 :::
 *)
 

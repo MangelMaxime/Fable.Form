@@ -188,7 +188,7 @@ Because of how Sutil 2 works, we need to handle the focus and selection manually
 This is done by saving the focused field and the selection when the field is unmounted and
 restoring it when the field is mounted.
 
-This will be fixed in a future version of Sutil.
+This will be fixed in Sutil 3.
 :::
 *)
         override _.RenderField(config: StandardRenderFieldConfig<string, Attributes>) =

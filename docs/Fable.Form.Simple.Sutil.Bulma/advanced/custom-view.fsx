@@ -67,7 +67,7 @@ Create a new class which inherits from `TextField.Field<'Values>`, and override 
 :::info
 The example below is truncated for brevity.
 
-Make you sure than in your code you handle all the properties of the `config` parameter.
+Make you sure you handle all the properties of the `config` parameter in your implementation.
 :::
 
 :::danger{title="IMPORTANT"}
@@ -76,7 +76,7 @@ Because of how Sutil 2 works, we need to handle the focus and selection manually
 This is done by saving the focused field and the selection when the field is unmounted and
 restoring it when the field is mounted.
 
-This will be fixed in a future version of Sutil.
+This will be fixed in Sutil 3.
 :::
 *)
 
