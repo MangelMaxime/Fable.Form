@@ -1,6 +1,6 @@
 # Fable.Form
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/MangelMaxime/Fable.Form)
+[![Sponsors badge link](https://img.shields.io/badge/Sponsors_this_project-EA4AAA?style=for-the-badge)](https://mangelmaxime.github.io/sponsors/) [![Support badge link](https://img.shields.io/badge/Do_you_Need_support_%3F-509ede?style=for-the-badge)](https://mangelmaxime.github.io/Fable.Form/support.html)
 
 **[Documentation](https://mangelmaxime.github.io/Fable.Form/)**
 
