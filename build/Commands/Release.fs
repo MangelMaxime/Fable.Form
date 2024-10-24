@@ -469,4 +469,6 @@ type ReleaseCommand() =
             releaseFableFormSimpleSutilBulma repository settings
         // releaseFableFormSimpleBulmaNpm repository settings
 
+        Docs.DocsCommand().Execute(context, Docs.DocsSettings(Publish = true)) |> ignore
+
         0

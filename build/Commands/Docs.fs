@@ -14,6 +14,10 @@ type DocsSettings() =
     [<Description("Watch for changes and re-build the Docs")>]
     member val IsWatch: bool = false with get, set
 
+    [<CommandOption("-p|--publish")>]
+    [<Description("Publish the Docs to the GitHub Pages")>]
+    member val Publish: bool = false with get, set
+
 type DocsCommand() =
     inherit Command<DocsSettings>()
 
@@ -25,5 +29,8 @@ type DocsCommand() =
 
             ReactExampleCommand().Execute(context, ExampleSettings()) |> ignore
             SutilExampleCommand().Execute(context, ExampleSettings()) |> ignore
+
+            if settings.Publish then
+                Command.Run("npx", "gh-pages -d docs_deploy")
 
         0
