@@ -13,9 +13,9 @@ The following libraries are available:
 
 - Fable.Form - library defining the `Base` types and functions needed to represents / manipulate a form.
 - [Fable.Form.Simple](/Fable.Form/Fable.Form.Simple/introduction.html) - UI-agnostic library  implementing form behaviors
-- [Fable.Form.Simple.Fields.Html](/Fable.Form/Fable.Form.Simple.Fields.Html/introduction.html) - common HTML fields to be used by libraries targetting the browser
-- [Fable.Form.Simple.Bulma](/Fable.Form/Fable.Form.Simple.Bulma/introduction.html) - Implementation for React using Bulma CSS framework
-- [Fable.Form.Simple.Sutil.Bulma](/Fable.Form/Fable.Form.Simple.Sutil.Bulma/introduction.html) - Implementation for [Sutil](https://sutil.dev/) using Bulma CSS framework
+- [Fable.Form.Simple.Fields.Html](/Fable.Form/Fable.Form.Simple.Fields.Html/features.html) - common HTML fields to be used by libraries targetting the browser
+- [Fable.Form.Simple.Bulma](/Fable.Form/Fable.Form.Simple.Bulma/installation.html) - Implementation for React using Bulma CSS framework
+- [Fable.Form.Simple.Sutil.Bulma](/Fable.Form/Fable.Form.Simple.Sutil.Bulma/installation.html) - Implementation for [Sutil](https://sutil.dev/) using Bulma CSS framework
 
 <br/>
 
