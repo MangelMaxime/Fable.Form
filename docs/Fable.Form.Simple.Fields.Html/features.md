@@ -9,21 +9,21 @@ Thanks to it, libraries like `Fable.Form.Simple.Bulma` and `Fable.Form.Simple.Su
 
 ## Available Fields
 
-- [RangeField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/RangeField.fs)
-- [CheckboxField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/CheckboxField.fs)
-- [SearchField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/SearchField.fs)
-- [ColorField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/ColorField.fs)
-- [SelectField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/SelectField.fs)
-- [DateField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/DateField.fs)
-- [TelField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/TelField.fs)
-- [DateTimeLocalField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/DateTimeLocalField.fs)
-- [TextField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/TextField.fs)
-- [EmailField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/EmailField.fs)
-- [TextareaField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/TextareaField.fs)
-- [TimeField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/TimeField.fs)
-- [NumberField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/NumberField.fs)
-- [PasswordField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/PasswordField.fs)
-- [RadioField](https://github.com/MangelMaxime/Fable.Form/blob/feature/pluggable/packages/Fable.Form.Simple.Fields.Html/RadioField.fs)
+- [RangeField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/RangeField.fs)
+- [CheckboxField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/CheckboxField.fs)
+- [SearchField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/SearchField.fs)
+- [ColorField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/ColorField.fs)
+- [SelectField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/SelectField.fs)
+- [DateField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/DateField.fs)
+- [TelField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/TelField.fs)
+- [DateTimeLocalField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/DateTimeLocalField.fs)
+- [TextField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/TextField.fs)
+- [EmailField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/EmailField.fs)
+- [TextareaField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/TextareaField.fs)
+- [TimeField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/TimeField.fs)
+- [NumberField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/NumberField.fs)
+- [PasswordField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/PasswordField.fs)
+- [RadioField](https://github.com/MangelMaxime/Fable.Form/blob/main/packages/Fable.Form.Simple.Fields.Html/RadioField.fs)
 
 ## Field Structure
 
