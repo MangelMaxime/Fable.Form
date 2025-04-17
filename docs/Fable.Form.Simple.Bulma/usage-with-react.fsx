@@ -15,7 +15,7 @@ title: React only
 
 (**
 
-This section will show you how to use `Fable.Form` with Elmish.
+This section will show you how to use `Fable.Form` with React.
 
 <ul class="textual-steps">
 <li>
